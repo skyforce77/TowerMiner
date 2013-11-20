@@ -1,0 +1,82 @@
+language: English
+
+towerminer: TowerMiner
+
+launcher.update.needed: New launcher available
+launcher.update.client: Game successfuly updated
+launcher.install: TowerMiner installed!
+
+menu.match: Quick Match
+menu.multiplayer: Multiplayer
+menu.editor: Editor
+menu.quit: Quit
+menu.main: Main Menu
+menu.maps: Maps
+menu.options: Options
+menu.back: back
+menu.languages: Languages
+
+menu.editor.file: File
+menu.editor.file.filter: MTMAP only
+menu.editor.file.filter.textures: PNG only
+menu.editor.map: Map
+menu.editor.blocks: Blocks
+menu.editor.new: New
+menu.editor.save: Save
+menu.editor.load: Load
+menu.editor.create: Create
+menu.editor.create.block: Create block
+menu.editor.edit: Edit
+menu.editor.edit.block: Edit block
+menu.editor.map.name: Name
+menu.editor.map.width: Width
+menu.editor.map.height: Height
+menu.editor.map.color: Map color
+menu.editor.id: Id
+menu.editor.textures: Define textures
+menu.editor.block.liquid: Is liquid?
+menu.editor.block.translucent: Is translucent?
+menu.editor.block.color: Adapted color?
+menu.editor.block.turrets: Turrets can be placed?
+menu.editor.delete: Delete
+
+menu.sp.next: Next
+menu.sp.pause: Pause
+menu.sp.boost: Boost
+menu.sp.resume: Resume
+menu.sp.gameover: Game Over
+menu.sp.round: Round
+menu.sp.rounds.win: Successful rounds: %
+menu.sp.golds: Golds
+menu.sp.golds.win: Golds winned: %
+menu.sp.buy: Buy
+menu.sp.click.right: Right click
+menu.sp.improve: Improve
+menu.sp.paused: Paused
+menu.sp.life: Lifes
+
+menu.mp.client.search: Waiting for server...
+menu.mp.client.fail: Connection failed.
+menu.mp.client.sending: Sending informations...
+menu.mp.client.kick: Disconnected by server
+menu.mp.client.kick.unknown: unknown reason
+menu.mp.client.kick.match: Match played
+menu.mp.client.kick.version: Not the same version
+menu.mp.client.join: Join
+menu.mp.client.adress: Adress
+menu.mp.client.map: Receving map...
+menu.mp.server.wait: Waiting for connection...
+menu.mp.server.connect: Connecting...
+menu.mp.server.ip: Your ip adress is
+menu.mp.create: Create match
+menu.mp.join: Join match
+menu.mp.blue: Blue
+menu.mp.red: Red
+menu.mp.ready: % is ready
+menu.mp.ready.button: Ready?
+menu.mp.message: Message
+menu.mp.connection.lost: Connection lost
+menu.mp.connection.client: Client disconnected
+menu.mp.gameover.survive: You survived % rounds
+menu.mp.gameover.lose: You losed at round %
+menu.mp.gameover.win: You win!
