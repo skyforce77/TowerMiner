@@ -2,6 +2,7 @@ package fr.skyforce77.towerminer.menus.additionals;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.util.ArrayList;
 import java.util.Date;
@@ -35,6 +36,7 @@ public class Chat {
 	}
 
 	public void draw(Graphics2D g2d) {
+		int width = 0;
 		if(opened) {
 			g2d.setColor(new Color(0,0,0,150));
 			g2d.fillRect(0, TowerMiner.game.getHeight()-250, TowerMiner.game.getWidth()/2, TowerMiner.game.getHeight()/2);
@@ -47,6 +49,12 @@ public class Chat {
 				if(i < 6 && messagedate.get(n)+10000 > new Date().getTime()) {
 					strings[i] = n;
 					i++;
+					
+					g2d.setFont(new Font("TimesRoman", Font.BOLD, 20));
+					FontMetrics metrics = g2d.getFontMetrics(g2d.getFont());
+					int adv = metrics.stringWidth(messages.get(n));
+					if(adv+2 > width)
+						width = adv+2;
 				} else {
 					remove.add(n);
 				}
@@ -65,8 +73,7 @@ public class Chat {
 					} else {
 						g2d.setColor(new Color(0,0,0,150));
 					}
-					g2d.setFont(new Font("TimesRoman", Font.BOLD, 20));
-					g2d.fillRect(0, TowerMiner.game.getHeight()-i*26-55, TowerMiner.game.getWidth()/2, 26);
+					g2d.fillRect(0, TowerMiner.game.getHeight()-i*26-55, width, 26);
 					
 					if(difference < 3000) {
 						g2d.setColor(new Color(250,250,250,difference/12));

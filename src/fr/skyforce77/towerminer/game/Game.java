@@ -15,6 +15,7 @@ import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.util.Date;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -33,7 +34,7 @@ public class Game extends JFrame implements MouseListener,MouseWheelListener,Mou
 
 	private static final long serialVersionUID = 1L;
 
-	public String version = "Alpha 0.4e";
+	public String version = "Alpha 0.4f";
 	public int connectversion = 4 ;
 	public boolean fpsdisplay = false;
 
@@ -151,6 +152,7 @@ public class Game extends JFrame implements MouseListener,MouseWheelListener,Mou
 	
 	public void displayPopup(Popup popup) {
 		this.popup = popup;
+		popup.time = new Date().getTime();
 	}
 	
 	public void displayMultiPlayerPopup(Popup popup) {

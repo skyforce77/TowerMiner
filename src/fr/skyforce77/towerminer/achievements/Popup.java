@@ -23,13 +23,11 @@ public class Popup implements Serializable{
 	public Popup(String text, long time) {
 		this.text = text;
 		this.displayed = time;
-		this.time = new Date().getTime();
 	}
 	
 	public Popup(String text, long time, String image) {
 		this.text = text;
 		this.displayed = time;
-		this.time = new Date().getTime();
 		icon = image;
 	}
 	
@@ -45,9 +43,9 @@ public class Popup implements Serializable{
 		int x = (int)(TowerMiner.game.getWidth()-size.getWidth());
 		int y = CanvasY;
 
-		if(difference < 320) {
+		if(difference < size.getHeight()*10) {
 			y = y-((int)size.getHeight()-difference/10);
-		} else if(displayed-difference < 320) {
+		} else if(displayed-difference < size.getHeight()*10) {
 			y = y-((int)size.getHeight()-(int)((displayed-difference)/10));
 		}
 
@@ -57,6 +55,10 @@ public class Popup implements Serializable{
 			g2d.fillRect(x-8, y, (int)size.getWidth()+10, (int)size.getHeight());
 		} else {
 			g2d.fillRect((int)(x-8-size.getHeight()), y, (int)(size.getWidth()+10+size.getHeight()), (int)size.getHeight());
+			g2d.setColor(new Color(255,255,255,30));
+			g2d.fillRect((int)(x-8-size.getHeight()), y, (int)size.getHeight(), (int)size.getHeight()-1);
+			g2d.setColor(Color.BLACK);
+			g2d.drawRect((int)(x-8-size.getHeight()), y, (int)size.getHeight(), (int)size.getHeight()-1);
 			g2d.drawImage(RessourcesManager.getTexture(icon), (int)(x-8-size.getHeight()), y, (int)size.getHeight(), (int)size.getHeight(), null);
 		}
 

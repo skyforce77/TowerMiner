@@ -9,6 +9,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutput;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import fr.skyforce77.towerminer.ressources.RessourcesManager;
@@ -17,6 +18,7 @@ public class DataBase implements Serializable{
 
 	private static final long serialVersionUID = 4364142227662752242L;
 	private static HashMap<String, Object> map = new HashMap<>();
+	private static ArrayList<String> perm = new ArrayList<String>();
 
 	public static Object getValue(String key) {
 		if(map.containsKey(key)) {
@@ -38,12 +40,29 @@ public class DataBase implements Serializable{
 		map.put(key, value);
 		save();
 	}
+	
+	public static boolean hasPermission(String key) {
+		return perm.contains(key);
+	}
+	
+	public static void addPermission(String key) {
+		if(!hasPermission(key)) {
+			perm.add(key);
+			save();
+		}
+	}
+	
+	public static void removePermission(String key) {
+		perm.remove(key);
+		save();
+	}
 
 	public static void save() {
 		try {
 			FileOutputStream bos = new FileOutputStream(new File(RessourcesManager.getSaveDirectory(),"database"));
 			ObjectOutput out = new ObjectOutputStream(bos);   
 			out.writeObject(map);
+			out.writeObject(perm);
 			bos.close();
 			out.close();
 		} catch (IOException e) {
@@ -62,7 +81,10 @@ public class DataBase implements Serializable{
 			}
 			FileInputStream fis = new FileInputStream(f);
 			ObjectInput in = new ObjectInputStream(fis);
-			map = (HashMap<String, Object>)in.readObject(); 
+			map = (HashMap<String, Object>)in.readObject();
+			try {
+				perm = (ArrayList<String>)in.readObject();
+			} catch (Exception e) {}
 			fis.close();
 			in.close();
 		} catch (Exception e) {

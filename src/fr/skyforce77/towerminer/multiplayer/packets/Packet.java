@@ -10,6 +10,8 @@ import java.io.ObjectOutputStream;
 
 import com.esotericsoftware.kryonet.Connection;
 
+import fr.skyforce77.towerminer.multiplayer.Connect;
+
 public class Packet {
 
 	public void onClientReceived(Connection c) {}
@@ -55,6 +57,18 @@ public class Packet {
 			}
 		}
 		return null;
+	}
+	
+	public void sendTCP() {
+		if(Connect.c != null) {
+			Connect.c.sendTCP(this);
+		}
+	}
+	
+	public void sendUDP() {
+		if(Connect.c != null) {
+			Connect.c.sendUDP(this);
+		}
 	}
 
 }

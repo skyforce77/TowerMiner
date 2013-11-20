@@ -1,13 +1,20 @@
 package fr.skyforce77.towerminer.achievements;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Achievements {
 
-	public static ArrayList<Achievement> achivements = new ArrayList<>();
+	public static HashMap<Integer, Achievement> achievements = new HashMap<>();
 	
 	public static void initAchievements() {
-		
+		new Achievement(1, "steel_ingot");
+	}
+	
+	public static void unlockAchievement(int id) {
+		Achievement a = achievements.get(id);
+		if(!a.has()) {
+			a.give();
+		}
 	}
 
 }

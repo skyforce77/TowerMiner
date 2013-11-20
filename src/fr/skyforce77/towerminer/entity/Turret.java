@@ -5,6 +5,7 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 
 import fr.skyforce77.towerminer.TowerMiner;
+import fr.skyforce77.towerminer.achievements.Achievements;
 import fr.skyforce77.towerminer.maps.MapWritter;
 import fr.skyforce77.towerminer.menus.MultiPlayer;
 import fr.skyforce77.towerminer.menus.SinglePlayer;
@@ -55,11 +56,17 @@ public class Turret extends Entity{
 	}
 
 	public void addData() {
+		if(TowerMiner.menu instanceof SinglePlayer) {
+			SinglePlayer sp = (MultiPlayer)TowerMiner.menu;
+			if(sp.getId().equals(owner))
+				Achievements.unlockAchievement(1);
+		}
 		data++;
 		distance+=10;
 		cost+=price;
 		price = price+(price/2);
-		Connect.c.sendTCP(new Packet10EntityValueUpdate(getUUID(), "turretdata", data+""));
+		if(Connect.c != null) 
+			Connect.c.sendTCP(new Packet10EntityValueUpdate(getUUID(), "turretdata", data+""));
 	}
 
 	@Override

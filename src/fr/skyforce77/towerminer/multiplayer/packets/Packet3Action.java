@@ -3,6 +3,7 @@ package fr.skyforce77.towerminer.multiplayer.packets;
 import com.esotericsoftware.kryonet.Connection;
 
 import fr.skyforce77.towerminer.TowerMiner;
+import fr.skyforce77.towerminer.achievements.Achievements;
 import fr.skyforce77.towerminer.achievements.Popup;
 import fr.skyforce77.towerminer.maps.Maps;
 import fr.skyforce77.towerminer.menus.MPClientWait;
@@ -57,6 +58,20 @@ public class Packet3Action extends Packet{
 			TowerMiner.setMenu(Menu.multiplayerclient);
 		} else if(action.equals("startround")) {
 			((MultiPlayer)TowerMiner.menu).renderarrow = false;
+		}
+	}
+	
+	@Override
+	public void onReceived(Connection c) {
+		if(action.equals("achievement")) {
+			String id = "server";
+			MultiPlayer mp = ((MultiPlayer)TowerMiner.menu);
+			if(mp.equals(id)) {
+				id = LanguageManager.getText("menu.mp.red");
+			} else {
+				id = LanguageManager.getText("menu.mp.blue");
+			}
+			mp.chat.onMessageReceived(LanguageManager.getText("achievement.text.mp", id)+": "+Achievements.achievements.get(deserialize(data)).text);
 		}
 	}
 
