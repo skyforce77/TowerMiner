@@ -5,6 +5,7 @@ towerminer: TowerMiner
 launcher.update.needed: New launcher available
 launcher.update.client: Game successfuly updated
 launcher.install: TowerMiner installed!
+launcher.offline: You are playing offline!
 
 menu.match: Quick Match
 menu.multiplayer: Multiplayer

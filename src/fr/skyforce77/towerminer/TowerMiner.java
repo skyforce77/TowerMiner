@@ -18,7 +18,7 @@ public class TowerMiner {
 	
 	public static Game game;
 	public static Menu menu;
-	public static int launcherversion = 1;
+	public static int launcherversion = 2;
 
 	public static void main(final String[] args) {
 		SwingUtilities.invokeLater(new Runnable() {
@@ -66,6 +66,8 @@ public class TowerMiner {
 						TowerMiner.game.displayPopup(new Popup(LanguageManager.getText("launcher.update.client"), 6000, "warning"));
 					} else if(args[1].equals("install")) {
 						TowerMiner.game.displayPopup(new Popup(LanguageManager.getText("launcher.install"), 6000));
+					} else if(args[1].equals("offline")) {
+						TowerMiner.game.displayPopup(new Popup(LanguageManager.getText("launcher.offline"), 6000, "warning"));
 					}
 				}
 			}
