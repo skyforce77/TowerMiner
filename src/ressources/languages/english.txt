@@ -85,3 +85,5 @@ menu.mp.gameover.win: You win!
 achievement.text: Achievement get!
 achievement.text.mp: % get
 achievement.text.1: Upgrade
+achievement.text.2: Big Upgrade
+achievement.text.3: Infinite Upgrade

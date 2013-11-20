@@ -84,3 +84,5 @@ menu.mp.gameover.win: Vous avez gagné!
 achievement.text: Succès obtenu!
 achievement.text.mp: % a obtenu
 achievement.text.1: Mise à niveau
+achievement.text.2: Gros calibre
+achievement.text.3: Indémontable

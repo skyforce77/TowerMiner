@@ -8,6 +8,8 @@ public class Achievements {
 	
 	public static void initAchievements() {
 		new Achievement(1, "steel_ingot");
+		new Achievement(2, "steel_ingot");
+		new Achievement(3, "steel_ingot");
 	}
 	
 	public static void unlockAchievement(int id) {

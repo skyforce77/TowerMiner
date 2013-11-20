@@ -57,9 +57,15 @@ public class Turret extends Entity{
 
 	public void addData() {
 		if(TowerMiner.menu instanceof SinglePlayer) {
-			SinglePlayer sp = (MultiPlayer)TowerMiner.menu;
-			if(sp.getId().equals(owner))
+			SinglePlayer sp = (SinglePlayer)TowerMiner.menu;
+			if(sp.getId().equals(owner)) {
 				Achievements.unlockAchievement(1);
+				if(data+1 == 10) {
+					Achievements.unlockAchievement(2);
+				} else if(data+1 == 15) {
+					Achievements.unlockAchievement(3);
+				}
+			}
 		}
 		data++;
 		distance+=10;
