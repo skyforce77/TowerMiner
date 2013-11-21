@@ -67,7 +67,7 @@ public class Game extends JFrame implements MouseListener,MouseWheelListener,Mou
 		this.pack();
 		this.setTitle(LanguageManager.getText("towerminer")+" | "+version);
 		this.setIconImage(RessourcesManager.getIcon());
-		this.setVisible(true);
+		this.setVisible(false);
 		this.setResizable(false);
 		this.addMouseListener(this);
 		this.addMouseMotionListener(this);
