@@ -9,6 +9,7 @@ launcher.offline: You are playing offline!
 launcher.without: This game need a launcher, please download it
 launcher.outdated: This game version need new launcher version, please download it
 launcher.information: Information
+launcher.unsupported: Your OS isn't supported yet
 
 menu.match: Quick Match
 menu.multiplayer: Multiplayer

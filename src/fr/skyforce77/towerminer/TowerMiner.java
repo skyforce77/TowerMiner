@@ -19,9 +19,10 @@ public class TowerMiner{
 
 	public static Game game;
 	public static Menu menu;
-	public static int launcherversion = 2;
+	public static int launcherversion = 4;
 	public static boolean dev = false;
-	public static boolean launcherupdateneeded = false;
+	public static boolean launcherupdateneeded = true;
+	public static String[] os = new String[]{"linux"};
 
 	public static void main(final String[] args) {
 		SwingUtilities.invokeLater(new Runnable() {
@@ -64,6 +65,11 @@ public class TowerMiner{
 					}
 					return;
 				} else {
+					if(args[1].equals("offline")) {
+						Game.offline = true;
+						Menu.mainmenu.items[1].disable();
+					}
+					
 					try {
 						sleep(800);
 					} catch (InterruptedException e) {
@@ -85,6 +91,27 @@ public class TowerMiner{
 						TowerMiner.game.displayPopup(new Popup(LanguageManager.getText("launcher.install"), 6000));
 					} else if(args[1].equals("offline")) {
 						TowerMiner.game.displayPopup(new Popup(LanguageManager.getText("launcher.offline"), 6000, "warning"));
+					}
+				}
+				
+				try {
+					sleep(6005);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+				
+				if(args.length >= 3) {
+					boolean ok = false;
+					int i = 0;
+					while(i < os.length) {
+						if(os[i].equals(args[2])) {
+							ok = true;
+						}
+						i++;
+					}
+					
+					if(!ok) {
+						TowerMiner.game.displayPopup(new Popup(LanguageManager.getText("launcher.unsupported"), 6000, "warning"));
 					}
 				}
 			}

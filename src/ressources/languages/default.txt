@@ -9,6 +9,7 @@ launcher.offline: Vous jouez en mode hors ligne!
 launcher.without: Le jeu nécessite d'utiliser le launcher, merci de bien vouloir le télécharger
 launcher.outdated: Le jeu nécessite une mise à jour du launcher, merci de bien vouloir la télécharger
 launcher.information: Information
+launcher.unsupported: Votre OS n'est pas entièrement supporté
 
 menu.match: Partie Rapide
 menu.multiplayer: Multijoueur
