@@ -19,12 +19,12 @@ public class TowerMiner{
 
 	public static Game game;
 	public static Menu menu;
-	public static int launcherversion = 4;
+	public static int launcherversion = 5;
 	public static boolean dev = false;
 	public static boolean launcherupdateneeded = true;
-	public static String[] os = new String[]{"linux"};
+	public static String[] os = new String[]{"linux","windows"};
 
-	public static void main(final String[] args) {
+	public static void startGame(final int launchedversion, final String state, final String os) {
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
@@ -48,36 +48,24 @@ public class TowerMiner{
 				game = new Game();
 				Menu.initMenus(game);
 				setMenu(Menu.mainmenu);
-				MainAchievements(args);
+				MainAchievements(launchedversion, state, os);
 				game.setVisible(true);
 			}
 		});
 	}
 
-	private static void MainAchievements(final String[] args) {
+	private static void MainAchievements(final int version, final String state, final String usedos) {
 		new Thread() {
 			@Override
 			public void run() {
-				if(args.length < 2) {
-					if(!dev) {
-						game.dispose();
-						JOptionPane.showMessageDialog(game, LanguageManager.getText("launcher.without"), LanguageManager.getText("launcher.information"),JOptionPane.INFORMATION_MESSAGE);
-					}
-					return;
-				} else {
-					if(args[1].equals("offline")) {
-						Game.offline = true;
-						Menu.mainmenu.items[1].disable();
-					}
-					
-					try {
-						sleep(800);
-					} catch (InterruptedException e) {
-						e.printStackTrace();
-					}
+				try {
+					sleep(800);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
 				}
 
-				if(Integer.parseInt(args[0]) != -1 && Integer.parseInt(args[0]) < launcherversion) {
+				boolean popup = true;
+				if(version != -1 && version < launcherversion) {
 					if(launcherupdateneeded) {
 						game.dispose();
 						JOptionPane.showMessageDialog(game, LanguageManager.getText("launcher.outdated"), LanguageManager.getText("launcher.information"),JOptionPane.ERROR_MESSAGE);
@@ -85,37 +73,45 @@ public class TowerMiner{
 					}
 					TowerMiner.game.displayPopup(new Popup(LanguageManager.getText("launcher.update.needed"), 6000, "warning"));
 				} else {
-					if(args[1].equals("update")) {
+					if(state.equals("update")) {
 						TowerMiner.game.displayPopup(new Popup(LanguageManager.getText("launcher.update.client"), 6000, "warning"));
-					} else if(args[1].equals("install")) {
+					} else if(state.equals("install")) {
 						TowerMiner.game.displayPopup(new Popup(LanguageManager.getText("launcher.install"), 6000));
-					} else if(args[1].equals("offline")) {
+					} else if(state.equals("offline")) {
 						TowerMiner.game.displayPopup(new Popup(LanguageManager.getText("launcher.offline"), 6000, "warning"));
+					} else {
+						popup = false;
 					}
 				}
-				
+
 				try {
-					sleep(6005);
+					if(popup)
+						sleep(6005);
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
-				
-				if(args.length >= 3) {
-					boolean ok = false;
-					int i = 0;
-					while(i < os.length) {
-						if(os[i].equals(args[2])) {
-							ok = true;
-						}
-						i++;
+
+				boolean ok = false;
+				int i = 0;
+				while(i < os.length) {
+					if(os[i].equals(usedos)) {
+						ok = true;
 					}
-					
-					if(!ok) {
-						TowerMiner.game.displayPopup(new Popup(LanguageManager.getText("launcher.unsupported"), 6000, "warning"));
-					}
+					i++;
+				}
+
+				if(!ok) {
+					TowerMiner.game.displayPopup(new Popup(LanguageManager.getText("launcher.unsupported"), 6000, "warning"));
 				}
 			}
 		}.start();
+	}
+
+	public static void onLaunched(String state) {
+		if(state.equals("offline")) {
+			Game.offline = true;
+			Menu.mainmenu.items[1].disable();
+		}
 	}
 
 	public static void setMenu(Menu m) {
@@ -133,5 +129,11 @@ public class TowerMiner{
 		}
 		menu = m;
 		m.onUsed();
+	}
+	
+	public static void main(String[] args) {
+		LanguageManager.initLanguages();
+		JOptionPane.showMessageDialog(game, "- "+LanguageManager.getText("launcher.without")+"\n- "+LanguageManager.getText("launcher.outdated"), LanguageManager.getText("launcher.information"),JOptionPane.ERROR_MESSAGE);
+		return;
 	}
 }

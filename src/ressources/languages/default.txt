@@ -61,7 +61,7 @@ menu.sp.paused: En pause
 menu.sp.life: Vies
 
 menu.mp.client.search: Recherche du serveur...
-menu.mp.client.fail: Connection échouée.
+menu.mp.client.fail: Connexion échouée.
 menu.mp.client.sending: Envoi des informations...
 menu.mp.client.kick: Déconnecté du serveur
 menu.mp.client.kick.unknown: raison inconnue
@@ -70,8 +70,8 @@ menu.mp.client.kick.version: Version non compatible
 menu.mp.client.join: Rejoindre
 menu.mp.client.adress: Adresse
 menu.mp.client.map: Reception de la carte...
-menu.mp.server.wait: En attente de connection...
-menu.mp.server.connect: Connection en cours...
+menu.mp.server.wait: En attente de connexion...
+menu.mp.server.connect: Connexion en cours...
 menu.mp.server.ip: Votre ip est
 menu.mp.create: Créer une partie
 menu.mp.join: Rejoindre une partie
@@ -80,7 +80,7 @@ menu.mp.red: Rouge
 menu.mp.ready: % est prêt
 menu.mp.ready.button: Prêt?
 menu.mp.message: Message
-menu.mp.connection.lost: Connection perdue
+menu.mp.connection.lost: Connexion perdue
 menu.mp.connection.client: Client déconnecté
 menu.mp.gameover.survive: Vous avez survécu % manches
 menu.mp.gameover.lose: Vous avez perdu à la manche %
