@@ -11,9 +11,9 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowEvent;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.Random;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -57,10 +57,10 @@ public class SinglePlayer extends Menu {
 	int between;
 	int time;
 
-	public ArrayList<Mob> entities = new ArrayList<>();
-	public ArrayList<Turret> turrets = new ArrayList<>();
-	public ArrayList<Entity> removed = new ArrayList<>();
-	public ArrayList<Entity> draw = new ArrayList<>();
+	public CopyOnWriteArrayList<Mob> entities = new CopyOnWriteArrayList<>();
+	public CopyOnWriteArrayList<Turret> turrets = new CopyOnWriteArrayList<>();
+	public CopyOnWriteArrayList<Entity> removed = new CopyOnWriteArrayList<>();
+	public CopyOnWriteArrayList<Entity> draw = new CopyOnWriteArrayList<>();
 
 	public JMenuItem pause;
 	public JButton next;
@@ -176,7 +176,7 @@ public class SinglePlayer extends Menu {
 			}
 			onEntityRemoved(en);
 		}
-		removed = new ArrayList<>();
+		removed = new CopyOnWriteArrayList<>();
 
 		if(vie <= 0) {
 			gameover = true;
@@ -279,40 +279,32 @@ public class SinglePlayer extends Menu {
 			g2d.draw3DRect(xl+1, yl+1, MapWritter.getBlockWidth()-3, MapWritter.getBlockHeight()-3, false);
 		}
 
-		try{
-			for(Mob en : entities) {
-				if(en != null) {
-					en.draw(g2d, this);
-				}
+		for(Mob en : entities) {
+			if(en != null) {
+				en.draw(g2d, this);
 			}
-		} catch(Exception e) {}
-		try{
-			for(Entity en : draw) {
-				if(en != null && en instanceof Mob) {
-					en.draw(g2d, this);
-				}
+		}
+		for(Entity en : draw) {
+			if(en != null && en instanceof Mob) {
+				en.draw(g2d, this);
 			}
-		} catch(Exception e) {}
+		}
 
 		if(aimed != null) {
 			g2d.setColor(new Color(0, 0, 0, 150));
 			g2d.fillOval((int)(aimed.getLocation().getX()-aimed.getDistance()), (int)(aimed.getLocation().getY()-aimed.getDistance())+CanvasY, (int)aimed.getDistance()*2, (int)aimed.getDistance()*2);
 		}
-		
-		try{
-			for(Entity en : turrets) {
-				if(en != null) {
-					en.draw(g2d, this);
-				}
+
+		for(Entity en : turrets) {
+			if(en != null) {
+				en.draw(g2d, this);
 			}
-		} catch(Exception e) {}
-		try{
-			for(Entity en : draw) {
-				if(en != null && en instanceof Turret) {
-					en.draw(g2d, this);
-				}
+		}
+		for(Entity en : draw) {
+			if(en != null && en instanceof Turret) {
+				en.draw(g2d, this);
 			}
-		} catch(Exception e) {}
+		}
 
 		if(aimed == null) {
 			g2d.drawImage(EntityTypes.turrets[selectedturret].getTexture(0),Xcursor-16,Ycursor-16,16,16,null);
@@ -365,7 +357,7 @@ public class SinglePlayer extends Menu {
 		if(TowerMiner.game.popup != null && TowerMiner.game.popup.time+TowerMiner.game.popup.displayed > new Date().getTime()) {
 			TowerMiner.game.popup.draw(g2d, CanvasY);
 		}
-		
+
 		g2d.setColor(new Color(100,100,100));
 		g2d.fillRect(0, 0, TowerMiner.game.getWidth()-CanvasX, CanvasY);
 
@@ -378,6 +370,18 @@ public class SinglePlayer extends Menu {
 		g2d.drawString(LanguageManager.getText("menu.sp.round")+": "+round, 10, 25);
 		g2d.drawString(LanguageManager.getText("menu.sp.golds")+": "+or, (int)(45+size.getWidth()), 25);
 		g2d.drawString(LanguageManager.getText("menu.sp.life")+": "+vie, TowerMiner.game.getWidth()-110, 25);
+		
+		Point p = new Point(Xcursor/MapWritter.getBlockWidth()-(CanvasX/MapWritter.getBlockWidth()),Ycursor/MapWritter.getBlockHeight()-(CanvasY/MapWritter.getBlockHeight()));
+		for(Entity en : turrets) {
+			if(en.getBlockLocation().equals(new Point(p.x,p.y-1))) {
+				en.drawInformations(g2d, this);
+			}
+		}
+		for(Entity en : draw) {
+			if(en.getBlockLocation().equals(new Point(p.x,p.y-1))) {
+				en.drawInformations(g2d, this);
+			}
+		}
 
 	}
 
@@ -483,7 +487,7 @@ public class SinglePlayer extends Menu {
 	public void onFinishedRound() {}
 
 	public void onEntityMove(Entity en, Point p, Point loc) {}
-	
+
 	public void onEntityTeleport(Entity en, Point p) {}
 
 	public void onEntityAdded(Entity en) {}
@@ -491,7 +495,7 @@ public class SinglePlayer extends Menu {
 	public void onEntityRemoved(Entity en) {}
 
 	public void onGameOver() {}
-	
+
 	public String getId() {
 		return "server";
 	}

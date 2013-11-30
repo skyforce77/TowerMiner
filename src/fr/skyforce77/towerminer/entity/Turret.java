@@ -72,7 +72,7 @@ public class Turret extends Entity{
 		cost+=price;
 		price = price+(price/2);
 		if(Connect.c != null) 
-			Connect.c.sendTCP(new Packet10EntityValueUpdate(getUUID(), "turretdata", data+""));
+			Connect.c.sendTCP(new Packet10EntityValueUpdate(getUUID(), "turretdata", data));
 	}
 
 	@Override
@@ -123,6 +123,13 @@ public class Turret extends Entity{
 			}
 		} catch (Exception e) {}
 		g2d.rotate(-ro, x,y+sp.CanvasY);
+	}
+	
+	@Override
+	public void drawInformations(Graphics2D g2d, SinglePlayer sp) {
+		/*double x = getLocation().getX();
+		double y = getLocation().getY();
+		g2d.drawString("test",(float)x,(float)y);*/
 	}
 
 }

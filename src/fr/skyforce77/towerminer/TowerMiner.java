@@ -7,6 +7,7 @@ import fr.skyforce77.towerminer.achievements.Achievements;
 import fr.skyforce77.towerminer.achievements.Popup;
 import fr.skyforce77.towerminer.blocks.Blocks;
 import fr.skyforce77.towerminer.entity.EntityTypes;
+import fr.skyforce77.towerminer.entity.effects.EntityEffectType;
 import fr.skyforce77.towerminer.game.Game;
 import fr.skyforce77.towerminer.maps.Maps;
 import fr.skyforce77.towerminer.menus.Menu;
@@ -19,15 +20,18 @@ public class TowerMiner{
 
 	public static Game game;
 	public static Menu menu;
-	public static int launcherversion = 5;
+	public static int launcherversion = 6;
 	public static boolean dev = false;
-	public static boolean launcherupdateneeded = true;
-	public static String[] os = new String[]{"linux","windows"};
+	public static boolean launcherupdateneeded = false;
+	public static String[] os = new String[]{"linux"};
 
 	public static void startGame(final int launchedversion, final String state, final String os) {
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
+				if(state.equals("offline")) {
+					Game.offline = true;
+				}
 				LanguageManager.initLanguages();
 				if(!RessourcesManager.getSaveDirectory().exists()) {
 					RessourcesManager.getSaveDirectory().mkdirs();
@@ -37,6 +41,7 @@ public class TowerMiner{
 				Blocks.createNativeBlocks();
 				Connect.initConnection();
 				EntityTypes.createTurrets();
+				EntityEffectType.createEntityEffectTypes();
 				Achievements.initAchievements();
 				if(!RessourcesManager.getDirectory().exists()) {
 					RessourcesManager.getDirectory().mkdirs();
@@ -132,6 +137,10 @@ public class TowerMiner{
 	}
 	
 	public static void main(String[] args) {
+		if(dev) {
+			startGame(-1, "ok", "linux");
+			return;
+		}
 		LanguageManager.initLanguages();
 		JOptionPane.showMessageDialog(game, "- "+LanguageManager.getText("launcher.without")+"\n- "+LanguageManager.getText("launcher.outdated"), LanguageManager.getText("launcher.information"),JOptionPane.ERROR_MESSAGE);
 		return;

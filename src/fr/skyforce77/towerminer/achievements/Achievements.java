@@ -10,6 +10,8 @@ public class Achievements {
 		new Achievement(1, "steel_ingot");
 		new Achievement(2, "steel_ingot");
 		new Achievement(3, "steel_ingot");
+		new Achievement(4, "potion");
+		new Achievement(5, "flintandsteel");
 	}
 	
 	public static void unlockAchievement(int id) {

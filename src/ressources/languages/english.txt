@@ -92,3 +92,5 @@ achievement.text.mp: % get
 achievement.text.1: Upgrade
 achievement.text.2: Big Upgrade
 achievement.text.3: Infinite Upgrade
+achievement.text.4: Sorcerer!!
+achievement.text.5: Pyroman

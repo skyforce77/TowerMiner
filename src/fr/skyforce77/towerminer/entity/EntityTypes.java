@@ -18,14 +18,16 @@ public enum EntityTypes{
 	BABYMUSHCOW("minimushroomcow", 100, 1, 350),
 	MUSHCOW("mushroomcow", 200, 1, 1000),
 	SKELETON("skeleton"),
-	BLAZE("blaze", 50, Blaze.class);
+	BLAZE("blaze", 50, Blaze.class),
+	SPIDER("Spider", 50, Spider.class),
+	WITCH("witch", 70, Witch.class);
 	
 	public static EntityTypes[] turrets;
 	public static EntityTypes[] mobs;
 	public static int count = 0;
 	
 	public static void createTurrets() {
-		turrets = new EntityTypes[]{SKELETON,BLAZE};
+		turrets = new EntityTypes[]{SKELETON,BLAZE,SPIDER,WITCH};
 		mobs = new EntityTypes[]{CHICKEN,OCELOT,BAT,COW,PIG,SHEEP,HORSE,BABYMUSHCOW,MUSHCOW};
 		
 		for(EntityTypes type : values()) {

@@ -6,18 +6,18 @@ import fr.skyforce77.towerminer.achievements.Achievements;
 import fr.skyforce77.towerminer.entity.effects.EntityEffect;
 import fr.skyforce77.towerminer.entity.effects.EntityEffectType;
 
-public class Blaze extends Turret{
+public class Witch extends Turret{
 
 	private static final long serialVersionUID = 185462L;
 
-	public Blaze(EntityTypes type, Point location, String owner) {
+	public Witch(EntityTypes type, Point location, String owner) {
 		super(type, location, owner);
-		Achievements.unlockAchievement(5);
+		Achievements.unlockAchievement(4);
 	}
 	
 	@Override
 	public void onDamage(Mob e) {
-		e.addEffect(new EntityEffect(EntityEffectType.FIRED, 50*getData()));
+		e.addEffect(new EntityEffect(EntityEffectType.SLOW, 40*getData()));
 	}
 
 }

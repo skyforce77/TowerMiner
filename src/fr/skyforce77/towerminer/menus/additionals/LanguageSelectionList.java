@@ -56,7 +56,7 @@ public class LanguageSelectionList extends JFrame{
 				lsl.dispose();
 				TowerMiner.game.terminated = true;
 				TowerMiner.game.dispose();
-				TowerMiner.main(new String[]{"-1", "ok"});
+				TowerMiner.startGame(-1, "ok", "linux");
 			}
 		});
 		

@@ -1,15 +1,15 @@
-language: FranÃ§ais
+language: Français
 
 towerminer: TowerMiner
 
 launcher.update.needed: Nouveau launcher disponible
-launcher.update.client: Mise Ã  jour du jeu effectuÃ©e
-launcher.install: Merci d'avoir installÃ© TowerMiner!
+launcher.update.client: Mise à jour du jeu effectuée
+launcher.install: Merci d'avoir installé TowerMiner!
 launcher.offline: Vous jouez en mode hors ligne!
-launcher.without: Le jeu nÃ©cessite d'utiliser le launcher, merci de bien vouloir le tÃ©lÃ©charger
-launcher.outdated: Le jeu nÃ©cessite une mise Ã  jour du launcher, merci de bien vouloir la tÃ©lÃ©charger
+launcher.without: Le jeu nécessite d'utiliser le launcher, merci de bien vouloir le télécharger
+launcher.outdated: Le jeu nécessite une mise à jour du launcher, merci de bien vouloir la télécharger
 launcher.information: Information
-launcher.unsupported: Votre OS n'est pas entiÃ¨rement supportÃ©
+launcher.unsupported: Votre OS n'est pas entièrement supporté
 
 menu.match: Partie Rapide
 menu.multiplayer: Multijoueur
@@ -29,8 +29,8 @@ menu.editor.blocks: Blocks
 menu.editor.new: Nouveau
 menu.editor.save: Sauvegarder
 menu.editor.load: Charger
-menu.editor.create: CrÃ©er
-menu.editor.create.block: CrÃ©er un block
+menu.editor.create: Créer
+menu.editor.create.block: Créer un block
 menu.editor.edit: Editer
 menu.editor.edit.block: Editer un block
 menu.editor.map.name: Nom
@@ -38,32 +38,32 @@ menu.editor.map.width: Largeur
 menu.editor.map.height: Hauteur
 menu.editor.map.color: Couleur de carte
 menu.editor.id: Id
-menu.editor.textures: DÃ©finir les textures
+menu.editor.textures: Définir les textures
 menu.editor.block.liquid: Liquide?
 menu.editor.block.translucent: Transparent?
-menu.editor.block.color: Couleur adaptÃ©e Ã  la carte?
+menu.editor.block.color: Couleur adaptée à la carte?
 menu.editor.block.turrets: Placement de tourelles possible?
 menu.editor.delete: Supprimer
 
 menu.sp.next: Suivant
 menu.sp.pause: Pause
-menu.sp.boost: AccÃ©lÃ©rer
+menu.sp.boost: Accélérer
 menu.sp.resume: Reprendre
 menu.sp.gameover: Game Over
 menu.sp.round: Manches
-menu.sp.rounds.win: Manches rÃ©ussies: %
+menu.sp.rounds.win: Manches réussies: %
 menu.sp.golds: Or
-menu.sp.golds.win: Or gagnÃ©: %
+menu.sp.golds.win: Or gagné: %
 menu.sp.buy: Acheter
 menu.sp.click.right: Clic droit
-menu.sp.improve: AmÃ©liorer
+menu.sp.improve: Améliorer
 menu.sp.paused: En pause
 menu.sp.life: Vies
 
 menu.mp.client.search: Recherche du serveur...
-menu.mp.client.fail: Connexion Ã©chouÃ©e.
+menu.mp.client.fail: Connexion échouée.
 menu.mp.client.sending: Envoi des informations...
-menu.mp.client.kick: DÃ©connectÃ© du serveur
+menu.mp.client.kick: Déconnecté du serveur
 menu.mp.client.kick.unknown: raison inconnue
 menu.mp.client.kick.match: Partie en cours
 menu.mp.client.kick.version: Version non compatible
@@ -73,21 +73,23 @@ menu.mp.client.map: Reception de la carte...
 menu.mp.server.wait: En attente de connexion...
 menu.mp.server.connect: Connexion en cours...
 menu.mp.server.ip: Votre ip est
-menu.mp.create: CrÃ©er une partie
+menu.mp.create: Créer une partie
 menu.mp.join: Rejoindre une partie
 menu.mp.blue: Bleu
 menu.mp.red: Rouge
-menu.mp.ready: % est prÃªt
-menu.mp.ready.button: PrÃªt?
+menu.mp.ready: % est prêt
+menu.mp.ready.button: Prêt?
 menu.mp.message: Message
 menu.mp.connection.lost: Connexion perdue
-menu.mp.connection.client: Client dÃ©connectÃ©
-menu.mp.gameover.survive: Vous avez survÃ©cu % manches
-menu.mp.gameover.lose: Vous avez perdu Ã  la manche %
-menu.mp.gameover.win: Vous avez gagnÃ©!
+menu.mp.connection.client: Client déconnecté
+menu.mp.gameover.survive: Vous avez survécu % manches
+menu.mp.gameover.lose: Vous avez perdu à la manche %
+menu.mp.gameover.win: Vous avez gagné!
 
-achievement.text: SuccÃ¨s obtenu!
+achievement.text: Succès obtenu!
 achievement.text.mp: % a obtenu
-achievement.text.1: Mise Ã  niveau
+achievement.text.1: Mise à niveau
 achievement.text.2: Gros calibre
-achievement.text.3: IndÃ©montable
+achievement.text.3: Indémontable
+achievement.text.4: Sorcier!
+achievement.text.5: Pyroman

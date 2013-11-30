@@ -3,11 +3,15 @@ package fr.skyforce77.towerminer.entity;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import fr.skyforce77.towerminer.TowerMiner;
+import fr.skyforce77.towerminer.entity.effects.EntityEffect;
+import fr.skyforce77.towerminer.entity.effects.EntityEffectType;
 import fr.skyforce77.towerminer.maps.MapWritter;
 import fr.skyforce77.towerminer.maps.Maps;
 import fr.skyforce77.towerminer.menus.MultiPlayer;
@@ -26,7 +30,7 @@ public class Mob extends Entity{
 	int life;
 	boolean died = false;
 	int speed = 1;
-	int fireticks = -1;
+	CopyOnWriteArrayList<EntityEffect> effects = new CopyOnWriteArrayList<>();
 
 	public Mob(EntityTypes type) {
 		super(type);
@@ -40,37 +44,24 @@ public class Mob extends Entity{
 		return life;
 	}
 
-	public boolean isFired() {
-		return fireticks != -1;
-	}
-
-	public void setFired(int ticks) {
-		if(fireticks < ticks) {
-			fireticks = ticks;
-		}
-		Connect.c.sendTCP(new Packet10EntityValueUpdate(getUUID(), "fired", "true"));
-	}
-
 	@Override
 	public void onTick() {
-		if(fireticks > -1) {
-			fireticks--;
-			
-			if(fireticks == -1) {
-				Connect.c.sendTCP(new Packet10EntityValueUpdate(getUUID(),"fired", "false"));
+		final Mob m = this;
+		new Thread() {
+			@Override
+			public void run() {
+				for(EntityEffect effect : effects) {
+					effect.onTick(m);
+				}
+				
+				if(!isgoing) {
+					isgoing = true;
+					Point p = getBlockToGo();
+					moveTo(p);
+					((SinglePlayer)TowerMiner.menu).onEntityMove(m, getLocation(), p);
+				}
 			}
-
-			int i = new Random().nextInt(100);
-			if(i < 7) {
-				hurt(1);
-			}
-		}
-		if(!isgoing) {
-			isgoing = true;
-			Point p = getBlockToGo();
-			moveTo(p);
-			((SinglePlayer)TowerMiner.menu).onEntityMove(this, getLocation(), p);
-		}
+		}.start();
 	}
 	
 	public void moveTo(final Point block) {
@@ -107,11 +98,14 @@ public class Mob extends Entity{
 						setRotation(Math.toRadians(0));
 					}
 					try {
+						int s = 10/speed;
 						if(TowerMiner.menu instanceof SinglePlayer && ((SinglePlayer)TowerMiner.menu).speed.isSelected()) {
-							Thread.sleep(10/speed/2);
-						} else {
-							Thread.sleep(10/speed);
+							s = s/2;
 						}
+						if(hasEffect(EntityEffectType.SLOW)) {
+							s = s*2;
+						}
+						sleep(s);
 						while(TowerMiner.menu instanceof SinglePlayer && ((SinglePlayer)TowerMiner.menu).paused) {Thread.sleep(10l);}
 					} catch (InterruptedException e) {
 						e.printStackTrace();
@@ -187,9 +181,50 @@ public class Mob extends Entity{
 			if(sp.multiplayer) {
 				MultiPlayer mp = (MultiPlayer)sp;
 				if(mp.server) {
-					Connect.c.sendTCP(new Packet10EntityValueUpdate(this.getUUID(), "life", life+""));
+					Connect.c.sendTCP(new Packet10EntityValueUpdate(this.getUUID(), "life", life));
 				}
 			}
+		}
+	}
+	
+	public boolean hasEffect(EntityEffectType type) {
+		for(EntityEffect effect : effects) {
+			if(effect.getType().getID() == type.getID()) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	public EntityEffect getEffect(EntityEffectType type) {
+		for(EntityEffect effect : effects) {
+			if(effect.getType().getID() == type.getID()) {
+				return effect;
+			}
+		}
+		return null;
+	}
+	
+	public void removeEffect(EntityEffectType type) {
+		if(hasEffect(type)) {
+			effects.remove(getEffect(type));
+			new Packet10EntityValueUpdate(getUUID(), "rmveffect", type.getID()).sendTCP();
+		}
+	}
+	
+	public void addEffect(EntityEffect effect) {
+		boolean can = true;
+		if(hasEffect(effect.getType())) {
+			if(getEffect(effect.getType()).getTicks() < effect.getTicks()){
+				removeEffect(effect.getType());
+			} else {
+				can = false;
+			}
+		}
+		
+		if(can) {
+			effects.add(effect);
+			new Packet10EntityValueUpdate(getUUID(), effect).sendTCP();
 		}
 	}
 
@@ -199,11 +234,15 @@ public class Mob extends Entity{
 		double y = getLocation().getY();
 		double ro = getRotation();
 		g2d.rotate(ro, x,y+sp.CanvasY);
+		Image i = getType().getTexture(0);
+		if(hasEffect(EntityEffectType.POISONNED)) {
+			i = RenderHelper.getColoredImage(i, new Color(40, 200, 40), 0.1F);
+		}
 		try {
-			g2d.drawImage(getType().getTexture(0),(int)x-((MapWritter.getBlockWidth()-10)/2)+sp.CanvasX,(int)y-((MapWritter.getBlockHeight()-10)/2)+sp.CanvasY,MapWritter.getBlockWidth()-10,MapWritter.getBlockHeight()-10,null);
+			g2d.drawImage(i,(int)x-((MapWritter.getBlockWidth()-10)/2)+sp.CanvasX,(int)y-((MapWritter.getBlockHeight()-10)/2)+sp.CanvasY,MapWritter.getBlockWidth()-10,MapWritter.getBlockHeight()-10,null);
 		} catch (Exception e) {}
 		g2d.rotate(-ro, x,y+sp.CanvasY);
-		if(isFired()) {
+		if(hasEffect(EntityEffectType.FIRED)) {
 			g2d.drawImage(RessourcesManager.getTexture("fire"),(int)x-((MapWritter.getBlockWidth()-10)/2)+sp.CanvasX,(int)y-((MapWritter.getBlockHeight()-10)/2)+sp.CanvasY,MapWritter.getBlockWidth()-10,MapWritter.getBlockHeight()-10,null);
 		}
 		g2d.setColor(Color.WHITE);

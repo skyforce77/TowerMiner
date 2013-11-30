@@ -107,7 +107,7 @@ public class Menu {
 			} else if(keyCode == KeyEvent.VK_S || keyCode == KeyEvent.VK_DOWN) {
 				selected = getNextVisibleItem(selected);
 			} else if(keyCode == KeyEvent.VK_ENTER || keyCode == KeyEvent.VK_SPACE) {
-				if(selected != -1 && items[selected] != null || !items[selected].isEnabled()) {
+				if(selected >= 0 && items[selected] != null || !items[selected].isEnabled()) {
 					items[selected].run();
 				}
 			} else if(keyCode == KeyEvent.VK_ESCAPE && last != null) {

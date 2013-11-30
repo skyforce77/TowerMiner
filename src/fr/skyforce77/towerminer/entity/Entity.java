@@ -80,5 +80,7 @@ public class Entity implements Serializable{
 	public void onTick() {}
 	
 	public void draw(Graphics2D g2d, SinglePlayer sp) {}
+	
+	public void drawInformations(Graphics2D g2d, SinglePlayer sp) {}
 
 }

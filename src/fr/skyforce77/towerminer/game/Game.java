@@ -34,8 +34,8 @@ public class Game extends JFrame implements MouseListener,MouseWheelListener,Mou
 
 	private static final long serialVersionUID = 1L;
 
-	public String version = "Alpha 0.5.2";
-	public int connectversion = 4;
+	public String version = "Alpha 0.6";
+	public int connectversion = 5;
 	public boolean fpsdisplay = false;
 	public static boolean offline = false;
 
@@ -50,15 +50,16 @@ public class Game extends JFrame implements MouseListener,MouseWheelListener,Mou
 	public int Yblocks;
 
 	public GameCanvas canvas;
-	
+
 	public int frames = 0;
 	public int fps = 0;
-	
+	public int freeze = 10;
+
 	public Popup popup;
 
 	public Game() {
 		onInit();
-		
+
 		canvas = new GameCanvas();
 		canvas.addKeyListener(this);
 		canvas.setPreferredSize(new Dimension(CANVAS_WIDTH, CANVAS_HEIGHT));
@@ -74,15 +75,9 @@ public class Game extends JFrame implements MouseListener,MouseWheelListener,Mou
 		this.addMouseMotionListener(this);
 		this.addMouseWheelListener(this);
 		this.addKeyListener(this);
-		
-		new Thread(){
-			public void run() {
-				try {
-					onStart();
-				} catch(Exception e) {}
-			};
-		}.start();
-		
+
+		onStart();
+
 		new Thread(){
 			public void run() {
 				try {
@@ -90,6 +85,12 @@ public class Game extends JFrame implements MouseListener,MouseWheelListener,Mou
 						sleep(1000l);
 						fps = frames;
 						frames = 0;
+						
+						if(fps < 70) {
+							freeze--;
+						} else if(fps > 70){
+							freeze++;
+						}
 					}
 				} catch(Exception e) {}
 			};
@@ -103,26 +104,41 @@ public class Game extends JFrame implements MouseListener,MouseWheelListener,Mou
 		CANVAS_HEIGHT = Yblocks*48+CanvasY;
 	}
 
-	public void onStart() throws InterruptedException {
-		boolean refresh = true;
-		while (!terminated) {
-			if(TowerMiner.menu != null) {
-				TowerMiner.menu.onTick();
-			}
-			
-			if(refresh) {
-				repaint();
-				frames++;
-			}
+	public void onStart() {
+		new Thread() {
+			public void run() {
+				while (!terminated) {
+					if(TowerMiner.menu != null) {
+						TowerMiner.menu.onTick();
+					}
 
-			if(TowerMiner.menu instanceof SinglePlayer && ((SinglePlayer)TowerMiner.menu).speed.isSelected()) {
-				Thread.sleep(10l);
-				refresh = !refresh;
-			} else {
-				Thread.sleep(20l);
-				refresh = true;
-			}
-		}
+					try {
+						if(TowerMiner.menu instanceof SinglePlayer && ((SinglePlayer)TowerMiner.menu).speed.isSelected()) {
+							Thread.sleep(10l);
+						} else {
+							Thread.sleep(20l);
+						}
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+				}
+			};
+		}.start();
+		
+		new Thread() {
+			public void run() {
+				while (!terminated) {
+					repaint();
+					frames++;
+
+					try {
+						Thread.sleep(freeze);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+				}
+			};
+		}.start();
 	}
 
 	public class GameCanvas extends JPanel{
@@ -136,7 +152,7 @@ public class Game extends JFrame implements MouseListener,MouseWheelListener,Mou
 
 		@Override
 		public void paintComponent(Graphics g) {
-			Graphics2D g2d = (Graphics2D)g;
+			final Graphics2D g2d = (Graphics2D)g;
 			g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 			super.paintComponent(g2d);
 			setBackground(Color.WHITE);
@@ -150,12 +166,12 @@ public class Game extends JFrame implements MouseListener,MouseWheelListener,Mou
 			}
 		}
 	}
-	
+
 	public void displayPopup(Popup popup) {
 		this.popup = popup;
 		popup.time = new Date().getTime();
 	}
-	
+
 	public void displayMultiPlayerPopup(Popup popup) {
 		if(TowerMiner.menu instanceof MultiPlayer) {
 			MultiPlayer mp = (MultiPlayer)TowerMiner.menu;
