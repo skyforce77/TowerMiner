@@ -6,6 +6,7 @@ import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 
 import fr.skyforce77.towerminer.TowerMiner;
+import fr.skyforce77.towerminer.sounds.Music;
 
 public class MenuItem {
 	
@@ -61,10 +62,12 @@ public class MenuItem {
 	
 	public void start() {
 		t.start();
+		Music.playSound("b1");
 	}
 	
 	public void run() {
 		t.run();
+		Music.playSound("b1");
 	}
 
 	public void disable() {

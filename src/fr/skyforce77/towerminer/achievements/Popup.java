@@ -5,6 +5,7 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
+import java.awt.Image;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -18,7 +19,7 @@ public class Popup implements Serializable{
 	public String text;
 	public long time;
 	public long displayed;
-	public String icon;
+	public Image icon;
 	
 	public Popup(String text, long time) {
 		this.text = text;
@@ -26,6 +27,12 @@ public class Popup implements Serializable{
 	}
 	
 	public Popup(String text, long time, String image) {
+		this.text = text;
+		this.displayed = time;
+		icon = RessourcesManager.getTexture(image);
+	}
+	
+	public Popup(String text, long time, Image image) {
 		this.text = text;
 		this.displayed = time;
 		icon = image;
@@ -59,7 +66,7 @@ public class Popup implements Serializable{
 			g2d.fillRect((int)(x-8-size.getHeight()), y, (int)size.getHeight(), (int)size.getHeight()-1);
 			g2d.setColor(Color.BLACK);
 			g2d.drawRect((int)(x-8-size.getHeight()), y, (int)size.getHeight(), (int)size.getHeight()-1);
-			g2d.drawImage(RessourcesManager.getTexture(icon), (int)(x-8-size.getHeight()), y, (int)size.getHeight(), (int)size.getHeight(), null);
+			g2d.drawImage(icon, (int)(x-8-size.getHeight()), y, (int)size.getHeight(), (int)size.getHeight(), null);
 		}
 
 		g2d.setColor(Color.WHITE);

@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
 import fr.skyforce77.towerminer.TowerMiner;
+import fr.skyforce77.towerminer.menus.additionals.ServerSelectionList;
 import fr.skyforce77.towerminer.ressources.RessourcesManager;
 import fr.skyforce77.towerminer.ressources.language.LanguageManager;
 
@@ -11,7 +12,7 @@ public class MPSelectionMenu extends Menu{
 
 	public MPSelectionMenu() {
 		
-		items = new MenuItem[2];
+		items = new MenuItem[3];
 		
 		items[0] = new MenuItem(0, LanguageManager.getText("menu.mp.create"), new Thread(){
 			@Override
@@ -25,6 +26,14 @@ public class MPSelectionMenu extends Menu{
 			@Override
 			public void run() {
 				TowerMiner.setMenu(Menu.mpjoinmenu);
+			}
+		});
+		
+		items[2] = new MenuItem(2, LanguageManager.getText("menu.mp.list"), new Thread(){
+			@Override
+			public void run() {
+				TowerMiner.setMenu(Menu.mpjoinmenu);
+				new ServerSelectionList();
 			}
 		});
 	}

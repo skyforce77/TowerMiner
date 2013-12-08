@@ -14,22 +14,25 @@ import fr.skyforce77.towerminer.TowerMiner;
 import fr.skyforce77.towerminer.entity.Entity;
 import fr.skyforce77.towerminer.entity.EntityTypes;
 import fr.skyforce77.towerminer.entity.Turret;
+import fr.skyforce77.towerminer.game.Game;
 import fr.skyforce77.towerminer.maps.MapWritter;
 import fr.skyforce77.towerminer.maps.Maps;
 import fr.skyforce77.towerminer.menus.additionals.Chat;
-import fr.skyforce77.towerminer.multiplayer.BigSending;
-import fr.skyforce77.towerminer.multiplayer.Connect;
-import fr.skyforce77.towerminer.multiplayer.ObjectReceiver;
-import fr.skyforce77.towerminer.multiplayer.packets.Packet12Popup;
-import fr.skyforce77.towerminer.multiplayer.packets.Packet13EntityTeleport;
-import fr.skyforce77.towerminer.multiplayer.packets.Packet1Disconnecting;
-import fr.skyforce77.towerminer.multiplayer.packets.Packet3Action;
-import fr.skyforce77.towerminer.multiplayer.packets.Packet4RoundFinished;
-import fr.skyforce77.towerminer.multiplayer.packets.Packet5UpdateInfos;
-import fr.skyforce77.towerminer.multiplayer.packets.Packet6Entity;
-import fr.skyforce77.towerminer.multiplayer.packets.Packet7EntityMove;
-import fr.skyforce77.towerminer.multiplayer.packets.Packet8EntityRemove;
-import fr.skyforce77.towerminer.multiplayer.packets.Packet9MouseClick;
+import fr.skyforce77.towerminer.multiplayer.MPInfos;
+import fr.skyforce77.towerminer.multiplayer.ProtocolManager;
+import fr.skyforce77.towerminer.protocol.BigSending;
+import fr.skyforce77.towerminer.protocol.Connect;
+import fr.skyforce77.towerminer.protocol.ObjectReceiver;
+import fr.skyforce77.towerminer.protocol.packets.Packet12Popup;
+import fr.skyforce77.towerminer.protocol.packets.Packet13EntityTeleport;
+import fr.skyforce77.towerminer.protocol.packets.Packet1Disconnecting;
+import fr.skyforce77.towerminer.protocol.packets.Packet3Action;
+import fr.skyforce77.towerminer.protocol.packets.Packet4RoundFinished;
+import fr.skyforce77.towerminer.protocol.packets.Packet5UpdateInfos;
+import fr.skyforce77.towerminer.protocol.packets.Packet6Entity;
+import fr.skyforce77.towerminer.protocol.packets.Packet7EntityMove;
+import fr.skyforce77.towerminer.protocol.packets.Packet8EntityRemove;
+import fr.skyforce77.towerminer.protocol.packets.Packet9MouseClick;
 import fr.skyforce77.towerminer.ressources.RessourcesManager;
 import fr.skyforce77.towerminer.ressources.language.LanguageManager;
 
@@ -59,15 +62,15 @@ public class MultiPlayer extends SinglePlayer {
 
 				if(server) {
 					serverready = true;
-					Connect.c.sendTCP(new Packet12Popup("menu.mp.ready", "menu.mp.blue"));
+					new Packet12Popup("menu.mp.ready", "menu.mp.blue").sendAllTCP();
 					if(serverready && clientready) {
 						serverready = false;
 						clientready = false;
-						Connect.c.sendTCP(new Packet3Action("startround"));
+						new Packet3Action("startround").sendAllTCP();
 						started = true;
 					}
 				} else {
-					Connect.c.sendTCP(new Packet3Action("ready"));
+					new Packet3Action("ready").sendAllTCP();
 				}
 			}
 		});
@@ -123,6 +126,7 @@ public class MultiPlayer extends SinglePlayer {
 		} else {
 			Connect.client.stop();
 		}
+		MPInfos.matchplaying = false;
 
 		chatfield.setVisible(false);
 
@@ -141,15 +145,15 @@ public class MultiPlayer extends SinglePlayer {
 		options.setVisible(false);
 
 		if(server) {
-			TowerMiner.game.setTitle(LanguageManager.getText("towerminer")+" | "+TowerMiner.game.version+" | "+LanguageManager.getText("menu.multiplayer")+" | "+LanguageManager.getText("menu.editor.map")+": "+Maps.getActualMap().getName()+" | "+LanguageManager.getText("menu.mp.blue"));
+			TowerMiner.game.setTitle(LanguageManager.getText("towerminer")+" | "+Game.version+" | "+LanguageManager.getText("menu.multiplayer")+" | "+LanguageManager.getText("menu.editor.map")+": "+Maps.getActualMap().getName()+" | "+LanguageManager.getText("menu.mp.blue"));
 		} else {
-			TowerMiner.game.setTitle(LanguageManager.getText("towerminer")+" | "+TowerMiner.game.version+" | "+LanguageManager.getText("menu.multiplayer")+" | "+LanguageManager.getText("menu.editor.map")+": "+Maps.getActualMap().getName()+" | "+LanguageManager.getText("menu.mp.red"));
+			TowerMiner.game.setTitle(LanguageManager.getText("towerminer")+" | "+Game.version+" | "+LanguageManager.getText("menu.multiplayer")+" | "+LanguageManager.getText("menu.editor.map")+": "+Maps.getActualMap().getName()+" | "+LanguageManager.getText("menu.mp.red"));
 		}
 
 		new Thread() {
 			public void run() {
 				while(true) {
-					if(!Connect.c.isConnected()) {
+					if((Connect.client != null && !Connect.client.isConnected()) || (Connect.server != null && !MPInfos.connection.isConnected())) {
 						if(TowerMiner.menu instanceof MultiPlayer) {
 							MPDisconnected d = new MPDisconnected();
 							d.reason = LanguageManager.getText("menu.mp.connection.lost");
@@ -181,7 +185,7 @@ public class MultiPlayer extends SinglePlayer {
 		Packet4RoundFinished pr = new Packet4RoundFinished();
 		pr.gold = clientgold;
 		pr.life = clientlife;
-		Connect.c.sendTCP(pr);
+		pr.sendAllTCP();
 	}
 
 	public void setClientGold(int gold) {
@@ -189,7 +193,7 @@ public class MultiPlayer extends SinglePlayer {
 		Packet5UpdateInfos pr = new Packet5UpdateInfos();
 		pr.gold = clientgold;
 		pr.life = clientlife;
-		Connect.c.sendTCP(pr);
+		pr.sendAllTCP();
 	}
 
 	public void setClientLife(int life) {
@@ -197,7 +201,7 @@ public class MultiPlayer extends SinglePlayer {
 		Packet5UpdateInfos pr = new Packet5UpdateInfos();
 		pr.gold = clientgold;
 		pr.life = clientlife;
-		Connect.c.sendTCP(pr);
+		pr.sendAllTCP();
 	}
 
 	@Override
@@ -206,12 +210,12 @@ public class MultiPlayer extends SinglePlayer {
 			new Thread() {
 				@Override
 				public void run() {
-					BigSending.sendBigObject(en, new ObjectReceiver.ReceivingThread() {
+					BigSending.sendBigObject(en, MPInfos.connection, new ObjectReceiver.ReceivingThread() {
 						@Override
 						public void run(int objectid) {
 							Packet6Entity pe = new Packet6Entity();
-							pe.id = objectid;
-							Connect.c.sendTCP(pe);
+							pe.eid = objectid;
+							pe.sendAllTCP();
 						}
 					});
 				}
@@ -229,7 +233,7 @@ public class MultiPlayer extends SinglePlayer {
 			pem.xto = (int)to.getX();
 			pem.yto = (int)to.getY();
 			pem.rotation = en.getRotation();
-			Connect.c.sendUDP(pem);
+			pem.sendAllUDP();
 		}
 	}
 	
@@ -241,7 +245,7 @@ public class MultiPlayer extends SinglePlayer {
 			pem.x = (int)p.getX();
 			pem.y = (int)p.getY();
 			pem.rotation = en.getRotation();
-			Connect.c.sendUDP(pem);
+			pem.sendAllUDP();
 		}
 	}
 
@@ -250,7 +254,7 @@ public class MultiPlayer extends SinglePlayer {
 		if(server) {
 			final Packet8EntityRemove per = new Packet8EntityRemove();
 			per.entity = en.getUUID();
-			Connect.c.sendTCP(per);
+			per.sendAllTCP();
 		}
 	}
 
@@ -279,7 +283,7 @@ public class MultiPlayer extends SinglePlayer {
 						pm.x = p.x;
 						pm.y = p.y;
 						pm.selected = selectedturret;
-						Connect.c.sendTCP(pm);
+						pm.sendAllTCP();
 					}
 				} else {
 					aimed = null;
@@ -291,7 +295,7 @@ public class MultiPlayer extends SinglePlayer {
 				pm.y = Ycursor;
 				pm.selected = selectedturret;
 				pm.aimed = aimed.getUUID();
-				Connect.c.sendTCP(pm);
+				pm.sendAllTCP();
 			}
 		}
 	}
@@ -305,25 +309,25 @@ public class MultiPlayer extends SinglePlayer {
 		Packet5UpdateInfos pr = new Packet5UpdateInfos();
 		pr.gold = clientgold;
 		pr.life = clientlife;
-		Connect.c.sendTCP(pr);
+		pr.sendAllTCP();
 	}
 
 	@Override
 	public void onGameOver() {
 		boolean team = Maps.getActualMap().getDeathPoints()[0].equals(Maps.getActualMap().getDeathPoints()[1]);
 		if(team) {
-			Connect.c.sendTCP(new Packet1Disconnecting(LanguageManager.getText("menu.mp.gameover.survive", round-1)));
+			new Packet1Disconnecting(LanguageManager.getText("menu.mp.gameover.survive", round-1)).sendAllTCP();
 			if(server) {
-				new Packet1Disconnecting(LanguageManager.getText("menu.mp.gameover.survive", round-1)).onServerReceived(Connect.c);
+				new ProtocolManager().onServerReceived(MPInfos.connection, new Packet1Disconnecting(LanguageManager.getText("menu.mp.gameover.survive", round-1)));
 			} else {
-				new Packet1Disconnecting(LanguageManager.getText("menu.mp.gameover.survive", round-1)).onClientReceived(Connect.c);
+				new ProtocolManager().onClientReceived(MPInfos.connection, new Packet1Disconnecting(LanguageManager.getText("menu.mp.gameover.survive", round-1)));
 			}
 		} else {
-			Connect.c.sendTCP(new Packet1Disconnecting(LanguageManager.getText("menu.mp.gameover.lose", round)));
+			new Packet1Disconnecting(LanguageManager.getText("menu.mp.gameover.lose", round)).sendAllTCP();
 			if(server) {
-				new Packet1Disconnecting(LanguageManager.getText("menu.mp.gameover.win")).onClientReceived(Connect.c);
+				new ProtocolManager().onClientReceived(MPInfos.connection, new Packet1Disconnecting(LanguageManager.getText("menu.mp.gameover.win")));
 			} else {
-				new Packet1Disconnecting(LanguageManager.getText("menu.mp.gameover.win")).onServerReceived(Connect.c);
+				new ProtocolManager().onServerReceived(MPInfos.connection, new Packet1Disconnecting(LanguageManager.getText("menu.mp.gameover.win")));
 			}
 		}
 	}

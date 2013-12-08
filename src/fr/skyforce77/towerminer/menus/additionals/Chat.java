@@ -8,8 +8,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import fr.skyforce77.towerminer.TowerMiner;
-import fr.skyforce77.towerminer.multiplayer.Connect;
-import fr.skyforce77.towerminer.multiplayer.packets.Packet11ChatMessage;
+import fr.skyforce77.towerminer.protocol.packets.Packet11ChatMessage;
 import fr.skyforce77.towerminer.ressources.language.LanguageManager;
 
 public class Chat {
@@ -28,7 +27,7 @@ public class Chat {
 	public void onMessageWritten(String player, String message) {
 		messages.add(LanguageManager.getText(player)+": "+message);
 		messagedate.add(new Date().getTime());
-		Connect.c.sendTCP(new Packet11ChatMessage(message, player));
+		new Packet11ChatMessage(message, player).sendAllTCP();
 	}
 
 	public void changeState() {

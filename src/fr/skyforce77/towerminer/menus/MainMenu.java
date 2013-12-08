@@ -62,6 +62,6 @@ public class MainMenu extends Menu {
 	@Override
 	public void onUsed() {
 		TowerMiner.game.resize(800, 500);
-		TowerMiner.game.setTitle(LanguageManager.getText("towerminer")+" | "+TowerMiner.game.version);
+		TowerMiner.game.setTitle(LanguageManager.getText("towerminer")+" | "+Game.version);
 	}
 }

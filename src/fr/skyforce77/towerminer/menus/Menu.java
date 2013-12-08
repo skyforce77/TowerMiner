@@ -14,6 +14,7 @@ import java.util.Date;
 import fr.skyforce77.towerminer.TowerMiner;
 import fr.skyforce77.towerminer.game.Game;
 import fr.skyforce77.towerminer.ressources.language.LanguageManager;
+import fr.skyforce77.towerminer.sounds.Music;
 
 public class Menu {
 
@@ -168,6 +169,7 @@ public class Menu {
 			Dimension rect = new Dimension((int)size.getWidth()+3, (int)size.getHeight());
 			if(Xcursor < TowerMiner.game.getWidth() && Xcursor > TowerMiner.game.getWidth()-rect.getWidth()
 					&& Ycursor < TowerMiner.game.getHeight() && Ycursor > TowerMiner.game.getHeight()-rect.getHeight()-29) {
+				Music.playSound("b1");
 				TowerMiner.returnMenu(last);
 			}
 		}

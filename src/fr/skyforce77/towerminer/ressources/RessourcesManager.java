@@ -29,6 +29,10 @@ public class RessourcesManager {
 		return image;
 	}
 	
+	public static URL getSoundURL(String file) {
+		return TowerMiner.class.getResource("/ressources/sounds/"+file+".wav");
+	}
+	
 	public static URL getURL(String file) {
 		return TowerMiner.class.getResource(file);
 	}

@@ -85,6 +85,7 @@ menu.mp.connection.client: Client déconnecté
 menu.mp.gameover.survive: Vous avez survécu % manches
 menu.mp.gameover.lose: Vous avez perdu à la manche %
 menu.mp.gameover.win: Vous avez gagné!
+menu.mp.list: Favoris
 
 achievement.text: Succès obtenu!
 achievement.text.mp: % a obtenu
@@ -93,3 +94,7 @@ achievement.text.2: Gros calibre
 achievement.text.3: Indémontable
 achievement.text.4: Sorcier!
 achievement.text.5: Pyroman
+
+music.error: Téléchargement impossible
+music.downloading: Téléchargement de %
+music.finished: Téléchargement terminé

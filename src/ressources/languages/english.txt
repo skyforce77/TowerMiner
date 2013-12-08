@@ -85,6 +85,7 @@ menu.mp.connection.client: Client disconnected
 menu.mp.gameover.survive: You survived % rounds
 menu.mp.gameover.lose: You losed at round %
 menu.mp.gameover.win: You win!
+menu.mp.list: Server list
 
 
 achievement.text: Achievement get!
@@ -94,3 +95,7 @@ achievement.text.2: Big Upgrade
 achievement.text.3: Infinite Upgrade
 achievement.text.4: Sorcerer!!
 achievement.text.5: Pyroman
+
+music.error: Download failed
+music.downloading: Downloading %
+music.finished: Successfull download

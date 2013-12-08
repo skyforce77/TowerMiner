@@ -11,10 +11,13 @@ import fr.skyforce77.towerminer.entity.effects.EntityEffectType;
 import fr.skyforce77.towerminer.game.Game;
 import fr.skyforce77.towerminer.maps.Maps;
 import fr.skyforce77.towerminer.menus.Menu;
-import fr.skyforce77.towerminer.multiplayer.Connect;
+import fr.skyforce77.towerminer.multiplayer.ProtocolManager;
+import fr.skyforce77.towerminer.multiplayer.ServerInfos;
+import fr.skyforce77.towerminer.protocol.listeners.ListenersManager;
 import fr.skyforce77.towerminer.ressources.RessourcesManager;
 import fr.skyforce77.towerminer.ressources.language.LanguageManager;
 import fr.skyforce77.towerminer.save.DataBase;
+import fr.skyforce77.towerminer.sounds.Music;
 
 public class TowerMiner{
 
@@ -24,8 +27,10 @@ public class TowerMiner{
 	public static boolean dev = false;
 	public static boolean launcherupdateneeded = false;
 	public static String[] os = new String[]{"linux"};
+	public static String usedos = "linux";
 
 	public static void startGame(final int launchedversion, final String state, final String os) {
+		usedos = os;
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
@@ -37,9 +42,10 @@ public class TowerMiner{
 					RessourcesManager.getSaveDirectory().mkdirs();
 				}
 				DataBase.load();
+				ServerInfos.initServerInfos();
 				Maps.createMaps();
 				Blocks.createNativeBlocks();
-				Connect.initConnection();
+				ListenersManager.register(new ProtocolManager());
 				EntityTypes.createTurrets();
 				EntityEffectType.createEntityEffectTypes();
 				Achievements.initAchievements();
@@ -55,6 +61,7 @@ public class TowerMiner{
 				setMenu(Menu.mainmenu);
 				MainAchievements(launchedversion, state, os);
 				game.setVisible(true);
+				Music.playMusic("incursion");
 			}
 		});
 	}
@@ -142,7 +149,7 @@ public class TowerMiner{
 			return;
 		}
 		LanguageManager.initLanguages();
-		JOptionPane.showMessageDialog(game, "- "+LanguageManager.getText("launcher.without")+"\n- "+LanguageManager.getText("launcher.outdated"), LanguageManager.getText("launcher.information"),JOptionPane.ERROR_MESSAGE);
+	JOptionPane.showMessageDialog(game, "- "+LanguageManager.getText("launcher.without")+"\n- "+LanguageManager.getText("launcher.outdated"), LanguageManager.getText("launcher.information"),JOptionPane.ERROR_MESSAGE);
 		return;
 	}
 }

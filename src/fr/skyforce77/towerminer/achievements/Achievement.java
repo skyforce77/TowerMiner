@@ -8,8 +8,7 @@ import java.awt.Graphics2D;
 import java.util.Date;
 
 import fr.skyforce77.towerminer.TowerMiner;
-import fr.skyforce77.towerminer.multiplayer.packets.Packet3Action;
-import fr.skyforce77.towerminer.ressources.RessourcesManager;
+import fr.skyforce77.towerminer.protocol.packets.Packet3Action;
 import fr.skyforce77.towerminer.ressources.language.LanguageManager;
 import fr.skyforce77.towerminer.save.DataBase;
 
@@ -39,7 +38,7 @@ public class Achievement extends Popup{
 		TowerMiner.game.displayPopup(this);
 		Packet3Action p = new Packet3Action("achievement");
 		p.data = p.serialize(id);
-		p.sendTCP();
+		p.sendAllTCP();
 	}
 	
 	public String getText() {
@@ -81,7 +80,7 @@ public class Achievement extends Popup{
 			g2d.fillRect((int)(x-8-size.getHeight()), y, (int)size.getHeight(), (int)size.getHeight()-1);
 			g2d.setColor(Color.BLACK);
 			g2d.drawRect((int)(x-8-size.getHeight()), y, (int)size.getHeight(), (int)size.getHeight()-1);
-			g2d.drawImage(RessourcesManager.getTexture(icon), (int)(x-8-size.getHeight()+10), y+10, (int)size.getHeight()-20, (int)size.getHeight()-20, null);
+			g2d.drawImage(icon, (int)(x-8-size.getHeight()+10), y+10, (int)size.getHeight()-20, (int)size.getHeight()-20, null);
 		}
 
 		g2d.setColor(Color.WHITE);

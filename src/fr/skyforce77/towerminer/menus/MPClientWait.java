@@ -5,9 +5,10 @@ import java.awt.Font;
 import java.awt.Graphics2D;
 
 import fr.skyforce77.towerminer.TowerMiner;
-import fr.skyforce77.towerminer.multiplayer.Connect;
 import fr.skyforce77.towerminer.multiplayer.MPInfos;
-import fr.skyforce77.towerminer.multiplayer.packets.Packet0Connecting;
+import fr.skyforce77.towerminer.protocol.Connect;
+import fr.skyforce77.towerminer.protocol.Protocol;
+import fr.skyforce77.towerminer.protocol.packets.Packet0Connecting;
 import fr.skyforce77.towerminer.ressources.RessourcesManager;
 import fr.skyforce77.towerminer.ressources.language.LanguageManager;
 
@@ -49,9 +50,9 @@ public class MPClientWait extends Menu{
 					}.start();
 					return;
 				}
-				MPInfos.connected = true;
+				MPInfos.matchplaying = true;
 				text = LanguageManager.getText("menu.mp.client.sending");
-				Connect.client.sendTCP(new Packet0Connecting());
+				new Packet0Connecting(Protocol.version, "test").sendClientTCP();
 			};
 		}.start();
 	}

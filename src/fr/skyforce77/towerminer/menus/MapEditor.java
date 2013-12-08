@@ -23,6 +23,7 @@ import javax.swing.filechooser.FileFilter;
 
 import fr.skyforce77.towerminer.TowerMiner;
 import fr.skyforce77.towerminer.blocks.Blocks;
+import fr.skyforce77.towerminer.game.Game;
 import fr.skyforce77.towerminer.maps.MapWritter;
 import fr.skyforce77.towerminer.maps.Maps;
 import fr.skyforce77.towerminer.menus.additionals.BlockCreator;
@@ -205,7 +206,7 @@ public class MapEditor extends Menu{
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				Maps.getActualMap().setName(name.getText());
-				TowerMiner.game.setTitle(LanguageManager.getText("towerminer")+" | "+TowerMiner.game.version+" | "+LanguageManager.getText("menu.editor.map")+": "+Maps.getActualMap().getName());
+				TowerMiner.game.setTitle(LanguageManager.getText("towerminer")+" | "+Game.version+" | "+LanguageManager.getText("menu.editor.map")+": "+Maps.getActualMap().getName());
 				Maps.getActualMap().setXMax(Integer.parseInt(width.getText()));
 				Maps.getActualMap().setYMax(Integer.parseInt(height.getText()));
 				Maps.resize();
@@ -375,7 +376,7 @@ public class MapEditor extends Menu{
 	public void onUsed() {
 		bar.setVisible(true);
 		Maps.resize();
-		TowerMiner.game.setTitle(LanguageManager.getText("towerminer")+" | "+TowerMiner.game.version+" | "+LanguageManager.getText("menu.editor")+" | "+LanguageManager.getText("menu.editor.map")+": "+Maps.getActualMap().getName());
+		TowerMiner.game.setTitle(LanguageManager.getText("towerminer")+" | "+Game.version+" | "+LanguageManager.getText("menu.editor")+" | "+LanguageManager.getText("menu.editor.map")+": "+Maps.getActualMap().getName());
 	}
 
 	@Override
@@ -388,6 +389,6 @@ public class MapEditor extends Menu{
 		name.setText(Maps.getActualMap().getName());
 		width.setText(Maps.getActualMap().getXMax()+"");
 		height.setText(Maps.getActualMap().getYMax()+"");
-		TowerMiner.game.setTitle(LanguageManager.getText("towerminer")+" | "+TowerMiner.game.version+" | "+LanguageManager.getText("menu.editor")+" | "+LanguageManager.getText("menu.editor.map")+": "+Maps.getActualMap().getName());
+		TowerMiner.game.setTitle(LanguageManager.getText("towerminer")+" | "+Game.version+" | "+LanguageManager.getText("menu.editor")+" | "+LanguageManager.getText("menu.editor.map")+": "+Maps.getActualMap().getName());
 	}
 }

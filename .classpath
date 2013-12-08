@@ -2,6 +2,7 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="/home/arnaud/Documents/eclipse/librairies/kryonet-2.18-all.jar"/>
+	<classpathentry kind="lib" path="/home/arnaud/Documents/eclipse/librairies/kryonet-debug-2.18-all.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/TMProtocol"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

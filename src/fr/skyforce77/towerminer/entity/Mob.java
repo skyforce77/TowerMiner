@@ -16,8 +16,7 @@ import fr.skyforce77.towerminer.maps.MapWritter;
 import fr.skyforce77.towerminer.maps.Maps;
 import fr.skyforce77.towerminer.menus.MultiPlayer;
 import fr.skyforce77.towerminer.menus.SinglePlayer;
-import fr.skyforce77.towerminer.multiplayer.Connect;
-import fr.skyforce77.towerminer.multiplayer.packets.Packet10EntityValueUpdate;
+import fr.skyforce77.towerminer.protocol.packets.Packet10EntityValueUpdate;
 import fr.skyforce77.towerminer.render.RenderHelper;
 import fr.skyforce77.towerminer.ressources.RessourcesManager;
 
@@ -181,7 +180,7 @@ public class Mob extends Entity{
 			if(sp.multiplayer) {
 				MultiPlayer mp = (MultiPlayer)sp;
 				if(mp.server) {
-					Connect.c.sendTCP(new Packet10EntityValueUpdate(this.getUUID(), "life", life));
+					new Packet10EntityValueUpdate(this.getUUID(), "life", life).sendAllTCP();
 				}
 			}
 		}
@@ -208,7 +207,7 @@ public class Mob extends Entity{
 	public void removeEffect(EntityEffectType type) {
 		if(hasEffect(type)) {
 			effects.remove(getEffect(type));
-			new Packet10EntityValueUpdate(getUUID(), "rmveffect", type.getID()).sendTCP();
+			new Packet10EntityValueUpdate(getUUID(), "rmveffect", type.getID()).sendAllTCP();
 		}
 	}
 	
@@ -224,7 +223,7 @@ public class Mob extends Entity{
 		
 		if(can) {
 			effects.add(effect);
-			new Packet10EntityValueUpdate(getUUID(), effect).sendTCP();
+			new Packet10EntityValueUpdate(getUUID(), "addeffect", effect).sendAllTCP();
 		}
 	}
 

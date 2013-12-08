@@ -26,6 +26,7 @@ import fr.skyforce77.towerminer.entity.Entity;
 import fr.skyforce77.towerminer.entity.EntityTypes;
 import fr.skyforce77.towerminer.entity.Mob;
 import fr.skyforce77.towerminer.entity.Turret;
+import fr.skyforce77.towerminer.game.Game;
 import fr.skyforce77.towerminer.maps.MapWritter;
 import fr.skyforce77.towerminer.maps.Maps;
 import fr.skyforce77.towerminer.ressources.RessourcesManager;
@@ -481,7 +482,7 @@ public class SinglePlayer extends Menu {
 		pause.setVisible(true);
 		options.setVisible(true);
 		Maps.resize();
-		TowerMiner.game.setTitle(LanguageManager.getText("towerminer")+" | "+TowerMiner.game.version+" | "+LanguageManager.getText("menu.match")+" | "+LanguageManager.getText("menu.editor.map")+": "+Maps.getActualMap().getName());
+		TowerMiner.game.setTitle(LanguageManager.getText("towerminer")+" | "+Game.version+" | "+LanguageManager.getText("menu.match")+" | "+LanguageManager.getText("menu.editor.map")+": "+Maps.getActualMap().getName());
 	}
 
 	public void onFinishedRound() {}

@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
 import fr.skyforce77.towerminer.TowerMiner;
+import fr.skyforce77.towerminer.game.Game;
 import fr.skyforce77.towerminer.menus.additionals.LanguageSelectionList;
 import fr.skyforce77.towerminer.ressources.RessourcesManager;
 import fr.skyforce77.towerminer.ressources.language.LanguageManager;
@@ -38,6 +39,6 @@ public class OptionsMenu extends Menu {
 	@Override
 	public void onUsed() {
 		TowerMiner.game.resize(800, 500);
-		TowerMiner.game.setTitle(LanguageManager.getText("towerminer")+" | "+TowerMiner.game.version);
+		TowerMiner.game.setTitle(LanguageManager.getText("towerminer")+" | "+Game.version);
 	}
 }

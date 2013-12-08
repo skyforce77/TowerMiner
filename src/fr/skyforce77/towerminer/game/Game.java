@@ -25,8 +25,7 @@ import fr.skyforce77.towerminer.achievements.Popup;
 import fr.skyforce77.towerminer.maps.Maps;
 import fr.skyforce77.towerminer.menus.MultiPlayer;
 import fr.skyforce77.towerminer.menus.SinglePlayer;
-import fr.skyforce77.towerminer.multiplayer.Connect;
-import fr.skyforce77.towerminer.multiplayer.packets.Packet12Popup;
+import fr.skyforce77.towerminer.protocol.packets.Packet12Popup;
 import fr.skyforce77.towerminer.ressources.RessourcesManager;
 import fr.skyforce77.towerminer.ressources.language.LanguageManager;
 
@@ -34,8 +33,7 @@ public class Game extends JFrame implements MouseListener,MouseWheelListener,Mou
 
 	private static final long serialVersionUID = 1L;
 
-	public String version = "Alpha 0.6";
-	public int connectversion = 5;
+	public static String version = "Alpha 0.7";
 	public boolean fpsdisplay = false;
 	public static boolean offline = false;
 
@@ -176,7 +174,7 @@ public class Game extends JFrame implements MouseListener,MouseWheelListener,Mou
 		if(TowerMiner.menu instanceof MultiPlayer) {
 			MultiPlayer mp = (MultiPlayer)TowerMiner.menu;
 			if(mp.server) {
-				Connect.c.sendTCP(new Packet12Popup(popup.text, null, popup.icon));
+				new Packet12Popup(popup.text, null, popup.icon).sendClientTCP();
 				this.popup = popup;
 			}
 		} else {

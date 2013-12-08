@@ -9,8 +9,7 @@ import fr.skyforce77.towerminer.achievements.Achievements;
 import fr.skyforce77.towerminer.maps.MapWritter;
 import fr.skyforce77.towerminer.menus.MultiPlayer;
 import fr.skyforce77.towerminer.menus.SinglePlayer;
-import fr.skyforce77.towerminer.multiplayer.Connect;
-import fr.skyforce77.towerminer.multiplayer.packets.Packet10EntityValueUpdate;
+import fr.skyforce77.towerminer.protocol.packets.Packet10EntityValueUpdate;
 import fr.skyforce77.towerminer.render.RenderHelper;
 
 public class Turret extends Entity{
@@ -71,8 +70,7 @@ public class Turret extends Entity{
 		distance+=10;
 		cost+=price;
 		price = price+(price/2);
-		if(Connect.c != null) 
-			Connect.c.sendTCP(new Packet10EntityValueUpdate(getUUID(), "turretdata", data));
+		new Packet10EntityValueUpdate(getUUID(), "turretdata", data).sendAllTCP();
 	}
 
 	@Override
