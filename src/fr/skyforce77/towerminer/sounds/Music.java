@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 
@@ -47,7 +48,11 @@ public class Music {
 	}
 	
 	public static void playMusic(String name) {
-		playURL(0, RessourcesManager.getSoundURL(name), false);
+		try {
+			playURL(0, new URL("http://dl.dropboxusercontent.com/u/38885163/TowerMiner/music/"+name+".wav"), false);
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
+		}
 	}
 
 	public static void playURL(final int channel, final URL url, final boolean display)
