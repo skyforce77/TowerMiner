@@ -66,7 +66,15 @@ public class ProtocolManager implements PacketListener{
 		else if(p.getId() == 11) {
 			Packet11ChatMessage pack11 = (Packet11ChatMessage)p;
 			mp = ((MultiPlayer)TowerMiner.menu);
-			mp.chat.onMessageReceived(LanguageManager.getText(pack11.option)+": "+pack11.message);
+			if(pack11.option != null) {
+				mp.chat.onMessageReceived(LanguageManager.getText(pack11.option)+": "+pack11.message);
+			} else {
+				mp.chat.onMessageReceived(LanguageManager.getText(pack11.message));
+			}
+			if(!pack11.response) {
+				pack11.response = true;
+				pack11.sendAllTCP();
+			}
 		}
 		else if(p.getId() == 12) {
 			Packet12Popup pack12 = (Packet12Popup)p;
@@ -74,7 +82,7 @@ public class ProtocolManager implements PacketListener{
 			if(pack12.option != null) {
 				message = LanguageManager.getText(pack12.message, LanguageManager.getText(pack12.option));
 			}
-			
+
 			if(pack12.image != null) {
 				TowerMiner.game.displayPopup(new Popup(message, 3000, pack12.image));
 			} else if(pack12.imagedata != null){

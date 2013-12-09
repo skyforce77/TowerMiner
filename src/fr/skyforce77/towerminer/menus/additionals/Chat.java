@@ -9,7 +9,6 @@ import java.util.Date;
 
 import fr.skyforce77.towerminer.TowerMiner;
 import fr.skyforce77.towerminer.protocol.packets.Packet11ChatMessage;
-import fr.skyforce77.towerminer.ressources.language.LanguageManager;
 
 public class Chat {
 
@@ -25,8 +24,8 @@ public class Chat {
 	}
 
 	public void onMessageWritten(String player, String message) {
-		messages.add(LanguageManager.getText(player)+": "+message);
-		messagedate.add(new Date().getTime());
+		/*messages.add(LanguageManager.getText(player)+": "+message);
+		messagedate.add(new Date().getTime());*/
 		new Packet11ChatMessage(message, player).sendAllTCP();
 	}
 
