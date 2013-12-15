@@ -25,6 +25,8 @@ import fr.skyforce77.towerminer.protocol.BigSending;
 import fr.skyforce77.towerminer.protocol.ObjectReceiver;
 import fr.skyforce77.towerminer.protocol.ObjectReceiver.ReceivingThread;
 import fr.skyforce77.towerminer.protocol.Protocol;
+import fr.skyforce77.towerminer.protocol.chat.ChatMessage;
+import fr.skyforce77.towerminer.protocol.chat.ChatModel;
 import fr.skyforce77.towerminer.protocol.listeners.PacketListener;
 import fr.skyforce77.towerminer.protocol.packets.Packet;
 import fr.skyforce77.towerminer.protocol.packets.Packet0Connecting;
@@ -60,17 +62,13 @@ public class ProtocolManager implements PacketListener{
 				} else {
 					id = LanguageManager.getText("menu.mp.blue");
 				}
-				mp.chat.onMessageReceived(LanguageManager.getText("achievement.text.mp", id)+": "+Achievements.achievements.get(pack3.deserialize(pack3.data)).text);
+				mp.chat.onMessageReceived(new ChatMessage(new ChatModel(LanguageManager.getText("achievement.text.mp", id)+": "+Achievements.achievements.get(pack3.deserialize(pack3.data)).text)));
 			}
 		}
 		else if(p.getId() == 11) {
 			Packet11ChatMessage pack11 = (Packet11ChatMessage)p;
 			mp = ((MultiPlayer)TowerMiner.menu);
-			if(pack11.option != null) {
-				mp.chat.onMessageReceived(LanguageManager.getText(pack11.option)+": "+pack11.message);
-			} else {
-				mp.chat.onMessageReceived(LanguageManager.getText(pack11.message));
-			}
+			mp.chat.onMessageReceived(pack11.getMessage());
 			if(!pack11.response) {
 				pack11.response = true;
 				pack11.sendAllTCP();

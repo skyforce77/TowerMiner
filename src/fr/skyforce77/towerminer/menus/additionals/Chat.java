@@ -8,25 +8,32 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import fr.skyforce77.towerminer.TowerMiner;
+import fr.skyforce77.towerminer.protocol.chat.ChatMessage;
+import fr.skyforce77.towerminer.protocol.chat.ChatModel;
 import fr.skyforce77.towerminer.protocol.packets.Packet11ChatMessage;
+import fr.skyforce77.towerminer.ressources.language.LanguageManager;
 
 public class Chat {
 
 	public boolean opened = false;
-	public ArrayList<String> messages = new ArrayList<>();
+	public ArrayList<ChatMessage> messages = new ArrayList<>();
 	public ArrayList<Long> messagedate = new ArrayList<>();
 
 	public Chat(final boolean server) {}
 
-	public void onMessageReceived(String message) {
+	public void onMessageReceived(ChatMessage message) {
 		messages.add(message);
 		messagedate.add(new Date().getTime());
 	}
 
 	public void onMessageWritten(String player, String message) {
-		/*messages.add(LanguageManager.getText(player)+": "+message);
-		messagedate.add(new Date().getTime());*/
-		new Packet11ChatMessage(message, player).sendAllTCP();
+		ChatModel name = new ChatModel(player);
+		if(player.equals("menu.mp.red")) {
+			name.setForegroundColor(Color.RED);
+		} else {
+			name.setForegroundColor(Color.CYAN);
+		}
+		new Packet11ChatMessage(new ChatMessage(name, new ChatModel(": "+message))).sendAllTCP();
 	}
 
 	public void changeState() {
@@ -47,12 +54,10 @@ public class Chat {
 				if(i < 6 && messagedate.get(n)+10000 > new Date().getTime()) {
 					strings[i] = n;
 					i++;
-					
-					g2d.setFont(new Font("TimesRoman", Font.BOLD, 20));
-					FontMetrics metrics = g2d.getFontMetrics(g2d.getFont());
-					int adv = metrics.stringWidth(messages.get(n));
-					if(adv+2 > width)
-						width = adv+2;
+
+					int adv = getWidth(getRaw(messages.get(n)));
+					if(adv > width)
+						width = adv;
 				} else {
 					remove.add(n);
 				}
@@ -72,17 +77,61 @@ public class Chat {
 						g2d.setColor(new Color(0,0,0,150));
 					}
 					g2d.fillRect(0, TowerMiner.game.getHeight()-i*26-55, width, 26);
-					
-					if(difference < 3000) {
-						g2d.setColor(new Color(250,250,250,difference/12));
-					} else {
-						g2d.setColor(new Color(250,250,250,250));
+
+					int x = 0;
+					for(ChatModel model : messages.get(s).getModels()) {
+						String text = LanguageManager.getText(model.getText());
+						if(model.getOption() != null) {
+							text = LanguageManager.getText(model.getText(), model.getOption());
+						}
+						
+						if(model.getHighlightColor() != null) {
+							Color h = model.getHighlightColor();
+							if(difference < 3000) {
+								g2d.setColor(new Color(h.getRed(),h.getGreen(),h.getBlue(),difference/20));
+							} else {
+								g2d.setColor(new Color(h.getRed(),h.getGreen(),h.getBlue(),150));
+							}
+							g2d.fillRect(x, TowerMiner.game.getHeight()-i*26-55, getWidth(text), 26);
+						}
+
+						g2d.setFont(new Font("TimesRoman", Font.BOLD, 20));
+						FontMetrics metrics = g2d.getFontMetrics(g2d.getFont());
+
+						drawColoredText(g2d, text, x+2, i, -2, difference, model.getBackgroundColor());
+						drawColoredText(g2d, text, x, i, 0, difference, model.getForegroundColor());
+						
+						x = x+metrics.stringWidth(text);
 					}
-					g2d.drawString(messages.get(s), 0, TowerMiner.game.getHeight()-(i*26)-35);
 					i++;
 				}
 			}
 		}
+	}
+
+	public int getWidth(String text) {
+		Graphics2D g2d = (Graphics2D)TowerMiner.game.getGraphics();
+		g2d.setFont(new Font("TimesRoman", Font.BOLD, 20));
+		FontMetrics metrics = g2d.getFontMetrics(g2d.getFont());
+		return metrics.stringWidth(text)+2;
+	}
+	
+	public void drawColoredText(Graphics2D g2d, String text, int x, int i, int y, int difference, Color co) {
+		if(difference < 3000) {
+			g2d.setColor(new Color(co.getRed(),co.getGreen(),co.getBlue(),difference/12));
+		} else {
+			g2d.setColor(new Color(co.getRed(),co.getGreen(),co.getBlue(),250));
+		}
+
+		g2d.drawString(text, x, TowerMiner.game.getHeight()-(i*26)-35+y);
+	}
+	
+	public String getRaw(ChatMessage message) {
+		String s = "";
+		for(ChatModel m : message.getModels()) {
+			s = s+LanguageManager.getText(m.getText());
+		}
+		return s;
 	}
 
 }

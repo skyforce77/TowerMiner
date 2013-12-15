@@ -6,7 +6,9 @@ import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import javax.swing.JTextField;
 
@@ -49,6 +51,8 @@ public class MultiPlayer extends SinglePlayer {
 
 	public Chat chat;
 	public JTextField chatfield;
+	public CopyOnWriteArrayList<String> typed = new CopyOnWriteArrayList<>();
+	public int select = 0;
 
 	public MultiPlayer(final boolean server) {
 		super(true);
@@ -86,9 +90,32 @@ public class MultiPlayer extends SinglePlayer {
 				}
 				if(!chatfield.getText().equals("")) {
 					chat.onMessageWritten(ad, chatfield.getText());
+					typed.add(chatfield.getText());
 					chatfield.setText("");
 				}
 			}
+		});
+		chatfield.addKeyListener(new KeyListener() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				if(e.getKeyCode() == KeyEvent.VK_DOWN) {
+					if(select+1 < typed.size() && typed.get(select+1) != null) {
+						chatfield.setText(typed.get(select+1));
+						select++;
+					}
+				} else if(e.getKeyCode() == KeyEvent.VK_UP) {
+					if(select-1 > typed.size() && typed.get(select-1) != null) {
+						chatfield.setText(typed.get(select-1));
+						select--;
+					}
+				}
+			}
+
+			@Override
+			public void keyReleased(KeyEvent e) {}
+
+			@Override
+			public void keyTyped(KeyEvent e) {}
 		});
 		chatfield.setToolTipText(LanguageManager.getText("menu.mp.message"));
 		TowerMiner.game.add(chatfield);
@@ -288,7 +315,7 @@ public class MultiPlayer extends SinglePlayer {
 				} else {
 					aimed = null;
 				}
-			} else {
+			} else if(aimed != null) {
 				Packet9MouseClick pm = new Packet9MouseClick();
 				pm.modifier = e.getModifiers();
 				pm.x = Xcursor;

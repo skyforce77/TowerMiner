@@ -24,7 +24,7 @@ public class TowerMiner{
 	public static Game game;
 	public static Menu menu;
 	public static int launcherversion = 6;
-	public static boolean dev = false;
+	public static boolean dev = true;
 	public static boolean launcherupdateneeded = false;
 	public static String[] os = new String[]{"linux"};
 	public static String usedos = "linux";
