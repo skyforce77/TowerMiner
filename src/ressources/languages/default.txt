@@ -87,6 +87,20 @@ menu.mp.gameover.lose: Vous avez perdu à la manche %
 menu.mp.gameover.win: Vous avez gagné!
 menu.mp.list: Favoris
 
+menu.about: A propos
+menu.about.music: Musiques
+menu.about.music.text: Musiques de MachinimaSound et KevinMcLeod
+menu.about.textures: Textures
+menu.about.textures.text: Textures appartenant à Minecraft® Tous droits réservés
+
+menu.more: Plus
+
+turret.level: Niveau
+turret.range: Portée
+turret.owner: Créateur
+turret.cost: Coût total
+turret.speed: Vitesse
+
 achievement.text: Succès obtenu!
 achievement.text.mp: % a obtenu
 achievement.text.1: Mise à niveau

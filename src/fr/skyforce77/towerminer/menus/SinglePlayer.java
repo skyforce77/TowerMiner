@@ -74,6 +74,8 @@ public class SinglePlayer extends Menu {
 
 	int selectedturret = 0;
 	Turret aimed = null;
+	
+	public String player = "menu.mp.blue";
 
 	public SinglePlayer(boolean multi) {
 		items = new MenuItem[3];
@@ -259,14 +261,17 @@ public class SinglePlayer extends Menu {
 		if(!paused && cursorinwindow && (Ycursor+8)/MapWritter.getBlockHeight()>0) {
 			Point p = new Point(Xcursor/MapWritter.getBlockWidth()-(CanvasX/MapWritter.getBlockWidth()),Ycursor/MapWritter.getBlockHeight()-(CanvasY/MapWritter.getBlockHeight()));
 			boolean turretplaced = false;
+			Turret placed = null;
 			for(Entity en : turrets) {
 				if(en.getBlockLocation().equals(new Point(p.x,p.y-1))) {
 					turretplaced = true;
+					placed = (Turret)en;
 				}
 			}
 			for(Entity en : draw) {
 				if(en != null && en.getBlockLocation().equals(new Point(p.x,p.y-1)) && en instanceof Turret) {
 					turretplaced = true;
+					placed = (Turret)en;
 				}
 			}
 			if(EntityTypes.turrets[selectedturret].getPrice() <= or && !turretplaced && Maps.getActualMap().canPlaceTurret((Xcursor/MapWritter.getBlockWidth()),((Ycursor+8)/MapWritter.getBlockHeight())-1)) {
@@ -274,10 +279,19 @@ public class SinglePlayer extends Menu {
 			} else {
 				g2d.setColor(Color.RED);
 			}
-			int xl = (Xcursor/MapWritter.getBlockWidth())*MapWritter.getBlockWidth();
-			int yl = ((Ycursor+8)/MapWritter.getBlockHeight())*MapWritter.getBlockHeight()-8;
-			g2d.draw3DRect(xl, yl, MapWritter.getBlockWidth()-1, MapWritter.getBlockHeight()-1, false);
-			g2d.draw3DRect(xl+1, yl+1, MapWritter.getBlockWidth()-3, MapWritter.getBlockHeight()-3, false);
+			
+			if(!turretplaced) {
+				int xl = (Xcursor/MapWritter.getBlockWidth())*MapWritter.getBlockWidth();
+				int yl = ((Ycursor+8)/MapWritter.getBlockHeight())*MapWritter.getBlockHeight()-8;
+				g2d.draw3DRect(xl, yl, MapWritter.getBlockWidth()-1, MapWritter.getBlockHeight()-1, false);
+				g2d.draw3DRect(xl+1, yl+1, MapWritter.getBlockWidth()-3, MapWritter.getBlockHeight()-3, false);	
+			} else {
+				g2d.setColor(placed.getOwner().equals(getPlayer()) ? Color.GREEN : Color.RED);
+				int xl = (Xcursor/MapWritter.getBlockWidth())*MapWritter.getBlockWidth();
+				int yl = ((Ycursor+8)/MapWritter.getBlockHeight())*MapWritter.getBlockHeight()-8;
+				g2d.drawOval(xl, yl, MapWritter.getBlockWidth()-1, MapWritter.getBlockHeight()-1);
+				g2d.drawOval(xl+1, yl+1, MapWritter.getBlockWidth()-3, MapWritter.getBlockHeight()-3);
+			}
 		}
 
 		for(Mob en : entities) {
@@ -307,7 +321,23 @@ public class SinglePlayer extends Menu {
 			}
 		}
 
+		boolean info = false;
 		if(aimed == null) {
+			Point p = new Point(Xcursor/MapWritter.getBlockWidth()-(CanvasX/MapWritter.getBlockWidth()),Ycursor/MapWritter.getBlockHeight()-(CanvasY/MapWritter.getBlockHeight()));
+			for(Entity en : turrets) {
+				if(en.getBlockLocation().equals(new Point(p.x,p.y-1))) {
+					en.drawInformations(g2d, this);
+					info = true;
+				}
+			}
+			for(Entity en : draw) {
+				if(en.getBlockLocation().equals(new Point(p.x,p.y-1))) {
+					en.drawInformations(g2d, this);
+					info = true;
+				}
+			}
+		}
+		if(aimed == null && info == false) {
 			g2d.drawImage(EntityTypes.turrets[selectedturret].getTexture(0),Xcursor-16,Ycursor-16,16,16,null);
 			g2d.setFont(new Font("TimesRoman", Font.CENTER_BASELINE, 12));
 			FontMetrics metrics = g2d.getFontMetrics(g2d.getFont());
@@ -318,7 +348,7 @@ public class SinglePlayer extends Menu {
 			g2d.fillRect(Xcursor, Ycursor-16, (int)(4+size.getWidth()), 16);
 			g2d.setColor(Color.WHITE);
 			g2d.drawString(LanguageManager.getText("menu.sp.buy")+": "+EntityTypes.turrets[selectedturret].getPrice(), Xcursor+3, Ycursor-3);
-		} else {
+		} else if(aimed != null) {
 			g2d.setColor(new Color(0, 0, 0, 150));
 			g2d.fillRect(Xcursor-10, Ycursor-35, 120, 40);
 			g2d.setColor(Color.WHITE);
@@ -371,18 +401,6 @@ public class SinglePlayer extends Menu {
 		g2d.drawString(LanguageManager.getText("menu.sp.round")+": "+round, 10, 25);
 		g2d.drawString(LanguageManager.getText("menu.sp.golds")+": "+or, (int)(45+size.getWidth()), 25);
 		g2d.drawString(LanguageManager.getText("menu.sp.life")+": "+vie, TowerMiner.game.getWidth()-110, 25);
-		
-		Point p = new Point(Xcursor/MapWritter.getBlockWidth()-(CanvasX/MapWritter.getBlockWidth()),Ycursor/MapWritter.getBlockHeight()-(CanvasY/MapWritter.getBlockHeight()));
-		for(Entity en : turrets) {
-			if(en.getBlockLocation().equals(new Point(p.x,p.y-1))) {
-				en.drawInformations(g2d, this);
-			}
-		}
-		for(Entity en : draw) {
-			if(en.getBlockLocation().equals(new Point(p.x,p.y-1))) {
-				en.drawInformations(g2d, this);
-			}
-		}
 
 	}
 
@@ -426,7 +444,7 @@ public class SinglePlayer extends Menu {
 				for(Entity en : turrets) {
 					if(en.getBlockLocation().equals(new Point(p.x,p.y-1))) {
 						turretplaced = true;
-						if(((Turret)en).isOwner(getId()))
+						if(((Turret)en).isOwner(getPlayer()))
 							aimed = (Turret)en;
 					}
 				}
@@ -435,7 +453,7 @@ public class SinglePlayer extends Menu {
 					or -= EntityTypes.turrets[selectedturret].getPrice();
 					EntityTypes type = EntityTypes.turrets[selectedturret];
 					try {
-						Turret tu = (Turret)type.getEntityClass().getConstructor(EntityTypes.class, Point.class, String.class).newInstance(EntityTypes.turrets[selectedturret], new Point(p.x,p.y-1), getId());
+						Turret tu = (Turret)type.getEntityClass().getConstructor(EntityTypes.class, Point.class, String.class).newInstance(EntityTypes.turrets[selectedturret], new Point(p.x,p.y-1), getPlayer());
 						turrets.add(tu);
 						onEntityAdded(tu);
 					} catch (Exception ex) {}
@@ -496,8 +514,12 @@ public class SinglePlayer extends Menu {
 	public void onEntityRemoved(Entity en) {}
 
 	public void onGameOver() {}
-
-	public String getId() {
-		return "server";
+	
+	public String getPlayer() {
+		return player;
+	}
+	
+	public void setPlayer(String player) {
+		this.player = player;
 	}
 }

@@ -1,6 +1,9 @@
 package fr.skyforce77.towerminer.entity;
 
 import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.Point;
 
@@ -11,6 +14,7 @@ import fr.skyforce77.towerminer.menus.MultiPlayer;
 import fr.skyforce77.towerminer.menus.SinglePlayer;
 import fr.skyforce77.towerminer.protocol.packets.Packet10EntityValueUpdate;
 import fr.skyforce77.towerminer.render.RenderHelper;
+import fr.skyforce77.towerminer.ressources.language.LanguageManager;
 
 public class Turret extends Entity{
 
@@ -21,13 +25,15 @@ public class Turret extends Entity{
 	int distance = 90;
 	int price = 20;
 	int cost = 30;
-	String owner = "server";
+	String owner = "menu.mp.blue";
+	int rgb;
 
 	public Turret(EntityTypes type, Point location, String owner) {
 		super(type);
 		this.owner = owner;
 		this.location = new Point(location.x*MapWritter.getBlockWidth()+(MapWritter.getBlockWidth()/2),location.y*MapWritter.getBlockHeight()+(MapWritter.getBlockHeight()/2));
 		cost = type.getPrice();
+		rgb = owner.equals("menu.mp.red") ? Color.RED.getRGB() : Color.BLUE.getRGB();
 	}
 
 	public int getData() {
@@ -46,6 +52,14 @@ public class Turret extends Entity{
 		return owner;
 	}
 	
+	public Color getColor() {
+		return new Color(rgb);
+	}
+	
+	public void setColor(Color color) {
+		rgb = color.getRGB();
+	}
+	
 	public boolean isOwner(String owner) {
 		return this.owner.equals(owner);
 	}
@@ -57,7 +71,7 @@ public class Turret extends Entity{
 	public void addData() {
 		if(TowerMiner.menu instanceof SinglePlayer) {
 			SinglePlayer sp = (SinglePlayer)TowerMiner.menu;
-			if(sp.getId().equals(owner)) {
+			if(sp.getPlayer().equals(owner)) {
 				Achievements.unlockAchievement(1);
 				if(data+1 == 10) {
 					Achievements.unlockAchievement(2);
@@ -111,11 +125,7 @@ public class Turret extends Entity{
 		g2d.rotate(ro, x,y+sp.CanvasY);
 		try {
 			if(sp instanceof MultiPlayer) {
-				if(!owner.equals("server")) {
-					g2d.drawImage(RenderHelper.getColoredImage(getType().getTexture(0), Color.RED, 0.1F),(int)x-15+sp.CanvasX,(int)y-15+sp.CanvasY,30,30,null);
-				} else {
-					g2d.drawImage(RenderHelper.getColoredImage(getType().getTexture(0), Color.BLUE, 0.1F),(int)x-15+sp.CanvasX,(int)y-15+sp.CanvasY,30,30,null);
-				}
+				g2d.drawImage(RenderHelper.getColoredImage(getType().getTexture(0), new Color(rgb), 0.1F),(int)x-15+sp.CanvasX,(int)y-15+sp.CanvasY,30,30,null);
 			} else {
 				g2d.drawImage(getType().getTexture(0),(int)x-15+sp.CanvasX,(int)y-15+sp.CanvasY,30,30,null);
 			}
@@ -125,9 +135,36 @@ public class Turret extends Entity{
 	
 	@Override
 	public void drawInformations(Graphics2D g2d, SinglePlayer sp) {
-		/*double x = getLocation().getX();
-		double y = getLocation().getY();
-		g2d.drawString("test",(float)x,(float)y);*/
+		double x = sp.Xcursor;
+		double y = sp.Ycursor;
+		String[] text = new String[3];
+		String speed = data*2 >= 40 ? "100%" : data*2+"%";
+		if(sp instanceof MultiPlayer) {
+			text = new String[]{LanguageManager.getText("turret.level")+": "+data, LanguageManager.getText("turret.range")+": "+((float)distance/45),
+					LanguageManager.getText("turret.speed")+": "+speed, LanguageManager.getText("turret.owner")+": "+LanguageManager.getText(owner)};
+		} else {
+			text = new String[]{LanguageManager.getText("turret.level")+": "+data, LanguageManager.getText("turret.range")+": "+((float)distance/45),
+					LanguageManager.getText("turret.speed")+": "+speed, LanguageManager.getText("turret.cost")+": "+cost};
+		}
+		
+		g2d.setFont(new Font("TimesRoman", Font.CENTER_BASELINE, 12));
+		FontMetrics metrics = g2d.getFontMetrics(g2d.getFont());
+		int hgt = metrics.getHeight();
+		Dimension size = new Dimension(0, hgt+2);
+		
+		for(String t : text) {
+			int adv = metrics.stringWidth(t);
+			if(adv > size.getWidth())
+				size = new Dimension(adv+2, hgt+2);
+		}
+		
+		g2d.setColor(new Color(0, 0, 0, 150));
+		g2d.fillRect((int)x, (int)y-64, (int)(4+size.getWidth()), 16*4);
+		g2d.setColor(Color.WHITE);
+		g2d.drawString(text[0], (int)x+3, (int)y-3);
+		g2d.drawString(text[1], (int)x+3, (int)y-3-16);
+		g2d.drawString(text[2], (int)x+3, (int)y-3-32);
+		g2d.drawString(text[3], (int)x+3, (int)y-3-48);
 	}
 
 }

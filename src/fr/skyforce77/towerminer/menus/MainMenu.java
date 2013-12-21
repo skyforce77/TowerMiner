@@ -1,14 +1,20 @@
 package fr.skyforce77.towerminer.menus;
 
 import java.awt.Color;
+import java.awt.Desktop;
 import java.awt.Font;
 import java.awt.Graphics2D;
+import java.awt.event.MouseEvent;
+import java.net.URL;
+
 import fr.skyforce77.towerminer.TowerMiner;
 import fr.skyforce77.towerminer.game.Game;
 import fr.skyforce77.towerminer.ressources.RessourcesManager;
 import fr.skyforce77.towerminer.ressources.language.LanguageManager;
 
 public class MainMenu extends Menu {
+	
+	private boolean hovertwitter = false;
 
 	public MainMenu(final Game game) {
 		super();
@@ -39,10 +45,10 @@ public class MainMenu extends Menu {
 			}
 		});
 		
-		items[3] = new MenuItem(3, LanguageManager.getText("menu.options"), new Thread(){
+		items[3] = new MenuItem(3, LanguageManager.getText("menu.more"), new Thread(){
 			@Override
 			public void run() {
-				TowerMiner.setMenu(Menu.options);
+				TowerMiner.setMenu(Menu.more);
 			}
 		});
 	}
@@ -55,6 +61,24 @@ public class MainMenu extends Menu {
 		g2d.setFont(new Font("TimesRoman", Font.BOLD, 40));
 		g2d.setColor(Color.LIGHT_GRAY);
 		g2d.drawString(LanguageManager.getText("towerminer"), 10, 100+(xmove/5));
+		g2d.setFont(new Font("TimesRoman", Font.BOLD, 18));
+		
+		int xmin = TowerMiner.game.getWidth()-135-(xmove/2);
+		int ymin = TowerMiner.game.getHeight()-40;
+		int xmax = xmin+130;
+		int ymax = ymin+30;
+
+		if(Xcursor+2 > xmin && Xcursor+2 < xmax
+			&& Ycursor+30 > ymin && Ycursor+30 < ymax) {
+				hovertwitter = true;
+			}
+		else {
+			hovertwitter = false;
+		}
+		
+		if(hovertwitter)
+			g2d.setColor(Color.YELLOW);
+		g2d.drawString("@Skyforce77", TowerMiner.game.getWidth()-135-(xmove/2), TowerMiner.game.getHeight()-40);
 		super.drawMenu(g2d);
 	}
 	
@@ -63,5 +87,19 @@ public class MainMenu extends Menu {
 	public void onUsed() {
 		TowerMiner.game.resize(800, 500);
 		TowerMiner.game.setTitle(LanguageManager.getText("towerminer")+" | "+Game.version);
+	}
+
+	public void onMouseClicked(MouseEvent e) {
+		if(hovertwitter) {
+			Desktop desktop = Desktop.isDesktopSupported() ? Desktop.getDesktop() : null;
+		    if (desktop != null && desktop.isSupported(Desktop.Action.BROWSE)) {
+		        try {
+		            desktop.browse(new URL("https://twitter.com/Skyforce77").toURI());
+		        } catch (Exception ex) {
+		            ex.printStackTrace();
+		        }
+		    }
+		}
+		super.onMouseClicked(e);
 	}
 }

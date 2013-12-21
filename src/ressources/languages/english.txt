@@ -87,6 +87,19 @@ menu.mp.gameover.lose: You losed at round %
 menu.mp.gameover.win: You win!
 menu.mp.list: Server list
 
+menu.about: About
+menu.about.music: Musics
+menu.about.music.text: Musics from MachinimaSound and KevinMcLeod
+menu.about.textures: Textures
+menu.about.textures.text: Textures from Minecraft® All rights reserved
+
+menu.more: More
+
+turret.level: Level
+turret.range: Range
+turret.owner: Owner
+turret.cost: Total cost
+turret.speed: Speed
 
 achievement.text: Achievement get!
 achievement.text.mp: % get

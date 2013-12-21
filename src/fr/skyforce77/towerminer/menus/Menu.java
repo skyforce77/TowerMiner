@@ -40,6 +40,8 @@ public class Menu {
 	public static MultiPlayer multiplayerserver;
 	public static MultiPlayer multiplayerclient;
 	public static OptionsMenu options;
+	public static MoreMenu more;
+	public static AboutMenu about;
 
 	public static void initMenus(Game game) {
 		mainmenu = new MainMenu(game);
@@ -53,6 +55,8 @@ public class Menu {
 		multiplayerserver = new MultiPlayer(true);
 		multiplayerclient = new MultiPlayer(false);
 		options = new OptionsMenu();
+		more = new MoreMenu();
+		about = new AboutMenu();
 	}
 
 	public void drawMenu(Graphics2D g2d) {

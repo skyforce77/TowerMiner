@@ -58,6 +58,8 @@ public class MultiPlayer extends SinglePlayer {
 		super(true);
 		this.server = server;
 		chat = new Chat(server);
+		
+		player = server ? "menu.mp.blue" : "menu.mp.red";
 
 		next.addActionListener(new ActionListener() {
 			@Override
@@ -66,7 +68,7 @@ public class MultiPlayer extends SinglePlayer {
 
 				if(server) {
 					serverready = true;
-					new Packet12Popup("menu.mp.ready", "menu.mp.blue").sendAllTCP();
+					new Packet12Popup("menu.mp.ready", player).sendAllTCP();
 					if(serverready && clientready) {
 						serverready = false;
 						clientready = false;
@@ -84,12 +86,8 @@ public class MultiPlayer extends SinglePlayer {
 		chatfield.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				String ad = "menu.mp.red";
-				if(server) {
-					ad = "menu.mp.blue";
-				}
 				if(!chatfield.getText().equals("")) {
-					chat.onMessageWritten(ad, chatfield.getText());
+					chat.onMessageWritten(player, chatfield.getText());
 					typed.add(chatfield.getText());
 					chatfield.setText("");
 				}
@@ -171,11 +169,7 @@ public class MultiPlayer extends SinglePlayer {
 		pause.setVisible(false);
 		options.setVisible(false);
 
-		if(server) {
-			TowerMiner.game.setTitle(LanguageManager.getText("towerminer")+" | "+Game.version+" | "+LanguageManager.getText("menu.multiplayer")+" | "+LanguageManager.getText("menu.editor.map")+": "+Maps.getActualMap().getName()+" | "+LanguageManager.getText("menu.mp.blue"));
-		} else {
-			TowerMiner.game.setTitle(LanguageManager.getText("towerminer")+" | "+Game.version+" | "+LanguageManager.getText("menu.multiplayer")+" | "+LanguageManager.getText("menu.editor.map")+": "+Maps.getActualMap().getName()+" | "+LanguageManager.getText("menu.mp.red"));
-		}
+		TowerMiner.game.setTitle(LanguageManager.getText("towerminer")+" | "+Game.version+" | "+LanguageManager.getText("menu.multiplayer")+" | "+LanguageManager.getText("menu.editor.map")+": "+Maps.getActualMap().getName()+" | "+LanguageManager.getText(player));
 
 		new Thread() {
 			public void run() {
@@ -299,7 +293,7 @@ public class MultiPlayer extends SinglePlayer {
 					for(Entity en : draw) {
 						if(en instanceof Turret && en.getBlockLocation().equals(new Point(p.x,p.y-1))) {
 							turretplaced = true;
-							if(((Turret)en).isOwner(getId()))
+							if(((Turret)en).isOwner(getPlayer()))
 								aimed = (Turret)en;
 						}
 					}
@@ -360,11 +354,8 @@ public class MultiPlayer extends SinglePlayer {
 	}
 	
 	@Override
-	public String getId() {
-		String id = "server";
-		if(!server) {
-			id = "client";
-		}
-		return id;
+	public void setPlayer(String player) {
+		super.setPlayer(player);
+		TowerMiner.game.setTitle(LanguageManager.getText("towerminer")+" | "+Game.version+" | "+LanguageManager.getText("menu.multiplayer")+" | "+LanguageManager.getText("menu.editor.map")+": "+Maps.getActualMap().getName()+" | "+LanguageManager.getText(player));
 	}
 }

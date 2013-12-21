@@ -36,6 +36,7 @@ import fr.skyforce77.towerminer.protocol.packets.Packet12Popup;
 import fr.skyforce77.towerminer.protocol.packets.Packet13EntityTeleport;
 import fr.skyforce77.towerminer.protocol.packets.Packet14ServerPing;
 import fr.skyforce77.towerminer.protocol.packets.Packet15ServerInfos;
+import fr.skyforce77.towerminer.protocol.packets.Packet17Player;
 import fr.skyforce77.towerminer.protocol.packets.Packet1Disconnecting;
 import fr.skyforce77.towerminer.protocol.packets.Packet2BigSending;
 import fr.skyforce77.towerminer.protocol.packets.Packet3Action;
@@ -255,6 +256,10 @@ public class ProtocolManager implements PacketListener{
 			Packet15ServerInfos pack15 = (Packet15ServerInfos)p;
 			ServerInfos.onInfosReceived(pack15.name, pack15.message, pack15.date);
 		}
+		else if(p.getId() == 17) {
+			Packet17Player pack17 = (Packet17Player)p;
+			Menu.multiplayerclient.setPlayer(pack17.player);
+		}
 	}
 
 	@Override
@@ -328,7 +333,7 @@ public class ProtocolManager implements PacketListener{
 				mp.setClientGold(mp.clientgold - EntityTypes.turrets[pack9.selected].getPrice());
 				EntityTypes type = EntityTypes.turrets[pack9.selected];
 				try {
-					Turret tu = (Turret)type.getEntityClass().getConstructor(EntityTypes.class, Point.class, String.class).newInstance(EntityTypes.turrets[pack9.selected], new Point(pack9.x,pack9.y-1), "client");
+					Turret tu = (Turret)type.getEntityClass().getConstructor(EntityTypes.class, Point.class, String.class).newInstance(EntityTypes.turrets[pack9.selected], new Point(pack9.x,pack9.y-1), "menu.mp.red");
 					mp.turrets.add(tu);
 					mp.onEntityAdded(tu);
 				} catch (Exception ex) {}

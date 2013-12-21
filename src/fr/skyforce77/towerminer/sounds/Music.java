@@ -1,12 +1,14 @@
 package fr.skyforce77.towerminer.sounds;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.nio.channels.FileChannel;
 
 import javax.sound.sampled.AudioFileFormat;
 import javax.sound.sampled.AudioFormat;
@@ -93,7 +95,11 @@ public class Music {
 							TowerMiner.game.displayPopup(new Popup(LanguageManager.getText("music.downloading", fileName), 2000, "music_disc_gold"));
 					}
 
-					writeFile = new FileOutputStream(chemin+"/"+fileName);
+					File temp = new File(RessourcesManager.getDirectory().getPath()+"/temp");
+					temp.mkdirs();
+					File temploc = new File(temp.getPath()+"/"+fileName);
+					temploc.deleteOnExit();
+					writeFile = new FileOutputStream(temploc);
 					byte[] buffer = new byte[1024];
 					int read;
 
@@ -101,6 +107,8 @@ public class Music {
 						writeFile.write(buffer, 0, read);
 					}
 					writeFile.flush();
+					
+					copyFile(temploc, new File(chemin+"/"+fileName));
 
 					if(display)
 						TowerMiner.game.displayPopup(new Popup(LanguageManager.getText("music.finished"), 2000, "music_disc_gold"));
@@ -190,4 +198,31 @@ public class Music {
 		stopped = true;
 	}
 
+	@SuppressWarnings({ "resource" })
+	private static void copyFile(File sourceFile, File destFile) throws IOException {
+	    if(!destFile.exists()) {
+	        destFile.createNewFile();
+	    }
+
+	    FileChannel source = null;
+	    FileChannel destination = null;
+	    try {
+	        source = new FileInputStream(sourceFile).getChannel();
+	        destination = new FileOutputStream(destFile).getChannel();
+
+	        // previous code: destination.transferFrom(source, 0, source.size());
+	        // to avoid infinite loops, should be:
+	        long count = 0;
+	        long size = source.size();              
+	        while((count += destination.transferFrom(source, count, size-count))<size);
+	    }
+	    finally {
+	        if(source != null) {
+	            source.close();
+	        }
+	        if(destination != null) {
+	            destination.close();
+	        }
+	    }
+	}
 }
