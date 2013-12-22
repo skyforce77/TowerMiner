@@ -30,9 +30,15 @@ public class RenderHelper {
 	}
 	
 	public static Image getColoredImage(Image image, Color color, float alpha) {
+		ColoredImages infos = new ColoredImages(image, color, alpha);
+		if(ColoredImages.exists(infos)) {
+			return ColoredImages.getImage(infos);
+		}
+		
 		try {
             BufferedImage mask = generateMask(toBufferedImage(image), color, alpha);
-            return tint(toBufferedImage(image), mask);
+            ColoredImages.add(infos, tint(toBufferedImage(image), mask));
+            return ColoredImages.getImage(infos);
         } catch (Exception exp) {
             exp.printStackTrace();
         }
