@@ -64,7 +64,7 @@ public class Maps implements Serializable{
 	MapLine[] maplines;
 	MapLine[] overlaylines;
 	Blocks[] blocks = new Blocks[0];
-	HashMap<String, Object> storage = new HashMap<>();
+	HashMap<String, Object> storage = new HashMap<String, Object>();
 	Color modifier = new Color(42,97,14);
 	public Point[] deaths = new Point[2];
 

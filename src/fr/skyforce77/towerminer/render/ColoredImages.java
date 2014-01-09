@@ -6,7 +6,7 @@ import java.util.HashMap;
 
 public class ColoredImages {
 
-	private static HashMap<ColoredImages, Image> images = new HashMap<>();
+	private static HashMap<ColoredImages, Image> images = new HashMap<ColoredImages, Image>();
 	
 	public static void add(ColoredImages infos, Image colored) {
 		images.put(infos,  colored);

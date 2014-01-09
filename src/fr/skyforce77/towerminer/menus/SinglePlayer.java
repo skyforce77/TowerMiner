@@ -58,10 +58,10 @@ public class SinglePlayer extends Menu {
 	int between;
 	int time;
 
-	public CopyOnWriteArrayList<Mob> entities = new CopyOnWriteArrayList<>();
-	public CopyOnWriteArrayList<Turret> turrets = new CopyOnWriteArrayList<>();
-	public CopyOnWriteArrayList<Entity> removed = new CopyOnWriteArrayList<>();
-	public CopyOnWriteArrayList<Entity> draw = new CopyOnWriteArrayList<>();
+	public CopyOnWriteArrayList<Mob> entities = new CopyOnWriteArrayList<Mob>();
+	public CopyOnWriteArrayList<Turret> turrets = new CopyOnWriteArrayList<Turret>();
+	public CopyOnWriteArrayList<Entity> removed = new CopyOnWriteArrayList<Entity>();
+	public CopyOnWriteArrayList<Entity> draw = new CopyOnWriteArrayList<Entity>();
 
 	public JMenuItem pause;
 	public JButton next;
@@ -179,7 +179,7 @@ public class SinglePlayer extends Menu {
 			}
 			onEntityRemoved(en);
 		}
-		removed = new CopyOnWriteArrayList<>();
+		removed = new CopyOnWriteArrayList<Entity>();
 
 		if(vie <= 0) {
 			gameover = true;

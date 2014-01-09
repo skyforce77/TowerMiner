@@ -54,7 +54,7 @@ public class ProtocolManager implements PacketListener{
 	public void onPacketReceived(Connection c, Packet p) {
 		MultiPlayer mp;
 		if(p.getId() == 3) {
-			Packet3Action pack3 = (Packet3Action)p;
+			Packet3Action pack3 = (Packet3Action)p; 
 			if(pack3.action.equals("achievement")) {
 				mp = ((MultiPlayer)TowerMiner.menu);
 				String id = "server";
@@ -106,7 +106,7 @@ public class ProtocolManager implements PacketListener{
 			if(pack2.type == 0) {
 				ObjectReceiver rec = new ObjectReceiver();
 				rec.id = pack2.pid;
-				rec.sent = (int)pack2.deserialize(pack2.data);
+				rec.sent = (Integer)pack2.deserialize(pack2.data);
 				rec.data = new byte[pack2.lenght];
 				rec.received = new boolean[rec.sent];
 				BigSending.receiving.put(pack2.pid, rec);
@@ -162,7 +162,7 @@ public class ProtocolManager implements PacketListener{
 			mp.vie = pack4.life;
 			mp.next.setEnabled(true);
 			((MultiPlayer)TowerMiner.menu).renderarrow = true;
-			ArrayList<Entity> toremove = new ArrayList<>();
+			ArrayList<Entity> toremove = new ArrayList<Entity>();
 			for(Entity en : ((MultiPlayer)TowerMiner.menu).draw) {
 				if(en instanceof Mob) {
 					toremove.add(en);
@@ -228,15 +228,15 @@ public class ProtocolManager implements PacketListener{
 					if(pack10.value.equals("addeffect")) {
 						((Mob)ens).addEffect((EntityEffect)pack10.deserialize(pack10.data));
 					} else if(pack10.value.equals("rmveffect")) {
-						((Mob)ens).removeEffect(EntityEffectType.byId((int)pack10.deserialize(pack10.data)));
+						((Mob)ens).removeEffect(EntityEffectType.byId((Integer)pack10.deserialize(pack10.data)));
 					} else if(pack10.value.equals("turretdata")) {
-						int data = (int)pack10.deserialize(pack10.data);
+						int data = (Integer)pack10.deserialize(pack10.data);
 						Turret tu = (Turret)ens;
 						while(tu.getData() < data) {
 							tu.addData();
 						}
 					} else if(pack10.value.equals("life")) {
-						int data = (int)pack10.deserialize(pack10.data);
+						int data = (Integer)pack10.deserialize(pack10.data);
 						((Mob)ens).setLife(data);
 					}
 				}

@@ -33,7 +33,7 @@ public class Game extends JFrame implements MouseListener,MouseWheelListener,Mou
 
 	private static final long serialVersionUID = 1L;
 
-	public static String version = "Alpha 0.7e";
+	public static String version = "Alpha 0.8";
 	public boolean fpsdisplay = false;
 	public static boolean offline = false;
 

@@ -30,8 +30,8 @@ public class LanguageSelectionList extends JFrame{
 		
 		final LanguageSelectionList lsl = this;
 		
-		DefaultListModel<String> listm = new DefaultListModel<>();
-		final JList<String> list = new JList<>(listm);
+		DefaultListModel<String> listm = new DefaultListModel<String>();
+		final JList<String> list = new JList<String>(listm);
 		int i = 0;
 		for(String l : LanguageManager.getLanguages()) {
 			listm.add(i, l);
@@ -56,7 +56,7 @@ public class LanguageSelectionList extends JFrame{
 				lsl.dispose();
 				TowerMiner.game.terminated = true;
 				TowerMiner.game.dispose();
-				TowerMiner.startGame(-1, "ok", "linux");
+				TowerMiner.startGame(-1, "ok", TowerMiner.usedos, TowerMiner.player, TowerMiner.id);
 			}
 		});
 		

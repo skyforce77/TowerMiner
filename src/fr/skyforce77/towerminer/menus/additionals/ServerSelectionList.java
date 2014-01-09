@@ -26,8 +26,8 @@ public class ServerSelectionList extends JFrame{
 
 	private static final long serialVersionUID = -5973702249949001012L;
 
-	public final DefaultListModel<ServerInfos> listm = new DefaultListModel<>();
-	public final JList<ServerInfos> list = new JList<>(listm);
+	public final DefaultListModel<ServerInfos> listm = new DefaultListModel<ServerInfos>();
+	public final JList<ServerInfos> list = new JList<ServerInfos>(listm);
 	public static ServerSelectionList instance;
 
 	public ServerSelectionList() {

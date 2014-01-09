@@ -29,7 +29,7 @@ public class Mob extends Entity{
 	int life;
 	boolean died = false;
 	int speed = 1;
-	CopyOnWriteArrayList<EntityEffect> effects = new CopyOnWriteArrayList<>();
+	CopyOnWriteArrayList<EntityEffect> effects = new CopyOnWriteArrayList<EntityEffect>();
 
 	public Mob(EntityTypes type) {
 		super(type);
@@ -124,7 +124,7 @@ public class Mob extends Entity{
 			return getLocation();
 		}
 		SinglePlayer sp = (SinglePlayer)TowerMiner.menu;
-		ArrayList<Point> points = new ArrayList<>();
+		ArrayList<Point> points = new ArrayList<Point>();
 		for(Point p : MapWritter.getAroundPoints(getBlockLocation().x, getBlockLocation().y)) {
 			if(!(p.x == last.x && p.y == last.y) && Maps.getActualMap().hasPoint(p) && Maps.getActualMap().getBlockId((int)p.getX(), (int)p.getY()) == Maps.getActualMap().getBlockPathId() &&
 					Maps.getActualMap().getOverlayId((int)p.getX(), (int)p.getY()) == Maps.getActualMap().getOverlayPathId()) {

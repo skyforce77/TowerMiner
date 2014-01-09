@@ -4,7 +4,7 @@ import java.util.HashMap;
 
 public class Achievements {
 
-	public static HashMap<Integer, Achievement> achievements = new HashMap<>();
+	public static HashMap<Integer, Achievement> achievements = new HashMap<Integer, Achievement>();
 	
 	public static void initAchievements() {
 		new Achievement(1, "steel_ingot");

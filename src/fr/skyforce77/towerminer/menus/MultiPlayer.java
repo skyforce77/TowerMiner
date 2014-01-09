@@ -51,7 +51,7 @@ public class MultiPlayer extends SinglePlayer {
 
 	public Chat chat;
 	public JTextField chatfield;
-	public CopyOnWriteArrayList<String> typed = new CopyOnWriteArrayList<>();
+	public CopyOnWriteArrayList<String> typed = new CopyOnWriteArrayList<String>();
 	public int select = 0;
 
 	public MultiPlayer(final boolean server) {

@@ -52,7 +52,7 @@ public class MPClientWait extends Menu{
 				}
 				MPInfos.matchplaying = true;
 				text = LanguageManager.getText("menu.mp.client.sending");
-				new Packet0Connecting(Protocol.version, "test").sendClientTCP();
+				new Packet0Connecting(Protocol.version, TowerMiner.player, TowerMiner.id).sendClientTCP();
 			};
 		}.start();
 	}

@@ -67,7 +67,7 @@ public class MapWritter {
 	}*/
 
 	public static ArrayList<Point> getAroundPoints(int x, int y) {
-		ArrayList<Point> points = new ArrayList<>();
+		ArrayList<Point> points = new ArrayList<Point>();
 		points.add(new Point(x, y+1));
 		points.add(new Point(x, y-1));
 		points.add(new Point(x+1, y));

@@ -5,7 +5,6 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.nio.channels.FileChannel;
@@ -15,6 +14,7 @@ import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.DataLine;
+import javax.sound.sampled.FloatControl;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.SourceDataLine;
 import javax.sound.sampled.UnsupportedAudioFileException;
@@ -23,6 +23,7 @@ import fr.skyforce77.towerminer.TowerMiner;
 import fr.skyforce77.towerminer.achievements.Popup;
 import fr.skyforce77.towerminer.ressources.RessourcesManager;
 import fr.skyforce77.towerminer.ressources.language.LanguageManager;
+import fr.skyforce77.towerminer.save.DataBase;
 
 public class Music {
 
@@ -48,11 +49,11 @@ public class Music {
 	public static void playSound(String name) {
 		playURL(1, RessourcesManager.getSoundURL(name), false);
 	}
-	
+
 	public static void playMusic(String name) {
 		try {
 			playURL(0, new URL("http://dl.dropboxusercontent.com/u/38885163/TowerMiner/music/"+name+".wav"), false);
-		} catch (MalformedURLException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
@@ -107,7 +108,7 @@ public class Music {
 						writeFile.write(buffer, 0, read);
 					}
 					writeFile.flush();
-					
+
 					copyFile(temploc, new File(chemin+"/"+fileName));
 
 					if(display)
@@ -187,6 +188,11 @@ public class Music {
 			int bytesRead=0;
 			while (!stopped && (bytesRead = audioInputStream.read(bytes, 0, bytes.length)) != -1) {
 				line.write(bytes, 0, bytesRead);
+				
+				if (line.isControlSupported(FloatControl.Type.MASTER_GAIN)) {
+					FloatControl control = (FloatControl) line.getControl(FloatControl.Type.MASTER_GAIN);
+					control.setValue((float)DataBase.getValue("volume", -10F));
+				}
 			}
 		} catch (IOException io) {
 			io.printStackTrace();
@@ -200,29 +206,29 @@ public class Music {
 
 	@SuppressWarnings({ "resource" })
 	private static void copyFile(File sourceFile, File destFile) throws IOException {
-	    if(!destFile.exists()) {
-	        destFile.createNewFile();
-	    }
+		if(!destFile.exists()) {
+			destFile.createNewFile();
+		}
 
-	    FileChannel source = null;
-	    FileChannel destination = null;
-	    try {
-	        source = new FileInputStream(sourceFile).getChannel();
-	        destination = new FileOutputStream(destFile).getChannel();
+		FileChannel source = null;
+		FileChannel destination = null;
+		try {
+			source = new FileInputStream(sourceFile).getChannel();
+			destination = new FileOutputStream(destFile).getChannel();
 
-	        // previous code: destination.transferFrom(source, 0, source.size());
-	        // to avoid infinite loops, should be:
-	        long count = 0;
-	        long size = source.size();              
-	        while((count += destination.transferFrom(source, count, size-count))<size);
-	    }
-	    finally {
-	        if(source != null) {
-	            source.close();
-	        }
-	        if(destination != null) {
-	            destination.close();
-	        }
-	    }
+			// previous code: destination.transferFrom(source, 0, source.size());
+			// to avoid infinite loops, should be:
+			long count = 0;
+			long size = source.size();              
+			while((count += destination.transferFrom(source, count, size-count))<size);
+		}
+		finally {
+			if(source != null) {
+				source.close();
+			}
+			if(destination != null) {
+				destination.close();
+			}
+		}
 	}
 }

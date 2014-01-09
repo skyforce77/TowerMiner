@@ -5,7 +5,7 @@ import java.util.HashMap;
 
 public class Language {
 
-	HashMap<String, String> sentences = new HashMap<>();
+	HashMap<String, String> sentences = new HashMap<String, String>();
 	
 	public Language(ArrayList<String> translations) {
 		for(String s : translations) {

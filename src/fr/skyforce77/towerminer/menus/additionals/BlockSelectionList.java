@@ -27,8 +27,8 @@ public class BlockSelectionList extends JFrame{
 		setVisible(true);
 		setTitle(LanguageManager.getText("menu.editor.edit.block"));
 		
-		DefaultListModel<Blocks> listm = new DefaultListModel<>();
-		final JList<Blocks> list = new JList<>(listm);
+		DefaultListModel<Blocks> listm = new DefaultListModel<Blocks>();
+		final JList<Blocks> list = new JList<Blocks>(listm);
 		int i = 0;
 		for(Blocks b : Blocks.blocks) {
 			if(b != null && b.isVisible() && !(b.getId() == 1023 || b.getId() == 1021)) {

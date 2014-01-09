@@ -42,6 +42,7 @@ public class Menu {
 	public static OptionsMenu options;
 	public static MoreMenu more;
 	public static AboutMenu about;
+	public static VolumeControlMenu volumecontrol;
 
 	public static void initMenus(Game game) {
 		mainmenu = new MainMenu(game);
@@ -57,6 +58,7 @@ public class Menu {
 		options = new OptionsMenu();
 		more = new MoreMenu();
 		about = new AboutMenu();
+		volumecontrol = new VolumeControlMenu();
 	}
 
 	public void drawMenu(Graphics2D g2d) {

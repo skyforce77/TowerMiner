@@ -17,7 +17,7 @@ import fr.skyforce77.towerminer.ressources.RessourcesManager;
 public class DataBase implements Serializable{
 
 	private static final long serialVersionUID = 4364142227662752242L;
-	private static HashMap<String, Object> map = new HashMap<>();
+	private static HashMap<String, Object> map = new HashMap<String, Object>();
 	private static ArrayList<String> perm = new ArrayList<String>();
 
 	public static Object getValue(String key) {

@@ -16,8 +16,8 @@ import fr.skyforce77.towerminer.ressources.language.LanguageManager;
 public class Chat {
 
 	public boolean opened = false;
-	public ArrayList<ChatMessage> messages = new ArrayList<>();
-	public ArrayList<Long> messagedate = new ArrayList<>();
+	public ArrayList<ChatMessage> messages = new ArrayList<ChatMessage>();
+	public ArrayList<Long> messagedate = new ArrayList<Long>();
 
 	public Chat(final boolean server) {}
 
@@ -27,7 +27,7 @@ public class Chat {
 	}
 
 	public void onMessageWritten(String player, String message) {
-		ChatModel name = new ChatModel(player);
+		ChatModel name = new ChatModel(TowerMiner.player);
 		if(player.equals("menu.mp.red")) {
 			name.setForegroundColor(Color.RED);
 		} else {
@@ -48,7 +48,7 @@ public class Chat {
 		} else {
 			int i = 0;
 			int[] strings = new int[]{-1,-1,-1,-1,-1,-1,-1};
-			ArrayList<Integer> remove = new ArrayList<>();
+			ArrayList<Integer> remove = new ArrayList<Integer>();
 			int n = messagedate.size()-1;
 			while(n >= 0) {
 				if(i < 6 && messagedate.get(n)+10000 > new Date().getTime()) {

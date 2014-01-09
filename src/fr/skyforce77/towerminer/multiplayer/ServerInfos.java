@@ -11,7 +11,7 @@ public class ServerInfos implements Serializable{
 
 	private static final long serialVersionUID = -5395113644833388260L;
 
-	public static ArrayList<ServerInfos> infos = new ArrayList<>();
+	public static ArrayList<ServerInfos> infos = new ArrayList<ServerInfos>();
 	
 	public String name;
 	public String ip;

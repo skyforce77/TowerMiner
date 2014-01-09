@@ -22,6 +22,13 @@ public class OptionsMenu extends Menu {
 				new LanguageSelectionList();
 			}
 		});
+		
+		items[1] = new MenuItem(1, LanguageManager.getText("menu.about.music"), new Thread(){
+			@Override
+			public void run() {
+				TowerMiner.setMenu(Menu.volumecontrol);
+			}
+		});
 	}
 	
 	public void drawMenu(Graphics2D g2d) {

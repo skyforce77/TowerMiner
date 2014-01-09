@@ -2,6 +2,7 @@ package fr.skyforce77.towerminer;
 
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
 
 import fr.skyforce77.towerminer.achievements.Achievements;
 import fr.skyforce77.towerminer.achievements.Popup;
@@ -19,18 +20,29 @@ import fr.skyforce77.towerminer.ressources.language.LanguageManager;
 import fr.skyforce77.towerminer.save.DataBase;
 import fr.skyforce77.towerminer.sounds.Music;
 
+import java.util.UUID;
+
 public class TowerMiner{
 
 	public static Game game;
 	public static Menu menu;
-	public static int launcherversion = 6;
+	public static int launcherversion = 7;
 	public static boolean dev = false;
-	public static boolean launcherupdateneeded = false;
+	public static boolean launcherupdateneeded = true;
 	public static String[] os = new String[]{"linux"};
 	public static String usedos = "linux";
+    public static String player = "Missigno";
+    public static UUID id;
 
-	public static void startGame(final int launchedversion, final String state, final String os) {
+	public static void startGame(final int launchedversion, final String state, final String os, String player, UUID id) {
 		usedos = os;
+        TowerMiner.player = player;
+        TowerMiner.id = id;
+        try{ 
+			UIManager.setLookAndFeel(
+					UIManager.getSystemLookAndFeelClassName());
+		}
+		catch(Exception e){}
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
@@ -130,6 +142,7 @@ public class TowerMiner{
 		m.last = menu;
 		if(menu != null) {
 			menu.onUnused();
+			menu.selected = -1;
 		}
 		menu = m;
 		m.onUsed();
@@ -138,18 +151,19 @@ public class TowerMiner{
 	public static void returnMenu(Menu m) {
 		if(menu != null) {
 			menu.onUnused();
+			menu.selected = -1;
 		}
 		menu = m;
 		m.onUsed();
 	}
-	
+
 	public static void main(String[] args) {
 		if(dev) {
-			startGame(-1, "ok", "linux");
+			startGame(-1, "ok", "linux", "dev", UUID.randomUUID());
 			return;
 		}
 		LanguageManager.initLanguages();
-	JOptionPane.showMessageDialog(game, "- "+LanguageManager.getText("launcher.without")+"\n- "+LanguageManager.getText("launcher.outdated"), LanguageManager.getText("launcher.information"),JOptionPane.ERROR_MESSAGE);
+		JOptionPane.showMessageDialog(game, "- "+LanguageManager.getText("launcher.without")+"\n- "+LanguageManager.getText("launcher.outdated"), LanguageManager.getText("launcher.information"),JOptionPane.ERROR_MESSAGE);
 		return;
 	}
 }

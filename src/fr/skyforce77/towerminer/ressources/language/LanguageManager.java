@@ -14,7 +14,7 @@ import fr.skyforce77.towerminer.save.DataBase;
 
 public class LanguageManager {
 
-	static HashMap<String, Language> languages = new HashMap<>();
+	static HashMap<String, Language> languages = new HashMap<String, Language>();
 	static String def = "Français";
 	
 	public static String getText(String id) {
@@ -80,7 +80,7 @@ public class LanguageManager {
 			String name = br.readLine();
 			if(name.startsWith("language: ")) {
 				name = name.replace("language: ", "");
-				ArrayList<String> lines = new ArrayList<>();
+				ArrayList<String> lines = new ArrayList<String>();
 				while(true) {
 					String line = br.readLine();
 					if(line == null)
@@ -103,7 +103,7 @@ public class LanguageManager {
 			String name = br.readLine();
 			if(name.startsWith("language: ")) {
 				name = name.replace("language: ", "");
-				ArrayList<String> lines = new ArrayList<>();
+				ArrayList<String> lines = new ArrayList<String>();
 				while(true) {
 					String line = br.readLine();
 					if(line == null)
