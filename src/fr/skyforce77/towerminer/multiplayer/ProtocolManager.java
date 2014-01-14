@@ -10,6 +10,7 @@ import fr.skyforce77.towerminer.TowerMiner;
 import fr.skyforce77.towerminer.achievements.Achievements;
 import fr.skyforce77.towerminer.achievements.Popup;
 import fr.skyforce77.towerminer.entity.Entity;
+import fr.skyforce77.towerminer.entity.EntityProjectile;
 import fr.skyforce77.towerminer.entity.EntityTypes;
 import fr.skyforce77.towerminer.entity.Mob;
 import fr.skyforce77.towerminer.entity.Turret;
@@ -21,6 +22,8 @@ import fr.skyforce77.towerminer.menus.MPDisconnected;
 import fr.skyforce77.towerminer.menus.MPServerWait;
 import fr.skyforce77.towerminer.menus.Menu;
 import fr.skyforce77.towerminer.menus.MultiPlayer;
+import fr.skyforce77.towerminer.particles.Particle;
+import fr.skyforce77.towerminer.particles.ParticleEffect;
 import fr.skyforce77.towerminer.protocol.BigSending;
 import fr.skyforce77.towerminer.protocol.ObjectReceiver;
 import fr.skyforce77.towerminer.protocol.ObjectReceiver.ReceivingThread;
@@ -37,6 +40,8 @@ import fr.skyforce77.towerminer.protocol.packets.Packet13EntityTeleport;
 import fr.skyforce77.towerminer.protocol.packets.Packet14ServerPing;
 import fr.skyforce77.towerminer.protocol.packets.Packet15ServerInfos;
 import fr.skyforce77.towerminer.protocol.packets.Packet17Player;
+import fr.skyforce77.towerminer.protocol.packets.Packet18ParticleEffect;
+import fr.skyforce77.towerminer.protocol.packets.Packet19Particle;
 import fr.skyforce77.towerminer.protocol.packets.Packet1Disconnecting;
 import fr.skyforce77.towerminer.protocol.packets.Packet2BigSending;
 import fr.skyforce77.towerminer.protocol.packets.Packet3Action;
@@ -158,13 +163,15 @@ public class ProtocolManager implements PacketListener{
 			Packet4RoundFinished pack4 = (Packet4RoundFinished)p;
 			mp = ((MultiPlayer)TowerMiner.menu);
 			mp.or = pack4.gold;
-			mp.round++;
+			mp.round = pack4.round;
 			mp.vie = pack4.life;
 			mp.next.setEnabled(true);
+			if(pack4.timed)
+				mp.countNext();
 			((MultiPlayer)TowerMiner.menu).renderarrow = true;
 			ArrayList<Entity> toremove = new ArrayList<Entity>();
 			for(Entity en : ((MultiPlayer)TowerMiner.menu).draw) {
-				if(en instanceof Mob) {
+				if(en instanceof Mob || en instanceof EntityProjectile) {
 					toremove.add(en);
 				}
 			}
@@ -181,8 +188,16 @@ public class ProtocolManager implements PacketListener{
 		else if(p.getId() == 6) {
 			Packet6Entity pack6 = (Packet6Entity)p;
 			mp = ((MultiPlayer)TowerMiner.menu);
-			Entity en = (Entity)pack6.deserialize(BigSending.receiving.get(pack6.eid).data);
-			mp.draw.add(en);
+			byte[] data = BigSending.receiving.get(pack6.eid).data;
+			Entity en = (Entity)pack6.deserialize(data);
+			boolean has = false;
+			for(Entity es : mp.draw) {
+				if(en != null && es.getUUID() == en.getUUID()) {
+					has = true;
+				}
+			}
+			if(has == false && en != null && !mp.draw.contains(en))
+				mp.draw.add(en);
 		}
 		else if(p.getId() == 7) {
 			Packet7EntityMove pack7 = (Packet7EntityMove)p;
@@ -200,25 +215,11 @@ public class ProtocolManager implements PacketListener{
 		else if(p.getId() == 8) {
 			final Packet8EntityRemove pack8 = (Packet8EntityRemove)p;
 			mp = ((MultiPlayer)TowerMiner.menu);
-			final MultiPlayer mps = mp;
-			new Thread() {
-				public void run() {
-					Entity ent = null;
-					while(ent == null) {
-						try {
-							sleep(10l);
-						} catch (InterruptedException e) {
-							e.printStackTrace();
-						}
-						for(Entity en : mps.draw) {
-							if(en.getUUID() == pack8.entity) {
-								ent = en;
-							}
-						}
-					}
-					mps.draw.remove(ent);
-				};
-			}.start();
+			for(Entity en : mp.draw) {
+				if(en.getUUID() == pack8.entity) {
+					mp.draw.remove(en);
+				}
+			}
 		}
 		else if(p.getId() == 10) {
 			Packet10EntityValueUpdate pack10 = (Packet10EntityValueUpdate)p;
@@ -238,6 +239,9 @@ public class ProtocolManager implements PacketListener{
 					} else if(pack10.value.equals("life")) {
 						int data = (Integer)pack10.deserialize(pack10.data);
 						((Mob)ens).setLife(data);
+					} else if(pack10.value.equals("aimanother")) {
+						int aim = (Integer)pack10.deserialize(pack10.data);
+						((EntityProjectile)ens).setAimed(aim);
 					}
 				}
 			}
@@ -259,6 +263,15 @@ public class ProtocolManager implements PacketListener{
 		else if(p.getId() == 17) {
 			Packet17Player pack17 = (Packet17Player)p;
 			Menu.multiplayerclient.setPlayer(pack17.player);
+		}
+		else if(p.getId() == 18) {
+			Packet18ParticleEffect pack18 = (Packet18ParticleEffect)p;
+			ParticleEffect.createEffect(pack18.x, pack18.y, pack18.color, pack18.type, pack18.data);
+		}
+		else if(p.getId() == 19) {
+			Packet19Particle pack19 = (Packet19Particle)p;
+			mp = ((MultiPlayer)TowerMiner.menu);
+			mp.particles.add((Particle)pack19.deserialize(pack19.particle));
 		}
 	}
 
@@ -324,9 +337,9 @@ public class ProtocolManager implements PacketListener{
 			Packet9MouseClick pack9 = (Packet9MouseClick)p;
 			mp = ((MultiPlayer)TowerMiner.menu);
 			Turret aimed = null;
-			for(Turret en : mp.turrets) {
-				if(en.getUUID() == pack9.aimed) {
-					aimed = en;
+			for(Entity en : mp.entity) {
+				if(en instanceof Turret && en.getUUID() == pack9.aimed) {
+					aimed = (Turret)en;
 				}
 			}
 			if(pack9.modifier == 16) {
@@ -334,7 +347,7 @@ public class ProtocolManager implements PacketListener{
 				EntityTypes type = EntityTypes.turrets[pack9.selected];
 				try {
 					Turret tu = (Turret)type.getEntityClass().getConstructor(EntityTypes.class, Point.class, String.class).newInstance(EntityTypes.turrets[pack9.selected], new Point(pack9.x,pack9.y-1), "menu.mp.red");
-					mp.turrets.add(tu);
+					mp.entity.add(tu);
 					mp.onEntityAdded(tu);
 				} catch (Exception ex) {}
 			} else if(pack9.modifier == 4) {

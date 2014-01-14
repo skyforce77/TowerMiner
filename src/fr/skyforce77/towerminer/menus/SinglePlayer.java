@@ -29,6 +29,7 @@ import fr.skyforce77.towerminer.entity.Turret;
 import fr.skyforce77.towerminer.game.Game;
 import fr.skyforce77.towerminer.maps.MapWritter;
 import fr.skyforce77.towerminer.maps.Maps;
+import fr.skyforce77.towerminer.particles.Particle;
 import fr.skyforce77.towerminer.ressources.RessourcesManager;
 import fr.skyforce77.towerminer.ressources.language.LanguageManager;
 
@@ -58,10 +59,12 @@ public class SinglePlayer extends Menu {
 	int between;
 	int time;
 
-	public CopyOnWriteArrayList<Mob> entities = new CopyOnWriteArrayList<Mob>();
-	public CopyOnWriteArrayList<Turret> turrets = new CopyOnWriteArrayList<Turret>();
+	public CopyOnWriteArrayList<Mob> mobs = new CopyOnWriteArrayList<Mob>();
+	public CopyOnWriteArrayList<Entity> entity = new CopyOnWriteArrayList<Entity>();
 	public CopyOnWriteArrayList<Entity> removed = new CopyOnWriteArrayList<Entity>();
 	public CopyOnWriteArrayList<Entity> draw = new CopyOnWriteArrayList<Entity>();
+
+	public CopyOnWriteArrayList<Particle> particles = new CopyOnWriteArrayList<Particle>();
 
 	public JMenuItem pause;
 	public JButton next;
@@ -74,7 +77,7 @@ public class SinglePlayer extends Menu {
 
 	int selectedturret = 0;
 	Turret aimed = null;
-	
+
 	public String player = "menu.mp.blue";
 
 	public SinglePlayer(boolean multi) {
@@ -110,6 +113,7 @@ public class SinglePlayer extends Menu {
 				public void actionPerformed(ActionEvent arg0) {
 					started = true;
 					next.setEnabled(false);
+					next.setText(LanguageManager.getText("menu.sp.next"));
 				}
 			});
 
@@ -173,9 +177,9 @@ public class SinglePlayer extends Menu {
 	public void onTick() {
 		for(Entity en : removed) {
 			if(en instanceof Mob) {
-				entities.remove(en);
+				mobs.remove(en);
 			} else {
-				turrets.remove(en);
+				entity.remove(en);
 			}
 			onEntityRemoved(en);
 		}
@@ -191,6 +195,10 @@ public class SinglePlayer extends Menu {
 		if(!paused && started) {
 			onUpdate();
 		}
+		
+		for(Particle p : particles) {
+			p.onTick();
+		}
 
 		super.onTick();
 	}
@@ -201,7 +209,7 @@ public class SinglePlayer extends Menu {
 				EntityTypes type = EntityTypes.mobs[new Random().nextInt(EntityTypes.mobs.length)];
 				if(type.getLevel() <= tospawn-spawned) {
 					Mob m = new Mob(type);
-					entities.add(m);
+					mobs.add(m);
 					spawned+=type.getLevel();
 					time = (int)(30-(0.5*round));
 					between = time;
@@ -212,11 +220,12 @@ public class SinglePlayer extends Menu {
 			}
 		}
 
-		if(spawned == tospawn && entities.isEmpty()) {
+		if(spawned == tospawn && mobs.isEmpty()) {
 			round++;
 			spawned = 0;
 			tospawn = tospawn+(tospawn/5);
 			next.setEnabled(true);
+			countNext();
 			addGold((int)(20*(round*0.2)));
 			started = false;
 
@@ -228,21 +237,24 @@ public class SinglePlayer extends Menu {
 			onFinishedRound();
 		}
 
-		try {
-			for(Entity en : entities) {
+		for(Entity en : mobs) {
+			try {
 				en.onTick();
-			}
-			for(Entity en : turrets) {
+			} catch(Exception e) {}
+		}
+		for(Entity en : entity) {
+			try {
 				en.onTick();
-			}
-		} catch(Exception e) {}
+			} catch(Exception e) {}
+		}
 	}
 
-	public void drawMenu(Graphics2D g2d) {
-		MapWritter.drawCanvas(g2d, CanvasX, CanvasY);
+	public void drawMenu(Graphics2D g) {
+		MapWritter.drawCanvas((Graphics2D)g.create(), CanvasX, CanvasY);
+
+		Graphics2D g2d = (Graphics2D)g.create();
 
 		if(gameover) {
-			onUnused();
 			g2d.setColor(new Color(0, 0, 0, 150));
 			g2d.fillRect(0, 0, TowerMiner.game.getWidth(), TowerMiner.game.getHeight());
 			g2d.setFont(new Font("TimesRoman", Font.CENTER_BASELINE, 40));
@@ -262,8 +274,8 @@ public class SinglePlayer extends Menu {
 			Point p = new Point(Xcursor/MapWritter.getBlockWidth()-(CanvasX/MapWritter.getBlockWidth()),Ycursor/MapWritter.getBlockHeight()-(CanvasY/MapWritter.getBlockHeight()));
 			boolean turretplaced = false;
 			Turret placed = null;
-			for(Entity en : turrets) {
-				if(en.getBlockLocation().equals(new Point(p.x,p.y-1))) {
+			for(Entity en : entity) {
+				if(en instanceof Turret && en.getBlockLocation().equals(new Point(p.x,p.y-1))) {
 					turretplaced = true;
 					placed = (Turret)en;
 				}
@@ -279,7 +291,7 @@ public class SinglePlayer extends Menu {
 			} else {
 				g2d.setColor(Color.RED);
 			}
-			
+
 			if(!turretplaced) {
 				int xl = (Xcursor/MapWritter.getBlockWidth())*MapWritter.getBlockWidth();
 				int yl = ((Ycursor+8)/MapWritter.getBlockHeight())*MapWritter.getBlockHeight()-8;
@@ -294,14 +306,14 @@ public class SinglePlayer extends Menu {
 			}
 		}
 
-		for(Mob en : entities) {
+		for(Mob en : mobs) {
 			if(en != null) {
-				en.draw(g2d, this);
+				en.draw((Graphics2D)g.create(), this);
 			}
 		}
 		for(Entity en : draw) {
 			if(en != null && en instanceof Mob) {
-				en.draw(g2d, this);
+				en.draw((Graphics2D)g.create(), this);
 			}
 		}
 
@@ -310,28 +322,34 @@ public class SinglePlayer extends Menu {
 			g2d.fillOval((int)(aimed.getLocation().getX()-aimed.getDistance()), (int)(aimed.getLocation().getY()-aimed.getDistance())+CanvasY, (int)aimed.getDistance()*2, (int)aimed.getDistance()*2);
 		}
 
-		for(Entity en : turrets) {
+		for(Entity en : entity) {
 			if(en != null) {
-				en.draw(g2d, this);
+				en.draw((Graphics2D)g.create(), this);
 			}
 		}
 		for(Entity en : draw) {
-			if(en != null && en instanceof Turret) {
-				en.draw(g2d, this);
+			if(en != null && !(en instanceof Mob)) {
+				en.draw((Graphics2D)g.create(), this);
+			}
+		}
+		
+		for(Particle p : particles) {
+			if(p != null) {
+				p.draw((Graphics2D)g.create(), this);
 			}
 		}
 
 		boolean info = false;
 		if(aimed == null) {
 			Point p = new Point(Xcursor/MapWritter.getBlockWidth()-(CanvasX/MapWritter.getBlockWidth()),Ycursor/MapWritter.getBlockHeight()-(CanvasY/MapWritter.getBlockHeight()));
-			for(Entity en : turrets) {
-				if(en.getBlockLocation().equals(new Point(p.x,p.y-1))) {
+			for(Entity en : entity) {
+				if(en instanceof Turret && en.getBlockLocation().equals(new Point(p.x,p.y-1))) {
 					en.drawInformations(g2d, this);
 					info = true;
 				}
 			}
 			for(Entity en : draw) {
-				if(en.getBlockLocation().equals(new Point(p.x,p.y-1))) {
+				if(en != null && en.getBlockLocation().equals(new Point(p.x,p.y-1))) {
 					en.drawInformations(g2d, this);
 					info = true;
 				}
@@ -365,7 +383,7 @@ public class SinglePlayer extends Menu {
 			g2d.setFont(new Font("TimesRoman", Font.CENTER_BASELINE, 40));
 			g2d.setColor(Color.WHITE);
 			g2d.drawString(LanguageManager.getText("menu.sp.paused"), TowerMiner.game.getWidth()-210, TowerMiner.game.getHeight()-60);
-			g2d.rotate(0.1, TowerMiner.game.getWidth(), TowerMiner.game.getHeight());
+			g2d = (Graphics2D)g.create();
 			super.drawMenu(g2d);
 		}
 
@@ -381,7 +399,7 @@ public class SinglePlayer extends Menu {
 
 				g2d.rotate(Maps.getActualMap().getDepartRotation(), xt+MapWritter.getBlockWidth()/2,yt+40+MapWritter.getBlockWidth()/2);
 				g2d.drawImage(RessourcesManager.getTexture("fleche"),xt,yt+CanvasY,MapWritter.getBlockWidth(),MapWritter.getBlockHeight(),null);
-				g2d.rotate(-Maps.getActualMap().getDepartRotation(), xt+MapWritter.getBlockWidth()/2,yt+CanvasY+MapWritter.getBlockHeight()/2);
+				g2d = (Graphics2D)g.create();
 			}
 		}
 
@@ -441,8 +459,8 @@ public class SinglePlayer extends Menu {
 			} else if(aimed == null){
 				Point p = new Point(Xcursor/MapWritter.getBlockWidth()-(CanvasX/MapWritter.getBlockWidth()),Ycursor/MapWritter.getBlockHeight()-(CanvasY/MapWritter.getBlockHeight()));
 				boolean turretplaced = false;
-				for(Entity en : turrets) {
-					if(en.getBlockLocation().equals(new Point(p.x,p.y-1))) {
+				for(Entity en : entity) {
+					if(en instanceof Turret && en.getBlockLocation().equals(new Point(p.x,p.y-1))) {
 						turretplaced = true;
 						if(((Turret)en).isOwner(getPlayer()))
 							aimed = (Turret)en;
@@ -454,7 +472,7 @@ public class SinglePlayer extends Menu {
 					EntityTypes type = EntityTypes.turrets[selectedturret];
 					try {
 						Turret tu = (Turret)type.getEntityClass().getConstructor(EntityTypes.class, Point.class, String.class).newInstance(EntityTypes.turrets[selectedturret], new Point(p.x,p.y-1), getPlayer());
-						turrets.add(tu);
+						entity.add(tu);
 						onEntityAdded(tu);
 					} catch (Exception ex) {}
 				}
@@ -514,12 +532,65 @@ public class SinglePlayer extends Menu {
 	public void onEntityRemoved(Entity en) {}
 
 	public void onGameOver() {}
-	
+
 	public String getPlayer() {
 		return player;
 	}
-	
+
 	public void setPlayer(String player) {
 		this.player = player;
+	}
+
+	public Entity byUUID(int id) {
+		for(Entity mob : mobs) {
+			if(mob.getUUID() == id) {
+				return mob;
+			}
+		}
+		for(Entity mob : entity) {
+			if(mob.getUUID() == id) {
+				return mob;
+			}
+		}
+		for(Entity mob : draw) {
+			if(mob.getUUID() == id) {
+				return mob;
+			}
+		}
+		return null;
+	}
+	
+	public void countNext() {
+		new Thread() {
+			@Override
+			public void run() {
+				try {
+					long date = new Date().getTime();
+					while(new Date().getTime()-date < 10000 && next.isEnabled()) {
+						Thread.sleep(10l);
+					}
+					int i = 10;
+					while(paused) {
+						Thread.sleep(100l);
+					}
+					while(i >= 0 && next.isEnabled()) {
+						next.setText(i+"");
+						Thread.sleep(1000l);
+						i--;
+						while(paused) {
+							Thread.sleep(100l);
+						}
+					}
+					
+					if(next.isEnabled()) {
+						for(ActionListener al : next.getActionListeners()) {
+							al.actionPerformed(null);
+						}
+					}
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			}
+		}.start();
 	}
 }

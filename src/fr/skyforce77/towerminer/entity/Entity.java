@@ -6,6 +6,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Random;
 
+import javax.vecmath.Vector2d;
+
 import fr.skyforce77.towerminer.TowerMiner;
 import fr.skyforce77.towerminer.maps.MapWritter;
 import fr.skyforce77.towerminer.menus.SinglePlayer;
@@ -24,7 +26,7 @@ public class Entity implements Serializable{
 		this.type = type.id;
 		
 		while(uuid == -1) {
-			int id = new Random().nextInt(100000);
+			int id = new Random().nextInt(Integer.MAX_VALUE);
 			if(!uuidused.contains(id)) {
 				uuid = id;
 			}
@@ -48,13 +50,22 @@ public class Entity implements Serializable{
 	}
 
 	public void setRotationAim(Entity en) {
-		Point aimed = getDirection();
-		this.rotation = Math.toDegrees(Math.atan2(en.getLocation().x - location.x,en.getLocation().y - location.y)-
-				Math.atan2(aimed.x- location.x,aimed.y- location.y));
+		Vector2d vec = new Vector2d(en.getLocation().getX()-getLocation().getX(), en.getLocation().getY()-getLocation().getY());
+		double r1 = vec.angle(new Vector2d(0, -1));
+		double r2 = vec.angle(new Vector2d(-1, 0));
+		if(r2 <= Math.PI/2) {
+			setRotation(2*Math.PI-r1);
+		} else {
+			setRotation(r1);
+		}
 	}
 
 	public Point getLocation() {
 		return location;
+	}
+	
+	public Vector2d getVecLocation() {
+		return new Vector2d(location.getX(), location.getY());
 	}
 	
 	public Point getBlockLocation() {

@@ -65,6 +65,7 @@ public class MultiPlayer extends SinglePlayer {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				next.setEnabled(false);
+				next.setText(LanguageManager.getText("menu.mp.ready.button"));
 
 				if(server) {
 					serverready = true;
@@ -164,6 +165,7 @@ public class MultiPlayer extends SinglePlayer {
 	public void onUsed() {
 		super.onUsed();
 		next.setText(LanguageManager.getText("menu.mp.ready.button"));
+		countNext();
 		speed.setVisible(false);
 		chatfield.setVisible(true);
 		pause.setVisible(false);
@@ -206,7 +208,14 @@ public class MultiPlayer extends SinglePlayer {
 		Packet4RoundFinished pr = new Packet4RoundFinished();
 		pr.gold = clientgold;
 		pr.life = clientlife;
+		pr.round = round;
 		pr.sendAllTCP();
+		
+		if(server) {
+			for(Entity en : entity) {
+				onEntityAdded(en);
+			}
+		}
 	}
 
 	public void setClientGold(int gold) {
@@ -271,7 +280,7 @@ public class MultiPlayer extends SinglePlayer {
 	}
 
 	@Override
-	public void onEntityRemoved(Entity en) {
+	public void onEntityRemoved(final Entity en) {
 		if(server) {
 			final Packet8EntityRemove per = new Packet8EntityRemove();
 			per.entity = en.getUUID();

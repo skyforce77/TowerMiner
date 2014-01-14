@@ -153,7 +153,7 @@ public class Mob extends Entity{
 				}
 			}
 		}
-		if(sp.entities.contains(this)) {
+		if(sp.mobs.contains(this)) {
 			sp.removed.add(this);
 		}
 		died = true;

@@ -19,5 +19,10 @@ public class Witch extends Turret{
 	public void onDamage(Mob e) {
 		e.addEffect(new EntityEffect(EntityEffectType.SLOW, 40*getData()));
 	}
+	
+	@Override
+	public EntityTypes getProjectile() {
+		return EntityTypes.WEAKNESS_POTION;
+	}
 
 }

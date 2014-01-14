@@ -7,7 +7,7 @@ import fr.skyforce77.towerminer.ressources.RessourcesManager;
 
 public enum EntityTypes{
 	
-	UNKNOWN("unknown"),
+	UNKNOWN("unknown", 0),
 	CHICKEN("chicken", 1, 3, 1),
 	OCELOT("ocelot", 4, 5, 20),
 	BAT("bat", 8, 3, 15),
@@ -17,10 +17,14 @@ public enum EntityTypes{
 	HORSE("horse", 30, 4, 130),
 	BABYMUSHCOW("minimushroomcow", 100, 1, 350),
 	MUSHCOW("mushroomcow", 200, 1, 1000),
-	SKELETON("skeleton"),
-	BLAZE("blaze", 50, Blaze.class),
-	SPIDER("Spider", 50, Spider.class),
-	WITCH("witch", 70, Witch.class);
+	SKELETON("skeleton", -90),
+	BLAZE("blaze", 50, 90, Blaze.class),
+	SPIDER("Spider", 50, -90, Spider.class),
+	WITCH("witch", 70, -90, Witch.class),
+	ARROW("arrow", true, 45),
+	FIREBALL("fireball", false, 0),
+	POISON_POTION("poison", false, 0),
+	WEAKNESS_POTION("weakness", false, 0);
 	
 	public static EntityTypes[] turrets;
 	public static EntityTypes[] mobs;
@@ -78,18 +82,21 @@ public enum EntityTypes{
 	int speed = 1;
 	int price = 30;
 	int level = 1;
+	int rotation = 0;
 	public int id;
 	Class<? extends Entity> classe;
 	
-	EntityTypes(String texture) {
+	EntityTypes(String texture, int rotation) {
 		this.textures[0] = RessourcesManager.getIconTexture(texture);
+		this.rotation = rotation;
 		classe = Turret.class;
 	}
 	
-	EntityTypes(String texture, int price, Class<? extends Entity> classe) {
+	EntityTypes(String texture, int price, int rotation, Class<? extends Entity> classe) {
 		this.textures[0] = RessourcesManager.getIconTexture(texture);
 		this.classe = classe;
 		this.price = price;
+		this.rotation = rotation;
 	}
 	
 	EntityTypes(String texture, int life, int speed, int level) {
@@ -98,6 +105,13 @@ public enum EntityTypes{
 		this.speed = speed;
 		this.level = level;
 		classe = Mob.class;
+	}
+	
+	EntityTypes(String texture, boolean canrotate, int rotation) {
+		this.textures[0] = RessourcesManager.getIconTexture(texture);
+		this.level = canrotate ? 1 : 0;
+		this.rotation = rotation;
+		classe = EntityProjectile.class;
 	}
 	
 	public Image getTexture(int data) {
@@ -122,6 +136,10 @@ public enum EntityTypes{
 	
 	public int getSpeed() {
 		return speed;
+	}
+	
+	public int getRotation() {
+		return rotation;
 	}
 	
 	public EntityTypes setTexture(int data, String texture) {

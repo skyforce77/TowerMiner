@@ -1,0 +1,61 @@
+language: Français
+
+towerminer: TowerMiner
+
+launcher.update.needed: Nouveau launcher disponible
+launcher.update.client: Mise à jour du jeu effectuée
+launcher.install: Merci d'avoir installé TowerMiner!
+launcher.offline: Vous jouez en mode hors ligne!
+launcher.without: Le jeu nécessite d'utiliser le launcher, merci de bien vouloir le télécharger
+launcher.outdated: Le jeu nécessite une mise à jour du launcher, merci de bien vouloir la télécharger
+launcher.information: Information
+launcher.unsupported: Votre OS n'est pas entièrement supporté
+
+menu.match: Partie Rapide
+menu.multiplayer: Multijoueur
+menu.editor: Editeur
+menu.quit: Quitter
+menu.main: Menu Principal
+menu.maps: Cartes
+menu.options: Options
+menu.back: Retour
+menu.languages: Langues
+
+menu.editor.file: Fichier
+menu.editor.file.filter: MTMAP seulement
+menu.editor.file.filter.textures: PNG seulement
+menu.editor.map: Carte
+menu.editor.blocks: Blocks
+menu.editor.new: Nouveau
+menu.editor.save: Sauvegarder
+menu.editor.load: Charger
+menu.editor.create: Créer
+menu.editor.create.block: Créer un block
+menu.editor.edit: Editer
+menu.editor.edit.block: Editer un block
+menu.editor.map.name: Nom
+menu.editor.map.width: Largeur
+menu.editor.map.height: Hauteur
+menu.editor.map.color: Couleur de carte
+menu.editor.id: Id
+menu.editor.textures: Définir les textures
+menu.editor.block.liquid: Liquide?
+menu.editor.block.translucent: Transparent?
+menu.editor.block.color: Couleur adaptée à la carte?
+menu.editor.block.turrets: Placement de tourelles possible?
+menu.editor.delete: Supprimer
+
+menu.sp.next: Suivant
+menu.sp.pause: Pause
+menu.sp.boost: Accélérer
+menu.sp.resume: Reprendre
+menu.sp.gameover: Game Over
+menu.sp.round: Manches
+menu.sp.rounds.win: Manches réussies: %
+menu.sp.golds: Or
+menu.sp.golds.win: Or gagné: %
+menu.sp.buy: Acheter
+menu.sp.click.right: Clic droit
+menu.sp.improve: Améliorer
+menu.sp.paused: En pause
+menu.sp.life: Vies

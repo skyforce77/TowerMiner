@@ -4,5 +4,6 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/TMProtocol"/>
 	<classpathentry kind="lib" path="/home/arnaud/Documents/eclipse/librairies/kryonet-debug-2.18-all.jar"/>
+	<classpathentry kind="lib" path="/home/arnaud/Documents/eclipse/librairies/javax.vecmath_1.5.0.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

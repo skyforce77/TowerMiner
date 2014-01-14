@@ -1,8 +1,10 @@
 package fr.skyforce77.towerminer;
 
+import java.util.Random;
+import java.util.UUID;
+
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
-import javax.swing.UIManager;
 
 import fr.skyforce77.towerminer.achievements.Achievements;
 import fr.skyforce77.towerminer.achievements.Popup;
@@ -14,13 +16,12 @@ import fr.skyforce77.towerminer.maps.Maps;
 import fr.skyforce77.towerminer.menus.Menu;
 import fr.skyforce77.towerminer.multiplayer.ProtocolManager;
 import fr.skyforce77.towerminer.multiplayer.ServerInfos;
+import fr.skyforce77.towerminer.particles.ParticleType;
 import fr.skyforce77.towerminer.protocol.listeners.ListenersManager;
 import fr.skyforce77.towerminer.ressources.RessourcesManager;
 import fr.skyforce77.towerminer.ressources.language.LanguageManager;
 import fr.skyforce77.towerminer.save.DataBase;
 import fr.skyforce77.towerminer.sounds.Music;
-
-import java.util.UUID;
 
 public class TowerMiner{
 
@@ -31,18 +32,13 @@ public class TowerMiner{
 	public static boolean launcherupdateneeded = true;
 	public static String[] os = new String[]{"linux"};
 	public static String usedos = "linux";
-    public static String player = "Missigno";
+    public static String player = "Player"+new Random().nextInt(1000);
     public static UUID id;
 
 	public static void startGame(final int launchedversion, final String state, final String os, String player, UUID id) {
 		usedos = os;
         TowerMiner.player = player;
         TowerMiner.id = id;
-        try{ 
-			UIManager.setLookAndFeel(
-					UIManager.getSystemLookAndFeelClassName());
-		}
-		catch(Exception e){}
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
@@ -60,6 +56,7 @@ public class TowerMiner{
 				ListenersManager.register(new ProtocolManager());
 				EntityTypes.createTurrets();
 				EntityEffectType.createEntityEffectTypes();
+				ParticleType.createParticleTypes();
 				Achievements.initAchievements();
 				if(!RessourcesManager.getDirectory().exists()) {
 					RessourcesManager.getDirectory().mkdirs();

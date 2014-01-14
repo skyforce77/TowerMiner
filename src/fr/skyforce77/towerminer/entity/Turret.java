@@ -75,7 +75,7 @@ public class Turret extends Entity{
 				Achievements.unlockAchievement(1);
 				if(data+1 == 10) {
 					Achievements.unlockAchievement(2);
-				} else if(data+1 == 15) {
+				} else if(data+1 == 18) {
 					Achievements.unlockAchievement(3);
 				}
 			}
@@ -83,7 +83,7 @@ public class Turret extends Entity{
 		data++;
 		distance+=10;
 		cost+=price;
-		price = price+(price/2);
+		price = price+(price/3);
 		new Packet10EntityValueUpdate(getUUID(), "turretdata", data).sendAllTCP();
 	}
 
@@ -93,26 +93,28 @@ public class Turret extends Entity{
 			return;
 		}
 		SinglePlayer sp = (SinglePlayer)TowerMiner.menu;
-		if(tir >= 40-(data*2)) {
-			double distance = 99999;
-			Mob e = null;
-			for(Entity en : sp.entities) {
-				double i = en.getLocation().distance(location.x, location.y);
-				if(i < distance && i < this.distance) {
-					distance = i;
-					e = (Mob)en;
-				}
+		
+		double distance = 99999;
+		Mob e = null;
+		for(Entity en : sp.mobs) {
+			double i = en.getLocation().distance(location.x, location.y);
+			if(i < distance && i < this.distance) {
+				distance = i;
+				e = (Mob)en;
 			}
+		}
+		
+		if(tir >= 40-(data*2)) {
 			if(e != null) {
-				setRotationAim(e);
+				new EntityProjectile(getProjectile(),this, e);
 				sp.onEntityTeleport(this, getLocation());
-				e.hurt(1);
-				onDamage(e);
 				tir = 0;
 			}
 		} else {
 			tir++;
 		}
+		
+		setRotationAim(e);
 	}
 	
 	public void onDamage(Mob e) {};
@@ -122,7 +124,7 @@ public class Turret extends Entity{
 		double x = getLocation().getX();
 		double y = getLocation().getY();
 		double ro = getRotation();
-		g2d.rotate(ro, x,y+sp.CanvasY);
+		g2d.rotate(ro-Math.toRadians(getType().rotation), x,y+sp.CanvasY);
 		try {
 			if(sp instanceof MultiPlayer) {
 				g2d.drawImage(RenderHelper.getColoredImage(getType().getTexture(0), new Color(rgb), 0.1F),(int)x-15+sp.CanvasX,(int)y-15+sp.CanvasY,30,30,null);
@@ -130,7 +132,7 @@ public class Turret extends Entity{
 				g2d.drawImage(getType().getTexture(0),(int)x-15+sp.CanvasX,(int)y-15+sp.CanvasY,30,30,null);
 			}
 		} catch (Exception e) {}
-		g2d.rotate(-ro, x,y+sp.CanvasY);
+		g2d.rotate(-ro+Math.toRadians(getType().rotation), x,y+sp.CanvasY);
 	}
 	
 	@Override
@@ -165,6 +167,10 @@ public class Turret extends Entity{
 		g2d.drawString(text[1], (int)x+3, (int)y-3-16);
 		g2d.drawString(text[2], (int)x+3, (int)y-3-32);
 		g2d.drawString(text[3], (int)x+3, (int)y-3-48);
+	}
+	
+	public EntityTypes getProjectile() {
+		return EntityTypes.ARROW;
 	}
 
 }
