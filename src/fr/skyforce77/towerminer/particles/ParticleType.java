@@ -1,35 +1,22 @@
 package fr.skyforce77.towerminer.particles;
 
-import java.awt.Color;
 import java.awt.Graphics2D;
 
-import fr.skyforce77.towerminer.TowerMiner;
 import fr.skyforce77.towerminer.menus.SinglePlayer;
-import fr.skyforce77.towerminer.render.RenderHelper;
-import fr.skyforce77.towerminer.ressources.RessourcesManager;
+import fr.skyforce77.towerminer.particles.types.PTEightTextures;
+import fr.skyforce77.towerminer.particles.types.PTScaleFade;
 
 public class ParticleType {
 	
-	public static ParticleType POTION_SPLASH;
-	
-	public static void createParticleTypes() {
-		POTION_SPLASH = new ParticleType("potion_splash") {
-			@Override
-			public void draw(Graphics2D g2d, SinglePlayer sp, Particle particle) {
-				int size = (int)(16*particle.getScale());
-				int size2 = size/2;
-				g2d.setClip((int)(particle.getX()-size2), (int)(particle.getY()-size2)+TowerMiner.game.CanvasY, size, size);
-				float l1 = size2*particle.getTicksLived()/particle.getLiveTime();
-				int data = (int)(l1);
-				Color color = particle.getColor() == null ? Color.white : particle.getColor();
-				g2d.drawImage(RenderHelper.getColoredImage(RessourcesManager.getTexture("splash"), color, 0.4f), (int)(particle.getX())-size2-(size*data), (int)(particle.getY())-size2+TowerMiner.game.CanvasY, (int)(128*particle.getScale()), size, null);
-			}
-		};
-	}
+	public static ParticleType POTION_SPLASH = new PTEightTextures("potion_splash", "splash");
+	public static ParticleType SMOKE = new PTEightTextures("smoke", "smoke");
+	public static ParticleType CRITICAL = new PTEightTextures("critical", "crit");
+	public static ParticleType FIREWORK = new PTEightTextures("firework", "fw");
+	public static ParticleType FLAME = new PTScaleFade("flame", "flame");
 	
 	private String name;
 	
-	ParticleType(String name) {
+	public ParticleType(String name) {
 		this.name = name;
 	}
 	

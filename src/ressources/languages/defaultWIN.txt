@@ -59,3 +59,56 @@ menu.sp.click.right: Clic droit
 menu.sp.improve: Améliorer
 menu.sp.paused: En pause
 menu.sp.life: Vies
+
+menu.mp.client.search: Recherche du serveur...
+menu.mp.client.fail: Connexion échouée.
+menu.mp.client.sending: Envoi des informations...
+menu.mp.client.kick: Déconnecté du serveur
+menu.mp.client.kick.unknown: raison inconnue
+menu.mp.client.kick.match: Partie en cours
+menu.mp.client.kick.version: Version non compatible
+menu.mp.client.join: Rejoindre
+menu.mp.client.adress: Adresse
+menu.mp.client.map: Reception de la carte...
+menu.mp.server.wait: En attente de connexion...
+menu.mp.server.connect: Connexion en cours...
+menu.mp.server.ip: Votre ip est
+menu.mp.create: Créer une partie
+menu.mp.join: Rejoindre une partie
+menu.mp.blue: Bleu
+menu.mp.red: Rouge
+menu.mp.ready: % est prêt
+menu.mp.ready.button: Prêt?
+menu.mp.message: Message
+menu.mp.connection.lost: Connexion perdue
+menu.mp.connection.client: Client déconnecté
+menu.mp.gameover.survive: Vous avez survécu % manches
+menu.mp.gameover.lose: Vous avez perdu à la manche %
+menu.mp.gameover.win: Vous avez gagné!
+menu.mp.list: Favoris
+
+menu.about: A propos
+menu.about.music: Musiques
+menu.about.music.text: Musiques de MachinimaSound et KevinMcLeod
+menu.about.textures: Textures
+menu.about.textures.text: Textures appartenant à Minecraft® Tous droits réservés
+
+menu.more: Plus
+
+turret.level: Niveau
+turret.range: Portée
+turret.owner: Créateur
+turret.cost: Coût total
+turret.speed: Vitesse
+
+achievement.text: Succès obtenu!
+achievement.text.mp: % a obtenu
+achievement.text.1: Mise à niveau
+achievement.text.2: Gros calibre
+achievement.text.3: Indémontable
+achievement.text.4: Sorcier!
+achievement.text.5: Pyroman
+
+music.error: Téléchargement impossible
+music.downloading: Téléchargement de %
+music.finished: Téléchargement terminé

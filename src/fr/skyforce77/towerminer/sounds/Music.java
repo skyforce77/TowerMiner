@@ -177,6 +177,9 @@ public class Music {
 		}
 
 		try {
+			if(line.isOpen()) {
+				line.close();
+			}
 			line.open(audioFormat);
 		} catch (LineUnavailableException e) {
 			e.printStackTrace();
@@ -188,7 +191,7 @@ public class Music {
 			int bytesRead=0;
 			while (!stopped && (bytesRead = audioInputStream.read(bytes, 0, bytes.length)) != -1) {
 				line.write(bytes, 0, bytesRead);
-				
+
 				if (line.isControlSupported(FloatControl.Type.MASTER_GAIN)) {
 					FloatControl control = (FloatControl) line.getControl(FloatControl.Type.MASTER_GAIN);
 					control.setValue((float)DataBase.getValue("volume", -10F));

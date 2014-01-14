@@ -16,7 +16,7 @@ public class Achievements {
 	
 	public static void unlockAchievement(int id) {
 		Achievement a = achievements.get(id);
-		if(!a.has()) {
+		if(a != null && !a.has()) {
 			a.give();
 		}
 	}

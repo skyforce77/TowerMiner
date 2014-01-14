@@ -12,6 +12,7 @@ import fr.skyforce77.towerminer.maps.MapWritter;
 import fr.skyforce77.towerminer.menus.MultiPlayer;
 import fr.skyforce77.towerminer.menus.SinglePlayer;
 import fr.skyforce77.towerminer.particles.ParticleEffect;
+import fr.skyforce77.towerminer.particles.ParticleType;
 import fr.skyforce77.towerminer.protocol.packets.Packet10EntityValueUpdate;
 import fr.skyforce77.towerminer.protocol.packets.Packet13EntityTeleport;
 
@@ -122,7 +123,11 @@ public class EntityProjectile extends Entity {
 			g2d.rotate(ro-Math.toRadians(getType().rotation), x,y+sp.CanvasY);
 		Image i = getType().getTexture(0);
 		try {
-			g2d.drawImage(i,(int)x-((MapWritter.getBlockWidth()-20)/2)+sp.CanvasX,(int)y-((MapWritter.getBlockHeight()-20)/2)+sp.CanvasY,MapWritter.getBlockWidth()-20,MapWritter.getBlockHeight()-20,null);
+			int s = 20;
+			if(getType().equals(EntityTypes.FIREBALL)) {
+				s = 25;
+			}
+			g2d.drawImage(i,(int)x-((MapWritter.getBlockWidth()-s)/2)+sp.CanvasX,(int)y-((MapWritter.getBlockHeight()-s)/2)+sp.CanvasY,MapWritter.getBlockWidth()-s,MapWritter.getBlockHeight()-s,null);
 		} catch (Exception e) {}
 		if(getType().level == 1)
 			g2d.rotate(-ro+Math.toRadians(getType().rotation), x,y+sp.CanvasY);
@@ -131,9 +136,9 @@ public class EntityProjectile extends Entity {
 	
 	public void onHurt(SinglePlayer sp) {
 		if(getType().equals(EntityTypes.POISON_POTION)) {
-			ParticleEffect.createPotionSplashEffect(sp, (int)getLocation().getX(), (int)getLocation().getY(), Color.GREEN);
+			ParticleEffect.createParticleSplash(ParticleType.POTION_SPLASH, sp, (int)getLocation().getX(), (int)getLocation().getY(), Color.GREEN);
 		} else if(getType().equals(EntityTypes.WEAKNESS_POTION)) {
-			ParticleEffect.createPotionSplashEffect(sp, (int)getLocation().getX(), (int)getLocation().getY(), Color.DARK_GRAY);
+			ParticleEffect.createParticleSplash(ParticleType.POTION_SPLASH, sp, (int)getLocation().getX(), (int)getLocation().getY(), Color.DARK_GRAY);
 		}
 	}
 

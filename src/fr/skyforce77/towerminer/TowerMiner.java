@@ -16,7 +16,6 @@ import fr.skyforce77.towerminer.maps.Maps;
 import fr.skyforce77.towerminer.menus.Menu;
 import fr.skyforce77.towerminer.multiplayer.ProtocolManager;
 import fr.skyforce77.towerminer.multiplayer.ServerInfos;
-import fr.skyforce77.towerminer.particles.ParticleType;
 import fr.skyforce77.towerminer.protocol.listeners.ListenersManager;
 import fr.skyforce77.towerminer.ressources.RessourcesManager;
 import fr.skyforce77.towerminer.ressources.language.LanguageManager;
@@ -56,7 +55,6 @@ public class TowerMiner{
 				ListenersManager.register(new ProtocolManager());
 				EntityTypes.createTurrets();
 				EntityEffectType.createEntityEffectTypes();
-				ParticleType.createParticleTypes();
 				Achievements.initAchievements();
 				if(!RessourcesManager.getDirectory().exists()) {
 					RessourcesManager.getDirectory().mkdirs();
