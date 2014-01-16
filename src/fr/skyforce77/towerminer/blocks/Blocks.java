@@ -1,33 +1,41 @@
 package fr.skyforce77.towerminer.blocks;
 
+import java.awt.Color;
+import java.awt.Graphics2D;
 import java.awt.Image;
 import java.io.File;
 import java.io.Serializable;
+import java.util.Random;
 
 import javax.swing.ImageIcon;
 
+import fr.skyforce77.towerminer.TowerMiner;
+import fr.skyforce77.towerminer.blocks.renders.BlockRender;
 import fr.skyforce77.towerminer.maps.Maps;
+import fr.skyforce77.towerminer.menus.SinglePlayer;
+import fr.skyforce77.towerminer.particles.Particle;
+import fr.skyforce77.towerminer.particles.ParticleType;
 import fr.skyforce77.towerminer.ressources.RessourcesManager;
 
 public class Blocks implements Serializable{
 
 	private static final long serialVersionUID = 2752810401397078248L;
 	public static Blocks[] blocks;
-	
+
 	public static void createNativeBlocks() {
-		blocks = new Blocks[2000];
+		blocks = new Blocks[5000];
 		new Blocks(0,"unknown").setInvisible();
-		new Blocks(1,"stone");
+		new Blocks(1,"stone", "stone_granite", "stone_granite_smooth", "stone_diorite", "stone_diorite_smooth", "stone_andesite", "stone_andesite_smooth");
 		new Blocks(2,"grass","podzol").setAdaptColor(0);
 		new Blocks(3,"dirt");
 		new Blocks(4,"cobblestone");
 		new Blocks(5,"planks","planks1","planks2","planks3");
 		//TODO pousses
 		new Blocks(7,"bedrock");
-		new Blocks(8,"water","water1","water2","water3","water4").setLiquid().setOverlay().setCantPlaceOn();
-		new Blocks(9,"water").setLiquid().setInvisible();
-		new Blocks(10,"lava").setLiquid().setCantPlaceOn().setInvisible();
-		new Blocks(11,"lava").setLiquid().setCantPlaceOn();
+		new Blocks(8,"water_still").setLiquid().setOverlay().setCantPlaceOn().setRender(0);
+		new Blocks(9,"water_flow").setLiquid().setOverlay().setCantPlaceOn().setRender(1);
+		new Blocks(10,"lava_still").setLiquid().setOverlay().setCantPlaceOn().setRender(0);
+		new Blocks(11,"lava_flow").setLiquid().setOverlay().setCantPlaceOn().setRender(1);
 		new Blocks(12,"sand","red_sand");
 		new Blocks(13,"gravel");
 		new Blocks(14,"gold_ore");
@@ -44,7 +52,7 @@ public class Blocks implements Serializable{
 		new Blocks(25,"noteblock");
 		new Blocks(26,"bed","bed1","bed2","bed3","bed4","bed5","bed6","bed7");
 		new Blocks(27,"rail_golden","rail_golden1","rail_golden2","rail_golden3").setOverlay();
-		new Blocks(28,"rail_golden","rail_golden1","rail_golden2","rail_golden3").setOverlay();
+		new Blocks(28,"rail_detector","rail_detector1","rail_detector2","rail_detector3").setOverlay();
 		new Blocks(29,"spiston","piston1","piston2");
 		//TODO plantes mortes
 		new Blocks(33,"piston","piston1","piston2");
@@ -61,10 +69,44 @@ public class Blocks implements Serializable{
 		new Blocks(48,"cobblestone_mossy");
 		new Blocks(49,"obsidian");
 		//TODO torches et feu
-		new Blocks(52, "mob_spawner").setOverlay();
+		new Blocks(50, "torch_on", "torch_off") {
+			private static final long serialVersionUID = -4676064980975742683L;
+
+			public void onDraw(Graphics2D g2d, int data, int x, int y, int m, int n) {
+				if(data == 0 && TowerMiner.menu instanceof SinglePlayer && new Random().nextInt(200) <= 1)
+					((SinglePlayer)TowerMiner.menu).particles.add(new Particle(ParticleType.FLAME, x*48+24, y*48+24, null, 1.2f));
+			};
+		}.setOverlay();
+		new Blocks(52, "mob_spawner") {
+			private static final long serialVersionUID = -46760649095742683L;
+
+			public void onDraw(Graphics2D g2d, int data, int x, int y, int m, int n) {
+				if(TowerMiner.menu instanceof SinglePlayer && new Random().nextInt(200) <= 1) {
+					int i = 10;
+					while(i >= 0) {
+						int ix = new Random().nextInt(2) == 0 ? 1 : -1;
+						int iy = new Random().nextInt(2) == 0 ? +1 : -1;
+						int is = new Random().nextInt(2) == 0 ? +1 : -1;
+						((SinglePlayer)TowerMiner.menu).particles.add(new Particle(ParticleType.FLAME, x*48+24+new Random().nextInt(30)*ix, y*48+24+new Random().nextInt(30)*iy, null, 1f+(new Random().nextInt(20)/40)*is));
+						i--;
+					}
+				}
+			};
+		}.setOverlay();
 		//TODO un paquet!
 		new Blocks(66, "rail","rail1","rail2","rail3","rail4","rail5").setOverlay();
 		//TODO un paquet!
+		new Blocks(76, "torch_redstone_on", "torch_off") {
+			private static final long serialVersionUID = -467606498095742683L;
+
+			public void onDraw(Graphics2D g2d, int data, int x, int y, int m, int n) {
+				if(data == 0 && TowerMiner.menu instanceof SinglePlayer && new Random().nextInt(200) <= 1) {
+					int ix = new Random().nextInt(2) == 0 ? 1 : -1;
+					int iy = new Random().nextInt(2) == 0 ? +1 : -1;
+					((SinglePlayer)TowerMiner.menu).particles.add(new Particle(ParticleType.SMOKE, x*48+24+new Random().nextInt(15)*ix, y*48+24+new Random().nextInt(15)*iy, null, 1f+-0.2f, Color.RED));
+				}
+			};
+		}.setOverlay();
 		new Blocks(79, "ice").setOverlay();
 		new Blocks(80, "snow");
 		new Blocks(81, "cactus","cactus1").setOverlay().setCantPlaceOn();
@@ -76,6 +118,11 @@ public class Blocks implements Serializable{
 		new Blocks(88, "soul_sand");
 		new Blocks(89, "glowstone");
 		//TODO un paquet!
+		new Blocks(95,"glass_white","glass_orange","glass_magenta",
+				"glass_light_blue","glass_yellow","glass_lime","glass_pink",
+				"glass_gray","glass_silver","glass_cyan","glass_purple",
+				"glass_blue","glass_brown","glass_green","glass_red",
+				"glass_black").setOverlay();
 		new Blocks(98, "stonebrick","stonebrick_mossy","stonebrick_cracked","stonebrick_carved");
 		//TODO un paquet!
 		new Blocks(110, "mycelium");
@@ -101,12 +148,15 @@ public class Blocks implements Serializable{
 		new Blocks(162,"hardened_clay");
 		new Blocks(163,"coal_block");
 		new Blocks(164,"ice_packed");
-		
+		new Blocks(165,"slime").setOverlay();
+
 		new Blocks(1021,"death","death1");
 		new Blocks(1022,"null").setInvisible().setOverlay();
 		new Blocks(1023,"fleche","fleche1","fleche2","fleche3");
+		
+		BlockRender.createRenders();
 	}
-	
+
 	public static void addMapBlocks(Maps m) {
 		createNativeBlocks();
 		if(m.getCustomBlocks() != null) {
@@ -117,15 +167,15 @@ public class Blocks implements Serializable{
 			}
 		}
 	}
-	
+
 	public static int getFirstVisibleBlock() {
 		return getNextVisibleBlock(-1);
 	}
-	
+
 	public static int getLatestVisibleBlock() {
 		return getPreviousVisibleBlock(blocks.length);
 	}
-	
+
 	public static int getNextVisibleBlock(int now) {
 		int i = now+1;
 		if(i == blocks.length) {
@@ -139,7 +189,7 @@ public class Blocks implements Serializable{
 		}
 		return i;
 	}
-	
+
 	public static int getPreviousVisibleBlock(int now) {
 		int i = now-1;
 		while(blocks[i] == null || !blocks[i].isVisible()) {
@@ -150,7 +200,7 @@ public class Blocks implements Serializable{
 		}
 		return i;
 	}
-	
+
 	int id = blocks.length-1;
 	ImageIcon[] textures = new ImageIcon[16];
 	boolean[] adapts = new boolean[16];
@@ -158,82 +208,92 @@ public class Blocks implements Serializable{
 	boolean overlay = false;
 	boolean liquid = false;
 	boolean canplace = true;
-	
+	int render = -1;
+
 	public Blocks() {
 		visible = true;
 		canplace = true;
 	}
-	
+
 	public Blocks(int id, String texture) {
 		this.id = id;
 		this.textures[0] = RessourcesManager.getIconTexture(texture);
 		setAdaptColor(false);
 		blocks[id] = this;
 	}
-	
+
 	public Blocks(int id, String... textures) {
 		this.id = id;
-		
+
 		int i = 0;
 		while(i < textures.length) {
 			this.textures[i] = RessourcesManager.getIconTexture(textures[i]);
 			i++;
 		}
-		
+
 		setAdaptColor(false);
 		blocks[id] = this;
 	}
-	
+
 	public void resetTextures() {
 		textures = new ImageIcon[16];
 	}
-	
+
 	public Image getTexture() {
 		return textures[0].getImage();
 	}
-	
+
 	public ImageIcon getIcon() {
 		return textures[0];
 	}
-	
+
 	public Image getTexture(int data) {
 		if(data < 0 || data > textures.length-1 || textures[data] == null) {
 			return textures[0].getImage();
 		}
 		return textures[data].getImage();
 	}
-	
+
 	public Image getRawTexture(int data) {
 		if(textures[data] == null) {
 			return null;
 		}
 		return textures[data].getImage();
 	}
-	
+
 	public int getId() {
 		return id;
 	}
-	
+
 	public boolean isMapAdapted(int data) {
 		return adapts[data];
 	}
-	
+
 	public boolean isVisible() {
 		return visible;
 	}
-	
+
 	public boolean isOverlay() {
 		return overlay;
 	}
-	
+
 	public boolean isLiquid() {
 		return liquid;
 	}
-	
+
 	public boolean canPlaceTurretOn() {
 		return canplace;
 	}
 	
+	public BlockRender getRender() {
+		return render == -1 ? null : BlockRender.renders[render];
+	}
+	
+	public Blocks setRender(int id) {
+		render = id;
+		return this;
+	}
+
 	public Blocks setAdaptColor(boolean adapt) {
 		int i = adapts.length-1;
 		while(i >= 0) {
@@ -242,7 +302,7 @@ public class Blocks implements Serializable{
 		}
 		return this;
 	}
-	
+
 	public Blocks setAdaptColor() {
 		int i = adapts.length-1;
 		while(i >= 0) {
@@ -251,60 +311,62 @@ public class Blocks implements Serializable{
 		}
 		return this;
 	}
-	
+
 	public Blocks setAdaptColor(int data) {
 		this.adapts[data] = true;
 		return this;
 	}
-	
+
 	public Blocks setInvisible() {
 		this.visible = false;
 		return this;
 	}
-	
+
 	public Blocks setOverlay() {
 		this.overlay = true;
 		return this;
 	}
-	
+
 	public Blocks setOverlay(boolean overlay) {
 		this.overlay = overlay;
 		return this;
 	}
-	
+
 	public Blocks setLiquid() {
 		this.liquid = true;
 		return this;
 	}
-	
+
 	public Blocks setLiquid(boolean liquid) {
 		this.liquid = liquid;
 		return this;
 	}
-	
+
 	public Blocks setCantPlaceOn() {
 		this.canplace = false;
 		return this;
 	}
-	
+
 	public Blocks setCanPlaceOn(boolean can) {
 		this.canplace = can;
 		return this;
 	}
-	
+
 	public Blocks setId(int id) {
 		this.id = id;
 		return this;
 	}
-	
+
 	public Blocks setTexture(int data, String texture) {
 		textures[data] = RessourcesManager.getIconTexture(texture);
 		return this;
 	}
-	
+
 	public Blocks setTexture(int data, File f) {
 		textures[data] = new ImageIcon(f.getAbsolutePath());
 		return this;
 	}
+
+	public void onDraw(Graphics2D g2d, int data, int x, int y, int m, int n) {}
 
 }

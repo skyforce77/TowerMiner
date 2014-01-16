@@ -22,6 +22,7 @@ import javax.swing.JPanel;
 
 import fr.skyforce77.towerminer.TowerMiner;
 import fr.skyforce77.towerminer.achievements.Popup;
+import fr.skyforce77.towerminer.blocks.renders.BlockRender;
 import fr.skyforce77.towerminer.maps.Maps;
 import fr.skyforce77.towerminer.menus.MultiPlayer;
 import fr.skyforce77.towerminer.menus.SinglePlayer;
@@ -33,7 +34,7 @@ public class Game extends JFrame implements MouseListener,MouseWheelListener,Mou
 
 	private static final long serialVersionUID = 1L;
 
-	public static String version = "Alpha 0.9b";
+	public static String version = "Alpha 0.9c";
 	public boolean fpsdisplay = TowerMiner.dev;
 	public static boolean offline = false;
 
@@ -108,6 +109,11 @@ public class Game extends JFrame implements MouseListener,MouseWheelListener,Mou
 				while (!terminated) {
 					if(TowerMiner.menu != null) {
 						TowerMiner.menu.onTick();
+						for(BlockRender r : BlockRender.renders) {
+							if(r != null) {
+								r.onGameTick();
+							}
+						}
 					}
 
 					try {

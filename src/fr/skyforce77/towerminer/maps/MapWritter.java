@@ -2,6 +2,7 @@ package fr.skyforce77.towerminer.maps;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.Point;
 import java.util.ArrayList;
 
@@ -13,58 +14,33 @@ public class MapWritter {
 	private static void drawLine(Graphics2D g2d, int y, int m, int n) {
 		int x = 0;
 		while(x < Maps.getActualMap().getXMax()) {
-			drawBlock(g2d, Maps.getActualMap().getBlockId(x,y), Maps.getActualMap().getBlockData(x,y), x, y, m, n);
-			drawBlock(g2d, Maps.getActualMap().getOverlayId(x,y), Maps.getActualMap().getOverlayData(x,y), x, y, m, n);
+			drawBlock(g2d, Maps.getActualMap().getBlockId(x,y), Maps.getActualMap().getBlockData(x,y), x*getBlockWidth(), y*getBlockHeight(), m, n, 48);
+			drawBlock(g2d, Maps.getActualMap().getOverlayId(x,y), Maps.getActualMap().getOverlayData(x,y), x*getBlockWidth(), y*getBlockHeight(), m, n, 48);
 			x++;
 		}
 	}
 
-	public static void drawBlock(Graphics2D g2d, int id, int data, int x, int y, int m, int n) {
-		if(Blocks.blocks[id].isMapAdapted(data)) {
-			Color c = Maps.getActualMap().getColorModifier();
-			g2d.drawImage(RenderHelper.getColoredImage(Blocks.blocks[id].getTexture(data), c, 0.5F),x*getBlockWidth()+m,y*getBlockHeight()+n,getBlockWidth(),getBlockHeight(),null);
+	public static void drawBlock(Graphics2D g2d, int id, int data, int x, int y, int m, int n, int size) {
+		g2d = (Graphics2D)g2d.create();
+		if(id < Blocks.blocks.length && Blocks.blocks[id] != null) {
+			Blocks.blocks[id].onDraw(g2d, data, x, y, m, n);
+			if(Blocks.blocks[id].getRender() == null || (Blocks.blocks[id].getRender() != null && !Blocks.blocks[id].getRender().overrideNormalRender())) {
+				Image image = null;
+				if(Blocks.blocks[id].isMapAdapted(data)) {
+					Color c = Maps.getActualMap().getColorModifier();
+					image = RenderHelper.getColoredImage(Blocks.blocks[id].getTexture(data), c, 0.5F);
+				} else {
+					image = Blocks.blocks[id].getTexture(data);
+				}
+				g2d.drawImage(image,x+m,y+n,size,size,null);
+			}
+			if(Blocks.blocks[id].getRender() != null) {
+				Blocks.blocks[id].getRender().onBlockRender(Blocks.blocks[id], g2d, data, x+m, y+n, size);
+			}
 		} else {
-			g2d.drawImage(Blocks.blocks[id].getTexture(data),x*getBlockWidth()+m,y*getBlockHeight()+n,getBlockWidth(),getBlockHeight(),null);
+			drawBlock(g2d, 1, data, x, y, m, n, size);
 		}
 	}
-
-	/*private static Point getBlockToCopy(int x, int y) {
-		Blocks[] b = new Blocks[4];
-		Point[] points = new Point[4];
-		int[] count = new int[4];
-		int i = 0;
-		for(Point p : getAroundPoints(x, y)) {
-			if(Maps.getActualMap().hasPoint(p) && !Maps.getActualMap().getBlock((int)p.getX(), (int)p.getY()).isTranslucent()) {
-				b[i] = Maps.getActualMap().getBlock((int)p.getX(), (int)p.getY());
-				points[i] = p;
-			}
-			i++;
-		}
-		i = 0;
-		for(Blocks bl : b) {
-			int it = 0;
-			if(bl != null) {
-				for(Blocks bl2 : b) {
-					if(bl2 != null && bl.equals(bl2) && !bl.isTranslucent()) {
-						it++;
-					}
-				}
-			}
-			count[i] = it;
-			i++;
-		}
-		i = 0;
-		int counts = 0;
-		Point point = new Point(-1,-1);
-		for(int c : count) {
-			if(c >= counts) {
-				counts = c;
-				point = points[i];
-			}
-			i++;
-		}
-		return point;
-	}*/
 
 	public static ArrayList<Point> getAroundPoints(int x, int y) {
 		ArrayList<Point> points = new ArrayList<Point>();
@@ -83,12 +59,12 @@ public class MapWritter {
 		}
 		g2d.setColor(Color.GRAY);
 	}
-	
+
 	public static int getBlockHeight() {
 		return 48;
 		//return (TowerMiner.game.getHeight()-TowerMiner.game.CanvasY)/Maps.getActualMap().getYMax();
 	}
-	
+
 	public static int getBlockWidth() {
 		return 48;
 		//return (TowerMiner.game.getWidth()-TowerMiner.game.CanvasX)/Maps.getActualMap().getXMax();

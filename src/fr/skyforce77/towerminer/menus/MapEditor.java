@@ -258,12 +258,7 @@ public class MapEditor extends Menu{
 			g2d.draw3DRect(xl, yl, 47, 47, false);
 		}
 
-		g2d.drawImage(Blocks.blocks[selected].getTexture(data),Xcursor-16,Ycursor-16,32,32,null);
-		if(Blocks.blocks[selected].isMapAdapted(data)) {
-			Color c = Maps.getActualMap().getColorModifier();
-			g2d.setColor(new Color(c.getRed(), c.getGreen(), c.getBlue(), 100));
-			g2d.fillRect(Xcursor-16,Ycursor-16,32,32);
-		}
+		MapWritter.drawBlock(g2d, selected, data, Xcursor-16, Ycursor-16, 0, 0, 32);
 
 		int xt = Maps.getActualMap().getXDepart()*48;
 		int yt = Maps.getActualMap().getYDepart()*48;
