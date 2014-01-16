@@ -26,8 +26,8 @@ public class PTEightTextures extends ParticleType{
 		g2d.setClip((int)(particle.getX()-size2), (int)(particle.getY()-size2)+TowerMiner.game.CanvasY, size, size);
 		float l1 = size2*particle.getTicksLived()/particle.getLiveTime();
 		int data = (int)(size2-l1);
-		Color color = particle.getColor() == null ? Color.white : particle.getColor();
-		g2d.drawImage(RenderHelper.getColoredImage(RessourcesManager.getTexture(texture), color, 0.4f), (int)(particle.getX())-size2-(size*data), (int)(particle.getY())-size2+TowerMiner.game.CanvasY, (int)(128*particle.getScale()), size, null);
+		Color color = particle.getColor() == null ? new Color(0,0,0,0) : particle.getColor();
+		g2d.drawImage(RenderHelper.getColoredImage(RessourcesManager.getTexture(texture), color, color.getAlpha() == 255 ? 0.4f : color.getAlpha()/255f), (int)(particle.getX())-size2-(size*data), (int)(particle.getY())-size2+TowerMiner.game.CanvasY, (int)(128*particle.getScale()), size, null);
 	}
 
 }

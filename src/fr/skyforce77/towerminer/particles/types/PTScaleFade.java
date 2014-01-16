@@ -25,8 +25,8 @@ public class PTScaleFade extends ParticleType{
 		float scale = particle.getScale()*(1-(l1/100));
 		int size = (int)(16*scale);
 		int size2 = size/2;
-		Color color = particle.getColor() == null ? Color.white : particle.getColor();
-		g2d.drawImage(RenderHelper.getColoredImage(RessourcesManager.getTexture(texture), color, 0.4f), (int)(particle.getX())-size2, (int)(particle.getY())-size2+TowerMiner.game.CanvasY, size, size, null);
+		Color color = particle.getColor() == null ? new Color(0,0,0,0) : particle.getColor();
+		g2d.drawImage(RenderHelper.getColoredImage(RessourcesManager.getTexture(texture), color, color.getAlpha() == 0 ? 0.4f : color.getAlpha()/255f), (int)(particle.getX())-size2, (int)(particle.getY())-size2+TowerMiner.game.CanvasY, size, size, null);
 	}
 
 }

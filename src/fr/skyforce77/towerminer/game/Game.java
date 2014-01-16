@@ -34,7 +34,7 @@ public class Game extends JFrame implements MouseListener,MouseWheelListener,Mou
 
 	private static final long serialVersionUID = 1L;
 
-	public static String version = "Alpha 0.9c";
+	public static String version = "Alpha 0.9d";
 	public boolean fpsdisplay = TowerMiner.dev;
 	public static boolean offline = false;
 
