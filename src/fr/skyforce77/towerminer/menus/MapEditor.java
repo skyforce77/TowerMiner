@@ -291,7 +291,7 @@ public class MapEditor extends Menu{
 	@Override
 	public void onKeyPressed(int keyCode) {
 		if(keyCode == KeyEvent.VK_RIGHT || keyCode == KeyEvent.VK_LEFT || keyCode == KeyEvent.VK_Q || keyCode == KeyEvent.VK_D) {
-			if(Blocks.blocks[selected].getTexture(data+1) == Blocks.blocks[selected].getTexture(0)) {
+			if(Blocks.blocks[selected].dataNumber() <= data+1) {
 				data = 0;
 			} else {
 				data++;
@@ -343,7 +343,7 @@ public class MapEditor extends Menu{
 			selected = Maps.getActualMap().getBlockId(xl, yl);
 			data = Maps.getActualMap().getBlockData(xl, yl);
 		} else if(e.getModifiers() == 4) {
-			if(Blocks.blocks[selected].getTexture(data+1) == Blocks.blocks[selected].getTexture(0)) {
+			if(Blocks.blocks[selected].dataNumber() <= data+1) {
 				data = 0;
 			} else {
 				data++;

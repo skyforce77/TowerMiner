@@ -5,6 +5,8 @@ import java.awt.Graphics2D;
 import java.awt.Image;
 import java.util.HashMap;
 
+import javax.swing.ImageIcon;
+
 import fr.skyforce77.towerminer.blocks.Blocks;
 import fr.skyforce77.towerminer.maps.Maps;
 import fr.skyforce77.towerminer.render.RenderHelper;
@@ -17,6 +19,10 @@ public class FlowingRender extends BlockRender{
 	
 	@Override
 	public void onBlockRender(Blocks b, Graphics2D g2d, int data, int x, int y, int pix) {
+		if(!states.containsKey(b)) {
+			return;
+		}
+		
 		int images = b.getTexture(0).getHeight(null)/(b.getTexture(0).getWidth(null)/2);
 		Image image = null;
 		if(b.isMapAdapted(0)) {
@@ -25,8 +31,17 @@ public class FlowingRender extends BlockRender{
 		} else {
 			image = b.getTexture(0);
 		}
-		g2d.setClip(x, y, pix, pix);
-		g2d.drawImage(image, x, y-(pix*states.get(b)), pix*2, pix*images, null);
+		g2d = (Graphics2D)g2d.create(x, y, pix, pix);
+		
+		if(data <= 3) {
+			g2d.rotate(Math.toRadians(90*data), pix/2, pix/2);
+			g2d.drawImage(image, 0, -(pix*states.get(b)), pix*2, pix*images, null);
+		} else {
+			g2d.rotate(Math.toRadians(90*data+45), pix/2, pix/2);
+			g2d.drawImage(image, -pix/2, -(pix*states.get(b)), pix*2, pix*images, null);
+			g2d.drawImage(image, -pix/2, -(pix*states.get(b))-(images*pix), pix*2, pix*images, null);
+			g2d.drawImage(image, -pix/2, -(pix*states.get(b))+(images*pix), pix*2, pix*images, null);
+		}
 	}
 	
 	@Override
@@ -35,7 +50,7 @@ public class FlowingRender extends BlockRender{
 			if(b != null) {
 				int images = b.getTexture(0).getHeight(null)/(b.getTexture(0).getWidth(null)/2);
 				if(states.containsKey(b)) {
-					if(count.get(b) <= 5) {
+					if(count.get(b) <= 2) {
 						count.put(b, count.get(b)+1);
 					} else {
 						int i = states.get(b);
@@ -57,6 +72,16 @@ public class FlowingRender extends BlockRender{
 	@Override
 	public boolean overrideNormalRender() {
 		return true;
+	}
+	
+	@Override
+	public int dataNumber(Blocks b) {
+		return 8;
+	}
+	
+	@Override
+	public ImageIcon getListIcon(Blocks b) {
+		return b.getIcon(1);
 	}
 
 }

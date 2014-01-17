@@ -126,8 +126,9 @@ public class EntityProjectile extends Entity {
 			int s = 20;
 			if(getType().equals(EntityTypes.FIREBALL)) {
 				s = 25;
+				MapWritter.drawBlock(g2d, 51, 0,(int)x-((MapWritter.getBlockWidth()-s)/2),(int)y-((MapWritter.getBlockHeight()-s)/2), 0, TowerMiner.game.CanvasY, MapWritter.getBlockWidth()-s);
 			}
-			g2d.drawImage(i,(int)x-((MapWritter.getBlockWidth()-s)/2)+sp.CanvasX,(int)y-((MapWritter.getBlockHeight()-s)/2)+sp.CanvasY,MapWritter.getBlockWidth()-s,MapWritter.getBlockHeight()-s,null);
+			g2d.drawImage(i,(int)x-((MapWritter.getBlockWidth()-s)/2)+sp.CanvasX,(int)y+14-((MapWritter.getBlockHeight()-s)/2)+sp.CanvasY,MapWritter.getBlockWidth()-s,MapWritter.getBlockHeight()-s,null);
 		} catch (Exception e) {}
 		if(getType().level == 1)
 			g2d.rotate(-ro+Math.toRadians(getType().rotation), x,y+sp.CanvasY);

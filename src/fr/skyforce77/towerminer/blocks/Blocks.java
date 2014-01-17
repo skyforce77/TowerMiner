@@ -29,19 +29,19 @@ public class Blocks implements Serializable{
 		new Blocks(2,"grass","podzol").setAdaptColor(0);
 		new Blocks(3,"dirt");
 		new Blocks(4,"cobblestone");
-		new Blocks(5,"planks","planks1","planks2","planks3");
+		new Blocks(5,"planks","planks1","planks2","planks3", "planks_acacia", "planks_big_oak");
 		//TODO pousses
 		new Blocks(7,"bedrock");
-		new Blocks(8,"water_still").setLiquid().setOverlay().setCantPlaceOn().setRender(0);
-		new Blocks(9,"water_flow").setLiquid().setOverlay().setCantPlaceOn().setRender(1);
-		new Blocks(10,"lava_still").setLiquid().setOverlay().setCantPlaceOn().setRender(0);
-		new Blocks(11,"lava_flow").setLiquid().setOverlay().setCantPlaceOn().setRender(1);
+		new Blocks(8,"water_still", "water").setLiquid().setOverlay().setCantPlaceOn().setRender(1);
+		new Blocks(9,"water_flow", "water").setLiquid().setOverlay().setCantPlaceOn().setRender(2);
+		new Blocks(10,"lava_still", "lava").setLiquid().setOverlay().setCantPlaceOn().setRender(1);
+		new Blocks(11,"lava_flow", "lava").setLiquid().setOverlay().setCantPlaceOn().setRender(2);
 		new Blocks(12,"sand","red_sand");
 		new Blocks(13,"gravel");
 		new Blocks(14,"gold_ore");
 		new Blocks(15,"iron_ore");
 		new Blocks(16,"coal_ore");
-		new Blocks(17,"log","log1","log2","log3","log4","log5","log6","log7","log8");
+		new Blocks(17,"log","log1","log2","log3","log4","log5","log6","log7","log8","log9","log10","log11");
 		new Blocks(18,"leaves","leaves1","leaves2","leaves3").setAdaptColor().setOverlay();
 		new Blocks(19,"sponge");
 		new Blocks(20,"glass").setOverlay();
@@ -77,6 +77,7 @@ public class Blocks implements Serializable{
 					((SinglePlayer)TowerMiner.menu).particles.add(new Particle(ParticleType.FLAME, x+24, y+24, null, 1.2f));
 			};
 		}.setOverlay();
+		new Blocks(51, "fire_layer_0", "fire_layer_0", "fire").setOverlay().setRender(4);
 		new Blocks(52, "mob_spawner") {
 			private static final long serialVersionUID = -46760649095742683L;
 
@@ -93,6 +94,17 @@ public class Blocks implements Serializable{
 				}
 			};
 		}.setOverlay();
+		new Blocks(55, "redstone_dust", "redstone_dust_cross", "redstone_dust_line"){
+			private static final long serialVersionUID = -467606498095742683L;
+
+			public void onDraw(Graphics2D g2d, int data, int x, int y, int m, int n) {
+				if(data == 0 && TowerMiner.menu instanceof SinglePlayer && new Random().nextInt(200) <= 1) {
+					int ix = new Random().nextInt(2) == 0 ? 1 : -1;
+					int iy = new Random().nextInt(2) == 0 ? +1 : -1;
+					((SinglePlayer)TowerMiner.menu).particles.add(new Particle(ParticleType.SMOKE, x+24+new Random().nextInt(15)*ix, y+24+new Random().nextInt(15)*iy, null, 1f+-0.2f, new Color(255,0,0,254)));
+				}
+			};
+		}.setOverlay().setRender(3);
 		//TODO un paquet!
 		new Blocks(66, "rail","rail1","rail2","rail3","rail4","rail5").setOverlay();
 		//TODO un paquet!
@@ -113,10 +125,12 @@ public class Blocks implements Serializable{
 		new Blocks(82, "clay");
 		//TODO cane à sucre
 		new Blocks(84, "jukebox");
+		new Blocks(85,"planks","planks1","planks2","planks3", "planks_acacia", "planks_big_oak").setOverlay().setRender(5);
 		//TODO barrières et citrouille
 		new Blocks(87, "netherrack");
 		new Blocks(88, "soul_sand");
 		new Blocks(89, "glowstone");
+		new Blocks(90, "portal", "water").setOverlay().setCantPlaceOn().setRender(1);
 		//TODO un paquet!
 		new Blocks(95,"glass_white","glass_orange","glass_magenta",
 				"glass_light_blue","glass_yellow","glass_lime","glass_pink",
@@ -128,12 +142,15 @@ public class Blocks implements Serializable{
 		new Blocks(110, "mycelium");
 		//TODO lilipad
 		new Blocks(112, "nether_brick");
+		new Blocks(113, "nether_brick").setOverlay().setRender(5);
 		//TODO un paquet!
 		new Blocks(116,"enchtable");
 		//TODO un paquet!
 		new Blocks(121,"end_stone");
 		//TODO ouef de dragon
 		new Blocks(123,"redstonelamp","redstonelamp1");
+		new Blocks(137,"command_block");
+		new Blocks(139,"cobblestone", "cobblestone_mossy").setOverlay().setRender(6);
 		//TODO un paquet!
 		new Blocks(152,"redstone_block");
 		//TODO un paquet!
@@ -145,6 +162,7 @@ public class Blocks implements Serializable{
 				"hardened_clay_stained_blue","hardened_clay_stained_brown","hardened_clay_stained_green","hardened_clay_stained_red",
 				"hardened_clay_stained_black");
 		new Blocks(160,"hay_block","hay_block1");
+		new Blocks(161,"log_acacia_top", "log_acacia", "log_acacia2", "log_big_oak_top", "log_big_oak", "log_big_oak2");
 		new Blocks(162,"hardened_clay");
 		new Blocks(163,"coal_block");
 		new Blocks(164,"ice_packed");
@@ -208,7 +226,7 @@ public class Blocks implements Serializable{
 	boolean overlay = false;
 	boolean liquid = false;
 	boolean canplace = true;
-	int render = -1;
+	int render = 0;
 
 	public Blocks() {
 		visible = true;
@@ -243,8 +261,12 @@ public class Blocks implements Serializable{
 		return textures[0].getImage();
 	}
 
-	public ImageIcon getIcon() {
-		return textures[0];
+	public ImageIcon getIcon(int data) {
+		return textures[data];
+	}
+	
+	public int dataNumber() {
+		return getRender().dataNumber(this);
 	}
 
 	public Image getTexture(int data) {

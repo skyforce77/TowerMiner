@@ -43,7 +43,7 @@ public class BlockSelectionList extends JFrame{
 		    public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
 		        JLabel label = (JLabel) super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
 		        label.setText(((Blocks)value).getId()+"");
-		        label.setIcon(((Blocks)value).getIcon());
+		        label.setIcon(((Blocks)value).getRender().getListIcon((Blocks)value));
 		        return label;
 		    }
 		});

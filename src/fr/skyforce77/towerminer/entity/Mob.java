@@ -18,7 +18,6 @@ import fr.skyforce77.towerminer.menus.MultiPlayer;
 import fr.skyforce77.towerminer.menus.SinglePlayer;
 import fr.skyforce77.towerminer.protocol.packets.Packet10EntityValueUpdate;
 import fr.skyforce77.towerminer.render.RenderHelper;
-import fr.skyforce77.towerminer.ressources.RessourcesManager;
 
 public class Mob extends Entity{
 
@@ -242,7 +241,7 @@ public class Mob extends Entity{
 		} catch (Exception e) {}
 		g2d.rotate(-ro, x,y+sp.CanvasY);
 		if(hasEffect(EntityEffectType.FIRED)) {
-			g2d.drawImage(RessourcesManager.getTexture("fire"),(int)x-((MapWritter.getBlockWidth()-10)/2)+sp.CanvasX,(int)y-((MapWritter.getBlockHeight()-10)/2)+sp.CanvasY,MapWritter.getBlockWidth()-10,MapWritter.getBlockHeight()-10,null);
+			MapWritter.drawBlock(g2d, 51, 0,(int)x-((MapWritter.getBlockWidth()-10)/2),(int)y-((MapWritter.getBlockHeight()-10)/2), 0, TowerMiner.game.CanvasY, MapWritter.getBlockWidth()-10);
 		}
 		g2d.setColor(Color.WHITE);
 		g2d.setFont(new Font("TimesRoman", Font.CENTER_BASELINE, 12));

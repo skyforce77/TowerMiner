@@ -315,6 +315,9 @@ public class Maps implements Serializable{
 	}
 
 	public boolean canPlaceTurret(int x, int y) {
+		if(Maps.getActualMap().getBlock(x, y) == null){
+			return true;
+		}
 		return !(Maps.getActualMap().getBlock(x,y).equals(Maps.getActualMap().getBlockPath()) && Maps.getActualMap().getOverlayBlock(x,y).equals(Maps.getActualMap().getOverlayPath())) && !Maps.getActualMap().getBlock(x,y).isLiquid() && Maps.getActualMap().getBlock(x,y).canPlaceTurretOn() && Maps.getActualMap().getOverlayBlock(x,y).canPlaceTurretOn();
 	}
 

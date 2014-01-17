@@ -138,6 +138,8 @@ public class TowerMiner{
 		if(menu != null) {
 			menu.onUnused();
 			menu.selected = -1;
+			m.Xcursor = menu.Xcursor;
+			m.Ycursor = menu.Ycursor;
 		}
 		menu = m;
 		m.onUsed();
@@ -147,6 +149,8 @@ public class TowerMiner{
 		if(menu != null) {
 			menu.onUnused();
 			menu.selected = -1;
+			m.Xcursor = menu.Xcursor;
+			m.Ycursor = menu.Ycursor;
 		}
 		menu = m;
 		m.onUsed();
