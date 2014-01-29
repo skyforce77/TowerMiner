@@ -1,81 +1,72 @@
 package fr.skyforce77.towerminer.menus.additionals;
 
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
-import javax.swing.DefaultListCellRenderer;
-import javax.swing.DefaultListModel;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JList;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
-
 import fr.skyforce77.towerminer.TowerMiner;
 import fr.skyforce77.towerminer.ressources.language.LanguageManager;
 
-public class LanguageSelectionList extends JFrame{
+import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
-	private static final long serialVersionUID = -5973702249949001012L;
+public class LanguageSelectionList extends JFrame {
 
-	public LanguageSelectionList() {
-		setSize(220, 230);
-		setVisible(true);
-		setTitle(LanguageManager.getText("menu.languages"));
-		
-		final LanguageSelectionList lsl = this;
-		
-		DefaultListModel<String> listm = new DefaultListModel<String>();
-		final JList<String> list = new JList<String>(listm);
-		int i = 0;
-		for(String l : LanguageManager.getLanguages()) {
-			listm.add(i, l);
-			i++;
-		}
-		list.setCellRenderer(new DefaultListCellRenderer() {
-			private static final long serialVersionUID = -8142642427555971032L;
+    private static final long serialVersionUID = -5973702249949001012L;
 
-			@Override
-		    public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-		        JLabel label = (JLabel) super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
-		        label.setText((String)value);
-		        return label;
-		    }
-		});
-		list.setSelectedValue(LanguageManager.getActualLanguage(), true);
-		list.addListSelectionListener(new ListSelectionListener() {
-			@SuppressWarnings("unchecked")
-			@Override
-			public void valueChanged(ListSelectionEvent e) {
-				LanguageManager.setLanguage((String)((JList<String>)e.getSource()).getSelectedValue());
-				lsl.dispose();
-				TowerMiner.game.terminated = true;
-				TowerMiner.game.dispose();
-				TowerMiner.startGame(-1, "ok", TowerMiner.usedos, TowerMiner.player, TowerMiner.id);
-			}
-		});
-		
-		JButton ok = new JButton();
-		ok.setText(LanguageManager.getText("menu.quit"));
-		ok.setPreferredSize(new Dimension(190,40));
-		ok.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				setVisible(false);
-				dispose();
-			}
-		});
-		
-		JPanel panel = new JPanel();
-		panel.add(new JScrollPane(list));
-		panel.add(ok);
-		
-		add(panel);
-	}
+    public LanguageSelectionList() {
+        setSize(220, 230);
+        setVisible(true);
+        setTitle(LanguageManager.getText("menu.languages"));
+
+        final LanguageSelectionList lsl = this;
+
+        DefaultListModel<String> listm = new DefaultListModel<String>();
+        final JList<String> list = new JList<String>(listm);
+        int i = 0;
+        for (String l : LanguageManager.getLanguages()) {
+            listm.add(i, l);
+            i++;
+        }
+        list.setCellRenderer(new DefaultListCellRenderer() {
+            private static final long serialVersionUID = -8142642427555971032L;
+
+            @Override
+            public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+                JLabel label = (JLabel) super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+                label.setText((String) value);
+                return label;
+            }
+        });
+        list.setSelectedValue(LanguageManager.getActualLanguage(), true);
+        list.addListSelectionListener(new ListSelectionListener() {
+            @SuppressWarnings("unchecked")
+            @Override
+            public void valueChanged(ListSelectionEvent e) {
+                LanguageManager.setLanguage((String) ((JList<String>) e.getSource()).getSelectedValue());
+                lsl.dispose();
+                TowerMiner.game.terminated = true;
+                TowerMiner.game.dispose();
+                TowerMiner.startGame(-1, "ok", TowerMiner.usedos, TowerMiner.player, TowerMiner.id);
+            }
+        });
+
+        JButton ok = new JButton();
+        ok.setText(LanguageManager.getText("menu.quit"));
+        ok.setPreferredSize(new Dimension(190, 40));
+        ok.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent arg0) {
+                setVisible(false);
+                dispose();
+            }
+        });
+
+        JPanel panel = new JPanel();
+        panel.add(new JScrollPane(list));
+        panel.add(ok);
+
+        add(panel);
+    }
 
 }

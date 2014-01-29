@@ -16,9 +16,18 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="module" module-name="TMProtocol" />
     <orderEntry type="module-library">
-      <library name="kryonet-debug-2.18-all.jar">
+      <library>
         <CLASSES>
-          <root url="jar://$USER_HOME$/Documents/eclipse/librairies/kryonet-debug-2.18-all.jar!/" />
+          <root url="jar://$USER_HOME$/projects libs/TowerMiner/vecmath-1.5.1.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$USER_HOME$/projects libs/TowerMiner/kryonet-2.21-all.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />

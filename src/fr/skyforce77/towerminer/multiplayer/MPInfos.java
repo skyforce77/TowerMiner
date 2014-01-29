@@ -4,7 +4,7 @@ import com.esotericsoftware.kryonet.Connection;
 
 public class MPInfos {
 
-	public static boolean matchplaying;
-	public static Connection connection;
+    public static boolean matchplaying;
+    public static Connection connection;
 
 }

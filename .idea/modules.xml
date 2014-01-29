@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/../TMLauncher/TMLauncher.iml" filepath="$PROJECT_DIR$/../TMLauncher/TMLauncher.iml" />
       <module fileurl="file://$PROJECT_DIR$/../TMProtocol/TMProtocol.iml" filepath="$PROJECT_DIR$/../TMProtocol/TMProtocol.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../TMServer/TMServer.iml" filepath="$PROJECT_DIR$/../TMServer/TMServer.iml" />
       <module fileurl="file://$PROJECT_DIR$/TowerMiner.iml" filepath="$PROJECT_DIR$/TowerMiner.iml" />
     </modules>
   </component>

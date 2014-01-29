@@ -1,173 +1,166 @@
 package fr.skyforce77.towerminer.menus.additionals;
 
-import java.awt.Dimension;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.io.File;
-
-import javax.swing.BorderFactory;
-import javax.swing.JButton;
-import javax.swing.JCheckBox;
-import javax.swing.JFileChooser;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.filechooser.FileFilter;
-
 import fr.skyforce77.towerminer.TowerMiner;
 import fr.skyforce77.towerminer.blocks.Blocks;
 import fr.skyforce77.towerminer.maps.Maps;
 import fr.skyforce77.towerminer.ressources.language.LanguageManager;
 
-public class BlockCreator extends JFrame{
+import javax.swing.*;
+import javax.swing.filechooser.FileFilter;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.File;
 
-	private static final long serialVersionUID = 106616954329583133L;
+public class BlockCreator extends JFrame {
 
-	public Maps map;
-	public Blocks b;
-	public File[] fs = null;
+    private static final long serialVersionUID = 106616954329583133L;
 
-	public BlockCreator(Maps m, final Blocks b) {
-		map = m;
-		this.b = b;
-		setSize(800, 300);
-		setVisible(true);
-		setTitle(LanguageManager.getText("menu.editor.create.block"));
-		JPanel panel = new JPanel();
-		JPanel required = new JPanel();
-		required.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createTitledBorder("Champs Obligatoires"),BorderFactory.createEmptyBorder(5,5,5,5)));
-		JPanel options = new JPanel();
-		options.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createTitledBorder("Options"),BorderFactory.createEmptyBorder(5,5,5,5)));
+    public Maps map;
+    public Blocks b;
+    public File[] fs = null;
 
-		final JNumberTextField id = new JNumberTextField();
-		id.setToolTipText(LanguageManager.getText("menu.editor.id"));
-		id.setPreferredSize(new Dimension(90,20));
-		id.setText(b.getId()+"");
-		JLabel idlabel = new JLabel(LanguageManager.getText("menu.editor.id")+": ");
-		idlabel.setLabelFor(id);
-		required.add(idlabel);
-		required.add(id);
+    public BlockCreator(Maps m, final Blocks b) {
+        map = m;
+        this.b = b;
+        setSize(800, 300);
+        setVisible(true);
+        setTitle(LanguageManager.getText("menu.editor.create.block"));
+        JPanel panel = new JPanel();
+        JPanel required = new JPanel();
+        required.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createTitledBorder("Champs Obligatoires"), BorderFactory.createEmptyBorder(5, 5, 5, 5)));
+        JPanel options = new JPanel();
+        options.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createTitledBorder("Options"), BorderFactory.createEmptyBorder(5, 5, 5, 5)));
 
-		JButton dtexture = new JButton();
-		dtexture.setText(LanguageManager.getText("menu.editor.textures"));
-		dtexture.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				JFileChooser fc = new JFileChooser();
-				fc.setMultiSelectionEnabled(true);
-				fc.setFileFilter(new FileFilter() {
+        final JNumberTextField id = new JNumberTextField();
+        id.setToolTipText(LanguageManager.getText("menu.editor.id"));
+        id.setPreferredSize(new Dimension(90, 20));
+        id.setText(b.getId() + "");
+        JLabel idlabel = new JLabel(LanguageManager.getText("menu.editor.id") + ": ");
+        idlabel.setLabelFor(id);
+        required.add(idlabel);
+        required.add(id);
 
-					@Override
-					public String getDescription() {
-						return LanguageManager.getText("menu.editor.file.filter.textures");
-					}
+        JButton dtexture = new JButton();
+        dtexture.setText(LanguageManager.getText("menu.editor.textures"));
+        dtexture.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent arg0) {
+                JFileChooser fc = new JFileChooser();
+                fc.setMultiSelectionEnabled(true);
+                fc.setFileFilter(new FileFilter() {
 
-					@Override
-					public boolean accept(File f) {
-						if (f.isDirectory()) {
-							return true;
-						}
+                    @Override
+                    public String getDescription() {
+                        return LanguageManager.getText("menu.editor.file.filter.textures");
+                    }
 
-						String extension = getExtension(f);
-						if (extension != null && extension.equals("png")) {
-							return true;
-						} else {
-							return false;
-						}
-					}
-				});
-				fc.setAcceptAllFileFilterUsed(false);
+                    @Override
+                    public boolean accept(File f) {
+                        if (f.isDirectory()) {
+                            return true;
+                        }
 
-				int access = fc.showOpenDialog(TowerMiner.game);
-				if(access == JFileChooser.APPROVE_OPTION) {
-					fs = fc.getSelectedFiles();
-				}
-			}
-		});
-		required.add(dtexture);
+                        String extension = getExtension(f);
+                        if (extension != null && extension.equals("png")) {
+                            return true;
+                        } else {
+                            return false;
+                        }
+                    }
+                });
+                fc.setAcceptAllFileFilterUsed(false);
 
-		final JCheckBox liquid = new JCheckBox();
-		liquid.setSelected(b.isLiquid());
-		liquid.setText(LanguageManager.getText("menu.editor.block.liquid"));
-		options.add(liquid);
+                int access = fc.showOpenDialog(TowerMiner.game);
+                if (access == JFileChooser.APPROVE_OPTION) {
+                    fs = fc.getSelectedFiles();
+                }
+            }
+        });
+        required.add(dtexture);
 
-		final JCheckBox overlay = new JCheckBox();
-		overlay.setSelected(b.isOverlay());
-		overlay.setText(LanguageManager.getText("menu.editor.block.translucent"));
-		options.add(overlay);
+        final JCheckBox liquid = new JCheckBox();
+        liquid.setSelected(b.isLiquid());
+        liquid.setText(LanguageManager.getText("menu.editor.block.liquid"));
+        options.add(liquid);
 
-		final JCheckBox coloradapt = new JCheckBox();
-		coloradapt.setSelected(b.isMapAdapted(0));
-		coloradapt.setText(LanguageManager.getText("menu.editor.block.color"));
-		options.add(coloradapt);
+        final JCheckBox overlay = new JCheckBox();
+        overlay.setSelected(b.isOverlay());
+        overlay.setText(LanguageManager.getText("menu.editor.block.translucent"));
+        options.add(overlay);
 
-		final JCheckBox canplace = new JCheckBox();
-		canplace.setSelected(b.canPlaceTurretOn());
-		canplace.setText(LanguageManager.getText("menu.editor.block.turrets"));
-		options.add(canplace);
+        final JCheckBox coloradapt = new JCheckBox();
+        coloradapt.setSelected(b.isMapAdapted(0));
+        coloradapt.setText(LanguageManager.getText("menu.editor.block.color"));
+        options.add(coloradapt);
 
-		panel.add(required);
-		panel.add(options);
+        final JCheckBox canplace = new JCheckBox();
+        canplace.setSelected(b.canPlaceTurretOn());
+        canplace.setText(LanguageManager.getText("menu.editor.block.turrets"));
+        options.add(canplace);
 
-		JPanel buttons = new JPanel();
-		JButton ok = new JButton();
-		ok.setText(LanguageManager.getText("menu.editor.save"));
-		ok.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				b.setAdaptColor(coloradapt.isSelected());
-				b.setId(id.getNumber().intValue());
-				b.setLiquid(liquid.isSelected());
-				b.setOverlay(overlay.isSelected());
-				b.setCanPlaceOn(canplace.isSelected());
-				
-				if(fs != null) {
-					if(fs.length >= 1) {
-						b.resetTextures();
-					}
-					for(File f : fs) {
-						int data = 0;
-						while(b.getRawTexture(data) != null) {
-							data = data+1;
-							if(data == 16)
-								break;
-						}
-						b.setTexture(data, f);
-					}
-				}
-				
-				Maps.getActualMap().addBlock(b);
-				Blocks.addMapBlocks(Maps.getActualMap());
-				setVisible(false);
-				dispose();
-			}
-		});
-		buttons.add(ok);
+        panel.add(required);
+        panel.add(options);
 
-		JButton cancel = new JButton();
-		cancel.setText(LanguageManager.getText("menu.back"));
-		cancel.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				setVisible(false);
-				dispose();
-			}
-		});
-		buttons.add(cancel);
+        JPanel buttons = new JPanel();
+        JButton ok = new JButton();
+        ok.setText(LanguageManager.getText("menu.editor.save"));
+        ok.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent arg0) {
+                b.setAdaptColor(coloradapt.isSelected());
+                b.setId(id.getNumber().intValue());
+                b.setLiquid(liquid.isSelected());
+                b.setOverlay(overlay.isSelected());
+                b.setCanPlaceOn(canplace.isSelected());
 
-		panel.add(buttons);
-		add(panel);
-	}
+                if (fs != null) {
+                    if (fs.length >= 1) {
+                        b.resetTextures();
+                    }
+                    for (File f : fs) {
+                        int data = 0;
+                        while (b.getRawTexture(data) != null) {
+                            data = data + 1;
+                            if (data == 16)
+                                break;
+                        }
+                        b.setTexture(data, f);
+                    }
+                }
 
-	public static String getExtension(File f) {
-		String ext = null;
-		String s = f.getName();
-		int i = s.lastIndexOf('.');
+                Maps.getActualMap().addBlock(b);
+                Blocks.addMapBlocks(Maps.getActualMap());
+                setVisible(false);
+                dispose();
+            }
+        });
+        buttons.add(ok);
 
-		if (i > 0 &&  i < s.length() - 1) {
-			ext = s.substring(i+1).toLowerCase();
-		}
-		return ext;
-	}
+        JButton cancel = new JButton();
+        cancel.setText(LanguageManager.getText("menu.back"));
+        cancel.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent arg0) {
+                setVisible(false);
+                dispose();
+            }
+        });
+        buttons.add(cancel);
+
+        panel.add(buttons);
+        add(panel);
+    }
+
+    public static String getExtension(File f) {
+        String ext = null;
+        String s = f.getName();
+        int i = s.lastIndexOf('.');
+
+        if (i > 0 && i < s.length() - 1) {
+            ext = s.substring(i + 1).toLowerCase();
+        }
+        return ext;
+    }
 
 }
