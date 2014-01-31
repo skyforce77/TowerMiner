@@ -23,6 +23,8 @@ public class BlockRender implements Serializable {
         renders[6] = new WallRender();
         renders[7] = new SkullRender();
         renders[8] = new SignRender();
+        renders[9] = new UnknownBlockRender();
+        renders[10] = new SaplingRender();
     }
 
     public static Object getOverlayStorage(int x, int y) {
@@ -44,6 +46,10 @@ public class BlockRender implements Serializable {
     }
 
     public boolean overrideNormalRender() {
+        return false;
+    }
+
+    public boolean needNBT(int id) {
         return false;
     }
 

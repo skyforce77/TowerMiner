@@ -4,6 +4,7 @@ import fr.skyforce77.towerminer.TowerMiner;
 import fr.skyforce77.towerminer.maps.MapWritter;
 import fr.skyforce77.towerminer.menus.MultiPlayer;
 import fr.skyforce77.towerminer.menus.SinglePlayer;
+import fr.skyforce77.towerminer.particles.Particle;
 import fr.skyforce77.towerminer.particles.ParticleEffect;
 import fr.skyforce77.towerminer.particles.ParticleType;
 import fr.skyforce77.towerminer.protocol.packets.Packet10EntityValueUpdate;

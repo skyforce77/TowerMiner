@@ -19,24 +19,21 @@ public class MapWritter {
 
     public static void drawBlock(Graphics2D g2d, int id, int data, int x, int y, int m, int n, int size) {
         g2d = (Graphics2D) g2d.create();
-        if (id < Blocks.blocks.length && Blocks.blocks[id] != null) {
-            Blocks.blocks[id].onDraw(g2d, data, x, y, m, n);
-            if (Blocks.blocks[id].getRender() == null || (Blocks.blocks[id].getRender() != null && !Blocks.blocks[id].getRender().overrideNormalRender())) {
+        Blocks b = Blocks.byId(id);
+            b.onDraw(g2d, data, x, y, m, n);
+            if (b.getRender() == null || (b.getRender() != null && !b.getRender().overrideNormalRender())) {
                 Image image = null;
-                if (Blocks.blocks[id].isMapAdapted(data)) {
+                if (b.isMapAdapted(data)) {
                     Color c = Maps.getActualMap().getColorModifier();
-                    image = RenderHelper.getColoredImage(Blocks.blocks[id].getTexture(data), c, 0.5F);
+                    image = RenderHelper.getColoredImage(b.getTexture(data), c, 0.5F);
                 } else {
-                    image = Blocks.blocks[id].getTexture(data);
+                    image = b.getTexture(data);
                 }
                 g2d.drawImage(image, x + m, y + n, size, size, null);
             }
-            if (Blocks.blocks[id].getRender() != null) {
-                Blocks.blocks[id].getRender().onBlockRender(Blocks.blocks[id], g2d, data, x + m, y + n, size);
+            if (b.getRender() != null) {
+                b.getRender().onBlockRender(b, g2d, data, x + m, y + n, size);
             }
-        } else {
-            drawBlock(g2d, 1, data, x, y, m, n, size);
-        }
     }
 
     public static ArrayList<Point> getAroundPoints(int x, int y) {

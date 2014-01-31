@@ -236,7 +236,7 @@ public class Maps implements Serializable {
     }
 
     public Blocks getBlock(int x, int y) {
-        return Blocks.blocks[getBlockId(x, y)];
+        return Blocks.byId(getBlockId(x, y));
     }
 
     public Object getBlockStorage(int x, int y) {
@@ -256,23 +256,23 @@ public class Maps implements Serializable {
     }
 
     public Blocks getOverlayBlock(int x, int y) {
-        return Blocks.blocks[getOverlayId(x, y)];
+        return Blocks.byId(getOverlayId(x, y));
     }
 
     public Blocks getBlockPath() {
-        return Blocks.blocks[getBlockPathId()];
+        return Blocks.byId(getBlockPathId());
     }
 
     public Blocks getOverlayPath() {
-        return Blocks.blocks[getOverlayPathId()];
+        return Blocks.byId(getOverlayPathId());
     }
 
     public Image getBlockTexture(int x, int y) {
-        return Blocks.blocks[getBlockId(x, y)].getTexture(getBlockData(x, y));
+        return Blocks.byId(getBlockId(x, y)).getTexture(getBlockData(x, y));
     }
 
     public Image getOverlayTexture(int x, int y) {
-        return Blocks.blocks[getOverlayId(x, y)].getTexture(getBlockData(x, y));
+        return Blocks.byId(getOverlayId(x, y)).getTexture(getBlockData(x, y));
     }
 
     public int getBlockData(int x, int y) {

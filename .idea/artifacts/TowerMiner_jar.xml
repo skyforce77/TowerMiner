@@ -1,0 +1,11 @@
+<component name="ArtifactManager">
+  <artifact type="jar" build-on-make="true" name="TowerMiner:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/TowerMiner_jar</output-path>
+    <root id="archive" name="TowerMiner.jar">
+      <element id="module-output" name="TowerMiner" />
+      <element id="module-output" name="TMProtocol" />
+      <element id="extracted-dir" path="$USER_HOME$/projects libs/TowerMiner/vecmath-1.5.1.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/projects libs/TowerMiner/kryonet-2.21-all.jar" path-in-jar="/" />
+    </root>
+  </artifact>
+</component>

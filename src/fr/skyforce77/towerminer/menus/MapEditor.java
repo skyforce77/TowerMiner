@@ -45,7 +45,7 @@ public class MapEditor extends Menu {
         JMenu file = new JMenu(LanguageManager.getText("menu.editor.file"));
         JMenu map = new JMenu(LanguageManager.getText("menu.editor.map"));
         JMenu blocks = new JMenu(LanguageManager.getText("menu.editor.blocks"));
-        JMenu mdata = new JMenu(LanguageManager.getText("NBT"));
+        mdata = new JMenu(LanguageManager.getText("NBT"));
 
         JMenuItem newm = new JMenuItem();
         newm.setText(LanguageManager.getText("menu.editor.new"));
@@ -241,6 +241,13 @@ public class MapEditor extends Menu {
     }
 
     public void drawMenu(Graphics2D g2d) {
+
+        if(mdata != null && mdata.isVisible() && !Blocks.byId(selected).getRender().needNBT(selected)) {
+            mdata.setVisible(false);
+        } else if(mdata != null && !mdata.isVisible() && Blocks.byId(selected).getRender().needNBT(selected)) {
+            mdata.setVisible(true);
+        }
+
         MapWritter.drawCanvas(g2d, TowerMiner.game.CanvasX, TowerMiner.game.CanvasY);
 
         g2d.setFont(new Font("TimesRoman", Font.CENTER_BASELINE, 18));
@@ -286,7 +293,7 @@ public class MapEditor extends Menu {
     @Override
     public void onKeyPressed(int keyCode) {
         if (keyCode == KeyEvent.VK_RIGHT || keyCode == KeyEvent.VK_LEFT || keyCode == KeyEvent.VK_Q || keyCode == KeyEvent.VK_D) {
-            if (Blocks.blocks[selected].dataNumber() <= data + 1) {
+            if (Blocks.byId(selected).dataNumber() <= data + 1) {
                 data = 0;
             } else {
                 data++;
@@ -326,13 +333,13 @@ public class MapEditor extends Menu {
                 Maps.getActualMap().deaths[data] = new Point(xl, yl);
                 return;
             }
-            if (Blocks.blocks[selected].isOverlay()) {
+            if (Blocks.byId(selected).isOverlay()) {
                 Maps.getActualMap().setOverlayIdAndData(xl, yl, selected, data);
-                Blocks.blocks[selected].getRender().onPlaced(Blocks.blocks[selected], Maps.getActualMap(), xl, yl, data, bdata.getText());
+                Blocks.byId(selected).getRender().onPlaced(Blocks.byId(selected), Maps.getActualMap(), xl, yl, data, bdata.getText());
             } else {
                 Maps.getActualMap().setBlockIdAndData(xl, yl, selected, data);
                 Maps.getActualMap().setOverlayIdAndData(xl, yl, 1022, 0);
-                Blocks.blocks[selected].getRender().onPlaced(Blocks.blocks[selected], Maps.getActualMap(), xl, yl, data, bdata.getText());
+                Blocks.byId(selected).getRender().onPlaced(Blocks.byId(selected), Maps.getActualMap(), xl, yl, data, bdata.getText());
             }
         } else if (e.getModifiers() == 8) {
             int xl = (Xcursor / 48);
@@ -345,7 +352,7 @@ public class MapEditor extends Menu {
                 data = Maps.getActualMap().getBlockData(xl, yl);
             }
         } else if (e.getModifiers() == 4) {
-            if (Blocks.blocks[selected].dataNumber() <= data + 1) {
+            if (Blocks.byId(selected).dataNumber() <= data + 1) {
                 data = 0;
             } else {
                 data++;

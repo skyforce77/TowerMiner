@@ -52,6 +52,11 @@ public class SkullRender extends BlockRender {
     }
 
     @Override
+    public boolean needNBT(int id) {
+        return id == 999 ? true : false;
+    }
+
+    @Override
     public int dataNumber(Blocks b) {
         return 9;
     }

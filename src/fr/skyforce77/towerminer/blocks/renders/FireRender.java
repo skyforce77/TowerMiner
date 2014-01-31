@@ -32,7 +32,7 @@ public class FireRender extends BlockRender {
 
     @Override
     public void onGameTick() {
-        for (Blocks b : Blocks.blocks) {
+        for (Blocks b : Blocks.getList()) {
             if (b != null) {
                 int images = b.getTexture(0).getHeight(null) / b.getTexture(0).getWidth(null);
                 if (states.containsKey(b)) {

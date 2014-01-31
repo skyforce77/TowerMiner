@@ -1,89 +1,40 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="ArtifactsWorkspaceSettings">
+    <artifacts-to-build>
+      <artifact name="TowerMiner:jar" />
+    </artifacts-to-build>
+  </component>
   <component name="ChangeListManager">
     <list default="true" id="7786266e-3061-4561-b69a-451ad6fb7192" name="Default" comment="Added Skulls and Signs (unfinished)">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/ressources/textures/creeper.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/ressources/textures/mskeleton.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/ressources/textures/steve.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/ressources/textures/wither_skeleton.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/ressources/textures/zombie.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/fr/skyforce77/towerminer/blocks/renders/SignRender.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/fr/skyforce77/towerminer/blocks/renders/SkullRender.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/fr/skyforce77/towerminer/menus/AboutMenu.java" afterPath="$PROJECT_DIR$/src/fr/skyforce77/towerminer/menus/AboutMenu.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/fr/skyforce77/towerminer/achievements/Achievement.java" afterPath="$PROJECT_DIR$/src/fr/skyforce77/towerminer/achievements/Achievement.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/fr/skyforce77/towerminer/achievements/Achievements.java" afterPath="$PROJECT_DIR$/src/fr/skyforce77/towerminer/achievements/Achievements.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/fr/skyforce77/towerminer/blocks/renders/AroundBlockBasedRender.java" afterPath="$PROJECT_DIR$/src/fr/skyforce77/towerminer/blocks/renders/AroundBlockBasedRender.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/fr/skyforce77/towerminer/entity/Blaze.java" afterPath="$PROJECT_DIR$/src/fr/skyforce77/towerminer/entity/Blaze.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/fr/skyforce77/towerminer/menus/additionals/BlockCreator.java" afterPath="$PROJECT_DIR$/src/fr/skyforce77/towerminer/menus/additionals/BlockCreator.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/ressources/textures/sapling_acacia.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/ressources/textures/sapling_birch.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/ressources/textures/sapling_jungle.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/ressources/textures/sapling_oak.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/ressources/textures/sapling_roofed_oak.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/ressources/textures/sapling_spruce.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/META-INF/MANIFEST.MF" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/fr/skyforce77/towerminer/blocks/renders/SaplingRender.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/artifacts/TowerMiner_jar.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/fr/skyforce77/towerminer/blocks/renders/UnknownBlockRender.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/fr/skyforce77/towerminer/blocks/renders/BlockRender.java" afterPath="$PROJECT_DIR$/src/fr/skyforce77/towerminer/blocks/renders/BlockRender.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/fr/skyforce77/towerminer/menus/additionals/BlockSelectionList.java" afterPath="$PROJECT_DIR$/src/fr/skyforce77/towerminer/menus/additionals/BlockSelectionList.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/fr/skyforce77/towerminer/blocks/Blocks.java" afterPath="$PROJECT_DIR$/src/fr/skyforce77/towerminer/blocks/Blocks.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/fr/skyforce77/towerminer/menus/additionals/Chat.java" afterPath="$PROJECT_DIR$/src/fr/skyforce77/towerminer/menus/additionals/Chat.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/fr/skyforce77/towerminer/menus/additionals/ColorSelection.java" afterPath="$PROJECT_DIR$/src/fr/skyforce77/towerminer/menus/additionals/ColorSelection.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/fr/skyforce77/towerminer/render/ColoredImages.java" afterPath="$PROJECT_DIR$/src/fr/skyforce77/towerminer/render/ColoredImages.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/fr/skyforce77/towerminer/save/DataBase.java" afterPath="$PROJECT_DIR$/src/fr/skyforce77/towerminer/save/DataBase.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/fr/skyforce77/towerminer/entity/Entity.java" afterPath="$PROJECT_DIR$/src/fr/skyforce77/towerminer/entity/Entity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/fr/skyforce77/towerminer/entity/effects/EntityEffect.java" afterPath="$PROJECT_DIR$/src/fr/skyforce77/towerminer/entity/effects/EntityEffect.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/fr/skyforce77/towerminer/entity/effects/EntityEffectType.java" afterPath="$PROJECT_DIR$/src/fr/skyforce77/towerminer/entity/effects/EntityEffectType.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/fr/skyforce77/towerminer/entity/EntityProjectile.java" afterPath="$PROJECT_DIR$/src/fr/skyforce77/towerminer/entity/EntityProjectile.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/fr/skyforce77/towerminer/entity/EntityTypes.java" afterPath="$PROJECT_DIR$/src/fr/skyforce77/towerminer/entity/EntityTypes.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/fr/skyforce77/towerminer/blocks/renders/FenceRender.java" afterPath="$PROJECT_DIR$/src/fr/skyforce77/towerminer/blocks/renders/FenceRender.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/fr/skyforce77/towerminer/entity/effects/FireEffect.java" afterPath="$PROJECT_DIR$/src/fr/skyforce77/towerminer/entity/effects/FireEffect.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/fr/skyforce77/towerminer/blocks/renders/FireRender.java" afterPath="$PROJECT_DIR$/src/fr/skyforce77/towerminer/blocks/renders/FireRender.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/fr/skyforce77/towerminer/blocks/renders/FlowingRender.java" afterPath="$PROJECT_DIR$/src/fr/skyforce77/towerminer/blocks/renders/FlowingRender.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/fr/skyforce77/towerminer/game/Game.java" afterPath="$PROJECT_DIR$/src/fr/skyforce77/towerminer/game/Game.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/fr/skyforce77/towerminer/menus/additionals/JNumberTextField.java" afterPath="$PROJECT_DIR$/src/fr/skyforce77/towerminer/menus/additionals/JNumberTextField.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/fr/skyforce77/towerminer/ressources/language/Language.java" afterPath="$PROJECT_DIR$/src/fr/skyforce77/towerminer/ressources/language/Language.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/fr/skyforce77/towerminer/ressources/language/LanguageManager.java" afterPath="$PROJECT_DIR$/src/fr/skyforce77/towerminer/ressources/language/LanguageManager.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/fr/skyforce77/towerminer/menus/additionals/LanguageSelectionList.java" afterPath="$PROJECT_DIR$/src/fr/skyforce77/towerminer/menus/additionals/LanguageSelectionList.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/fr/skyforce77/towerminer/menus/MPClientWait.java" afterPath="$PROJECT_DIR$/src/fr/skyforce77/towerminer/menus/MPClientWait.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/fr/skyforce77/towerminer/menus/MPDisconnected.java" afterPath="$PROJECT_DIR$/src/fr/skyforce77/towerminer/menus/MPDisconnected.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/fr/skyforce77/towerminer/multiplayer/MPInfos.java" afterPath="$PROJECT_DIR$/src/fr/skyforce77/towerminer/multiplayer/MPInfos.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/fr/skyforce77/towerminer/menus/MPJoinMenu.java" afterPath="$PROJECT_DIR$/src/fr/skyforce77/towerminer/menus/MPJoinMenu.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/fr/skyforce77/towerminer/menus/MPSelectionMenu.java" afterPath="$PROJECT_DIR$/src/fr/skyforce77/towerminer/menus/MPSelectionMenu.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/fr/skyforce77/towerminer/menus/MPServerWait.java" afterPath="$PROJECT_DIR$/src/fr/skyforce77/towerminer/menus/MPServerWait.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/fr/skyforce77/towerminer/menus/MainMenu.java" afterPath="$PROJECT_DIR$/src/fr/skyforce77/towerminer/menus/MainMenu.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/fr/skyforce77/towerminer/menus/MapEditor.java" afterPath="$PROJECT_DIR$/src/fr/skyforce77/towerminer/menus/MapEditor.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/fr/skyforce77/towerminer/maps/MapLine.java" afterPath="$PROJECT_DIR$/src/fr/skyforce77/towerminer/maps/MapLine.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/fr/skyforce77/towerminer/menus/MapSelectionMenu.java" afterPath="$PROJECT_DIR$/src/fr/skyforce77/towerminer/menus/MapSelectionMenu.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/fr/skyforce77/towerminer/maps/MapWritter.java" afterPath="$PROJECT_DIR$/src/fr/skyforce77/towerminer/maps/MapWritter.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/fr/skyforce77/towerminer/maps/Maps.java" afterPath="$PROJECT_DIR$/src/fr/skyforce77/towerminer/maps/Maps.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/fr/skyforce77/towerminer/menus/Menu.java" afterPath="$PROJECT_DIR$/src/fr/skyforce77/towerminer/menus/Menu.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/fr/skyforce77/towerminer/menus/MenuItem.java" afterPath="$PROJECT_DIR$/src/fr/skyforce77/towerminer/menus/MenuItem.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/fr/skyforce77/towerminer/entity/Mob.java" afterPath="$PROJECT_DIR$/src/fr/skyforce77/towerminer/entity/Mob.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/fr/skyforce77/towerminer/menus/MoreMenu.java" afterPath="$PROJECT_DIR$/src/fr/skyforce77/towerminer/menus/MoreMenu.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/fr/skyforce77/towerminer/blocks/renders/MovingRender.java" afterPath="$PROJECT_DIR$/src/fr/skyforce77/towerminer/blocks/renders/MovingRender.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/fr/skyforce77/towerminer/menus/MultiPlayer.java" afterPath="$PROJECT_DIR$/src/fr/skyforce77/towerminer/menus/MultiPlayer.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/fr/skyforce77/towerminer/sounds/Music.java" afterPath="$PROJECT_DIR$/src/fr/skyforce77/towerminer/sounds/Music.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/fr/skyforce77/towerminer/save/Options.java" afterPath="$PROJECT_DIR$/src/fr/skyforce77/towerminer/save/Options.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/fr/skyforce77/towerminer/menus/OptionsMenu.java" afterPath="$PROJECT_DIR$/src/fr/skyforce77/towerminer/menus/OptionsMenu.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/fr/skyforce77/towerminer/particles/types/PTEightTextures.java" afterPath="$PROJECT_DIR$/src/fr/skyforce77/towerminer/particles/types/PTEightTextures.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/fr/skyforce77/towerminer/particles/types/PTScaleFade.java" afterPath="$PROJECT_DIR$/src/fr/skyforce77/towerminer/particles/types/PTScaleFade.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/fr/skyforce77/towerminer/particles/Particle.java" afterPath="$PROJECT_DIR$/src/fr/skyforce77/towerminer/particles/Particle.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/fr/skyforce77/towerminer/particles/ParticleEffect.java" afterPath="$PROJECT_DIR$/src/fr/skyforce77/towerminer/particles/ParticleEffect.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/fr/skyforce77/towerminer/particles/ParticleType.java" afterPath="$PROJECT_DIR$/src/fr/skyforce77/towerminer/particles/ParticleType.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/fr/skyforce77/towerminer/entity/effects/PoisonEffect.java" afterPath="$PROJECT_DIR$/src/fr/skyforce77/towerminer/entity/effects/PoisonEffect.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/fr/skyforce77/towerminer/achievements/Popup.java" afterPath="$PROJECT_DIR$/src/fr/skyforce77/towerminer/achievements/Popup.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/fr/skyforce77/towerminer/multiplayer/ProtocolManager.java" afterPath="$PROJECT_DIR$/src/fr/skyforce77/towerminer/multiplayer/ProtocolManager.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/fr/skyforce77/towerminer/blocks/renders/RedstoneRender.java" afterPath="$PROJECT_DIR$/src/fr/skyforce77/towerminer/blocks/renders/RedstoneRender.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/fr/skyforce77/towerminer/render/RenderHelper.java" afterPath="$PROJECT_DIR$/src/fr/skyforce77/towerminer/render/RenderHelper.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/fr/skyforce77/towerminer/ressources/RessourcesManager.java" afterPath="$PROJECT_DIR$/src/fr/skyforce77/towerminer/ressources/RessourcesManager.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/fr/skyforce77/towerminer/multiplayer/ServerInfos.java" afterPath="$PROJECT_DIR$/src/fr/skyforce77/towerminer/multiplayer/ServerInfos.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/fr/skyforce77/towerminer/menus/additionals/ServerSelectionList.java" afterPath="$PROJECT_DIR$/src/fr/skyforce77/towerminer/menus/additionals/ServerSelectionList.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/fr/skyforce77/towerminer/menus/SinglePlayer.java" afterPath="$PROJECT_DIR$/src/fr/skyforce77/towerminer/menus/SinglePlayer.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/fr/skyforce77/towerminer/entity/Spider.java" afterPath="$PROJECT_DIR$/src/fr/skyforce77/towerminer/entity/Spider.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/fr/skyforce77/towerminer/blocks/renders/SkullRender.java" afterPath="$PROJECT_DIR$/src/fr/skyforce77/towerminer/blocks/renders/SkullRender.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../TMLauncher/TMLauncher.iml" afterPath="$PROJECT_DIR$/../TMLauncher/TMLauncher.iml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../TMProtocol/TMProtocol.iml" afterPath="$PROJECT_DIR$/../TMProtocol/TMProtocol.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/TowerMiner.iml" afterPath="$PROJECT_DIR$/TowerMiner.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/fr/skyforce77/towerminer/TowerMiner.java" afterPath="$PROJECT_DIR$/src/fr/skyforce77/towerminer/TowerMiner.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/fr/skyforce77/towerminer/entity/Turret.java" afterPath="$PROJECT_DIR$/src/fr/skyforce77/towerminer/entity/Turret.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/fr/skyforce77/towerminer/menus/VolumeControlMenu.java" afterPath="$PROJECT_DIR$/src/fr/skyforce77/towerminer/menus/VolumeControlMenu.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/fr/skyforce77/towerminer/blocks/renders/WallRender.java" afterPath="$PROJECT_DIR$/src/fr/skyforce77/towerminer/blocks/renders/WallRender.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/fr/skyforce77/towerminer/entity/Witch.java" afterPath="$PROJECT_DIR$/src/fr/skyforce77/towerminer/entity/Witch.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../TMLauncher/.idea/misc.xml" afterPath="$PROJECT_DIR$/../TMLauncher/.idea/misc.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../TMProtocol/.idea/misc.xml" afterPath="$PROJECT_DIR$/../TMProtocol/.idea/misc.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/modules.xml" afterPath="$PROJECT_DIR$/.idea/modules.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../TMLauncher/.idea/workspace.xml" afterPath="$PROJECT_DIR$/../TMLauncher/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../TMProtocol/.idea/workspace.xml" afterPath="$PROJECT_DIR$/../TMProtocol/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
@@ -155,47 +106,92 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="Blocks.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/fr/skyforce77/towerminer/blocks/Blocks.java">
+      <file leaf-file-name="WallRender.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/fr/skyforce77/towerminer/blocks/renders/WallRender.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="124" column="0" selection-start="6879" selection-end="6879" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="7452">
-              <folding>
-                <element signature="imports" expanded="true" />
-                <element signature="e#12962#12963#0" expanded="true" />
-                <element signature="e#12987#12988#0" expanded="true" />
-                <element signature="e#13101#13102#0" expanded="true" />
-                <element signature="e#13131#13132#0" expanded="true" />
-                <element signature="e#13165#13166#0" expanded="true" />
-                <element signature="e#13195#13196#0" expanded="true" />
-                <element signature="e#13228#13229#0" expanded="true" />
-                <element signature="e#13257#13258#0" expanded="true" />
-                <element signature="method#setRender#0;class#Blocks#0" expanded="true" />
-                <element signature="method#setOverlay#1;class#Blocks#0" expanded="true" />
-                <element signature="method#setLiquid#1;class#Blocks#0" expanded="true" />
-                <element signature="method#setCanPlaceOn#0;class#Blocks#0" expanded="true" />
-                <element signature="method#setId#0;class#Blocks#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Options.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/fr/skyforce77/towerminer/save/Options.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="2" column="13" selection-start="53" selection-end="53" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="216">
+            <state line="104" column="73" selection-start="5416" selection-end="5416" vertical-scroll-proportion="0.0" vertical-offset="1872" max-vertical-offset="2142">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="MapLine.java" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/fr/skyforce77/towerminer/maps/MapLine.java">
+      <file leaf-file-name="Blocks.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/fr/skyforce77/towerminer/blocks/Blocks.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="56" column="15" selection-start="1078" selection-end="1078" vertical-scroll-proportion="0.5815832" vertical-offset="648" max-vertical-offset="1764">
-              <folding>
-                <element signature="e#1090#1091#0" expanded="true" />
-                <element signature="e#1122#1123#0" expanded="true" />
-              </folding>
+            <state line="29" column="155" selection-start="1355" selection-end="1355" vertical-scroll-proportion="0.0" vertical-offset="522" max-vertical-offset="7650">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="BlockRender.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/fr/skyforce77/towerminer/blocks/renders/BlockRender.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="26" column="42" selection-start="937" selection-end="937" vertical-scroll-proportion="0.0" vertical-offset="468" max-vertical-offset="1386">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="FenceRender.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/fr/skyforce77/towerminer/blocks/renders/FenceRender.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="60" column="73" selection-start="2883" selection-end="2883" vertical-scroll-proportion="0.0" vertical-offset="1080" max-vertical-offset="1350">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="RedstoneRender.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/fr/skyforce77/towerminer/blocks/renders/RedstoneRender.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="42" column="106" selection-start="1878" selection-end="1968" vertical-scroll-proportion="0.0" vertical-offset="756" max-vertical-offset="2070">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="SaplingRender.java" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/fr/skyforce77/towerminer/blocks/renders/SaplingRender.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="13" column="70" selection-start="501" selection-end="501" vertical-scroll-proportion="0.15841584" vertical-offset="0" max-vertical-offset="909">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="EntityProjectile.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/fr/skyforce77/towerminer/entity/EntityProjectile.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="124" column="23" selection-start="4780" selection-end="4780" vertical-scroll-proportion="0.0" vertical-offset="2232" max-vertical-offset="2700">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="MapEditor.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/fr/skyforce77/towerminer/menus/MapEditor.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="246" column="107" selection-start="9678" selection-end="9678" vertical-scroll-proportion="0.0" vertical-offset="4428" max-vertical-offset="7344">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="SkullRender.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/fr/skyforce77/towerminer/blocks/renders/SkullRender.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="55" column="39" selection-start="2267" selection-end="2267" vertical-scroll-proportion="0.0" vertical-offset="990" max-vertical-offset="1350">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="SignRender.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/fr/skyforce77/towerminer/blocks/renders/SignRender.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="29" column="64" selection-start="1244" selection-end="1300" vertical-scroll-proportion="0.0" vertical-offset="522" max-vertical-offset="1170">
+              <folding />
             </state>
           </provider>
         </entry>
@@ -217,6 +213,7 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/src/fr/skyforce77/towerminer/blocks/Blocks.java" root0="SKIP_INSPECTION" />
     <setting file="file://$PROJECT_DIR$/../TMServer/src/fr/skyforce77/towerminer/server/Server.java" root0="SKIP_INSPECTION" />
     <setting file="file://$PROJECT_DIR$/src/fr/skyforce77/towerminer/maps/MapLine.java" root0="SKIP_INSPECTION" />
   </component>
@@ -229,7 +226,6 @@
         <option value="$PROJECT_DIR$/../TMLauncher/src/fr/skyforce77/towerminer/Launch.java" />
         <option value="$PROJECT_DIR$/../TMLauncher/src/fr/skyforce77/towerminer/Launcher.java" />
         <option value="$PROJECT_DIR$/src/fr/skyforce77/towerminer/menus/MPClientWait.java" />
-        <option value="$PROJECT_DIR$/src/fr/skyforce77/towerminer/menus/additionals/BlockSelectionList.java" />
         <option value="$PROJECT_DIR$/src/fr/skyforce77/towerminer/menus/additionals/Chat.java" />
         <option value="$PROJECT_DIR$/src/fr/skyforce77/towerminer/menus/additionals/LanguageSelectionList.java" />
         <option value="$PROJECT_DIR$/src/fr/skyforce77/towerminer/menus/additionals/ServerSelectionList.java" />
@@ -238,7 +234,6 @@
         <option value="$PROJECT_DIR$/src/fr/skyforce77/towerminer/entity/Mob.java" />
         <option value="$PROJECT_DIR$/src/fr/skyforce77/towerminer/render/ColoredImages.java" />
         <option value="$PROJECT_DIR$/src/fr/skyforce77/towerminer/entity/Entity.java" />
-        <option value="$PROJECT_DIR$/src/fr/skyforce77/towerminer/maps/MapWritter.java" />
         <option value="$PROJECT_DIR$/src/fr/skyforce77/towerminer/menus/MultiPlayer.java" />
         <option value="$PROJECT_DIR$/src/fr/skyforce77/towerminer/ressources/language/Language.java" />
         <option value="$PROJECT_DIR$/src/fr/skyforce77/towerminer/entity/effects/EntityEffectType.java" />
@@ -247,25 +242,32 @@
         <option value="$PROJECT_DIR$/../TMProtocol/src/fr/skyforce77/towerminer/protocol/chat/ChatMessage.java" />
         <option value="$PROJECT_DIR$/../TMProtocol/src/fr/skyforce77/towerminer/protocol/listeners/ListenersManager.java" />
         <option value="$PROJECT_DIR$/../TMProtocol/src/fr/skyforce77/towerminer/protocol/BigSending.java" />
-        <option value="$PROJECT_DIR$/src/fr/skyforce77/towerminer/game/Game.java" />
         <option value="$PROJECT_DIR$/src/fr/skyforce77/towerminer/sounds/Music.java" />
-        <option value="$PROJECT_DIR$/src/fr/skyforce77/towerminer/TowerMiner.java" />
-        <option value="$PROJECT_DIR$/src/fr/skyforce77/towerminer/blocks/renders/FireRender.java" />
-        <option value="$PROJECT_DIR$/src/fr/skyforce77/towerminer/blocks/renders/FlowingRender.java" />
-        <option value="$PROJECT_DIR$/src/fr/skyforce77/towerminer/blocks/renders/MovingRender.java" />
         <option value="$PROJECT_DIR$/src/fr/skyforce77/towerminer/menus/VolumeControlMenu.java" />
         <option value="$PROJECT_DIR$/../TMServer/src/fr/skyforce77/towerminer/server/Server.java" />
         <option value="$PROJECT_DIR$/../TMServer/src/fr/skyforce77/towerminer/server/players/Player.java" />
         <option value="$PROJECT_DIR$/../TMProtocol/src/fr/skyforce77/towerminer/protocol/packets/Packet12Popup.java" />
         <option value="$PROJECT_DIR$/src/fr/skyforce77/towerminer/overlay/Overlay.java" />
         <option value="$PROJECT_DIR$/src/fr/skyforce77/towerminer/ressources/Download.java" />
-        <option value="$PROJECT_DIR$/src/fr/skyforce77/towerminer/maps/Maps.java" />
         <option value="$PROJECT_DIR$/src/fr/skyforce77/towerminer/ressources/RessourcesManager.java" />
+        <option value="$PROJECT_DIR$/src/fr/skyforce77/towerminer/blocks/renders/SignRender.java" />
+        <option value="$PROJECT_DIR$/src/fr/skyforce77/towerminer/maps/MapWritter.java" />
+        <option value="$PROJECT_DIR$/src/fr/skyforce77/towerminer/blocks/renders/FenceRender.java" />
+        <option value="$PROJECT_DIR$/src/fr/skyforce77/towerminer/blocks/renders/FireRender.java" />
+        <option value="$PROJECT_DIR$/src/fr/skyforce77/towerminer/blocks/renders/FlowingRender.java" />
+        <option value="$PROJECT_DIR$/src/fr/skyforce77/towerminer/blocks/renders/MovingRender.java" />
+        <option value="$PROJECT_DIR$/src/fr/skyforce77/towerminer/blocks/renders/WallRender.java" />
+        <option value="$PROJECT_DIR$/src/fr/skyforce77/towerminer/maps/Maps.java" />
+        <option value="$PROJECT_DIR$/src/fr/skyforce77/towerminer/menus/additionals/BlockSelectionList.java" />
+        <option value="$PROJECT_DIR$/src/fr/skyforce77/towerminer/blocks/renders/UnknownBlockRender.java" />
+        <option value="$PROJECT_DIR$/src/fr/skyforce77/towerminer/game/Game.java" />
+        <option value="$PROJECT_DIR$/src/fr/skyforce77/towerminer/TowerMiner.java" />
+        <option value="$PROJECT_DIR$/src/fr/skyforce77/towerminer/entity/EntityProjectile.java" />
         <option value="$PROJECT_DIR$/src/fr/skyforce77/towerminer/blocks/renders/SkullRender.java" />
         <option value="$PROJECT_DIR$/src/fr/skyforce77/towerminer/menus/MapEditor.java" />
-        <option value="$PROJECT_DIR$/src/fr/skyforce77/towerminer/blocks/renders/BlockRender.java" />
-        <option value="$PROJECT_DIR$/src/fr/skyforce77/towerminer/blocks/renders/SignRender.java" />
         <option value="$PROJECT_DIR$/src/fr/skyforce77/towerminer/blocks/Blocks.java" />
+        <option value="$PROJECT_DIR$/src/fr/skyforce77/towerminer/blocks/renders/BlockRender.java" />
+        <option value="$PROJECT_DIR$/src/fr/skyforce77/towerminer/blocks/renders/SaplingRender.java" />
       </list>
     </option>
   </component>
@@ -393,8 +395,6 @@
       <sortByType />
     </navigator>
     <panes>
-      <pane id="PackagesPane" />
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -405,6 +405,8 @@
           </PATH>
         </subPane>
       </pane>
+      <pane id="PackagesPane" />
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -414,7 +416,7 @@
     <property name="MemberChooser.sorted" value="false" />
     <property name="MemberChooser.showClasses" value="true" />
     <property name="MemberChooser.copyJavadoc" value="false" />
-    <property name="last_opened_file_path" value="$USER_HOME$/projects libs/TowerMiner/kryonet-2.21-all.jar!/" />
+    <property name="last_opened_file_path" value="$USER_HOME$/projects libs/TowerMiner/j3d-1_5_2-src.zip!/" />
     <property name="recentsLimit" value="5" />
     <property name="dynamic.classpath" value="false" />
     <property name="FullScreen" value="false" />
@@ -423,7 +425,7 @@
     <property name="options.splitter.main.proportions" value="0.3" />
     <property name="options.splitter.details.proportions" value="0.2" />
     <property name="options.searchVisible" value="true" />
-    <property name="project.structure.last.edited" value="Modules" />
+    <property name="project.structure.last.edited" value="Artifacts" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
     <property name="WebServerToolWindowFactoryState" value="false" />
@@ -438,6 +440,7 @@
     </key>
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/src/ressources/textures" />
+      <recent name="$PROJECT_DIR$/.." />
     </key>
   </component>
   <component name="RunManager" selected="Application.Client">
@@ -761,12 +764,23 @@
       <workItem from="1390928540932" duration="8117000" />
       <workItem from="1390978439540" duration="4802000" />
       <workItem from="1391000970066" duration="3143000" />
-      <workItem from="1391012460332" duration="4593000" />
+      <workItem from="1391012460332" duration="9339000" />
+      <workItem from="1391073422419" duration="1458000" />
+      <workItem from="1391106140440" duration="485000" />
+      <workItem from="1391106635075" duration="3464000" />
+      <workItem from="1391150104739" duration="680000" />
+      <workItem from="1391187951852" duration="800000" />
+      <workItem from="1391188952037" duration="21000" />
     </task>
+    <task id="LOCAL-00001" summary="Added Skulls and Signs (unfinished)">
+      <created>1391018102542</created>
+      <updated>1391018102542</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="23245000" />
+    <option name="totallyTimeSpent" value="34899000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-3" y="0" width="1926" height="1057" extended-state="6" />
@@ -777,7 +791,6 @@
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32916668" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32985386" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -786,17 +799,18 @@
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="IDEtalk" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32604167" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.19947916" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.40104166" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32708332" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32985386" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32604167" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
@@ -809,6 +823,7 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="VcsManagerConfiguration">
+    <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="CHECK_NEW_TODO" value="false" />
     <option name="myTodoPanelSettings">
       <TodoPanelSettings />
@@ -816,8 +831,6 @@
     <confirmMoveToFailedCommit value="1" />
     <MESSAGE value="Added Skulls and Signs (unfinished)" />
     <option name="LAST_COMMIT_MESSAGE" value="Added Skulls and Signs (unfinished)" />
-    <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
-    <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
@@ -827,26 +840,6 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/../TMLauncher/src/fr/skyforce77/towerminer/Launcher.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="41" column="46" selection-start="1945" selection-end="1945" vertical-scroll-proportion="0.0" vertical-offset="432" max-vertical-offset="3618" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/fr/skyforce77/towerminer/menus/MPJoinMenu.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="18" column="13" selection-start="554" selection-end="554" vertical-scroll-proportion="-0.15065502" vertical-offset="210" max-vertical-offset="1458" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/fr/skyforce77/towerminer/menus/MPClientWait.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="54" column="73" selection-start="2014" selection-end="2014" vertical-scroll-proportion="0.7868676" vertical-offset="7" max-vertical-offset="936" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/fr/skyforce77/towerminer/menus/additionals/BlockSelectionList.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="28" column="8" selection-start="846" selection-end="846" vertical-scroll-proportion="0.23250808" vertical-offset="0" max-vertical-offset="1134" />
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/fr/skyforce77/towerminer/menus/additionals/LanguageSelectionList.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="58" column="39" selection-start="2062" selection-end="2062" vertical-scroll-proportion="0.0" vertical-offset="162" max-vertical-offset="1044" />
@@ -944,9 +937,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/fr/skyforce77/towerminer/menus/VolumeControlMenu.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="54" column="39" selection-start="1808" selection-end="1808" vertical-scroll-proportion="0.8084416" vertical-offset="132" max-vertical-offset="1062">
-          <folding />
-        </state>
+        <state line="54" column="39" selection-start="1808" selection-end="1808" vertical-scroll-proportion="0.8084416" vertical-offset="132" max-vertical-offset="1062" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/../TMServer/src/fr/skyforce77/towerminer/server/players/Player.java">
@@ -966,9 +957,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/fr/skyforce77/towerminer/multiplayer/ProtocolManager.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="90" column="77" selection-start="4241" selection-end="4241" vertical-scroll-proportion="0.3327787" vertical-offset="502" max-vertical-offset="5796">
-          <folding />
-        </state>
+        <state line="90" column="77" selection-start="4241" selection-end="4241" vertical-scroll-proportion="0.3327787" vertical-offset="502" max-vertical-offset="5796" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/../TMServer/src/fr/skyforce77/towerminer/server/Server.java">
@@ -976,39 +965,9 @@
         <state line="223" column="45" selection-start="8572" selection-end="8572" vertical-scroll-proportion="0.0" vertical-offset="2897" max-vertical-offset="3816" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/fr/skyforce77/towerminer/blocks/renders/MovingRender.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="18" column="83" selection-start="685" selection-end="685" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1095">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/fr/skyforce77/towerminer/blocks/renders/RedstoneRender.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="13" column="13" selection-start="409" selection-end="409" vertical-scroll-proportion="0.0" vertical-offset="918" max-vertical-offset="1944">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/fr/skyforce77/towerminer/blocks/renders/WallRender.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="12" column="13" selection-start="360" selection-end="360" vertical-scroll-proportion="0.07725322" vertical-offset="0" max-vertical-offset="2016">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/fr/skyforce77/towerminer/blocks/renders/AroundBlockBasedRender.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="6" column="23" selection-start="150" selection-end="150" vertical-scroll-proportion="0.07725322" vertical-offset="0" max-vertical-offset="932">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/fr/skyforce77/towerminer/blocks/renders/FenceRender.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="18" column="8" selection-start="534" selection-end="685" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1242">
-          <folding />
-        </state>
+        <state line="6" column="23" selection-start="150" selection-end="150" vertical-scroll-proportion="0.07725322" vertical-offset="0" max-vertical-offset="932" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/../TMLauncher/src/fr/skyforce77/towerminer/Download.java">
@@ -1016,133 +975,143 @@
         <state line="15" column="13" selection-start="380" selection-end="380" vertical-scroll-proportion="0.0" vertical-offset="54" max-vertical-offset="1548" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/fr/skyforce77/towerminer/TowerMiner.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="29" column="36" selection-start="1120" selection-end="1120" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="2220">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/fr/skyforce77/towerminer/blocks/renders/FlowingRender.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="25" column="52" selection-start="786" selection-end="802" vertical-scroll-proportion="0.0" vertical-offset="18" max-vertical-offset="1512">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/fr/skyforce77/towerminer/maps/MapWritter.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="69" column="53" selection-start="2386" selection-end="2386" vertical-scroll-proportion="0.0" vertical-offset="678" max-vertical-offset="1296">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/fr/skyforce77/towerminer/ressources/RessourcesManager.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="27" column="12" selection-start="760" selection-end="760" vertical-scroll-proportion="0.0" vertical-offset="162" max-vertical-offset="1728">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/fr/skyforce77/towerminer/maps/Maps.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="254" column="28" selection-start="5986" selection-end="5986" vertical-scroll-proportion="0.0" vertical-offset="3481" max-vertical-offset="6966">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/fr/skyforce77/towerminer/game/Game.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="101" column="42" selection-start="2738" selection-end="2738" vertical-scroll-proportion="0.0" vertical-offset="3672" max-vertical-offset="4536">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/fr/skyforce77/towerminer/menus/MapEditor.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="352" column="40" selection-start="11783" selection-end="11783" vertical-scroll-proportion="0.0" vertical-offset="5036" max-vertical-offset="6300">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/fr/skyforce77/towerminer/blocks/renders/FireRender.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="17" column="79" selection-start="598" selection-end="598" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1080">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/fr/skyforce77/towerminer/blocks/renders/BlockRender.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="33" column="55" selection-start="1095" selection-end="1095" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1044">
-          <folding />
-        </state>
+        <state line="27" column="12" selection-start="760" selection-end="760" vertical-scroll-proportion="0.0" vertical-offset="162" max-vertical-offset="1728" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/fr/skyforce77/towerminer/menus/additionals/Chat.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="97" column="27" selection-start="3075" selection-end="3189" vertical-scroll-proportion="0.0" vertical-offset="1134" max-vertical-offset="2376">
+        <state line="97" column="27" selection-start="3075" selection-end="3189" vertical-scroll-proportion="0.0" vertical-offset="1134" max-vertical-offset="2376" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/fr/skyforce77/towerminer/menus/SinglePlayer.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="360" column="23" selection-start="10061" selection-end="10068" vertical-scroll-proportion="0.33275563" vertical-offset="5388" max-vertical-offset="9810" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/fr/skyforce77/towerminer/save/Options.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="2" column="13" selection-start="53" selection-end="53" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="216" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/fr/skyforce77/towerminer/maps/MapLine.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="56" column="15" selection-start="1078" selection-end="1078" vertical-scroll-proportion="0.0" vertical-offset="648" max-vertical-offset="1764" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/fr/skyforce77/towerminer/maps/MapWritter.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="21" column="35" selection-start="898" selection-end="898" vertical-scroll-proportion="0.0" vertical-offset="100" max-vertical-offset="1242" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/fr/skyforce77/towerminer/blocks/renders/FlowingRender.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="45" column="40" selection-start="1841" selection-end="1841" vertical-scroll-proportion="0.0" vertical-offset="288" max-vertical-offset="1512" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/fr/skyforce77/towerminer/blocks/renders/MovingRender.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="34" column="40" selection-start="1361" selection-end="1361" vertical-scroll-proportion="0.0" vertical-offset="198" max-vertical-offset="1314" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/fr/skyforce77/towerminer/maps/Maps.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="238" column="44" selection-start="6637" selection-end="6637" vertical-scroll-proportion="0.36198348" vertical-offset="3435" max-vertical-offset="6858" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/fr/skyforce77/towerminer/menus/additionals/BlockSelectionList.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="23" column="41" selection-start="802" selection-end="802" vertical-scroll-proportion="0.32038835" vertical-offset="90" max-vertical-offset="1134" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/fr/skyforce77/towerminer/blocks/renders/UnknownBlockRender.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="26" column="56" selection-start="1044" selection-end="1044" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="774" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/fr/skyforce77/towerminer/game/Game.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="21" column="44" selection-start="857" selection-end="857" vertical-scroll-proportion="0.0" vertical-offset="18" max-vertical-offset="4554" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/fr/skyforce77/towerminer/TowerMiner.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="36" column="35" selection-start="1522" selection-end="1522" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="2664" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/fr/skyforce77/towerminer/blocks/renders/FireRender.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="34" column="40" selection-start="1398" selection-end="1398" vertical-scroll-proportion="0.0" vertical-offset="108" max-vertical-offset="1296" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/fr/skyforce77/towerminer/blocks/renders/WallRender.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="104" column="73" selection-start="5416" selection-end="5416" vertical-scroll-proportion="0.0" vertical-offset="1393" max-vertical-offset="2016">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/fr/skyforce77/towerminer/entity/EntityProjectile.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="124" column="23" selection-start="4780" selection-end="4780" vertical-scroll-proportion="0.0" vertical-offset="1475" max-vertical-offset="2394">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/fr/skyforce77/towerminer/blocks/renders/SkullRender.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="22" column="58" selection-start="776" selection-end="818" vertical-scroll-proportion="0.0" vertical-offset="269" max-vertical-offset="1242">
+        <state line="55" column="39" selection-start="2267" selection-end="2267" vertical-scroll-proportion="0.0" vertical-offset="516" max-vertical-offset="1224">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/fr/skyforce77/towerminer/menus/SinglePlayer.java">
+    <entry file="file://$PROJECT_DIR$/src/fr/skyforce77/towerminer/menus/MapEditor.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="360" column="23" selection-start="10061" selection-end="10068" vertical-scroll-proportion="0.33275563" vertical-offset="5388" max-vertical-offset="9810">
+        <state line="246" column="107" selection-start="9678" selection-end="9678" vertical-scroll-proportion="0.0" vertical-offset="3327" max-vertical-offset="6534">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/fr/skyforce77/towerminer/blocks/renders/SignRender.java">
+    <entry file="file://$PROJECT_DIR$/src/fr/skyforce77/towerminer/blocks/renders/FenceRender.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="40" column="9" selection-start="1768" selection-end="1768" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1062">
+        <state line="60" column="73" selection-start="2883" selection-end="2883" vertical-scroll-proportion="0.0" vertical-offset="576" max-vertical-offset="1242">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/fr/skyforce77/towerminer/blocks/renders/RedstoneRender.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="42" column="106" selection-start="1878" selection-end="1968" vertical-scroll-proportion="0.0" vertical-offset="270" max-vertical-offset="1944">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/fr/skyforce77/towerminer/blocks/Blocks.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="124" column="0" selection-start="6879" selection-end="6879" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="7452">
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#12962#12963#0" expanded="true" />
-            <element signature="e#12987#12988#0" expanded="true" />
-            <element signature="e#13101#13102#0" expanded="true" />
-            <element signature="e#13131#13132#0" expanded="true" />
-            <element signature="e#13165#13166#0" expanded="true" />
-            <element signature="e#13195#13196#0" expanded="true" />
-            <element signature="e#13228#13229#0" expanded="true" />
-            <element signature="e#13257#13258#0" expanded="true" />
-            <element signature="method#setRender#0;class#Blocks#0" expanded="true" />
-            <element signature="method#setOverlay#1;class#Blocks#0" expanded="true" />
-            <element signature="method#setLiquid#1;class#Blocks#0" expanded="true" />
-            <element signature="method#setCanPlaceOn#0;class#Blocks#0" expanded="true" />
-            <element signature="method#setId#0;class#Blocks#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/fr/skyforce77/towerminer/save/Options.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="2" column="13" selection-start="53" selection-end="53" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="216">
+        <state line="29" column="155" selection-start="1355" selection-end="1355" vertical-scroll-proportion="0.0" vertical-offset="102" max-vertical-offset="6984">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/fr/skyforce77/towerminer/maps/MapLine.java">
+    <entry file="file://$PROJECT_DIR$/src/fr/skyforce77/towerminer/blocks/renders/BlockRender.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="56" column="15" selection-start="1078" selection-end="1078" vertical-scroll-proportion="0.5815832" vertical-offset="648" max-vertical-offset="1764">
-          <folding>
-            <element signature="e#1090#1091#0" expanded="true" />
-            <element signature="e#1122#1123#0" expanded="true" />
-          </folding>
+        <state line="26" column="42" selection-start="937" selection-end="937" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1278">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/fr/skyforce77/towerminer/blocks/renders/SignRender.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="29" column="64" selection-start="1244" selection-end="1300" vertical-scroll-proportion="0.0" vertical-offset="251" max-vertical-offset="1062">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/fr/skyforce77/towerminer/blocks/renders/SaplingRender.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="13" column="70" selection-start="501" selection-end="501" vertical-scroll-proportion="0.15841584" vertical-offset="0" max-vertical-offset="909">
+          <folding />
         </state>
       </provider>
     </entry>
@@ -1152,10 +1121,12 @@
       <state key="ArtifactsStructureConfigurable.UI">
         <settings>
           <artifact-editor />
+          <last-edited>TowerMiner:jar</last-edited>
           <splitter-proportions>
             <option name="proportions">
               <list>
                 <option value="0.2" />
+                <option value="0.5" />
               </list>
             </option>
           </splitter-proportions>

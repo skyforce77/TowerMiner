@@ -21,7 +21,7 @@ public class BlockSelectionList extends JFrame {
         DefaultListModel<Blocks> listm = new DefaultListModel<Blocks>();
         final JList<Blocks> list = new JList<Blocks>(listm);
         int i = 0;
-        for (Blocks b : Blocks.blocks) {
+        for (Blocks b : Blocks.getList()) {
             if (b != null && b.isVisible() && !(b.getId() == 1023 || b.getId() == 1021)) {
                 listm.add(i, b);
                 i++;

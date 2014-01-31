@@ -99,10 +99,10 @@ public class WallRender extends AroundBlockBasedRender {
         if (Maps.getActualMap().hasPoint(new Point(x, y)) && Maps.getActualMap().getBlockId(x, y) == id) {
             return false;
         }
-        if (Blocks.blocks[id] != null && Blocks.blocks[id].getRender() instanceof WallRender) {
+        if (Blocks.byId(id).getRender() instanceof WallRender) {
             return true;
         }
-        return id != 0 && Blocks.blocks[id] != null && !Blocks.blocks[id].isLiquid() && !Blocks.blocks[id].isOverlay();
+        return id != 0 && !Blocks.byId(id).isLiquid() && !Blocks.byId(id).isOverlay();
     }
 
     @Override

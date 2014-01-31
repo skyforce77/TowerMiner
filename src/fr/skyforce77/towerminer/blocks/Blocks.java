@@ -17,7 +17,7 @@ import java.util.Random;
 public class Blocks implements Serializable {
 
     private static final long serialVersionUID = 2752810401397078248L;
-    public static Blocks[] blocks;
+    private static Blocks[] blocks;
 
     public static void createNativeBlocks() {
         blocks = new Blocks[5000];
@@ -27,12 +27,12 @@ public class Blocks implements Serializable {
         new Blocks(3, "dirt");
         new Blocks(4, "cobblestone");
         new Blocks(5, "planks", "planks1", "planks2", "planks3", "planks_acacia", "planks_big_oak");
-        //TODO pousses
+        new Blocks(6, "sapling_oak", "sapling_spruce", "sapling_birch", "sapling_jungle", "sapling_acacia", "sapling_roofed_oak").setOverlay().setRender(10);
         new Blocks(7, "bedrock");
         new Blocks(8, "water_still", "water").setLiquid().setOverlay().setCantPlaceOn().setRender(1);
         new Blocks(9, "water_flow", "water").setLiquid().setOverlay().setCantPlaceOn().setRender(2);
-        new Blocks(10, "lava_still", "lava").setLiquid().setOverlay().setCantPlaceOn().setRender(1);
-        new Blocks(11, "lava_flow", "lava").setLiquid().setOverlay().setCantPlaceOn().setRender(2);
+        new Blocks(10, "lava_still", "lava").setLiquid().setCantPlaceOn().setRender(1);
+        new Blocks(11, "lava_flow", "lava").setLiquid().setCantPlaceOn().setRender(2);
         new Blocks(12, "sand", "red_sand");
         new Blocks(13, "gravel");
         new Blocks(14, "gold_ore");
@@ -158,7 +158,6 @@ public class Blocks implements Serializable {
         new Blocks(137, "command_block");
         new Blocks(139, "cobblestone", "cobblestone_mossy").setOverlay().setRender(6);
         //TODO un paquet!
-        new Blocks(144, "redstone_block");
         new Blocks(152, "redstone_block");
         //TODO un paquet!
         new Blocks(155, "quartz", "quartz1", "quartz2", "quartz3");
@@ -184,6 +183,7 @@ public class Blocks implements Serializable {
         new Blocks(1021, "death", "death1");
         new Blocks(1022, "null").setInvisible().setOverlay();
         new Blocks(1023, "fleche", "fleche1", "fleche2", "fleche3");
+        new Blocks(1024, "unknown").setInvisible().setRender(9).setCantPlaceOn();
 
         BlockRender.createRenders();
     }
@@ -230,6 +230,17 @@ public class Blocks implements Serializable {
             }
         }
         return i;
+    }
+
+    public static Blocks byId(int id) {
+        if(id < blocks.length && blocks[id] != null) {
+            return blocks[id];
+        }
+        return blocks[1024];
+    }
+
+    public static Blocks[] getList() {
+        return blocks;
     }
 
     int id = blocks.length - 1;
@@ -321,7 +332,7 @@ public class Blocks implements Serializable {
     }
 
     public BlockRender getRender() {
-        return render == -1 ? null : BlockRender.renders[render];
+        return render == -1 ? BlockRender.renders[0] : BlockRender.renders[render];
     }
 
     public Blocks setRender(int id) {
