@@ -1,17 +1,20 @@
 package fr.skyforce77.towerminer.blocks.renders;
 
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.FontMetrics;
+import java.awt.Graphics2D;
+import java.awt.geom.Rectangle2D;
+
 import fr.skyforce77.towerminer.TowerMiner;
 import fr.skyforce77.towerminer.blocks.Blocks;
 import fr.skyforce77.towerminer.maps.Maps;
-import fr.skyforce77.towerminer.menus.MapEditor;
-import fr.skyforce77.towerminer.ressources.RessourcesManager;
-
-import java.awt.*;
-import java.awt.geom.Rectangle2D;
 
 public class UnknownBlockRender extends BlockRender {
 
-    public void onBlockRender(Blocks b, Graphics2D g2d, int data, int x, int y, int pix) {
+	private static final long serialVersionUID = -9213478529378034829L;
+
+	public void onBlockRender(Blocks b, Graphics2D g2d, int data, int x, int y, int pix) {
         int bid = Maps.getActualMap().getBlockId(x / 48, (y - TowerMiner.game.CanvasY) / 48);
         int oid = Maps.getActualMap().getOverlayId(x / 48, (y - TowerMiner.game.CanvasY) / 48);
 

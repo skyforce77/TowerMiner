@@ -51,21 +51,24 @@ public class Blocks implements Serializable {
         new Blocks(27, "rail_golden", "rail_golden1", "rail_golden2", "rail_golden3").setOverlay();
         new Blocks(28, "rail_detector", "rail_detector1", "rail_detector2", "rail_detector3").setOverlay();
         new Blocks(29, "spiston", "piston1", "piston2");
-        //TODO plantes mortes
+        new Blocks(30, "web").setOverlay().setRender(10);
+        new Blocks(31, "deadbush", "tallgrass", "fern").setAdaptColor(1).setAdaptColor(2).setOverlay().setRender(10);
         new Blocks(33, "piston", "piston1", "piston2");
         new Blocks(35, "wool_colored_white", "wool_colored_orange", "wool_colored_magenta",
                 "wool_colored_light_blue", "wool_colored_yellow", "wool_colored_lime", "wool_colored_pink",
                 "wool_colored_gray", "wool_colored_silver", "wool_colored_cyan", "wool_colored_purple",
                 "wool_colored_blue", "wool_colored_brown", "wool_colored_green", "wool_colored_red",
                 "wool_colored_black");
-        //TODO plantes
+        new Blocks(37, "flower_dandelion").setOverlay().setRender(10);
+        new Blocks(38, "flower_rose", "flower_blue_orchid", "flower_allium", "flower_tulip_red", "flower_tulip_orange", "flower_tulip_white", "flower_tulip_pink", "flower_oxeye_daisy", "flower_houstonia", "flower_paeonia").setOverlay().setRender(10);
+        new Blocks(39, "mushroom_brown").setOverlay().setRender(10);
+        new Blocks(40, "mushroom_red").setOverlay().setRender(10);
         new Blocks(41, "gold_block");
         new Blocks(42, "iron_block");
         new Blocks(45, "brick");
         new Blocks(46, "tnt");
         new Blocks(48, "cobblestone_mossy");
         new Blocks(49, "obsidian");
-        //TODO torches et feu
         new Blocks(50, "torch_on", "torch_off") {
             private static final long serialVersionUID = -4676064980975742683L;
 
@@ -109,7 +112,7 @@ public class Blocks implements Serializable {
             ;
         }.setOverlay().setRender(3);
         //TODO un paquet!
-        //TODO finir le render new Blocks(63,"planks","planks1","planks2","planks3", "planks_acacia", "planks_big_oak").setOverlay().setRender(8);
+        new Blocks(63,"planks","planks1","planks2","planks3", "planks_acacia", "planks_big_oak").setOverlay().setRender(8);
         new Blocks(66, "rail", "rail1", "rail2", "rail3", "rail4", "rail5").setOverlay();
         //TODO un paquet!
         new Blocks(76, "torch_redstone_on", "torch_off") {
@@ -174,11 +177,11 @@ public class Blocks implements Serializable {
         new Blocks(164, "ice_packed");
         new Blocks(165, "slime").setOverlay();
 
-        new Blocks(996, "mskeleton").setOverlay().setRender(7);
-        new Blocks(997, "wither_skeleton").setOverlay().setRender(7);
-        new Blocks(998, "zombie").setOverlay().setRender(7);
-        new Blocks(999, "steve").setOverlay().setRender(7);
-        new Blocks(1000, "creeper").setOverlay().setRender(7);
+        new Blocks(996, "mskeleton", "skull_skeleton").setOverlay().setRender(7);
+        new Blocks(997, "wither_skeleton", "skull_wither").setOverlay().setRender(7);
+        new Blocks(998, "zombie", "skull_zombie").setOverlay().setRender(7);
+        new Blocks(999, "steve", "skull_steve").setOverlay().setRender(7);
+        new Blocks(1000, "creeper", "skull_zombie").setOverlay().setRender(7);
 
         new Blocks(1021, "death", "death1");
         new Blocks(1022, "null").setInvisible().setOverlay();
