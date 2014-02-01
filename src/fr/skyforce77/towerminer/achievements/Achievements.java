@@ -12,6 +12,10 @@ public class Achievements {
         new Achievement(3, "steel_ingot");
         new Achievement(4, "potion");
         new Achievement(5, "flintandsteel");
+        new Achievement(6, "poison");
+        new Achievement(7, "skull_steve");
+        new Achievement(8, "mushroomcow");
+        new Achievement(9, "flower_allium");
     }
 
     public static void unlockAchievement(int id) {

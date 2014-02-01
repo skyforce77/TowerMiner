@@ -40,6 +40,10 @@ public class Achievement extends Popup {
     public String getText() {
         return Achievement.getStaticText(id);
     }
+    
+    public String getDesc() {
+        return LanguageManager.getText("achievement.desc." + id);
+    }
 
     private static String getStaticText(int id) {
         return LanguageManager.getText("achievement.text." + id);

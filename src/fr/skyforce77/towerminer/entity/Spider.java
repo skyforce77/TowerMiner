@@ -1,5 +1,6 @@
 package fr.skyforce77.towerminer.entity;
 
+import fr.skyforce77.towerminer.achievements.Achievements;
 import fr.skyforce77.towerminer.entity.effects.EntityEffect;
 import fr.skyforce77.towerminer.entity.effects.EntityEffectType;
 
@@ -11,6 +12,7 @@ public class Spider extends Turret {
 
     public Spider(EntityTypes type, Point location, String owner) {
         super(type, location, owner);
+        Achievements.unlockAchievement(6);
     }
 
     @Override

@@ -100,14 +100,27 @@ turret.range: Range
 turret.owner: Owner
 turret.cost: Total cost
 turret.speed: Speed
-
+achievement: Achievements
 achievement.text: Achievement get!
 achievement.text.mp: % get
-achievement.text.1: Upgrade
-achievement.text.2: Big Upgrade
-achievement.text.3: Infinite Upgrade
-achievement.text.4: Sorcerer!!
+achievement.text.1:  Upgrade
+achievement.desc.1: Upgraded turret level 2
+achievement.text.2:  Big upgrade
+achievement.desc.2: Upgraded turret level 10
+achievement.text.3:  Infinite upgrade
+achievement.desc.3: Upgraded turret level 18
+achievement.text.4: Sorcerer!
+achievement.desc.4: Created witch
 achievement.text.5: Pyroman
+achievement.desc.5: Created blaze
+achievement.text.6: Cyanide
+achievement.desc.6: Created spider
+achievement.text.7: Decapitation
+achievement.desc.7: Seen human head
+achievement.text.8: Cowphobia
+achievement.desc.8: Seen a mushroom cow
+achievement.text.9: Winner
+achievement.desc.9: Win at round 50
 
 music.error: Download failed
 music.downloading: Downloading %

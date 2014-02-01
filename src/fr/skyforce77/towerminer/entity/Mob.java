@@ -1,6 +1,7 @@
 package fr.skyforce77.towerminer.entity;
 
 import fr.skyforce77.towerminer.TowerMiner;
+import fr.skyforce77.towerminer.achievements.Achievements;
 import fr.skyforce77.towerminer.entity.effects.EntityEffect;
 import fr.skyforce77.towerminer.entity.effects.EntityEffectType;
 import fr.skyforce77.towerminer.maps.MapWritter;
@@ -32,6 +33,10 @@ public class Mob extends Entity {
         last = new Point(0, 0);
         life = type.getMaxLife();
         speed = type.getSpeed();
+        
+        if(type.equals(EntityTypes.MUSHCOW)) {
+        	Achievements.unlockAchievement(8);
+        }
     }
 
     public int getLife() {

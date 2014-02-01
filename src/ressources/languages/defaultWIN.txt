@@ -101,13 +101,27 @@ turret.owner: Créateur
 turret.cost: Coût total
 turret.speed: Vitesse
 
+achievement: Succès
 achievement.text: Succès obtenu!
 achievement.text.mp: % a obtenu
-achievement.text.1: Mise à niveau
+achievement.text.1:  Mise à niveau
+achievement.desc.1: A eu une tourelle de niveau 2
 achievement.text.2: Gros calibre
+achievement.desc.2: A eu une tourelle de niveau 10
 achievement.text.3: Indémontable
+achievement.desc.3: A eu une tourelle de niveau 18
 achievement.text.4: Sorcier!
+achievement.desc.4: A créé une sorcière
 achievement.text.5: Pyroman
+achievement.desc.5: A créé un blaze
+achievement.text.6: Cyanure
+achievement.desc.6: A créé une aragnée
+achievement.text.7: Décapitation
+achievement.desc.7: A vu une tête humaine
+achievement.text.8: Vachophobe
+achievement.desc.8: A vu une vache champignon
+achievement.text.9: Vainqueur
+achievement.desc.9: A vaincu la manche 50
 
 music.error: Téléchargement impossible
 music.downloading: Téléchargement de %

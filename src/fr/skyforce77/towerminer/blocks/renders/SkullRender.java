@@ -7,6 +7,7 @@ import java.awt.geom.Rectangle2D;
 import javax.swing.ImageIcon;
 
 import fr.skyforce77.towerminer.TowerMiner;
+import fr.skyforce77.towerminer.achievements.Achievements;
 import fr.skyforce77.towerminer.blocks.Blocks;
 import fr.skyforce77.towerminer.maps.Maps;
 import fr.skyforce77.towerminer.menus.MapEditor;
@@ -37,6 +38,7 @@ public class SkullRender extends BlockRender {
                     ;
                     s = (String) storage;
                     image = RessourcesManager.getDistantImage("http://s3.amazonaws.com/MinecraftSkins/" + s + ".png", "steve");
+                    Achievements.unlockAchievement(7);
                 }
             }
         }

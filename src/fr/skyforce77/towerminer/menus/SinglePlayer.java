@@ -1,6 +1,7 @@
 package fr.skyforce77.towerminer.menus;
 
 import fr.skyforce77.towerminer.TowerMiner;
+import fr.skyforce77.towerminer.achievements.Achievements;
 import fr.skyforce77.towerminer.entity.Entity;
 import fr.skyforce77.towerminer.entity.EntityTypes;
 import fr.skyforce77.towerminer.entity.Mob;
@@ -13,6 +14,7 @@ import fr.skyforce77.towerminer.ressources.RessourcesManager;
 import fr.skyforce77.towerminer.ressources.language.LanguageManager;
 
 import javax.swing.*;
+
 import java.awt.*;
 import java.awt.event.*;
 import java.util.Date;
@@ -238,6 +240,10 @@ public class SinglePlayer extends Menu {
     }
 
     public void drawMenu(Graphics2D g) {
+        if(round-1 >= 50) {
+        	Achievements.unlockAchievement(9);
+        }
+        
         MapWritter.drawCanvas((Graphics2D) g.create(), CanvasX, CanvasY);
 
         Graphics2D g2d = (Graphics2D) g.create();

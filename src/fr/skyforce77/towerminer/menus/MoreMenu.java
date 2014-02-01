@@ -27,6 +27,13 @@ public class MoreMenu extends Menu {
                 TowerMiner.setMenu(Menu.about);
             }
         });
+        
+        items[2] = new MenuItem(2, LanguageManager.getText("achievement"), new Thread() {
+            @Override
+            public void run() {
+                TowerMiner.setMenu(Menu.achievements);
+            }
+        });
     }
 
     public void drawMenu(Graphics2D g2d) {
