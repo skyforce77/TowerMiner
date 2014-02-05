@@ -52,6 +52,10 @@ public class BlockRender implements Serializable {
     public boolean needNBT(int id) {
         return false;
     }
+    
+    public String formatNBT(int id) {
+        return "";
+    }
 
     public int dataNumber(Blocks b) {
         int i = 1;

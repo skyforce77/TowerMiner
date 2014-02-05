@@ -111,7 +111,10 @@ public class Blocks implements Serializable {
 
             ;
         }.setOverlay().setRender(3);
-        //TODO un paquet!
+        new Blocks(56, "diamond_ore");
+        new Blocks(57, "diamond_block");
+        new Blocks(58, "crafting_table_top");
+        new Blocks(60, "farmland_dry", "farmland_wet");
         new Blocks(63,"planks","planks1","planks2","planks3", "planks_acacia", "planks_big_oak").setOverlay().setRender(8);
         new Blocks(66, "rail", "rail1", "rail2", "rail3", "rail4", "rail5").setOverlay();
         //TODO un paquet!
@@ -132,7 +135,7 @@ public class Blocks implements Serializable {
         new Blocks(80, "snow");
         new Blocks(81, "cactus", "cactus1").setOverlay().setCantPlaceOn();
         new Blocks(82, "clay");
-        //TODO cane à sucre
+        new Blocks(83, "reeds").setOverlay().setRender(10);
         new Blocks(84, "jukebox");
         new Blocks(85, "planks", "planks1", "planks2", "planks3", "planks_acacia", "planks_big_oak").setOverlay().setRender(5);
         //TODO barrières et citrouille
@@ -146,8 +149,10 @@ public class Blocks implements Serializable {
                 "glass_gray", "glass_silver", "glass_cyan", "glass_purple",
                 "glass_blue", "glass_brown", "glass_green", "glass_red",
                 "glass_black").setOverlay();
+        new Blocks(96, "trapdoor").setOverlay();
         new Blocks(98, "stonebrick", "stonebrick_mossy", "stonebrick_cracked", "stonebrick_carved");
         //TODO un paquet!
+        new Blocks(103, "melon_top", "melon_side");
         new Blocks(110, "mycelium");
         //TODO lilipad
         new Blocks(112, "nether_brick");

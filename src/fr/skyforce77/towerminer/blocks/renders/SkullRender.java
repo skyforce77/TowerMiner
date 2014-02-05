@@ -31,20 +31,32 @@ public class SkullRender extends BlockRender {
             if (TowerMiner.menu instanceof MapEditor && lpix != 48) {
                 MapEditor me = (MapEditor) TowerMiner.menu;
                 s = me.bdata.getText();
-                image = RessourcesManager.getDistantImage("http://s3.amazonaws.com/MinecraftSkins/" + me.bdata.getText() + ".png", "steve");
             } else {
                 Object storage = Maps.getActualMap().getOverlayStorage(x / 48, (y - TowerMiner.game.CanvasY) / 48);
                 if (storage != null) {
-                    ;
                     s = (String) storage;
-                    image = RessourcesManager.getDistantImage("http://s3.amazonaws.com/MinecraftSkins/" + s + ".png", "steve");
                     Achievements.unlockAchievement(7);
                 }
             }
         }
+        double rot = 0;
         int width = image.getWidth(null);
         int height = image.getHeight(null);
+        
+        if(s.contains(":")) {
+        	String[] sp = s.split(":");
+        	if(sp.length >= 2) {
+        		s = sp[0];
+        		try {
+        			rot = Math.toRadians(Integer.parseInt(sp[1]));
+        		} catch(Exception e) {}
+        	} else {
+        		s = sp[0];
+        	}
+        }
 
+        image = RessourcesManager.getDistantImage("http://s3.amazonaws.com/MinecraftSkins/" + s + ".png", b.getTexture(0));
+        g2d.rotate(rot, x + pix / 2, y + pix / 2);
         if (data == 0) {
             if(s.equals("deadmau5")) {
             	int npix = pix;
@@ -87,6 +99,11 @@ public class SkullRender extends BlockRender {
     @Override
     public boolean needNBT(int id) {
         return id == 999 ? true : false;
+    }
+    
+    @Override
+    public String formatNBT(int id) {
+    	return "name:rotation";
     }
 
     @Override

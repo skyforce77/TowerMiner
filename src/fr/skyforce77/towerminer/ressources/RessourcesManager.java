@@ -20,6 +20,10 @@ public class RessourcesManager {
     }
 
     public static Image getDistantImage(final String url, String defaultt) {
+        return getDistantImage(url, getTexture(defaultt));
+    }
+    
+    public static Image getDistantImage(final String url, Image defaultt) {
         if (imgurls.containsKey(url)) {
             return imgurls.get(url);
         } else {
@@ -37,7 +41,7 @@ public class RessourcesManager {
                     }
                 }.start();
             }
-            return getTexture(defaultt);
+            return defaultt;
         }
     }
 

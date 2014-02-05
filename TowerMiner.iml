@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <module type="JAVA_MODULE" version="4">
   <component name="EclipseModuleManager">
-    <libelement value="jar://$USER_HOME$/Documents/eclipse/librairies/kryonet-debug-2.18-all.jar!/" />
+    <libelement value="jar://$USER_HOME$/projects libs/TowerMiner/kryonet-2.21-all.jar!/" />
+    <libelement value="jar://$USER_HOME$/projects libs/TowerMiner/vecmath-1.5.1.jar!/" />
     <src_description expected_position="0">
       <src_folder value="file://$MODULE_DIR$/src" expected_position="0" />
     </src_description>
@@ -16,18 +17,18 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="module" module-name="TMProtocol" />
     <orderEntry type="module-library">
-      <library>
+      <library name="kryonet-2.21-all.jar">
         <CLASSES>
-          <root url="jar://$USER_HOME$/projects libs/TowerMiner/vecmath-1.5.1.jar!/" />
+          <root url="jar://$USER_HOME$/projects libs/TowerMiner/kryonet-2.21-all.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
       </library>
     </orderEntry>
     <orderEntry type="module-library">
-      <library>
+      <library name="vecmath-1.5.1.jar">
         <CLASSES>
-          <root url="jar://$USER_HOME$/projects libs/TowerMiner/kryonet-2.21-all.jar!/" />
+          <root url="jar://$USER_HOME$/projects libs/TowerMiner/vecmath-1.5.1.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />

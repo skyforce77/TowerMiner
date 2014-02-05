@@ -82,4 +82,9 @@ public class SignRender extends BlockRender {
     public boolean needNBT(int id) {
     	return true;
     }
+    
+    @Override
+    public String formatNBT(int id) {
+    	return "text";
+    }
 }

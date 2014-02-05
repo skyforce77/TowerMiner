@@ -1,5 +1,12 @@
 package fr.skyforce77.towerminer;
 
+import java.net.URL;
+import java.util.Random;
+import java.util.UUID;
+
+import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
+
 import fr.skyforce77.towerminer.achievements.Achievements;
 import fr.skyforce77.towerminer.achievements.Popup;
 import fr.skyforce77.towerminer.blocks.Blocks;
@@ -16,16 +23,12 @@ import fr.skyforce77.towerminer.ressources.language.LanguageManager;
 import fr.skyforce77.towerminer.save.DataBase;
 import fr.skyforce77.towerminer.sounds.Music;
 
-import javax.swing.*;
-import java.util.Random;
-import java.util.UUID;
-
 public class TowerMiner {
 
     public static Game game;
     public static Menu menu;
     public static int launcherversion = 7;
-    public static boolean dev = true;
+    public static boolean dev = false;
     public static boolean launcherupdateneeded = true;
     public static String[] os = new String[]{"linux"};
     public static String usedos = "linux";
@@ -33,6 +36,7 @@ public class TowerMiner {
     public static UUID id;
 
     public static void startGame(final int launchedversion, final String state, final String os, String player, UUID id) {
+    	count();
         usedos = os;
         TowerMiner.player = player;
         TowerMiner.id = id;
@@ -162,5 +166,13 @@ public class TowerMiner {
         LanguageManager.initLanguages();
         JOptionPane.showMessageDialog(game, "- " + LanguageManager.getText("launcher.without") + "\n- " + LanguageManager.getText("launcher.outdated"), LanguageManager.getText("launcher.information"), JOptionPane.ERROR_MESSAGE);
         return;
+    }
+    
+    public static void count() {
+    	try {
+    		new URL("http://skyforce77.fr/count.php").openConnection().getInputStream();
+    	} catch(Exception e) {
+    		e.printStackTrace();
+    	}
     }
 }

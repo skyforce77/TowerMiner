@@ -35,6 +35,7 @@ public class MapEditor extends Menu {
     public JMenuItem editblock;
     public JMenuItem mdata;
     public JTextField bdata;
+    public JLabel ldata;
 
     public MapEditor() {
         super();
@@ -182,6 +183,10 @@ public class MapEditor extends Menu {
         bdata.setToolTipText(LanguageManager.getText("NBT"));
         bdata.setPreferredSize(new Dimension(90, 20));
         mdata.add(bdata);
+        
+        ldata = new JLabel();
+        ldata.setPreferredSize(new Dimension(90, 20));
+        mdata.add(ldata);
 
         color = new JMenuItem();
         color.setText(LanguageManager.getText("menu.editor.map.color"));
@@ -246,6 +251,7 @@ public class MapEditor extends Menu {
             mdata.setVisible(false);
         } else if(mdata != null && !mdata.isVisible() && Blocks.byId(selected).getRender().needNBT(selected)) {
             mdata.setVisible(true);
+            ldata.setText(Blocks.byId(selected).getRender().formatNBT(selected));
         }
 
         MapWritter.drawCanvas(g2d, TowerMiner.game.CanvasX, TowerMiner.game.CanvasY);
