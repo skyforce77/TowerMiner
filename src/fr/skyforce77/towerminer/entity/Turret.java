@@ -84,7 +84,7 @@ public class Turret extends Entity {
 
     @Override
     public void onTick() {
-        if (!(TowerMiner.menu instanceof SinglePlayer)) {
+        if (!(TowerMiner.menu instanceof SinglePlayer) || (TowerMiner.menu instanceof MultiPlayer && !((MultiPlayer)TowerMiner.menu).server)) {
             return;
         }
         SinglePlayer sp = (SinglePlayer) TowerMiner.menu;
@@ -102,7 +102,7 @@ public class Turret extends Entity {
         if (tir >= 40 - (data * 2)) {
             if (e != null) {
                 new EntityProjectile(getProjectile(), this, e);
-                sp.onEntityTeleport(this, getLocation());
+                //sp.onEntityTeleport(this, getLocation());
                 tir = 0;
             }
         } else {
@@ -111,11 +111,27 @@ public class Turret extends Entity {
 
         setRotationAim(e);
     }
+    
+    public void onClientTick() {
+        if (!(TowerMiner.menu instanceof SinglePlayer)) {
+            return;
+        }
+        SinglePlayer sp = (SinglePlayer) TowerMiner.menu;
 
-    public void onDamage(Mob e) {
+        double distance = 99999;
+        Mob e = null;
+        for (Entity en : sp.draw) {
+            double i = en.getLocation().distance(location.x, location.y);
+            if (en instanceof Mob && i < distance && i < this.distance) {
+                distance = i;
+                e = (Mob) en;
+            }
+        }
+        setRotationAim(e);
     }
 
-    ;
+    public void onDamage(Mob e) {
+    };
 
     @Override
     public void draw(Graphics2D g2d, SinglePlayer sp) {

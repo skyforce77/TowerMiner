@@ -16,7 +16,7 @@ public class Entity implements Serializable {
     public static ArrayList<Integer> uuidused = new ArrayList<Integer>();
 
     int type;
-    int uuid = -1;
+    public int uuid = -1;
     double rotation = 0.0d;
     Point location;
 

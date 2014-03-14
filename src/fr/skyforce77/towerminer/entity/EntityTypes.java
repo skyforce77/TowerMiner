@@ -21,6 +21,7 @@ public enum EntityTypes {
     BLAZE("blaze", 50, 90, Blaze.class),
     SPIDER("Spider", 50, -90, Spider.class),
     WITCH("witch", 70, -90, Witch.class),
+    CREEPER("creeper", 200, -90, Creeper.class),
     ARROW("arrow", true, 45),
     FIREBALL("fireball", false, 0),
     POISON_POTION("poison", false, 0),
@@ -31,7 +32,7 @@ public enum EntityTypes {
     public static int count = 0;
 
     public static void createTurrets() {
-        turrets = new EntityTypes[]{SKELETON, BLAZE, SPIDER, WITCH};
+        turrets = new EntityTypes[]{SKELETON, BLAZE, SPIDER, WITCH, CREEPER};
         mobs = new EntityTypes[]{CHICKEN, OCELOT, BAT, COW, PIG, SHEEP, HORSE, BABYMUSHCOW, MUSHCOW};
 
         for (EntityTypes type : values()) {

@@ -19,8 +19,8 @@ public class Game extends JFrame implements MouseListener, MouseWheelListener, M
 
     private static final long serialVersionUID = 1L;
 
-    public static String version = "Beta 0.1b";
-    public boolean fpsdisplay = TowerMiner.dev;
+    public static String version = "Beta 0.2";
+    public boolean fpsdisplay = false;
     public static boolean offline = false;
 
     public int CanvasX = 0;
@@ -37,7 +37,7 @@ public class Game extends JFrame implements MouseListener, MouseWheelListener, M
 
     public int frames = 0;
     public int fps = 0;
-    public int freeze = 10;
+    public int freeze = 30;
 
     public Popup popup;
 
@@ -70,9 +70,9 @@ public class Game extends JFrame implements MouseListener, MouseWheelListener, M
                         fps = frames;
                         frames = 0;
 
-                        if (fps < 70) {
+                        if (fps < 40) {
                             freeze--;
-                        } else if (fps > 70) {
+                        } else if (fps > 40) {
                             freeze++;
                         }
                     }

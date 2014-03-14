@@ -28,7 +28,7 @@ public class TowerMiner {
     public static Game game;
     public static Menu menu;
     public static int launcherversion = 7;
-    public static boolean dev = false;
+    public static boolean dev = true;
     public static boolean launcherupdateneeded = true;
     public static String[] os = new String[]{"linux"};
     public static String usedos = "linux";
@@ -36,7 +36,6 @@ public class TowerMiner {
     public static UUID id;
 
     public static void startGame(final int launchedversion, final String state, final String os, String player, UUID id) {
-    	count();
         usedos = os;
         TowerMiner.player = player;
         TowerMiner.id = id;
@@ -45,6 +44,8 @@ public class TowerMiner {
             public void run() {
                 if (state.equals("offline")) {
                     Game.offline = true;
+                } else {
+                	count();
                 }
                 LanguageManager.initLanguages();
                 if (!RessourcesManager.getSaveDirectory().exists()) {
@@ -171,8 +172,6 @@ public class TowerMiner {
     public static void count() {
     	try {
     		new URL("http://skyforce77.fr/count.php").openConnection().getInputStream();
-    	} catch(Exception e) {
-    		e.printStackTrace();
-    	}
+    	} catch(Exception e) {}
     }
 }

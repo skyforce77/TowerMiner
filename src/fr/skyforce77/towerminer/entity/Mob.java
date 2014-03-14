@@ -1,5 +1,14 @@
 package fr.skyforce77.towerminer.entity;
 
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.Graphics2D;
+import java.awt.Image;
+import java.awt.Point;
+import java.util.ArrayList;
+import java.util.Random;
+import java.util.concurrent.CopyOnWriteArrayList;
+
 import fr.skyforce77.towerminer.TowerMiner;
 import fr.skyforce77.towerminer.achievements.Achievements;
 import fr.skyforce77.towerminer.entity.effects.EntityEffect;
@@ -10,11 +19,6 @@ import fr.skyforce77.towerminer.menus.MultiPlayer;
 import fr.skyforce77.towerminer.menus.SinglePlayer;
 import fr.skyforce77.towerminer.protocol.packets.Packet10EntityValueUpdate;
 import fr.skyforce77.towerminer.render.RenderHelper;
-
-import java.awt.*;
-import java.util.ArrayList;
-import java.util.Random;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 public class Mob extends Entity {
 
@@ -64,59 +68,7 @@ public class Mob extends Entity {
     }
 
     public void moveTo(final Point block) {
-        new Thread() {
-            @Override
-            public void run() {
-                Point to = block;
-                last = getBlockLocation();
-                while (getLocation().getX() != to.x) {
-                    if (getLocation().getX() < to.x) {
-                        move(1, 0);
-                        setRotation(Math.toRadians(90));
-                    } else {
-                        move(-1, 0);
-                        setRotation(Math.toRadians(270));
-                    }
-                    try {
-                        if (TowerMiner.menu instanceof SinglePlayer && ((SinglePlayer) TowerMiner.menu).speed.isSelected()) {
-                            Thread.sleep(10 / speed / 2);
-                        } else {
-                            Thread.sleep(10 / speed);
-                        }
-                        while (TowerMiner.menu instanceof SinglePlayer && ((SinglePlayer) TowerMiner.menu).paused) {
-                            Thread.sleep(10l);
-                        }
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                }
-                while (getLocation().getY() != to.y) {
-                    if (getLocation().getY() < to.y) {
-                        move(0, 1);
-                        setRotation(Math.toRadians(180));
-                    } else {
-                        move(0, -1);
-                        setRotation(Math.toRadians(0));
-                    }
-                    try {
-                        int s = 10 / speed;
-                        if (TowerMiner.menu instanceof SinglePlayer && ((SinglePlayer) TowerMiner.menu).speed.isSelected()) {
-                            s = s / 2;
-                        }
-                        if (hasEffect(EntityEffectType.SLOW)) {
-                            s = s * 2;
-                        }
-                        sleep(s);
-                        while (TowerMiner.menu instanceof SinglePlayer && ((SinglePlayer) TowerMiner.menu).paused) {
-                            Thread.sleep(10l);
-                        }
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                }
-                isgoing = false;
-            }
-        }.start();
+        EntityMovingManager.moveTo(this, block);
     }
 
     public void move(int x, int y) {

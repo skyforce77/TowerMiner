@@ -14,7 +14,6 @@ import fr.skyforce77.towerminer.menus.SinglePlayer;
 import fr.skyforce77.towerminer.particles.ParticleEffect;
 import fr.skyforce77.towerminer.particles.ParticleType;
 import fr.skyforce77.towerminer.protocol.packets.Packet10EntityValueUpdate;
-import fr.skyforce77.towerminer.protocol.packets.Packet13EntityTeleport;
 
 public class EntityProjectile extends Entity {
 
@@ -77,14 +76,14 @@ public class EntityProjectile extends Entity {
                 int ny = (int) (getLocation().getY() + vec.y * (6 + (0.2 * shooter.getData())));
                 setLocation(new Point(nx, ny));
                 last = vec;
-                if (sp instanceof MultiPlayer && ((MultiPlayer) sp).server) {
+                /*if (sp instanceof MultiPlayer && ((MultiPlayer) sp).server) {
                     Packet13EntityTeleport tp = new Packet13EntityTeleport();
                     tp.entity = getUUID();
                     tp.rotation = getRotation();
                     tp.x = (int) getLocation().getX();
                     tp.y = (int) getLocation().getY();
                     tp.sendAllTCP();
-                }
+                }*/
             } else {
                 Mob e = null;
                 double distance = 48 * 5;
@@ -102,14 +101,21 @@ public class EntityProjectile extends Entity {
                     }
                 } else {
                     sp.removed.add(this);
+                    if(sp.draw.contains(this)) {
+                    	sp.draw.remove(this);
+                    }
                 }
             }
 
             if (aimed.getLocation().distance(getLocation()) <= 32) {
                 sp.removed.add(this);
+                if(sp.draw.contains(this)) {
+                	sp.draw.remove(this);
+                }
                 ((Mob) aimed).hurt(1);
                 ((Turret) shooter).onDamage((Mob) aimed);
-                onHurt(sp);
+                if((sp instanceof MultiPlayer && ((MultiPlayer)sp).server) || !(sp instanceof MultiPlayer))
+                	onHurt(sp);
             }
         }
     }

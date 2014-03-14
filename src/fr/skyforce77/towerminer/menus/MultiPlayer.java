@@ -1,8 +1,22 @@
 package fr.skyforce77.towerminer.menus;
 
+import java.awt.Dimension;
+import java.awt.Graphics2D;
+import java.awt.Point;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.util.concurrent.CopyOnWriteArrayList;
+
+import javax.swing.JTextField;
+
 import fr.skyforce77.towerminer.TowerMiner;
 import fr.skyforce77.towerminer.entity.Entity;
+import fr.skyforce77.towerminer.entity.EntityProjectile;
 import fr.skyforce77.towerminer.entity.EntityTypes;
+import fr.skyforce77.towerminer.entity.Mob;
 import fr.skyforce77.towerminer.entity.Turret;
 import fr.skyforce77.towerminer.game.Game;
 import fr.skyforce77.towerminer.maps.MapWritter;
@@ -13,14 +27,18 @@ import fr.skyforce77.towerminer.multiplayer.ProtocolManager;
 import fr.skyforce77.towerminer.protocol.BigSending;
 import fr.skyforce77.towerminer.protocol.Connect;
 import fr.skyforce77.towerminer.protocol.ObjectReceiver;
-import fr.skyforce77.towerminer.protocol.packets.*;
-import fr.skyforce77.towerminer.ressources.RessourcesManager;
+import fr.skyforce77.towerminer.protocol.packets.Packet12Popup;
+import fr.skyforce77.towerminer.protocol.packets.Packet13EntityTeleport;
+import fr.skyforce77.towerminer.protocol.packets.Packet1Disconnecting;
+import fr.skyforce77.towerminer.protocol.packets.Packet20EntityData;
+import fr.skyforce77.towerminer.protocol.packets.Packet3Action;
+import fr.skyforce77.towerminer.protocol.packets.Packet4RoundFinished;
+import fr.skyforce77.towerminer.protocol.packets.Packet5UpdateInfos;
+import fr.skyforce77.towerminer.protocol.packets.Packet6EntityCreate;
+import fr.skyforce77.towerminer.protocol.packets.Packet7EntityMove;
+import fr.skyforce77.towerminer.protocol.packets.Packet8EntityRemove;
+import fr.skyforce77.towerminer.protocol.packets.Packet9MouseClick;
 import fr.skyforce77.towerminer.ressources.language.LanguageManager;
-
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.*;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 public class MultiPlayer extends SinglePlayer {
 
@@ -107,23 +125,41 @@ public class MultiPlayer extends SinglePlayer {
 
         chatfield.setVisible(false);
     }
+    
+    @Override
+    public void onTick() {
+    	for (Entity en : draw) {
+            try {
+            	if(en instanceof EntityProjectile)
+            		en.onTick();
+            	if(en instanceof Turret)
+            		((Turret)en).onClientTick();
+            } catch (Exception e) {}
+        }
+    	super.onTick();
+    }
 
     @Override
     public void drawMenu(Graphics2D g2d) {
         super.drawMenu(g2d);
-        int xt, yt;
-        if (Maps.getActualMap().getDeathPoints()[0].equals(Maps.getActualMap().getDeathPoints()[1])) {
-            xt = (int) (Maps.getActualMap().getDeathPoints()[0].getX() * 48);
-            yt = (int) (Maps.getActualMap().getDeathPoints()[0].getY() * 48);
-            g2d.drawImage(RessourcesManager.getTexture("death2"), xt, yt + 40, 48, 48, null);
-        } else {
-            xt = (int) (Maps.getActualMap().getDeathPoints()[0].getX() * 48);
-            yt = (int) (Maps.getActualMap().getDeathPoints()[0].getY() * 48);
-            g2d.drawImage(RessourcesManager.getTexture("death"), xt, yt + 40, 48, 48, null);
-
-            xt = (int) (Maps.getActualMap().getDeathPoints()[1].getX() * 48);
-            yt = (int) (Maps.getActualMap().getDeathPoints()[1].getY() * 48);
-            g2d.drawImage(RessourcesManager.getTexture("death1"), xt, yt + 40, 48, 48, null);
+        
+        if(gameover) {
+        	boolean team = Maps.getActualMap().getDeathPoints()[0].equals(Maps.getActualMap().getDeathPoints()[1]);
+            if (team) {
+                new Packet1Disconnecting(LanguageManager.getText("menu.mp.gameover.survive", round - 1)).sendAllTCP();
+                if (server) {
+                    new ProtocolManager().onServerReceived(MPInfos.connection, new Packet1Disconnecting(LanguageManager.getText("menu.mp.gameover.survive", round - 1)));
+                } else {
+                    new ProtocolManager().onClientReceived(MPInfos.connection, new Packet1Disconnecting(LanguageManager.getText("menu.mp.gameover.survive", round - 1)));
+                }
+            } else {
+                new Packet1Disconnecting(LanguageManager.getText("menu.mp.gameover.lose", round)).sendAllTCP();
+                if (server) {
+                    new ProtocolManager().onClientReceived(MPInfos.connection, new Packet1Disconnecting(LanguageManager.getText("menu.mp.gameover.win")));
+                } else {
+                    new ProtocolManager().onServerReceived(MPInfos.connection, new Packet1Disconnecting(LanguageManager.getText("menu.mp.gameover.win")));
+                }
+            }
         }
 
         chat.draw(g2d);
@@ -199,11 +235,18 @@ public class MultiPlayer extends SinglePlayer {
         pr.round = round;
         pr.sendAllTCP();
 
-        if (server) {
-            for (Entity en : entity) {
-                onEntityAdded(en);
-            }
-        }
+        new Thread() {
+        	public void run() {
+                if (server) {
+                    for (Entity en : entity) {
+                        sendData(en);
+                        try {
+        					Thread.sleep(50l);
+        				} catch (Exception e) {}
+                    }
+                }
+        	};
+        }.start();
     }
 
     public void setClientGold(int gold) {
@@ -223,22 +266,33 @@ public class MultiPlayer extends SinglePlayer {
     }
 
     @Override
-    public void onEntityAdded(final Entity en) {
+    public void onEntityAdded(Entity en) {
         if (server) {
-            new Thread() {
-                @Override
-                public void run() {
-                    BigSending.sendBigObject(en, MPInfos.connection, new ObjectReceiver.ReceivingThread() {
-                        @Override
-                        public void run(int objectid) {
-                            Packet6Entity pe = new Packet6Entity();
-                            pe.eid = objectid;
-                            pe.sendAllTCP();
-                        }
-                    });
-                }
-            }.start();
+        	if(en instanceof Mob) {
+        		new Packet6EntityCreate(en.getUUID(), en.getType().id).sendAllTCP();
+        	} else if(en instanceof EntityProjectile) {
+        		new Packet6EntityCreate(en.getUUID(), en.getType().id, ((EntityProjectile) en).getShooter(), ((EntityProjectile) en).getAimed()).sendAllTCP();
+        	} else if(en instanceof Turret) {
+        		new Packet6EntityCreate(en.getUUID(), en.getType().id, en.getBlockLocation(), ((Turret) en).getOwner()).sendAllTCP();
+        	}
+        	sendData(en);
         }
+    }
+    
+    public void sendData(final Entity en) {
+    	new Thread() {
+            @Override
+            public void run() {
+                BigSending.sendBigObject(en, MPInfos.connection, new ObjectReceiver.ReceivingThread() {
+                    @Override
+                    public void run(int objectid) {
+                        Packet20EntityData pe = new Packet20EntityData();
+                        pe.eid = objectid;
+                        pe.sendAllTCP();
+                    }
+                });
+            }
+        }.start();
     }
 
     @Override
@@ -283,7 +337,7 @@ public class MultiPlayer extends SinglePlayer {
         } else {
             if (e.getModifiers() == 16) {
                 if (gameover) {
-                    onKeyPressed(KeyEvent.VK_ENTER);
+                	TowerMiner.setMenu(Menu.mainmenu);
                 } else if (aimed == null) {
                     Point p = new Point(Xcursor / MapWritter.getBlockWidth() - (CanvasX / MapWritter.getBlockWidth()), Ycursor / MapWritter.getBlockHeight() - (CanvasY / MapWritter.getBlockHeight()));
                     boolean turretplaced = false;
@@ -332,22 +386,8 @@ public class MultiPlayer extends SinglePlayer {
 
     @Override
     public void onGameOver() {
-        boolean team = Maps.getActualMap().getDeathPoints()[0].equals(Maps.getActualMap().getDeathPoints()[1]);
-        if (team) {
-            new Packet1Disconnecting(LanguageManager.getText("menu.mp.gameover.survive", round - 1)).sendAllTCP();
-            if (server) {
-                new ProtocolManager().onServerReceived(MPInfos.connection, new Packet1Disconnecting(LanguageManager.getText("menu.mp.gameover.survive", round - 1)));
-            } else {
-                new ProtocolManager().onClientReceived(MPInfos.connection, new Packet1Disconnecting(LanguageManager.getText("menu.mp.gameover.survive", round - 1)));
-            }
-        } else {
-            new Packet1Disconnecting(LanguageManager.getText("menu.mp.gameover.lose", round)).sendAllTCP();
-            if (server) {
-                new ProtocolManager().onClientReceived(MPInfos.connection, new Packet1Disconnecting(LanguageManager.getText("menu.mp.gameover.win")));
-            } else {
-                new ProtocolManager().onServerReceived(MPInfos.connection, new Packet1Disconnecting(LanguageManager.getText("menu.mp.gameover.win")));
-            }
-        }
+    	chatfield.setVisible(false);
+        gameover = true;
     }
 
     @Override

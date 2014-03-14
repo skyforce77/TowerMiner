@@ -4,16 +4,19 @@ import fr.skyforce77.towerminer.TowerMiner;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+
 import java.awt.*;
 import java.io.File;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Random;
 
 public class RessourcesManager {
 
     private static HashMap<String, Image> imgurls = new HashMap<String, Image>();
     private static ArrayList<String> dl = new ArrayList<String>();
+    private static int background = new Random().nextInt(2);
 
     public RessourcesManager() {
         super();
@@ -60,7 +63,7 @@ public class RessourcesManager {
     }
 
     public static Image getBackground() {
-        Image image = new ImageIcon(TowerMiner.class.getResource("/ressources/background.png")).getImage();
+        Image image = new ImageIcon(TowerMiner.class.getResource("/ressources/background"+background+".png")).getImage();
         return image;
     }
 

@@ -1,15 +1,27 @@
 package fr.skyforce77.towerminer.multiplayer;
 
+import java.awt.Image;
+import java.awt.Point;
+import java.util.ArrayList;
+
 import com.esotericsoftware.kryonet.Connection;
+
 import fr.skyforce77.towerminer.TowerMiner;
 import fr.skyforce77.towerminer.achievements.Achievements;
 import fr.skyforce77.towerminer.achievements.Popup;
-import fr.skyforce77.towerminer.entity.*;
+import fr.skyforce77.towerminer.entity.Entity;
+import fr.skyforce77.towerminer.entity.EntityProjectile;
+import fr.skyforce77.towerminer.entity.EntityTypes;
+import fr.skyforce77.towerminer.entity.Mob;
+import fr.skyforce77.towerminer.entity.Turret;
 import fr.skyforce77.towerminer.entity.effects.EntityEffect;
 import fr.skyforce77.towerminer.entity.effects.EntityEffectType;
 import fr.skyforce77.towerminer.maps.Maps;
-import fr.skyforce77.towerminer.menus.*;
+import fr.skyforce77.towerminer.menus.MPClientWait;
+import fr.skyforce77.towerminer.menus.MPDisconnected;
+import fr.skyforce77.towerminer.menus.MPServerWait;
 import fr.skyforce77.towerminer.menus.Menu;
+import fr.skyforce77.towerminer.menus.MultiPlayer;
 import fr.skyforce77.towerminer.particles.Particle;
 import fr.skyforce77.towerminer.particles.ParticleEffect;
 import fr.skyforce77.towerminer.protocol.BigSending;
@@ -19,11 +31,28 @@ import fr.skyforce77.towerminer.protocol.Protocol;
 import fr.skyforce77.towerminer.protocol.chat.ChatMessage;
 import fr.skyforce77.towerminer.protocol.chat.ChatModel;
 import fr.skyforce77.towerminer.protocol.listeners.PacketListener;
-import fr.skyforce77.towerminer.protocol.packets.*;
+import fr.skyforce77.towerminer.protocol.packets.Packet;
+import fr.skyforce77.towerminer.protocol.packets.Packet0Connecting;
+import fr.skyforce77.towerminer.protocol.packets.Packet10EntityValueUpdate;
+import fr.skyforce77.towerminer.protocol.packets.Packet11ChatMessage;
+import fr.skyforce77.towerminer.protocol.packets.Packet12Popup;
+import fr.skyforce77.towerminer.protocol.packets.Packet13EntityTeleport;
+import fr.skyforce77.towerminer.protocol.packets.Packet14ServerPing;
+import fr.skyforce77.towerminer.protocol.packets.Packet15ServerInfos;
+import fr.skyforce77.towerminer.protocol.packets.Packet17Player;
+import fr.skyforce77.towerminer.protocol.packets.Packet18ParticleEffect;
+import fr.skyforce77.towerminer.protocol.packets.Packet19Particle;
+import fr.skyforce77.towerminer.protocol.packets.Packet1Disconnecting;
+import fr.skyforce77.towerminer.protocol.packets.Packet20EntityData;
+import fr.skyforce77.towerminer.protocol.packets.Packet2BigSending;
+import fr.skyforce77.towerminer.protocol.packets.Packet3Action;
+import fr.skyforce77.towerminer.protocol.packets.Packet4RoundFinished;
+import fr.skyforce77.towerminer.protocol.packets.Packet5UpdateInfos;
+import fr.skyforce77.towerminer.protocol.packets.Packet6EntityCreate;
+import fr.skyforce77.towerminer.protocol.packets.Packet7EntityMove;
+import fr.skyforce77.towerminer.protocol.packets.Packet8EntityRemove;
+import fr.skyforce77.towerminer.protocol.packets.Packet9MouseClick;
 import fr.skyforce77.towerminer.ressources.language.LanguageManager;
-
-import java.awt.*;
-import java.util.ArrayList;
 
 public class ProtocolManager implements PacketListener {
 
@@ -151,18 +180,34 @@ public class ProtocolManager implements PacketListener {
             mp.or = pack5.gold;
             mp.vie = pack5.life;
         } else if (p.getId() == 6) {
-            Packet6Entity pack6 = (Packet6Entity) p;
+            Packet6EntityCreate pack6 = (Packet6EntityCreate) p;
             mp = ((MultiPlayer) TowerMiner.menu);
-            byte[] data = BigSending.receiving.get(pack6.eid).data;
-            Entity en = (Entity) pack6.deserialize(data);
-            boolean has = false;
+            Entity en = null;
+            if(pack6.shooter != 0) {
+            	try {
+					en = EntityTypes.getType(pack6.type).getEntityClass().getConstructor(EntityTypes.class, Turret.class, Mob.class)
+							.newInstance(EntityTypes.getType(pack6.type), (Turret)mp.byUUID(pack6.shooter), (Mob)mp.byUUID(pack6.mob));
+				} catch (Exception e) {}
+            } else if(!pack6.owner.equals("") && pack6 != null) {
+            	try {
+					en = EntityTypes.getType(pack6.type).getEntityClass().getConstructor(EntityTypes.class, Point.class, String.class)
+							.newInstance(EntityTypes.getType(pack6.type), new Point(pack6.x, pack6.y), pack6.owner);
+				} catch (Exception e) {}
+            } else {
+            	try {
+					en = EntityTypes.getType(pack6.type).getEntityClass().getConstructor(EntityTypes.class)
+							.newInstance(EntityTypes.getType(pack6.type));
+				} catch (Exception e) {}
+            }
+            en.uuid = pack6.eid;
+            
             for (Entity es : mp.draw) {
                 if (en != null && es.getUUID() == en.getUUID()) {
-                    has = true;
+                    mp.draw.remove(es);
                 }
             }
-            if (has == false && en != null && !mp.draw.contains(en))
-                mp.draw.add(en);
+            
+            mp.draw.add(en);
         } else if (p.getId() == 7) {
             Packet7EntityMove pack7 = (Packet7EntityMove) p;
             mp = ((MultiPlayer) TowerMiner.menu);
@@ -229,6 +274,21 @@ public class ProtocolManager implements PacketListener {
             Packet19Particle pack19 = (Packet19Particle) p;
             mp = ((MultiPlayer) TowerMiner.menu);
             mp.particles.add((Particle) pack19.deserialize(pack19.particle));
+        } else if (p.getId() == 20) {
+            Packet20EntityData pack20 = (Packet20EntityData) p;
+            mp = ((MultiPlayer) TowerMiner.menu);
+            byte[] data = BigSending.receiving.get(pack20.eid).data;
+            Entity en = (Entity) pack20.deserialize(data);
+            for (Entity es : mp.draw) {
+                if (en != null && es.getUUID() == en.getUUID()) {
+                    mp.draw.remove(es);
+                }
+            }
+            if (en != null && !mp.draw.contains(en)) {
+                mp.draw.add(en);
+                if(en instanceof Mob)
+                	((Mob)en).onTick();
+            }
         }
     }
 
