@@ -18,6 +18,7 @@ import fr.skyforce77.towerminer.menus.Menu;
 import fr.skyforce77.towerminer.multiplayer.ProtocolManager;
 import fr.skyforce77.towerminer.multiplayer.ServerInfos;
 import fr.skyforce77.towerminer.protocol.listeners.ListenersManager;
+import fr.skyforce77.towerminer.ressources.PluginManager;
 import fr.skyforce77.towerminer.ressources.RessourcesManager;
 import fr.skyforce77.towerminer.ressources.language.LanguageManager;
 import fr.skyforce77.towerminer.save.DataBase;
@@ -72,6 +73,8 @@ public class TowerMiner {
                 MainAchievements(launchedversion, state, os);
                 game.setVisible(true);
                 Music.playMusic("incursion");
+                
+                PluginManager.initPlugins();
             }
         });
     }

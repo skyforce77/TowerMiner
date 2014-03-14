@@ -1,16 +1,16 @@
 package fr.skyforce77.towerminer.ressources;
 
-import fr.skyforce77.towerminer.TowerMiner;
-
-import javax.imageio.ImageIO;
-import javax.swing.*;
-
-import java.awt.*;
+import java.awt.Image;
 import java.io.File;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
+
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
+
+import fr.skyforce77.towerminer.TowerMiner;
 
 public class RessourcesManager {
 
@@ -94,6 +94,14 @@ public class RessourcesManager {
     public static File getMapsDirectory() {
         return new File(getDirectory(), "/maps");
     }
+    
+    public static File getPluginsDirectory() {
+        return new File(getDirectory(), "/plugins");
+    }
+    
+    public static File getServerPluginsDirectory() {
+        return new File(getDirectory(), "/serverplugins");
+    }
 
     public static File getLanguagesDirectory() {
         return new File(getDirectory(), "/languages");
@@ -101,5 +109,9 @@ public class RessourcesManager {
 
     public static File getSaveDirectory() {
         return new File(getDirectory(), "/internal");
+    }
+    
+    public static File getTempDirectory() {
+        return new File(getDirectory(), "/temp");
     }
 }

@@ -1,5 +1,25 @@
 package fr.skyforce77.towerminer.game;
 
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
+import java.awt.event.MouseWheelEvent;
+import java.awt.event.MouseWheelListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
+import java.util.Date;
+
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+
 import fr.skyforce77.towerminer.TowerMiner;
 import fr.skyforce77.towerminer.achievements.Popup;
 import fr.skyforce77.towerminer.blocks.renders.BlockRender;
@@ -10,16 +30,11 @@ import fr.skyforce77.towerminer.protocol.packets.Packet12Popup;
 import fr.skyforce77.towerminer.ressources.RessourcesManager;
 import fr.skyforce77.towerminer.ressources.language.LanguageManager;
 
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.*;
-import java.util.Date;
-
 public class Game extends JFrame implements MouseListener, MouseWheelListener, MouseMotionListener, WindowListener, KeyListener {
 
     private static final long serialVersionUID = 1L;
 
-    public static String version = "Beta 0.2";
+    public static String version = "Beta 0.3";
     public boolean fpsdisplay = false;
     public static boolean offline = false;
 

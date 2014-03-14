@@ -1,14 +1,17 @@
 package fr.skyforce77.towerminer.menus;
 
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.Graphics2D;
+
 import fr.skyforce77.towerminer.TowerMiner;
 import fr.skyforce77.towerminer.multiplayer.MPInfos;
 import fr.skyforce77.towerminer.protocol.Connect;
 import fr.skyforce77.towerminer.protocol.Protocol;
 import fr.skyforce77.towerminer.protocol.packets.Packet0Connecting;
+import fr.skyforce77.towerminer.ressources.PluginManager;
 import fr.skyforce77.towerminer.ressources.RessourcesManager;
 import fr.skyforce77.towerminer.ressources.language.LanguageManager;
-
-import java.awt.*;
 
 public class MPClientWait extends Menu {
 
@@ -52,7 +55,7 @@ public class MPClientWait extends Menu {
                 }
                 MPInfos.matchplaying = true;
                 text = LanguageManager.getText("menu.mp.client.sending");
-                new Packet0Connecting(Protocol.version, TowerMiner.player, TowerMiner.id).sendClientTCP();
+                new Packet0Connecting(Protocol.version, TowerMiner.player, TowerMiner.id, PluginManager.getPlugins()).sendClientTCP();
             }
 
             ;

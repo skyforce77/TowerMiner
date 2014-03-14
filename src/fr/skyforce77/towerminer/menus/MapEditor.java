@@ -1,5 +1,27 @@
 package fr.skyforce77.towerminer.menus;
 
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.Graphics2D;
+import java.awt.Point;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseWheelEvent;
+import java.io.File;
+import java.util.Date;
+
+import javax.swing.JFileChooser;
+import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JTextField;
+import javax.swing.KeyStroke;
+import javax.swing.filechooser.FileFilter;
+
 import fr.skyforce77.towerminer.TowerMiner;
 import fr.skyforce77.towerminer.blocks.Blocks;
 import fr.skyforce77.towerminer.game.Game;
@@ -9,17 +31,11 @@ import fr.skyforce77.towerminer.menus.additionals.BlockCreator;
 import fr.skyforce77.towerminer.menus.additionals.BlockSelectionList;
 import fr.skyforce77.towerminer.menus.additionals.ColorSelection;
 import fr.skyforce77.towerminer.menus.additionals.JNumberTextField;
+import fr.skyforce77.towerminer.particles.Particle;
 import fr.skyforce77.towerminer.ressources.RessourcesManager;
 import fr.skyforce77.towerminer.ressources.language.LanguageManager;
 
-import javax.swing.*;
-import javax.swing.filechooser.FileFilter;
-import java.awt.*;
-import java.awt.event.*;
-import java.io.File;
-import java.util.Date;
-
-public class MapEditor extends Menu {
+public class MapEditor extends SinglePlayer {
 
     public JMenuBar bar;
 
@@ -38,7 +54,7 @@ public class MapEditor extends Menu {
     public JLabel ldata;
 
     public MapEditor() {
-        super();
+        super(false);
 
         Maps.setActualMap(1023);
 
@@ -288,6 +304,12 @@ public class MapEditor extends Menu {
             yt = (int) (Maps.getActualMap().getDeathPoints()[1].getY() * 48);
             g2d.drawImage(RessourcesManager.getTexture("death1"), xt, yt + 40, 48, 48, null);
         }
+        
+        for (Particle p : particles) {
+			if (p != null) {
+				p.draw((Graphics2D) g2d.create(), this);
+			}
+		}
 
         if (TowerMiner.game.popup != null && TowerMiner.game.popup.time + TowerMiner.game.popup.displayed > new Date().getTime()) {
             TowerMiner.game.popup.draw(g2d, TowerMiner.game.CanvasY);

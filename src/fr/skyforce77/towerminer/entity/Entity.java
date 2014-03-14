@@ -1,14 +1,16 @@
 package fr.skyforce77.towerminer.entity;
 
-import fr.skyforce77.towerminer.TowerMiner;
-import fr.skyforce77.towerminer.maps.MapWritter;
-import fr.skyforce77.towerminer.menus.SinglePlayer;
-
-import javax.vecmath.Vector2d;
-import java.awt.*;
+import java.awt.Graphics2D;
+import java.awt.Point;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Random;
+
+import javax.vecmath.Vector2d;
+
+import fr.skyforce77.towerminer.TowerMiner;
+import fr.skyforce77.towerminer.maps.MapWritter;
+import fr.skyforce77.towerminer.menus.SinglePlayer;
 
 public class Entity implements Serializable {
 

@@ -44,6 +44,7 @@ import fr.skyforce77.towerminer.protocol.packets.Packet18ParticleEffect;
 import fr.skyforce77.towerminer.protocol.packets.Packet19Particle;
 import fr.skyforce77.towerminer.protocol.packets.Packet1Disconnecting;
 import fr.skyforce77.towerminer.protocol.packets.Packet20EntityData;
+import fr.skyforce77.towerminer.protocol.packets.Packet21LoadPlugin;
 import fr.skyforce77.towerminer.protocol.packets.Packet2BigSending;
 import fr.skyforce77.towerminer.protocol.packets.Packet3Action;
 import fr.skyforce77.towerminer.protocol.packets.Packet4RoundFinished;
@@ -52,6 +53,8 @@ import fr.skyforce77.towerminer.protocol.packets.Packet6EntityCreate;
 import fr.skyforce77.towerminer.protocol.packets.Packet7EntityMove;
 import fr.skyforce77.towerminer.protocol.packets.Packet8EntityRemove;
 import fr.skyforce77.towerminer.protocol.packets.Packet9MouseClick;
+import fr.skyforce77.towerminer.ressources.FileContainer;
+import fr.skyforce77.towerminer.ressources.PluginManager;
 import fr.skyforce77.towerminer.ressources.language.LanguageManager;
 
 public class ProtocolManager implements PacketListener {
@@ -289,6 +292,11 @@ public class ProtocolManager implements PacketListener {
                 if(en instanceof Mob)
                 	((Mob)en).onTick();
             }
+        } else if (p.getId() == 21) {
+            Packet21LoadPlugin pack21 = (Packet21LoadPlugin) p;
+            byte[] data = BigSending.receiving.get(pack21.eid).data;
+            FileContainer fc = (FileContainer) pack21.deserialize(data);
+			PluginManager.loadPlugin(fc);
         }
     }
 
@@ -296,7 +304,7 @@ public class ProtocolManager implements PacketListener {
     public void onServerReceived(Connection c, Packet p) {
         MultiPlayer mp;
         if (p.getId() == 0) {
-            Packet0Connecting pack = (Packet0Connecting) p;
+            final Packet0Connecting pack = (Packet0Connecting) p;
             if (MPInfos.matchplaying) {
                 new Packet1Disconnecting("menu.mp.client.kick.match").sendConnectionTCP(c);
             } else if (pack.version != Protocol.version) {
@@ -305,13 +313,20 @@ public class ProtocolManager implements PacketListener {
                 MPInfos.matchplaying = true;
                 ((MPServerWait) TowerMiner.menu).text = LanguageManager.getText("menu.mp.server.connect");
                 MPInfos.connection = c;
-                new Packet3Action("sendingmap").sendConnectionTCP(MPInfos.connection);
-                BigSending.sendBigObject(Maps.getActualMap(), MPInfos.connection, new ReceivingThread() {
-                    @Override
-                    public void run(int objectid) {
-                        new Packet3Action("finishedsendingmap", (byte) objectid).sendConnectionTCP(MPInfos.connection);
-                    }
-                });
+                new Thread() {
+                	public void run() {
+                		if (!PluginManager.canConnect(pack.getPlugins())) {
+                        	PluginManager.sendNeededPlugins(pack.getPlugins());
+                        }
+                        new Packet3Action("sendingmap").sendConnectionTCP(MPInfos.connection);
+                        BigSending.sendBigObject(Maps.getActualMap(), MPInfos.connection, new ReceivingThread() {
+                            @Override
+                            public void run(int objectid) {
+                                new Packet3Action("finishedsendingmap", (byte) objectid).sendConnectionTCP(MPInfos.connection);
+                            }
+                        });
+                	};
+                }.start();
             }
         } else if (p.getId() == 1) {
             Packet1Disconnecting pack1 = (Packet1Disconnecting) p;

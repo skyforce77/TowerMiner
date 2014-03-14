@@ -1,14 +1,24 @@
 package fr.skyforce77.towerminer.maps;
 
-import fr.skyforce77.towerminer.TowerMiner;
-import fr.skyforce77.towerminer.blocks.Blocks;
-import fr.skyforce77.towerminer.ressources.RessourcesManager;
-
-import java.awt.*;
-import java.io.*;
+import java.awt.Color;
+import java.awt.Image;
+import java.awt.Point;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.OutputStream;
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.net.URL;
 import java.util.HashMap;
+
+import fr.skyforce77.towerminer.TowerMiner;
+import fr.skyforce77.towerminer.blocks.Blocks;
+import fr.skyforce77.towerminer.ressources.RessourcesManager;
 
 public class Maps implements Serializable {
 

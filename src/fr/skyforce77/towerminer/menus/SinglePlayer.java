@@ -197,6 +197,17 @@ public class SinglePlayer extends Menu {
 			onUpdate();
 		}
 
+		int pcount = particles.size();
+		int perase = 0;
+		if(pcount >= 300) {
+			perase = pcount - 300;
+		}
+		
+		while(perase > 0) {
+			particles.remove(perase);
+			perase--;
+		}
+		
 		for (Particle p : particles) {
 			p.onTick();
 		}
