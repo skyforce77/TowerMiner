@@ -1,10 +1,10 @@
 package fr.skyforce77.towerminer.api;
 
-import java.awt.Event;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.Serializable;
 import java.lang.reflect.Method;
 import java.net.URL;
 import java.net.URLClassLoader;
@@ -12,10 +12,16 @@ import java.nio.channels.FileChannel;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.esotericsoftware.kryonet.Connection;
+
+import fr.skyforce77.towerminer.TowerMiner;
+import fr.skyforce77.towerminer.achievements.Popup;
+import fr.skyforce77.towerminer.api.events.TMEvent;
 import fr.skyforce77.towerminer.multiplayer.MPInfos;
 import fr.skyforce77.towerminer.protocol.BigSending;
 import fr.skyforce77.towerminer.protocol.ObjectReceiver;
 import fr.skyforce77.towerminer.protocol.packets.Packet21LoadPlugin;
+import fr.skyforce77.towerminer.protocol.packets.Packet22PluginMessage;
 import fr.skyforce77.towerminer.ressources.FileContainer;
 import fr.skyforce77.towerminer.ressources.RessourcesManager;
 
@@ -48,6 +54,7 @@ public class PluginManager {
 		try {
 			plugins.add(p);
 			pluginlist.add(p.getName()+"("+p.getVersion()+")");
+			TowerMiner.game.displayPopup(new Popup(p.getName()+"("+p.getVersion()+")", 6000, "plugin"));
 			pluginfiles.add(f);
 			System.out.println("Enabling "+p.getName()+" plugin");
 			p.onEnable();
@@ -164,17 +171,18 @@ public class PluginManager {
 		}
 	}
 	
-	private static List<Class<?>> handlers = new ArrayList<Class<?>>();
+	private static List<TMListener> handlers = new ArrayList<TMListener>();
 
-    public static void registerHandler(Class<?> handler) {
-        handlers.add(handler);
+    public static void registerListener(TMListener listener) {
+        handlers.add(listener);
+        System.out.println("Registered "+listener.getClass().getSimpleName());
     }
 
-    public static List<Class<?>> getHandlers() {
+    public static List<TMListener> getListeners() {
         return handlers;
     }
     
-    public static void callEvent(final Event event) {
+    public static void callEvent(final TMEvent event) {
         new Thread() {
             @Override
             public void run() {
@@ -183,8 +191,9 @@ public class PluginManager {
         }.start();
     }
 
-    private static void callCompleteEvent(final Event event) {
-        for (Class<?> handler : getHandlers()) {
+    private static void callCompleteEvent(final TMEvent event) {
+        for (TMListener listener : getListeners()) {
+        	Class<?> handler = listener.getClass();
             Method[] methods = handler.getMethods();
 
             for (int i = 0; i < methods.length; ++i) {
@@ -194,19 +203,29 @@ public class PluginManager {
 
                     if (methodParams.length < 1)
                         continue;
-
+                    
                     if (!event.getClass().getSimpleName()
                             .equals(methodParams[0].getSimpleName()))
                         continue;
 
                     try {
-                        methods[i].invoke(handler.newInstance(), event);
+                        methods[i].invoke(listener, event);
                     } catch (Exception e) {
                         System.err.println(e);
                     }
                 }
             }
         }
+    }
+    
+    public static void sendPluginMessage(Plugin p, int id, Serializable data) {
+    	Packet22PluginMessage ppm = new Packet22PluginMessage(p.getName(), p.getVersion(), id, data);
+    	ppm.sendAllTCP();
+    }
+    
+    public static void sendPluginMessage(Connection c, Plugin p, int id, Serializable data) {
+    	Packet22PluginMessage ppm = new Packet22PluginMessage(p.getName(), p.getVersion(), id, data);
+    	ppm.sendConnectionTCP(c);
     }
 
 }

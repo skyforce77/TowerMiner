@@ -89,7 +89,6 @@ public class TowerMiner {
 					e.printStackTrace();
 				}
 
-				boolean popup = true;
 				if (version != -1 && version < launcherversion) {
 					if (launcherupdateneeded) {
 						game.dispose();
@@ -97,23 +96,14 @@ public class TowerMiner {
 						return;
 					}
 					TowerMiner.game.displayPopup(new Popup(LanguageManager.getText("launcher.update.needed"), 6000, "warning"));
-				} else {
-					if (state.equals("update")) {
-						TowerMiner.game.displayPopup(new Popup(LanguageManager.getText("launcher.update.client"), 6000, "warning"));
-					} else if (state.equals("install")) {
-						TowerMiner.game.displayPopup(new Popup(LanguageManager.getText("launcher.install"), 6000));
-					} else if (state.equals("offline")) {
-						TowerMiner.game.displayPopup(new Popup(LanguageManager.getText("launcher.offline"), 6000, "warning"));
-					} else {
-						popup = false;
-					}
 				}
 
-				try {
-					if (popup)
-						sleep(6005);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
+				if (state.equals("update")) {
+					TowerMiner.game.displayPopup(new Popup(LanguageManager.getText("launcher.update.client"), 6000, "warning"));
+				} else if (state.equals("install")) {
+					TowerMiner.game.displayPopup(new Popup(LanguageManager.getText("launcher.install"), 6000));
+				} else if (state.equals("offline")) {
+					TowerMiner.game.displayPopup(new Popup(LanguageManager.getText("launcher.offline"), 6000, "warning"));
 				}
 
 				boolean ok = false;
@@ -127,26 +117,6 @@ public class TowerMiner {
 
 				if (!ok) {
 					TowerMiner.game.displayPopup(new Popup(LanguageManager.getText("launcher.unsupported"), 6000, "warning"));
-				}
-
-				try {
-					if (!ok)
-						sleep(6005);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
-				ok = true;
-
-				int u = 0;
-				while(u != PluginManager.getPlugins().size()) {
-					TowerMiner.game.displayPopup(new Popup("Loaded "+PluginManager.getPlugins().get(u), 4000, "plugin"));
-					u++;
-							
-					try {
-						sleep(4005);
-					} catch (InterruptedException e) {
-						e.printStackTrace();
-					}
 				}
 			}
 		}.start();

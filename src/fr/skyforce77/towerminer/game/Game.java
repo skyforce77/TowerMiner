@@ -16,6 +16,7 @@ import java.awt.event.MouseWheelListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.util.Date;
+import java.util.HashMap;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -32,256 +33,285 @@ import fr.skyforce77.towerminer.ressources.language.LanguageManager;
 
 public class Game extends JFrame implements MouseListener, MouseWheelListener, MouseMotionListener, WindowListener, KeyListener {
 
-    private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 
-    public static String version = "Beta 0.3";
-    public boolean fpsdisplay = false;
-    public static boolean offline = false;
+	public static String version = "Beta 0.3b";
+	public boolean fpsdisplay = false;
+	public static boolean offline = false;
 
-    public int CanvasX = 0;
-    public int CanvasY = 40;
-    public int CANVAS_WIDTH;
-    public int CANVAS_HEIGHT;
+	public int CanvasX = 0;
+	public int CanvasY = 40;
+	public int CANVAS_WIDTH;
+	public int CANVAS_HEIGHT;
 
-    public boolean terminated = false;
+	public boolean terminated = false;
 
-    public int Xblocks;
-    public int Yblocks;
+	public int Xblocks;
+	public int Yblocks;
 
-    public GameCanvas canvas;
+	public GameCanvas canvas;
 
-    public int frames = 0;
-    public int fps = 0;
-    public int freeze = 30;
+	public int frames = 0;
+	public int fps = 0;
+	public int freeze = 30;
 
-    public Popup popup;
+	public Popup popup;
+	public HashMap<Popup, Boolean> nextpopups = new HashMap<>();
 
-    public Game() {
-        onInit();
+	public Game() {
+		onInit();
 
-        canvas = new GameCanvas();
-        canvas.addKeyListener(this);
-        canvas.setPreferredSize(new Dimension(CANVAS_WIDTH, CANVAS_HEIGHT));
-        this.setContentPane(canvas);
+		canvas = new GameCanvas();
+		canvas.addKeyListener(this);
+		canvas.setPreferredSize(new Dimension(CANVAS_WIDTH, CANVAS_HEIGHT));
+		this.setContentPane(canvas);
 
-        this.setDefaultCloseOperation(EXIT_ON_CLOSE);
-        this.pack();
-        this.setTitle(LanguageManager.getText("towerminer") + " | " + version);
-        this.setIconImage(RessourcesManager.getIcon());
-        this.setVisible(false);
-        this.setResizable(false);
-        this.addMouseListener(this);
-        this.addMouseMotionListener(this);
-        this.addMouseWheelListener(this);
-        this.addKeyListener(this);
+		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
+		this.pack();
+		this.setTitle(LanguageManager.getText("towerminer") + " | " + version);
+		this.setIconImage(RessourcesManager.getIcon());
+		this.setVisible(false);
+		this.setResizable(false);
+		this.addMouseListener(this);
+		this.addMouseMotionListener(this);
+		this.addMouseWheelListener(this);
+		this.addKeyListener(this);
 
-        onStart();
+		onStart();
 
-        new Thread() {
-            public void run() {
-                try {
-                    while (!terminated) {
-                        sleep(1000l);
-                        fps = frames;
-                        frames = 0;
+		new Thread() {
+			public void run() {
+				try {
+					while (!terminated) {
+						sleep(1000l);
+						fps = frames;
+						frames = 0;
 
-                        if (fps < 40) {
-                            freeze--;
-                        } else if (fps > 40) {
-                            freeze++;
-                        }
-                    }
-                } catch (Exception e) {
-                }
-            }
+						if (fps < 40) {
+							freeze--;
+						} else if (fps > 40) {
+							freeze++;
+						}
+					}
+				} catch (Exception e) {
+				}
+			}
 
-            ;
-        }.start();
-    }
+			;
+		}.start();
+	}
 
-    public void onInit() {
-        Xblocks = Maps.getActualMap().getXMax();
-        Yblocks = Maps.getActualMap().getYMax();
-        CANVAS_WIDTH = Xblocks * 48 + CanvasX;
-        CANVAS_HEIGHT = Yblocks * 48 + CanvasY;
-    }
+	public void onInit() {
+		Xblocks = Maps.getActualMap().getXMax();
+		Yblocks = Maps.getActualMap().getYMax();
+		CANVAS_WIDTH = Xblocks * 48 + CanvasX;
+		CANVAS_HEIGHT = Yblocks * 48 + CanvasY;
+	}
 
-    public void onStart() {
-        new Thread() {
-            public void run() {
-                while (!terminated) {
-                    if (TowerMiner.menu != null) {
-                        TowerMiner.menu.onTick();
-                        for (BlockRender r : BlockRender.renders) {
-                            if (r != null) {
-                                r.onGameTick();
-                            }
-                        }
-                    }
+	public void onStart() {
+		new Thread() {
+			public void run() {
+				while (!terminated) {
+					if(popup != null) {
+						int dif = (int) ((popup.time + popup.displayed) - new Date().getTime());
+						if(dif <= 0) {
+							popup = null;
+						}
+					}
+					if(popup == null) {
+						if(!nextpopups.isEmpty()) {
+							popup = (Popup)nextpopups.keySet().toArray()[0];
+							if (TowerMiner.menu instanceof MultiPlayer && nextpopups.get(popup)) {
+								MultiPlayer mp = (MultiPlayer) TowerMiner.menu;
+								if (mp.server) {
+									new Packet12Popup(popup.text, null, popup.icon).sendClientTCP();
+								}
+							}
+							nextpopups.remove(popup);
+							popup.time = new Date().getTime();
+						}
+					}
+					if (TowerMiner.menu != null) {
+						TowerMiner.menu.onTick();
+						for (BlockRender r : BlockRender.renders) {
+							if (r != null) {
+								r.onGameTick();
+							}
+						}
+					}
 
-                    try {
-                        if (TowerMiner.menu instanceof SinglePlayer && ((SinglePlayer) TowerMiner.menu).speed.isSelected()) {
-                            Thread.sleep(10l);
-                        } else {
-                            Thread.sleep(20l);
-                        }
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
+					try {
+						if (TowerMiner.menu instanceof SinglePlayer && ((SinglePlayer) TowerMiner.menu).speed.isSelected()) {
+							Thread.sleep(10l);
+						} else {
+							Thread.sleep(20l);
+						}
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+				}
+			}
 
-            ;
-        }.start();
+			;
+		}.start();
 
-        new Thread() {
-            public void run() {
-                while (!terminated) {
-                    repaint();
-                    frames++;
+		new Thread() {
+			public void run() {
+				while (!terminated) {
+					repaint();
+					frames++;
 
-                    try {
-                        Thread.sleep(freeze);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
+					try {
+						Thread.sleep(freeze);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+				}
+			}
 
-            ;
-        }.start();
-    }
+			;
+		}.start();
+	}
 
-    public class GameCanvas extends JPanel {
+	public class GameCanvas extends JPanel {
 
-        private static final long serialVersionUID = 1L;
+		private static final long serialVersionUID = 1L;
 
-        public GameCanvas() {
-            setFocusable(true);
-            requestFocus();
-        }
+		public GameCanvas() {
+			setFocusable(true);
+			requestFocus();
+		}
 
-        @Override
-        public void paintComponent(Graphics g) {
-            final Graphics2D g2d = (Graphics2D) g;
-            g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-            super.paintComponent(g2d);
-            setBackground(Color.WHITE);
-            TowerMiner.menu.drawMenu(g2d);
-            g2d.setColor(new Color(0, 0, 0, 180));
-            if (fpsdisplay) {
-                g2d.fillRect(0, 0, 30, 25);
-                g2d.setColor(Color.YELLOW);
-                g2d.setFont(new Font("TimesRoman", Font.CENTER_BASELINE, 20));
-                g2d.drawString(fps + "", 0, 20);
-            }
-        }
-    }
+		@Override
+		public void paintComponent(Graphics g) {
+			final Graphics2D g2d = (Graphics2D) g;
+			g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+			super.paintComponent(g2d);
+			setBackground(Color.WHITE);
+			TowerMiner.menu.drawMenu(g2d);
+			g2d.setColor(new Color(0, 0, 0, 180));
+			if (fpsdisplay) {
+				g2d.fillRect(0, 0, 30, 25);
+				g2d.setColor(Color.YELLOW);
+				g2d.setFont(new Font("TimesRoman", Font.CENTER_BASELINE, 20));
+				g2d.drawString(fps + "", 0, 20);
+			}
+		}
+	}
 
-    public void displayPopup(Popup popup) {
-        this.popup = popup;
-        popup.time = new Date().getTime();
-    }
+	public void displayPopup(Popup popup) {
+		if(this.popup == null) {
+			this.popup = popup;
+			this.popup.time = new Date().getTime();
+		} else {
+			this.nextpopups.put(popup, false);
+		}
+	}
 
-    public void displayMultiPlayerPopup(Popup popup) {
-        if (TowerMiner.menu instanceof MultiPlayer) {
-            MultiPlayer mp = (MultiPlayer) TowerMiner.menu;
-            if (mp.server) {
-                new Packet12Popup(popup.text, null, popup.icon).sendClientTCP();
-                this.popup = popup;
-            }
-        } else {
-            this.popup = popup;
-        }
-    }
+	public void displayMultiPlayerPopup(Popup popup) {
+		if(this.popup == null) {
+			if (TowerMiner.menu instanceof MultiPlayer) {
+				MultiPlayer mp = (MultiPlayer) TowerMiner.menu;
+				if (mp.server) {
+					new Packet12Popup(popup.text, null, popup.icon).sendClientTCP();
+					this.popup = popup;
+				}
+			} else {
+				this.popup = popup;
+			}
+			this.popup.time = new Date().getTime();
+		} else {
+			this.nextpopups.put(popup,  false);
+		}
+	}
 
-    @Override
-    public void keyPressed(KeyEvent arg0) {
-        TowerMiner.menu.onKeyPressed(arg0.getKeyCode());
-    }
+	@Override
+	public void keyPressed(KeyEvent arg0) {
+		TowerMiner.menu.onKeyPressed(arg0.getKeyCode());
+	}
 
-    @Override
-    public void keyReleased(KeyEvent arg0) {
-        TowerMiner.menu.onKeyReleased(arg0.getKeyCode());
-    }
+	@Override
+	public void keyReleased(KeyEvent arg0) {
+		TowerMiner.menu.onKeyReleased(arg0.getKeyCode());
+	}
 
-    @Override
-    public void keyTyped(KeyEvent arg0) {
-        TowerMiner.menu.onKeyTyped(arg0.getKeyChar());
-    }
+	@Override
+	public void keyTyped(KeyEvent arg0) {
+		TowerMiner.menu.onKeyTyped(arg0.getKeyChar());
+	}
 
-    @Override
-    public void windowActivated(WindowEvent arg0) {
-        TowerMiner.menu.onWindowActivated(arg0);
-    }
+	@Override
+	public void windowActivated(WindowEvent arg0) {
+		TowerMiner.menu.onWindowActivated(arg0);
+	}
 
-    @Override
-    public void windowClosed(WindowEvent arg0) {
-        TowerMiner.menu.onWindowClosed(arg0);
-    }
+	@Override
+	public void windowClosed(WindowEvent arg0) {
+		TowerMiner.menu.onWindowClosed(arg0);
+	}
 
-    @Override
-    public void windowClosing(WindowEvent arg0) {
-        TowerMiner.menu.onWindowClosing(arg0);
-    }
+	@Override
+	public void windowClosing(WindowEvent arg0) {
+		TowerMiner.menu.onWindowClosing(arg0);
+	}
 
-    @Override
-    public void windowDeactivated(WindowEvent arg0) {
-        TowerMiner.menu.onWindowDeactivated(arg0);
-    }
+	@Override
+	public void windowDeactivated(WindowEvent arg0) {
+		TowerMiner.menu.onWindowDeactivated(arg0);
+	}
 
-    @Override
-    public void windowDeiconified(WindowEvent arg0) {
-        TowerMiner.menu.onWindowDeiconified(arg0);
-    }
+	@Override
+	public void windowDeiconified(WindowEvent arg0) {
+		TowerMiner.menu.onWindowDeiconified(arg0);
+	}
 
-    @Override
-    public void windowIconified(WindowEvent arg0) {
-        TowerMiner.menu.onWindowIconified(arg0);
-    }
+	@Override
+	public void windowIconified(WindowEvent arg0) {
+		TowerMiner.menu.onWindowIconified(arg0);
+	}
 
-    @Override
-    public void windowOpened(WindowEvent arg0) {
-        TowerMiner.menu.onWindowOpened(arg0);
-    }
+	@Override
+	public void windowOpened(WindowEvent arg0) {
+		TowerMiner.menu.onWindowOpened(arg0);
+	}
 
-    @Override
-    public void mouseDragged(MouseEvent arg0) {
-        TowerMiner.menu.onMouseDragged(arg0);
-    }
+	@Override
+	public void mouseDragged(MouseEvent arg0) {
+		TowerMiner.menu.onMouseDragged(arg0);
+	}
 
-    @Override
-    public void mouseMoved(MouseEvent arg0) {
-        TowerMiner.menu.onMouseMoved(arg0);
-    }
+	@Override
+	public void mouseMoved(MouseEvent arg0) {
+		TowerMiner.menu.onMouseMoved(arg0);
+	}
 
-    @Override
-    public void mouseWheelMoved(MouseWheelEvent arg0) {
-        TowerMiner.menu.onMouseWheelMoved(arg0);
-    }
+	@Override
+	public void mouseWheelMoved(MouseWheelEvent arg0) {
+		TowerMiner.menu.onMouseWheelMoved(arg0);
+	}
 
-    @Override
-    public void mouseClicked(MouseEvent arg0) {
-        TowerMiner.menu.onMouseClicked(arg0);
-    }
+	@Override
+	public void mouseClicked(MouseEvent arg0) {
+		TowerMiner.menu.onMouseClicked(arg0);
+	}
 
-    @Override
-    public void mouseEntered(MouseEvent arg0) {
-        TowerMiner.menu.onMouseEntered(arg0);
-    }
+	@Override
+	public void mouseEntered(MouseEvent arg0) {
+		TowerMiner.menu.onMouseEntered(arg0);
+	}
 
-    @Override
-    public void mouseExited(MouseEvent arg0) {
-        TowerMiner.menu.onMouseExited(arg0);
-    }
+	@Override
+	public void mouseExited(MouseEvent arg0) {
+		TowerMiner.menu.onMouseExited(arg0);
+	}
 
-    @Override
-    public void mousePressed(MouseEvent arg0) {
-        TowerMiner.menu.onMousePressed(arg0);
-    }
+	@Override
+	public void mousePressed(MouseEvent arg0) {
+		TowerMiner.menu.onMousePressed(arg0);
+	}
 
-    @Override
-    public void mouseReleased(MouseEvent arg0) {
-        TowerMiner.menu.onMouseReleased(arg0);
-    }
+	@Override
+	public void mouseReleased(MouseEvent arg0) {
+		TowerMiner.menu.onMouseReleased(arg0);
+	}
 }

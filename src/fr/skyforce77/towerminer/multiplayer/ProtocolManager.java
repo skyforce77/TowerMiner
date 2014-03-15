@@ -10,6 +10,7 @@ import fr.skyforce77.towerminer.TowerMiner;
 import fr.skyforce77.towerminer.achievements.Achievements;
 import fr.skyforce77.towerminer.achievements.Popup;
 import fr.skyforce77.towerminer.api.PluginManager;
+import fr.skyforce77.towerminer.api.events.PluginMessageEvent;
 import fr.skyforce77.towerminer.entity.Entity;
 import fr.skyforce77.towerminer.entity.EntityProjectile;
 import fr.skyforce77.towerminer.entity.EntityTypes;
@@ -46,6 +47,7 @@ import fr.skyforce77.towerminer.protocol.packets.Packet19Particle;
 import fr.skyforce77.towerminer.protocol.packets.Packet1Disconnecting;
 import fr.skyforce77.towerminer.protocol.packets.Packet20EntityData;
 import fr.skyforce77.towerminer.protocol.packets.Packet21LoadPlugin;
+import fr.skyforce77.towerminer.protocol.packets.Packet22PluginMessage;
 import fr.skyforce77.towerminer.protocol.packets.Packet2BigSending;
 import fr.skyforce77.towerminer.protocol.packets.Packet3Action;
 import fr.skyforce77.towerminer.protocol.packets.Packet4RoundFinished;
@@ -96,6 +98,10 @@ public class ProtocolManager implements PacketListener {
             } else {
                 TowerMiner.game.displayPopup(new Popup(message, 3000));
             }
+        } else if (p.getId() == 22) {
+            Packet22PluginMessage pack22 = (Packet22PluginMessage) p;
+            PluginMessageEvent pme = new PluginMessageEvent(pack22.plugin, pack22.version, pack22.type, pack22.deserialize(pack22.data));
+            PluginManager.callEvent(pme);
         }
     }
 
@@ -371,10 +377,10 @@ public class ProtocolManager implements PacketListener {
                 }
             }
             if (pack9.modifier == 16) {
-                mp.setClientGold(mp.clientgold - EntityTypes.turrets[pack9.selected].getPrice());
-                EntityTypes type = EntityTypes.turrets[pack9.selected];
+                mp.setClientGold(mp.clientgold - EntityTypes.getType(pack9.selected).getPrice());
+                EntityTypes type = EntityTypes.getType(pack9.selected);
                 try {
-                    Turret tu = (Turret) type.getEntityClass().getConstructor(EntityTypes.class, Point.class, String.class).newInstance(EntityTypes.turrets[pack9.selected], new Point(pack9.x, pack9.y - 1), "menu.mp.red");
+                    Turret tu = (Turret) type.getEntityClass().getConstructor(EntityTypes.class, Point.class, String.class).newInstance(type, new Point(pack9.x, pack9.y - 1), "menu.mp.red");
                     mp.entity.add(tu);
                     mp.onEntityAdded(tu);
                 } catch (Exception ex) {

@@ -1,54 +1,86 @@
 package fr.skyforce77.towerminer.entity;
 
+import java.awt.Image;
+import java.util.ArrayList;
+
+import javax.swing.ImageIcon;
+
 import fr.skyforce77.towerminer.ressources.RessourcesManager;
 
-import javax.swing.*;
-import java.awt.*;
+public class EntityTypes {
 
-public enum EntityTypes {
+	static EntityTypes UNKNOWN =  new EntityTypes(0, RessourcesManager.getIconTexture("unknown"), 0);
+	
+	static EntityTypes CHICKEN = new EntityTypes(1, RessourcesManager.getIconTexture("chicken"), 1, 3, 1);
+	static EntityTypes OCELOT = new EntityTypes(2, RessourcesManager.getIconTexture("ocelot"), 4, 5, 20);
+	static EntityTypes BAT = new EntityTypes(3, RessourcesManager.getIconTexture("bat"), 8, 3, 15);
+	static EntityTypes COW = new EntityTypes(4, RessourcesManager.getIconTexture("Cow"), 10, 2, 40);
+	static EntityTypes PIG = new EntityTypes(5, RessourcesManager.getIconTexture("pig"), 10, 4, 60);
+	static EntityTypes SHEEP = new EntityTypes(6, RessourcesManager.getIconTexture("sheep"), 20, 3, 90);
+	static EntityTypes HORSE = new EntityTypes(7, RessourcesManager.getIconTexture("horse"), 30, 4, 130);
+	static EntityTypes BABYMUSHCOW = new EntityTypes(8, RessourcesManager.getIconTexture("minimushroomcow"), 100, 1, 350);
+	static EntityTypes MUSHCOW = new EntityTypes(9, RessourcesManager.getIconTexture("mushroomcow"), 200, 1, 1000);
+	
+	static EntityTypes SKELETON = new EntityTypes(50, RessourcesManager.getIconTexture("skeleton"), -90);
+	static EntityTypes BLAZE = new EntityTypes(51, RessourcesManager.getIconTexture("blaze"), 50, 90, Blaze.class);
+	static EntityTypes SPIDER = new EntityTypes(52, RessourcesManager.getIconTexture("Spider"), 50, -90, Spider.class);
+	static EntityTypes WITCH = new EntityTypes(53, RessourcesManager.getIconTexture("witch"), 70, -90, Witch.class);
+	static EntityTypes CREEPER = new EntityTypes(54, RessourcesManager.getIconTexture("creeper"), 200, -90, Creeper.class);
+	
+	static EntityTypes ARROW = new EntityTypes(100, RessourcesManager.getIconTexture("arrow"), true, 45);
+	static EntityTypes FIREBALL = new EntityTypes(101, RessourcesManager.getIconTexture("fireball"), false, 0);
+	static EntityTypes POISON_POTION = new EntityTypes(102, RessourcesManager.getIconTexture("poison"), false, 0);
+	static EntityTypes WEAKNESS_POTION = new EntityTypes(103, RessourcesManager.getIconTexture("weakness"), false, 0);
 
-    UNKNOWN("unknown", 0),
-    CHICKEN("chicken", 1, 3, 1),
-    OCELOT("ocelot", 4, 5, 20),
-    BAT("bat", 8, 3, 15),
-    COW("Cow", 10, 2, 40),
-    PIG("pig", 10, 4, 60),
-    SHEEP("sheep", 20, 3, 90),
-    HORSE("horse", 30, 4, 130),
-    BABYMUSHCOW("minimushroomcow", 100, 1, 350),
-    MUSHCOW("mushroomcow", 200, 1, 1000),
-    SKELETON("skeleton", -90),
-    BLAZE("blaze", 50, 90, Blaze.class),
-    SPIDER("Spider", 50, -90, Spider.class),
-    WITCH("witch", 70, -90, Witch.class),
-    CREEPER("creeper", 200, -90, Creeper.class),
-    ARROW("arrow", true, 45),
-    FIREBALL("fireball", false, 0),
-    POISON_POTION("poison", false, 0),
-    WEAKNESS_POTION("weakness", false, 0);
-
-    public static EntityTypes[] turrets;
-    public static EntityTypes[] mobs;
-    public static int count = 0;
+    public static ArrayList<EntityTypes> turrets = new ArrayList<>();
+    public static ArrayList<EntityTypes> mobs = new ArrayList<>();
+    public static ArrayList<EntityTypes> values = new ArrayList<>();
 
     public static void createTurrets() {
-        turrets = new EntityTypes[]{SKELETON, BLAZE, SPIDER, WITCH, CREEPER};
-        mobs = new EntityTypes[]{CHICKEN, OCELOT, BAT, COW, PIG, SHEEP, HORSE, BABYMUSHCOW, MUSHCOW};
-
-        for (EntityTypes type : values()) {
-            type.id = count;
-            count++;
-        }
+    	registerTurret(SKELETON);
+    	registerTurret(BLAZE);
+    	registerTurret(SPIDER);
+    	registerTurret(WITCH);
+    	registerTurret(CREEPER);
+        
+    	registerMob(CHICKEN);
+    	registerMob(OCELOT);
+    	registerMob(BAT);
+    	registerMob(COW);
+    	registerMob(PIG);
+    	registerMob(SHEEP);
+    	registerMob(HORSE);
+    	registerMob(BABYMUSHCOW);
+    	registerMob(MUSHCOW);
+        
+    	registerEntity(ARROW);
+    	registerEntity(FIREBALL);
+    	registerEntity(POISON_POTION);
+    	registerEntity(WEAKNESS_POTION);
+    }
+    
+    public static void registerMob(EntityTypes mob) {
+    	mobs.add(mob);
+    	values.add(mob);
+    }
+    
+    public static void registerTurret(EntityTypes turret) {
+    	turrets.add(turret);
+    	values.add(turret);
+    }
+    
+    public static void registerEntity(EntityTypes entity) {
+    	values.add(entity);
     }
 
     public static int getNextVisibleTurret(int now) {
         int i = now + 1;
-        if (i == turrets.length) {
+        if (i == turrets.size()) {
             return 0;
         }
-        while (turrets[i] == null) {
+        while (turrets.get(i) == null) {
             i++;
-            if (i == turrets.length) {
+            if (i == turrets.size()) {
                 return 0;
             }
         }
@@ -58,19 +90,19 @@ public enum EntityTypes {
     public static int getPreviousVisibleTurret(int now) {
         int i = now - 1;
         if (i == -1) {
-            return turrets.length - 1;
+            return turrets.size() - 1;
         }
-        while (turrets[i] == null) {
+        while (turrets.get(i) == null) {
             i--;
             if (i == -1) {
-                return turrets.length - 1;
+                return turrets.size() - 1;
             }
         }
         return i;
     }
 
     public static EntityTypes getType(int id) {
-        for (EntityTypes type : values()) {
+        for (EntityTypes type : values) {
             if (type.id == id) {
                 return type;
             }
@@ -84,39 +116,47 @@ public enum EntityTypes {
     int price = 30;
     int level = 1;
     int rotation = 0;
-    public int id;
+    private int id;
     Class<? extends Entity> classe;
 
-    EntityTypes(String texture, int rotation) {
-        this.textures[0] = RessourcesManager.getIconTexture(texture);
+    public EntityTypes(int id, ImageIcon texture, int rotation) {
+        this.textures[0] = texture;
         this.rotation = rotation;
         classe = Turret.class;
+        this.id = id;
     }
 
-    EntityTypes(String texture, int price, int rotation, Class<? extends Entity> classe) {
-        this.textures[0] = RessourcesManager.getIconTexture(texture);
+    public EntityTypes(int id, ImageIcon texture, int price, int rotation, Class<? extends Entity> classe) {
+        this.textures[0] = texture;
         this.classe = classe;
         this.price = price;
         this.rotation = rotation;
+        this.id = id;
     }
 
-    EntityTypes(String texture, int life, int speed, int level) {
-        this.textures[0] = RessourcesManager.getIconTexture(texture);
+    public EntityTypes(int id, ImageIcon texture, int life, int speed, int level) {
+        this.textures[0] = texture;
         this.life = life;
         this.speed = speed;
         this.level = level;
         classe = Mob.class;
+        this.id = id;
     }
 
-    EntityTypes(String texture, boolean canrotate, int rotation) {
-        this.textures[0] = RessourcesManager.getIconTexture(texture);
+    public EntityTypes(int id, ImageIcon texture, boolean canrotate, int rotation) {
+        this.textures[0] = texture;
         this.level = canrotate ? 1 : 0;
         this.rotation = rotation;
         classe = EntityProjectile.class;
+        this.id = id;
     }
 
     public Image getTexture(int data) {
         return textures[data].getImage();
+    }
+    
+    public int getId() {
+    	return id;
     }
 
     public int getMaxLife() {

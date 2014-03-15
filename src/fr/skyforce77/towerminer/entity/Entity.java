@@ -23,7 +23,7 @@ public class Entity implements Serializable {
     Point location;
 
     public Entity(EntityTypes type) {
-        this.type = type.id;
+        this.type = type.getId();
 
         while (uuid == -1) {
             int id = new Random().nextInt(Integer.MAX_VALUE);

@@ -269,11 +269,11 @@ public class MultiPlayer extends SinglePlayer {
     public void onEntityAdded(Entity en) {
         if (server) {
         	if(en instanceof Mob) {
-        		new Packet6EntityCreate(en.getUUID(), en.getType().id).sendAllTCP();
+        		new Packet6EntityCreate(en.getUUID(), en.getType().getId()).sendAllTCP();
         	} else if(en instanceof EntityProjectile) {
-        		new Packet6EntityCreate(en.getUUID(), en.getType().id, ((EntityProjectile) en).getShooter(), ((EntityProjectile) en).getAimed()).sendAllTCP();
+        		new Packet6EntityCreate(en.getUUID(), en.getType().getId(), ((EntityProjectile) en).getShooter(), ((EntityProjectile) en).getAimed()).sendAllTCP();
         	} else if(en instanceof Turret) {
-        		new Packet6EntityCreate(en.getUUID(), en.getType().id, en.getBlockLocation(), ((Turret) en).getOwner()).sendAllTCP();
+        		new Packet6EntityCreate(en.getUUID(), en.getType().getId(), en.getBlockLocation(), ((Turret) en).getOwner()).sendAllTCP();
         	}
         	sendData(en);
         }
@@ -349,12 +349,12 @@ public class MultiPlayer extends SinglePlayer {
                         }
                     }
 
-                    if (p.y - 1 > -1 && !turretplaced && EntityTypes.turrets[selectedturret].getPrice() <= or && Maps.getActualMap().canPlaceTurret(p.x, p.y - 1)) {
+                    if (p.y - 1 > -1 && !turretplaced && EntityTypes.turrets.get(selectedturret).getPrice() <= or && Maps.getActualMap().canPlaceTurret(p.x, p.y - 1)) {
                         Packet9MouseClick pm = new Packet9MouseClick();
                         pm.modifier = e.getModifiers();
                         pm.x = p.x;
                         pm.y = p.y;
-                        pm.selected = selectedturret;
+                        pm.selected = EntityTypes.turrets.get(selectedturret).getId();
                         pm.sendAllTCP();
                     }
                 } else {

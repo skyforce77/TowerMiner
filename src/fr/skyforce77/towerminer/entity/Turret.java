@@ -1,15 +1,23 @@
 package fr.skyforce77.towerminer.entity;
 
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.FontMetrics;
+import java.awt.Graphics2D;
+import java.awt.Point;
+
 import fr.skyforce77.towerminer.TowerMiner;
 import fr.skyforce77.towerminer.achievements.Achievements;
+import fr.skyforce77.towerminer.api.PluginManager;
+import fr.skyforce77.towerminer.api.events.TurretPlacedEvent;
+import fr.skyforce77.towerminer.api.events.TurretUpgradeEvent;
 import fr.skyforce77.towerminer.maps.MapWritter;
 import fr.skyforce77.towerminer.menus.MultiPlayer;
 import fr.skyforce77.towerminer.menus.SinglePlayer;
 import fr.skyforce77.towerminer.protocol.packets.Packet10EntityValueUpdate;
 import fr.skyforce77.towerminer.render.RenderHelper;
 import fr.skyforce77.towerminer.ressources.language.LanguageManager;
-
-import java.awt.*;
 
 public class Turret extends Entity {
 
@@ -21,14 +29,17 @@ public class Turret extends Entity {
     int price = 20;
     int cost = 30;
     String owner = "menu.mp.blue";
-    int rgb;
+    int rgb = -1;
 
     public Turret(EntityTypes type, Point location, String owner) {
         super(type);
         this.owner = owner;
         this.location = new Point(location.x * MapWritter.getBlockWidth() + (MapWritter.getBlockWidth() / 2), location.y * MapWritter.getBlockHeight() + (MapWritter.getBlockHeight() / 2));
         cost = type.getPrice();
-        rgb = owner.equals("menu.mp.red") ? Color.RED.getRGB() : Color.BLUE.getRGB();
+        if (TowerMiner.menu instanceof MultiPlayer) {
+        	rgb = owner.equals("menu.mp.red") ? Color.RED.getRGB() : Color.BLUE.getRGB();
+        }
+        PluginManager.callEvent(new TurretPlacedEvent(this));
     }
 
     public int getData() {
@@ -80,6 +91,7 @@ public class Turret extends Entity {
         cost += price;
         price = price + (price / 3);
         new Packet10EntityValueUpdate(getUUID(), "turretdata", data).sendAllTCP();
+        PluginManager.callEvent(new TurretUpgradeEvent(this, data-1, data));
     }
 
     @Override
@@ -140,11 +152,7 @@ public class Turret extends Entity {
         double ro = getRotation();
         g2d.rotate(ro - Math.toRadians(getType().rotation), x, y + sp.CanvasY);
         try {
-            if (sp instanceof MultiPlayer) {
-                g2d.drawImage(RenderHelper.getColoredImage(getType().getTexture(0), new Color(rgb), 0.1F), (int) x - 15 + sp.CanvasX, (int) y - 15 + sp.CanvasY, 30, 30, null);
-            } else {
-                g2d.drawImage(getType().getTexture(0), (int) x - 15 + sp.CanvasX, (int) y - 15 + sp.CanvasY, 30, 30, null);
-            }
+           g2d.drawImage(RenderHelper.getColoredImage(getType().getTexture(0), new Color(rgb), 0.1F), (int) x - 15 + sp.CanvasX, (int) y - 15 + sp.CanvasY, 30, 30, null);
         } catch (Exception e) {
         }
         g2d.rotate(-ro + Math.toRadians(getType().rotation), x, y + sp.CanvasY);
