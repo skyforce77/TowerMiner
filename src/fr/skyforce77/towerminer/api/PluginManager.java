@@ -1,5 +1,6 @@
 package fr.skyforce77.towerminer.api;
 
+import java.beans.IntrospectionException;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -74,10 +75,8 @@ public class PluginManager {
 			move(fl, f);
 			if(f.getName().contains(".jar")) {
 				try {
-					URL[] urls = new URL[]{f.toURI().toURL()};
-					@SuppressWarnings("resource")
-					URLClassLoader loader = new URLClassLoader(urls);
-					Class<?> cls = loader.loadClass("TMPlugin");
+					addURLToSystemClassLoader(f.toURI().toURL());
+					Class<?> cls = ClassLoader.getSystemClassLoader().loadClass("TMPlugin");
 					Plugin p = (Plugin)cls.newInstance();
 					loadPlugin(p, f);
 				} catch (Exception e) {
@@ -90,6 +89,20 @@ public class PluginManager {
 			e1.printStackTrace();
 		}
 	}
+
+	public static void addURLToSystemClassLoader(URL url) throws IntrospectionException { 
+		URLClassLoader systemClassLoader = (URLClassLoader) ClassLoader.getSystemClassLoader(); 
+		Class<URLClassLoader> classLoaderClass = URLClassLoader.class; 
+		try { 
+			Method method = classLoaderClass.getDeclaredMethod("addURL", new Class[]{URL.class}); 
+			method.setAccessible(true); 
+			method.invoke(systemClassLoader, new Object[]{url}); 
+		} catch (Throwable t) { 
+			t.printStackTrace(); 
+			throw new IntrospectionException("Error when adding url to system ClassLoader "); 
+		} 
+	}
+
 
 	public static ArrayList<String> getPlugins() {
 		return pluginlist;
@@ -140,7 +153,7 @@ public class PluginManager {
 			}
 		}
 	}
-	
+
 	@SuppressWarnings("resource")
 	public static void move(File source, File destination) {
 		try {
@@ -170,62 +183,62 @@ public class PluginManager {
 			e.printStackTrace();
 		}
 	}
-	
+
 	private static List<TMListener> handlers = new ArrayList<TMListener>();
 
-    public static void registerListener(TMListener listener) {
-        handlers.add(listener);
-        System.out.println("Registered "+listener.getClass().getSimpleName());
-    }
+	public static void registerListener(TMListener listener) {
+		handlers.add(listener);
+		System.out.println("Registered "+listener.getClass().getSimpleName());
+	}
 
-    public static List<TMListener> getListeners() {
-        return handlers;
-    }
-    
-    public static void callEvent(final TMEvent event) {
-        new Thread() {
-            @Override
-            public void run() {
-                callCompleteEvent(event);
-            }
-        }.start();
-    }
+	public static List<TMListener> getListeners() {
+		return handlers;
+	}
 
-    private static void callCompleteEvent(final TMEvent event) {
-        for (TMListener listener : getListeners()) {
-        	Class<?> handler = listener.getClass();
-            Method[] methods = handler.getMethods();
+	public static void callEvent(final TMEvent event) {
+		new Thread() {
+			@Override
+			public void run() {
+				callCompleteEvent(event);
+			}
+		}.start();
+	}
 
-            for (int i = 0; i < methods.length; ++i) {
-                EventHandler eventHandler = methods[i].getAnnotation(EventHandler.class);
-                if (eventHandler != null) {
-                    Class<?>[] methodParams = methods[i].getParameterTypes();
+	private static void callCompleteEvent(final TMEvent event) {
+		for (TMListener listener : getListeners()) {
+			Class<?> handler = listener.getClass();
+			Method[] methods = handler.getMethods();
 
-                    if (methodParams.length < 1)
-                        continue;
-                    
-                    if (!event.getClass().getSimpleName()
-                            .equals(methodParams[0].getSimpleName()))
-                        continue;
+			for (int i = 0; i < methods.length; ++i) {
+				EventHandler eventHandler = methods[i].getAnnotation(EventHandler.class);
+				if (eventHandler != null) {
+					Class<?>[] methodParams = methods[i].getParameterTypes();
 
-                    try {
-                        methods[i].invoke(listener, event);
-                    } catch (Exception e) {
-                        System.err.println(e);
-                    }
-                }
-            }
-        }
-    }
-    
-    public static void sendPluginMessage(Plugin p, int id, Serializable data) {
-    	Packet22PluginMessage ppm = new Packet22PluginMessage(p.getName(), p.getVersion(), id, data);
-    	ppm.sendAllTCP();
-    }
-    
-    public static void sendPluginMessage(Connection c, Plugin p, int id, Serializable data) {
-    	Packet22PluginMessage ppm = new Packet22PluginMessage(p.getName(), p.getVersion(), id, data);
-    	ppm.sendConnectionTCP(c);
-    }
+					if (methodParams.length < 1)
+						continue;
+
+					if (!event.getClass().getSimpleName()
+							.equals(methodParams[0].getSimpleName()))
+						continue;
+
+					try {
+						methods[i].invoke(listener, event);
+					} catch (Exception e) {
+						System.err.println(e);
+					}
+				}
+			}
+		}
+	}
+
+	public static void sendPluginMessage(Plugin p, int id, Serializable data) {
+		Packet22PluginMessage ppm = new Packet22PluginMessage(p.getName(), p.getVersion(), id, data);
+		ppm.sendAllTCP();
+	}
+
+	public static void sendPluginMessage(Connection c, Plugin p, int id, Serializable data) {
+		Packet22PluginMessage ppm = new Packet22PluginMessage(p.getName(), p.getVersion(), id, data);
+		ppm.sendConnectionTCP(c);
+	}
 
 }

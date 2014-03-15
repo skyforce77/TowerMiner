@@ -28,7 +28,7 @@ public class TowerMiner {
 
 	public static Game game;
 	public static Menu menu;
-	public static int launcherversion = 7;
+	public static int launcherversion = 8;
 	public static boolean dev = true;
 	public static boolean launcherupdateneeded = true;
 	public static String[] os = new String[]{"linux"};
@@ -36,10 +36,11 @@ public class TowerMiner {
 	public static String player = "Player" + new Random().nextInt(1000);
 	public static UUID id;
 
-	public static void startGame(final int launchedversion, final String state, final String os, String player, UUID id) {
+	public static void startGame(final int launchedversion, final String state, final String os, String player, UUID id, int data) {
 		usedos = os;
 		TowerMiner.player = player;
 		TowerMiner.id = id;
+		launcherversion = launchedversion;
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
@@ -154,7 +155,7 @@ public class TowerMiner {
 
 	public static void main(String[] args) {
 		if (dev) {
-			startGame(-1, "ok", "linux", "dev", UUID.randomUUID());
+			startGame(-1, "ok", "linux", "dev", UUID.randomUUID(), 0);
 			return;
 		}
 		LanguageManager.initLanguages();

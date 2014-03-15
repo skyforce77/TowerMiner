@@ -1,14 +1,23 @@
 package fr.skyforce77.towerminer.menus.additionals;
 
-import fr.skyforce77.towerminer.TowerMiner;
-import fr.skyforce77.towerminer.ressources.language.LanguageManager;
-
-import javax.swing.*;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
-import java.awt.*;
+import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
+import javax.swing.DefaultListCellRenderer;
+import javax.swing.DefaultListModel;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+
+import fr.skyforce77.towerminer.TowerMiner;
+import fr.skyforce77.towerminer.ressources.language.LanguageManager;
 
 public class LanguageSelectionList extends JFrame {
 
@@ -47,7 +56,7 @@ public class LanguageSelectionList extends JFrame {
                 lsl.dispose();
                 TowerMiner.game.terminated = true;
                 TowerMiner.game.dispose();
-                TowerMiner.startGame(-1, "ok", TowerMiner.usedos, TowerMiner.player, TowerMiner.id);
+                TowerMiner.startGame(-1, "ok", TowerMiner.usedos, TowerMiner.player, TowerMiner.id, 0);
             }
         });
 
