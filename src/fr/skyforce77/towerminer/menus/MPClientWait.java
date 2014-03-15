@@ -5,11 +5,11 @@ import java.awt.Font;
 import java.awt.Graphics2D;
 
 import fr.skyforce77.towerminer.TowerMiner;
+import fr.skyforce77.towerminer.api.PluginManager;
 import fr.skyforce77.towerminer.multiplayer.MPInfos;
 import fr.skyforce77.towerminer.protocol.Connect;
 import fr.skyforce77.towerminer.protocol.Protocol;
 import fr.skyforce77.towerminer.protocol.packets.Packet0Connecting;
-import fr.skyforce77.towerminer.ressources.PluginManager;
 import fr.skyforce77.towerminer.ressources.RessourcesManager;
 import fr.skyforce77.towerminer.ressources.language.LanguageManager;
 

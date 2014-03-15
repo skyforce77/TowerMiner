@@ -1,18 +1,23 @@
-package fr.skyforce77.towerminer.ressources;
+package fr.skyforce77.towerminer.api;
 
+import java.awt.Event;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.lang.reflect.Method;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.nio.channels.FileChannel;
 import java.util.ArrayList;
+import java.util.List;
 
 import fr.skyforce77.towerminer.multiplayer.MPInfos;
 import fr.skyforce77.towerminer.protocol.BigSending;
 import fr.skyforce77.towerminer.protocol.ObjectReceiver;
 import fr.skyforce77.towerminer.protocol.packets.Packet21LoadPlugin;
+import fr.skyforce77.towerminer.ressources.FileContainer;
+import fr.skyforce77.towerminer.ressources.RessourcesManager;
 
 public class PluginManager {
 
@@ -87,9 +92,9 @@ public class PluginManager {
 		boolean can = true;
 		for(Plugin p : plugins) {
 			if(p.isPluginNeededByClient()) {
-				//if(!pl.contains(pluginlist.get(plugins.indexOf(p)))) {
+				if(!pl.contains(pluginlist.get(plugins.indexOf(p)))) {
 					can = false;
-				//}
+				}
 			}
 		}
 		return can;
@@ -99,9 +104,9 @@ public class PluginManager {
 		String s = "";
 		for(Plugin p : plugins) {
 			if(p.isPluginNeededByClient()) {
-				//if(!pl.contains(pluginlist.get(plugins.indexOf(p)))) {
+				if(!pl.contains(pluginlist.get(plugins.indexOf(p)))) {
 					s = s+" "+pluginlist.get(plugins.indexOf(p));
-				//}
+				}
 			}
 		}
 		return s;
@@ -110,7 +115,7 @@ public class PluginManager {
 	public static void sendNeededPlugins(ArrayList<String> pl) {
 		for(final Plugin p : plugins) {
 			if(p.isPluginNeededByClient()) {
-				//if(!pl.contains(pluginlist.get(plugins.indexOf(p)))) {
+				if(!pl.contains(pluginlist.get(plugins.indexOf(p)))) {
 					try {
 						BigSending.sendBigObject(new FileContainer(pluginfiles.get(plugins.indexOf(p)), p.getName()+"("+p.getVersion()+").jar"), MPInfos.connection, new ObjectReceiver.ReceivingThread() {
 							@Override
@@ -124,7 +129,7 @@ public class PluginManager {
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
-				//}
+				}
 			}
 		}
 	}
@@ -158,5 +163,50 @@ public class PluginManager {
 			e.printStackTrace();
 		}
 	}
+	
+	private static List<Class<?>> handlers = new ArrayList<Class<?>>();
+
+    public static void registerHandler(Class<?> handler) {
+        handlers.add(handler);
+    }
+
+    public static List<Class<?>> getHandlers() {
+        return handlers;
+    }
+    
+    public static void callEvent(final Event event) {
+        new Thread() {
+            @Override
+            public void run() {
+                callCompleteEvent(event);
+            }
+        }.start();
+    }
+
+    private static void callCompleteEvent(final Event event) {
+        for (Class<?> handler : getHandlers()) {
+            Method[] methods = handler.getMethods();
+
+            for (int i = 0; i < methods.length; ++i) {
+                EventHandler eventHandler = methods[i].getAnnotation(EventHandler.class);
+                if (eventHandler != null) {
+                    Class<?>[] methodParams = methods[i].getParameterTypes();
+
+                    if (methodParams.length < 1)
+                        continue;
+
+                    if (!event.getClass().getSimpleName()
+                            .equals(methodParams[0].getSimpleName()))
+                        continue;
+
+                    try {
+                        methods[i].invoke(handler.newInstance(), event);
+                    } catch (Exception e) {
+                        System.err.println(e);
+                    }
+                }
+            }
+        }
+    }
 
 }

@@ -9,6 +9,7 @@ import com.esotericsoftware.kryonet.Connection;
 import fr.skyforce77.towerminer.TowerMiner;
 import fr.skyforce77.towerminer.achievements.Achievements;
 import fr.skyforce77.towerminer.achievements.Popup;
+import fr.skyforce77.towerminer.api.PluginManager;
 import fr.skyforce77.towerminer.entity.Entity;
 import fr.skyforce77.towerminer.entity.EntityProjectile;
 import fr.skyforce77.towerminer.entity.EntityTypes;
@@ -54,7 +55,6 @@ import fr.skyforce77.towerminer.protocol.packets.Packet7EntityMove;
 import fr.skyforce77.towerminer.protocol.packets.Packet8EntityRemove;
 import fr.skyforce77.towerminer.protocol.packets.Packet9MouseClick;
 import fr.skyforce77.towerminer.ressources.FileContainer;
-import fr.skyforce77.towerminer.ressources.PluginManager;
 import fr.skyforce77.towerminer.ressources.language.LanguageManager;
 
 public class ProtocolManager implements PacketListener {
