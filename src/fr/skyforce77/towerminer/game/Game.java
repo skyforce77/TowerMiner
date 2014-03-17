@@ -35,7 +35,7 @@ public class Game extends JFrame implements MouseListener, MouseWheelListener, M
 
 	private static final long serialVersionUID = 1L;
 
-	public static String version = "Beta 0.3";
+	public static String version = "Beta 0.3c";
 	public boolean fpsdisplay = false;
 	public static boolean offline = false;
 
@@ -56,7 +56,7 @@ public class Game extends JFrame implements MouseListener, MouseWheelListener, M
 	public int freeze = 30;
 
 	public Popup popup;
-	public HashMap<Popup, Boolean> nextpopups = new HashMap<>();
+	public HashMap<Popup, Boolean> nextpopups = new HashMap<Popup, Boolean>();
 
 	public Game() {
 		onInit();
@@ -74,7 +74,8 @@ public class Game extends JFrame implements MouseListener, MouseWheelListener, M
 		this.setResizable(false);
 		this.addMouseListener(this);
 		this.addMouseMotionListener(this);
-		this.addMouseWheelListener(this);
+		//this.addMouseWheelListener(this);
+		this.addWindowListener(this);
 		this.addKeyListener(this);
 		this.setLocationRelativeTo(null);
 
@@ -287,7 +288,7 @@ public class Game extends JFrame implements MouseListener, MouseWheelListener, M
 	}
 
 	@Override
-	public void mouseWheelMoved(MouseWheelEvent arg0) {
+	public void mouseWheelMoved(final MouseWheelEvent arg0) {
 		TowerMiner.menu.onMouseWheelMoved(arg0);
 	}
 

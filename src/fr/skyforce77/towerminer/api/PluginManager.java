@@ -28,9 +28,9 @@ import fr.skyforce77.towerminer.ressources.RessourcesManager;
 
 public class PluginManager {
 
-	private static ArrayList<Plugin> plugins = new ArrayList<>();
-	private static ArrayList<File> pluginfiles = new ArrayList<>();
-	private static ArrayList<String> pluginlist = new ArrayList<>();
+	private static ArrayList<Plugin> plugins = new ArrayList<Plugin>();
+	private static ArrayList<File> pluginfiles = new ArrayList<File>();
+	private static ArrayList<String> pluginlist = new ArrayList<String>();
 
 	public static void initPlugins() {
 		RessourcesManager.getPluginsDirectory().mkdirs();
@@ -38,7 +38,6 @@ public class PluginManager {
 			if(f.getName().contains(".jar")) {
 				try {
 					URL[] urls = new URL[]{f.toURI().toURL()};
-					@SuppressWarnings("resource")
 					URLClassLoader loader = new URLClassLoader(urls);
 					Class<?> cls = loader.loadClass("TMPlugin");
 					Plugin p = (Plugin)cls.newInstance();

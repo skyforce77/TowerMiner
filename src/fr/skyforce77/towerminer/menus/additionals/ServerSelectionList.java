@@ -15,8 +15,8 @@ public class ServerSelectionList extends JFrame {
 
     private static final long serialVersionUID = -5973702249949001012L;
 
-    public final DefaultListModel<ServerInfos> listm = new DefaultListModel<ServerInfos>();
-    public final JList<ServerInfos> list = new JList<ServerInfos>(listm);
+    public final DefaultListModel listm = new DefaultListModel();
+    public final JList list = new JList(listm);
     public static ServerSelectionList instance;
 
     public ServerSelectionList() {
@@ -38,7 +38,7 @@ public class ServerSelectionList extends JFrame {
                 if (list.getSelectedValue() != null) {
                     setVisible(false);
                     dispose();
-                    MPJoinMenu.mpjoinmenu.adress.setText(list.getSelectedValue().ip);
+                    MPJoinMenu.mpjoinmenu.adress.setText(((ServerInfos)list.getSelectedValue()).ip);
                     MPJoinMenu.mpjoinmenu.check.getActionListeners()[0].actionPerformed(arg0);
                 }
             }
@@ -119,7 +119,7 @@ public class ServerSelectionList extends JFrame {
             private static final long serialVersionUID = -8142642427555971032L;
 
             @Override
-            public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+            public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
                 JLabel label = (JLabel) super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
                 JLabel inf = new JLabel();
                 JLabel ping = new JLabel();

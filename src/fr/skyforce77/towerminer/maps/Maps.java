@@ -27,6 +27,7 @@ public class Maps implements Serializable {
     private static int actual = 0;
 
     public static void createMaps() {
+    	RessourcesManager.getMapsDirectory().mkdirs();
         maps[0] = getOrCreateMap("Plage");
         maps[1] = getOrCreateMap("Hiver");
         maps[2] = getOrCreateMap("Nether");
@@ -389,6 +390,12 @@ public class Maps implements Serializable {
     }
 
     public static Maps getOrCreateMap(String map) {
+    	File outFile = new File(RessourcesManager.getMapsDirectory(), map + ".mtmap");
+    	try {
+    		outFile.createNewFile();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
         URL mapurl = RessourcesManager.getMap(map);
         if (mapurl != null) {
             InputStream in = null;
@@ -397,7 +404,6 @@ public class Maps implements Serializable {
             } catch (IOException e1) {
                 e1.printStackTrace();
             }
-            File outFile = new File(RessourcesManager.getMapsDirectory(), map + ".mtmap");
             try {
                 if (in != null) {
                     OutputStream out = new FileOutputStream(outFile);

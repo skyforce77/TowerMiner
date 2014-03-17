@@ -115,7 +115,7 @@ public class Menu {
                 if (selected >= 0 && items[selected] != null || !items[selected].isEnabled()) {
                     items[selected].run();
                 }
-            } else if (keyCode == KeyEvent.VK_ESCAPE && last != null) {
+            } else if (keyCode == KeyEvent.VK_ESCAPE && last != null && !(this instanceof SinglePlayer)) {
                 TowerMiner.returnMenu(last);
             }
         }

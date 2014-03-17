@@ -335,6 +335,16 @@ public class MultiPlayer extends SinglePlayer {
         if (server) {
             super.onMouseClicked(e);
         } else {
+        	if (items != null && paused) {
+                for (MenuItem item : items) {
+                    if (item != null && item.isEnabled())
+                        if (Xcursor > item.getX() && Xcursor < item.getX() + item.getWidth()
+                                && Ycursor > item.getY() && Ycursor < item.getY() + item.getHeight()) {
+                            item.run();
+                            return;
+                        }
+                }
+            }
             if (e.getModifiers() == 16) {
                 if (gameover) {
                 	TowerMiner.setMenu(Menu.mainmenu);

@@ -9,32 +9,32 @@ import fr.skyforce77.towerminer.ressources.RessourcesManager;
 
 public class EntityTypes {
 
-	static EntityTypes UNKNOWN =  new EntityTypes(0, RessourcesManager.getIconTexture("unknown"), 0);
+	public static EntityTypes UNKNOWN =  new EntityTypes(0, RessourcesManager.getIconTexture("unknown"), 0);
 	
-	static EntityTypes CHICKEN = new EntityTypes(1, RessourcesManager.getIconTexture("chicken"), 1, 3, 1);
-	static EntityTypes OCELOT = new EntityTypes(2, RessourcesManager.getIconTexture("ocelot"), 4, 5, 20);
-	static EntityTypes BAT = new EntityTypes(3, RessourcesManager.getIconTexture("bat"), 8, 3, 15);
-	static EntityTypes COW = new EntityTypes(4, RessourcesManager.getIconTexture("Cow"), 10, 2, 40);
-	static EntityTypes PIG = new EntityTypes(5, RessourcesManager.getIconTexture("pig"), 10, 4, 60);
-	static EntityTypes SHEEP = new EntityTypes(6, RessourcesManager.getIconTexture("sheep"), 20, 3, 90);
-	static EntityTypes HORSE = new EntityTypes(7, RessourcesManager.getIconTexture("horse"), 30, 4, 130);
-	static EntityTypes BABYMUSHCOW = new EntityTypes(8, RessourcesManager.getIconTexture("minimushroomcow"), 100, 1, 350);
-	static EntityTypes MUSHCOW = new EntityTypes(9, RessourcesManager.getIconTexture("mushroomcow"), 200, 1, 1000);
+	public static EntityTypes CHICKEN = new EntityTypes(1, RessourcesManager.getIconTexture("chicken"), 1, 3, 1);
+	public static EntityTypes OCELOT = new EntityTypes(2, RessourcesManager.getIconTexture("ocelot"), 4, 5, 20);
+	public static EntityTypes BAT = new EntityTypes(3, RessourcesManager.getIconTexture("bat"), 8, 3, 15);
+	public static EntityTypes COW = new EntityTypes(4, RessourcesManager.getIconTexture("Cow"), 10, 2, 40);
+	public static EntityTypes PIG = new EntityTypes(5, RessourcesManager.getIconTexture("pig"), 10, 4, 60);
+	public static EntityTypes SHEEP = new EntityTypes(6, RessourcesManager.getIconTexture("sheep"), 20, 3, 90);
+	public static EntityTypes HORSE = new EntityTypes(7, RessourcesManager.getIconTexture("horse"), 30, 4, 130);
+	public static EntityTypes BABYMUSHCOW = new EntityTypes(8, RessourcesManager.getIconTexture("minimushroomcow"), 100, 1, 350);
+	public static EntityTypes MUSHCOW = new EntityTypes(9, RessourcesManager.getIconTexture("mushroomcow"), 200, 1, 1000);
 	
-	static EntityTypes SKELETON = new EntityTypes(50, RessourcesManager.getIconTexture("skeleton"), -90);
-	static EntityTypes BLAZE = new EntityTypes(51, RessourcesManager.getIconTexture("blaze"), 50, 90, Blaze.class);
-	static EntityTypes SPIDER = new EntityTypes(52, RessourcesManager.getIconTexture("Spider"), 50, -90, Spider.class);
-	static EntityTypes WITCH = new EntityTypes(53, RessourcesManager.getIconTexture("witch"), 70, -90, Witch.class);
-	static EntityTypes CREEPER = new EntityTypes(54, RessourcesManager.getIconTexture("creeper"), 200, -90, Creeper.class);
+	public static EntityTypes SKELETON = new EntityTypes(50, RessourcesManager.getIconTexture("skeleton"), -90);
+	public static EntityTypes BLAZE = new EntityTypes(51, RessourcesManager.getIconTexture("blaze"), 50, 90, Blaze.class);
+	public static EntityTypes SPIDER = new EntityTypes(52, RessourcesManager.getIconTexture("Spider"), 50, -90, Spider.class);
+	public static EntityTypes WITCH = new EntityTypes(53, RessourcesManager.getIconTexture("witch"), 70, -90, Witch.class);
+	public static EntityTypes CREEPER = new EntityTypes(54, RessourcesManager.getIconTexture("creeper"), 200, -90, Creeper.class);
 	
-	static EntityTypes ARROW = new EntityTypes(100, RessourcesManager.getIconTexture("arrow"), true, 45);
-	static EntityTypes FIREBALL = new EntityTypes(101, RessourcesManager.getIconTexture("fireball"), false, 0);
-	static EntityTypes POISON_POTION = new EntityTypes(102, RessourcesManager.getIconTexture("poison"), false, 0);
-	static EntityTypes WEAKNESS_POTION = new EntityTypes(103, RessourcesManager.getIconTexture("weakness"), false, 0);
+	public static EntityTypes ARROW = new EntityTypes(100, RessourcesManager.getIconTexture("arrow"), true, 45);
+	public static EntityTypes FIREBALL = new EntityTypes(101, RessourcesManager.getIconTexture("fireball"), false, 0);
+	public static EntityTypes POISON_POTION = new EntityTypes(102, RessourcesManager.getIconTexture("poison"), false, 0);
+	public static EntityTypes WEAKNESS_POTION = new EntityTypes(103, RessourcesManager.getIconTexture("weakness"), false, 0);
 
-    public static ArrayList<EntityTypes> turrets = new ArrayList<>();
-    public static ArrayList<EntityTypes> mobs = new ArrayList<>();
-    public static ArrayList<EntityTypes> values = new ArrayList<>();
+    public static ArrayList<EntityTypes> turrets = new ArrayList<EntityTypes>();
+    public static ArrayList<EntityTypes> mobs = new ArrayList<EntityTypes>();
+    public static ArrayList<EntityTypes> values = new ArrayList<EntityTypes>();
 
     public static void createTurrets() {
     	registerTurret(SKELETON);
@@ -78,12 +78,6 @@ public class EntityTypes {
         if (i == turrets.size()) {
             return 0;
         }
-        while (turrets.get(i) == null) {
-            i++;
-            if (i == turrets.size()) {
-                return 0;
-            }
-        }
         return i;
     }
 
@@ -91,12 +85,6 @@ public class EntityTypes {
         int i = now - 1;
         if (i == -1) {
             return turrets.size() - 1;
-        }
-        while (turrets.get(i) == null) {
-            i--;
-            if (i == -1) {
-                return turrets.size() - 1;
-            }
         }
         return i;
     }

@@ -20,7 +20,6 @@ import javax.swing.JCheckBox;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
-
 import fr.skyforce77.towerminer.TowerMiner;
 import fr.skyforce77.towerminer.achievements.Achievements;
 import fr.skyforce77.towerminer.entity.Entity;
@@ -504,7 +503,9 @@ public class SinglePlayer extends Menu {
 
 	@Override
 	public void onMouseClicked(MouseEvent e) {
-		if (e.getModifiers() == 16) {
+		if (e.getModifiers() == 4 && aimed == null) {
+			onKeyPressed(KeyEvent.VK_UP);
+		} else if (e.getModifiers() == 16) {
 			if (paused) {
 				super.onMouseClicked(e);
 			} else if (gameover) {
@@ -543,6 +544,8 @@ public class SinglePlayer extends Menu {
 				or += (aimed.getCost() * 0.75);
 				removed.add(aimed);
 				aimed = null;
+			} else {
+				onKeyPressed(KeyEvent.VK_UP);
 			}
 		}
 	}

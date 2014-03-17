@@ -18,8 +18,8 @@ public class BlockSelectionList extends JFrame {
         setVisible(true);
         setTitle(LanguageManager.getText("menu.editor.edit.block"));
 
-        DefaultListModel<Blocks> listm = new DefaultListModel<Blocks>();
-        final JList<Blocks> list = new JList<Blocks>(listm);
+        DefaultListModel listm = new DefaultListModel();
+        final JList list = new JList(listm);
         int i = 0;
         for (Blocks b : Blocks.getList()) {
             if (b != null && b.isVisible() && !(b.getId() == 1023 || b.getId() == 1021)) {
@@ -31,7 +31,7 @@ public class BlockSelectionList extends JFrame {
             private static final long serialVersionUID = -8142642427555971032L;
 
             @Override
-            public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+            public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
                 JLabel label = (JLabel) super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
                 label.setText(((Blocks) value).getId() + "");
                 label.setIcon(((Blocks) value).getRender().getListIcon((Blocks) value));
@@ -45,7 +45,7 @@ public class BlockSelectionList extends JFrame {
         ok.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent arg0) {
-                new BlockCreator(Maps.getActualMap(), list.getSelectedValue());
+                new BlockCreator(Maps.getActualMap(), (Blocks)list.getSelectedValue());
                 setVisible(false);
                 dispose();
             }
@@ -57,7 +57,7 @@ public class BlockSelectionList extends JFrame {
         del.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent arg0) {
-                Maps.getActualMap().removeBlock(list.getSelectedValue());
+                Maps.getActualMap().removeBlock((Blocks)list.getSelectedValue());
                 Blocks.addMapBlocks(Maps.getActualMap());
                 setVisible(false);
                 dispose();

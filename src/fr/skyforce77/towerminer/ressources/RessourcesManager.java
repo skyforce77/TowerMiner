@@ -56,6 +56,10 @@ public class RessourcesManager {
     public static ImageIcon getIconTexture(String texture) {
         return new ImageIcon(TowerMiner.class.getResource("/ressources/textures/" + texture + ".png"));
     }
+    
+    public static ImageIcon getGifIconTexture(String texture) {
+        return new ImageIcon(TowerMiner.class.getResource("/ressources/textures/" + texture + ".gif"));
+    }
 
     public static Image getIcon() {
         Image image = new ImageIcon(TowerMiner.class.getResource("/ressources/icon.png")).getImage();
