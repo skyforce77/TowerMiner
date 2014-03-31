@@ -24,7 +24,11 @@ public class MapWritter {
 		g2d = (Graphics2D) g2d.create();
 		Blocks b = Blocks.byId(id);
 		if(b != null) {
-			b.onDraw(g2d, data, x, y, m, n);
+			if(size == 48) {
+				b.onMapDraw(g2d, data, x, y, m, n);
+			} else {
+				b.onHandDraw(g2d, data, x, y, m, n);
+			}
 			if (b.getRender() == null || (b.getRender() != null && !b.getRender().overrideNormalRender())) {
 				Image image = null;
 				if (b.isMapAdapted(data)) {

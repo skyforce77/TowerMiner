@@ -20,6 +20,7 @@ import javax.swing.JCheckBox;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+
 import fr.skyforce77.towerminer.TowerMiner;
 import fr.skyforce77.towerminer.achievements.Achievements;
 import fr.skyforce77.towerminer.entity.Entity;
@@ -32,6 +33,7 @@ import fr.skyforce77.towerminer.maps.Maps;
 import fr.skyforce77.towerminer.particles.Particle;
 import fr.skyforce77.towerminer.ressources.RessourcesManager;
 import fr.skyforce77.towerminer.ressources.language.LanguageManager;
+import fr.skyforce77.towerminer.sounds.Music;
 
 public class SinglePlayer extends Menu {
 
@@ -503,9 +505,7 @@ public class SinglePlayer extends Menu {
 
 	@Override
 	public void onMouseClicked(MouseEvent e) {
-		if (e.getModifiers() == 4 && aimed == null) {
-			onKeyPressed(KeyEvent.VK_UP);
-		} else if (e.getModifiers() == 16) {
+		if (e.getModifiers() == 16) {
 			if (paused) {
 				super.onMouseClicked(e);
 			} else if (gameover) {
@@ -579,6 +579,7 @@ public class SinglePlayer extends Menu {
 		pause.setVisible(true);
 		options.setVisible(true);
 		Maps.resize();
+		Music.playMusic("escape_from_the_temple");
 		TowerMiner.game.setTitle(LanguageManager.getText("towerminer") + " | " + Game.version + " | " + LanguageManager.getText("menu.match") + " | " + LanguageManager.getText("menu.editor.map") + ": " + Maps.getActualMap().getName());
 	}
 

@@ -29,9 +29,12 @@ public class TowerMiner {
 	public static Game game;
 	public static Menu menu;
 	public static int launcherversion = 9;
-	public static boolean dev = false;
+	
+	public static boolean dev = true;
+	public static String version = "Beta 0.4";
+	
 	public static boolean launcherupdateneeded = true;
-	public static String[] os = new String[]{"linux","windows","mac"};
+	public static String[] os = new String[]{"linux"};
 	public static String usedos = "linux";
 	public static String player = "Player" + new Random().nextInt(1000);
 	public static UUID id;

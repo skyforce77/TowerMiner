@@ -1,5 +1,14 @@
 package fr.skyforce77.towerminer.blocks;
 
+import java.awt.Color;
+import java.awt.Graphics2D;
+import java.awt.Image;
+import java.io.File;
+import java.io.Serializable;
+import java.util.Random;
+
+import javax.swing.ImageIcon;
+
 import fr.skyforce77.towerminer.TowerMiner;
 import fr.skyforce77.towerminer.blocks.renders.BlockRender;
 import fr.skyforce77.towerminer.maps.Maps;
@@ -7,12 +16,6 @@ import fr.skyforce77.towerminer.menus.SinglePlayer;
 import fr.skyforce77.towerminer.particles.Particle;
 import fr.skyforce77.towerminer.particles.ParticleType;
 import fr.skyforce77.towerminer.ressources.RessourcesManager;
-
-import javax.swing.*;
-import java.awt.*;
-import java.io.File;
-import java.io.Serializable;
-import java.util.Random;
 
 public class Blocks implements Serializable {
 
@@ -72,7 +75,7 @@ public class Blocks implements Serializable {
         new Blocks(50, "torch_on", "torch_off") {
             private static final long serialVersionUID = -4676064980975742683L;
 
-            public void onDraw(Graphics2D g2d, int data, int x, int y, int m, int n) {
+            public void onMapDraw(Graphics2D g2d, int data, int x, int y, int m, int n) {
                 if (data == 0 && TowerMiner.menu instanceof SinglePlayer && new Random().nextInt(200) <= 1)
                     ((SinglePlayer) TowerMiner.menu).particles.add(new Particle(ParticleType.FLAME, x + 24, y + 24, null, 1.2f));
             }
@@ -83,7 +86,7 @@ public class Blocks implements Serializable {
         new Blocks(52, "mob_spawner") {
             private static final long serialVersionUID = -46760649095742683L;
 
-            public void onDraw(Graphics2D g2d, int data, int x, int y, int m, int n) {
+            public void onMapDraw(Graphics2D g2d, int data, int x, int y, int m, int n) {
                 if (TowerMiner.menu instanceof SinglePlayer && new Random().nextInt(200) <= 1) {
                     int i = 10;
                     while (i >= 0) {
@@ -101,15 +104,13 @@ public class Blocks implements Serializable {
         new Blocks(55, "redstone_dust", "redstone_dust_cross", "redstone_dust_line") {
             private static final long serialVersionUID = -467606498095742683L;
 
-            public void onDraw(Graphics2D g2d, int data, int x, int y, int m, int n) {
+            public void onMapDraw(Graphics2D g2d, int data, int x, int y, int m, int n) {
                 if (data == 0 && TowerMiner.menu instanceof SinglePlayer && new Random().nextInt(200) <= 1) {
                     int ix = new Random().nextInt(2) == 0 ? 1 : -1;
                     int iy = new Random().nextInt(2) == 0 ? +1 : -1;
                     ((SinglePlayer) TowerMiner.menu).particles.add(new Particle(ParticleType.SMOKE, x + 24 + new Random().nextInt(15) * ix, y + 24 + new Random().nextInt(15) * iy, null, 1f + -0.2f, new Color(255, 0, 0, 254)));
                 }
             }
-
-            ;
         }.setOverlay().setRender(3);
         new Blocks(56, "diamond_ore");
         new Blocks(57, "diamond_block");
@@ -121,7 +122,7 @@ public class Blocks implements Serializable {
         new Blocks(76, "torch_redstone_on", "torch_off") {
             private static final long serialVersionUID = -467606498095742683L;
 
-            public void onDraw(Graphics2D g2d, int data, int x, int y, int m, int n) {
+            public void onMapDraw(Graphics2D g2d, int data, int x, int y, int m, int n) {
                 if (data == 0 && TowerMiner.menu instanceof SinglePlayer && new Random().nextInt(200) <= 1) {
                     int ix = new Random().nextInt(2) == 0 ? 1 : -1;
                     int iy = new Random().nextInt(2) == 0 ? +1 : -1;
@@ -186,7 +187,7 @@ public class Blocks implements Serializable {
         new Blocks(997, "wither_skeleton", "skull_wither").setOverlay().setRender(7);
         new Blocks(998, "zombie", "skull_zombie").setOverlay().setRender(7);
         new Blocks(999, "steve", "skull_steve").setOverlay().setRender(7);
-        new Blocks(1000, "creeper", "skull_zombie").setOverlay().setRender(7);
+        new Blocks(1000, "creepermob", "skull_creeper").setOverlay().setRender(7);
 
         new Blocks(1021, "death", "death1");
         new Blocks(1022, "null").setInvisible().setOverlay();
@@ -421,7 +422,10 @@ public class Blocks implements Serializable {
         return this;
     }
 
-    public void onDraw(Graphics2D g2d, int data, int x, int y, int m, int n) {
+    public void onMapDraw(Graphics2D g2d, int data, int x, int y, int m, int n) {
+    }
+    
+    public void onHandDraw(Graphics2D g2d, int data, int x, int y, int m, int n) {
     }
 
 }

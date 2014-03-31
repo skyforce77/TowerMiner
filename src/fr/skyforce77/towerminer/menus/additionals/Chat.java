@@ -1,14 +1,19 @@
 package fr.skyforce77.towerminer.menus.additionals;
 
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.FontMetrics;
+import java.awt.Graphics2D;
+import java.util.ArrayList;
+import java.util.Date;
+
 import fr.skyforce77.towerminer.TowerMiner;
+import fr.skyforce77.towerminer.api.PluginManager;
+import fr.skyforce77.towerminer.api.events.PlayerChatEvent;
 import fr.skyforce77.towerminer.protocol.chat.ChatMessage;
 import fr.skyforce77.towerminer.protocol.chat.ChatModel;
 import fr.skyforce77.towerminer.protocol.packets.Packet11ChatMessage;
 import fr.skyforce77.towerminer.ressources.language.LanguageManager;
-
-import java.awt.*;
-import java.util.ArrayList;
-import java.util.Date;
 
 public class Chat {
 
@@ -31,11 +36,16 @@ public class Chat {
         } else {
             name.setForegroundColor(Color.CYAN);
         }
-        new Packet11ChatMessage(new ChatMessage(name, new ChatModel(": " + message))).sendAllTCP();
+        
+        ChatMessage msg = new ChatMessage(name, new ChatModel(": " + message));
+        PlayerChatEvent pce = new PlayerChatEvent(msg, message);
+        PluginManager.callEvent(pce);
+        if(!pce.isCancelled())
+        	new Packet11ChatMessage(msg).sendAllTCP();
     }
 
     public void changeState() {
-        //opened = !opened;
+        opened = !opened;
     }
 
     public void draw(Graphics2D g2d) {

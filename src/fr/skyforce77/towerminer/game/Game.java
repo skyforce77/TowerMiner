@@ -3,6 +3,7 @@ package fr.skyforce77.towerminer.game;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
@@ -17,6 +18,7 @@ import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Random;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -30,12 +32,13 @@ import fr.skyforce77.towerminer.menus.SinglePlayer;
 import fr.skyforce77.towerminer.protocol.packets.Packet12Popup;
 import fr.skyforce77.towerminer.ressources.RessourcesManager;
 import fr.skyforce77.towerminer.ressources.language.LanguageManager;
+import fr.skyforce77.towerminer.sounds.Music;
 
 public class Game extends JFrame implements MouseListener, MouseWheelListener, MouseMotionListener, WindowListener, KeyListener {
 
 	private static final long serialVersionUID = 1L;
 
-	public static String version = "Beta 0.3c";
+	public static String version = TowerMiner.version;
 	public boolean fpsdisplay = false;
 	public static boolean offline = false;
 
@@ -57,6 +60,13 @@ public class Game extends JFrame implements MouseListener, MouseWheelListener, M
 
 	public Popup popup;
 	public HashMap<Popup, Boolean> nextpopups = new HashMap<Popup, Boolean>();
+	
+	private int[] code = new int[] {38, 38, 40, 40, 37, 39, 37, 39, 66, 65};
+	private int progress = 0;
+	private boolean konami = false;
+	private boolean stroboscope = false;
+	private int alpha = 0;
+	private int konamirot = 0;
 
 	public Game() {
 		onInit();
@@ -74,7 +84,7 @@ public class Game extends JFrame implements MouseListener, MouseWheelListener, M
 		this.setResizable(false);
 		this.addMouseListener(this);
 		this.addMouseMotionListener(this);
-		//this.addMouseWheelListener(this);
+		this.addMouseWheelListener(this);
 		this.addWindowListener(this);
 		this.addKeyListener(this);
 		this.setLocationRelativeTo(null);
@@ -186,10 +196,17 @@ public class Game extends JFrame implements MouseListener, MouseWheelListener, M
 
 		@Override
 		public void paintComponent(Graphics g) {
-			final Graphics2D g2d = (Graphics2D) g;
+			Graphics2D g2d = (Graphics2D) g.create();
 			g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 			super.paintComponent(g2d);
 			setBackground(Color.WHITE);
+			g2d = (Graphics2D)g2d.create();
+			if(stroboscope || konami) {
+				if(konamirot != 0) {
+					g2d.translate(0,getSize().getHeight());
+					g2d.rotate(Math.toRadians(konamirot),getSize().getWidth()/2,0);
+				}
+			}
 			TowerMiner.menu.drawMenu(g2d);
 			g2d.setColor(new Color(0, 0, 0, 180));
 			if (fpsdisplay) {
@@ -197,6 +214,19 @@ public class Game extends JFrame implements MouseListener, MouseWheelListener, M
 				g2d.setColor(Color.YELLOW);
 				g2d.setFont(new Font("TimesRoman", Font.CENTER_BASELINE, 20));
 				g2d.drawString(fps + "", 0, 20);
+			}
+			if(stroboscope) {
+				g2d = (Graphics2D) g.create();
+				g2d.rotate(Math.toRadians(konamirot),getSize().getWidth()/2,getSize().getHeight()/2);
+				g2d.setColor(new Color(new Random().nextInt(255), new Random().nextInt(255), new Random().nextInt(255), alpha));
+				g2d.fillRect(-2000, -2000, 4000, 4000);
+				g2d.setColor(new Color(0, 0, 0, alpha));
+				g2d.setFont(new Font("TimesRoman", Font.CENTER_BASELINE, 48));
+				FontMetrics metrics = g2d.getFontMetrics(g2d.getFont());
+				int hgt = metrics.getHeight();
+				int adv = metrics.stringWidth("Konami");
+				Dimension size = new Dimension(adv + 2, hgt + 2);
+				g2d.drawString("Konami", (float)(TowerMiner.game.getWidth()/2-size.getWidth()/2), (float)(TowerMiner.game.getHeight()/2));
 			}
 		}
 	}
@@ -229,6 +259,43 @@ public class Game extends JFrame implements MouseListener, MouseWheelListener, M
 
 	@Override
 	public void keyPressed(KeyEvent arg0) {
+		if(arg0.getKeyCode() == code[progress]) {
+			progress++;
+			if(progress == code.length) {
+				progress = 0;
+				new Thread() {
+					@Override
+					public void run() {
+						try {
+							Thread.sleep(100l);
+							stroboscope = true;
+							int i = 0;
+							while(i < 255) {
+								alpha = i;
+								Thread.sleep(20l);
+								i++;
+							}
+							konami = !konami;
+							int u = 0;
+							while(u < 180) {
+								konamirot++;
+								Thread.sleep(15l);
+								u++;
+							}
+							Thread.sleep(100l);
+							while(i > 0) {
+								alpha = i;
+								Thread.sleep(20l);
+								i--;
+							}
+							stroboscope = false;
+						} catch (InterruptedException e) {}
+					}
+				}.start();
+			}
+		} else if(!stroboscope) {
+			progress = 0;
+		}
 		TowerMiner.menu.onKeyPressed(arg0.getKeyCode());
 	}
 
@@ -250,6 +317,11 @@ public class Game extends JFrame implements MouseListener, MouseWheelListener, M
 	@Override
 	public void windowClosed(WindowEvent arg0) {
 		TowerMiner.menu.onWindowClosed(arg0);
+		int i = 0;
+		while(i < 10) {
+			Music.stop(i);
+			i++;
+		}
 	}
 
 	@Override
@@ -279,16 +351,24 @@ public class Game extends JFrame implements MouseListener, MouseWheelListener, M
 
 	@Override
 	public void mouseDragged(MouseEvent arg0) {
+		if(konami) {
+			 arg0 = new MouseEvent(this, arg0.getID(), arg0.getWhen(), arg0.getModifiers(), (int)(getSize().getWidth()-arg0.getX()), (int)(getSize().getHeight()-arg0.getY())
+					 , arg0.getXOnScreen(), arg0.getYOnScreen(), arg0.getClickCount(), arg0.isPopupTrigger(), arg0.getButton());
+		}
 		TowerMiner.menu.onMouseDragged(arg0);
 	}
 
 	@Override
 	public void mouseMoved(MouseEvent arg0) {
+		if(konami) {
+			 arg0 = new MouseEvent(this, arg0.getID(), arg0.getWhen(), arg0.getModifiers(), (int)(getSize().getWidth()-arg0.getX()), (int)(getSize().getHeight()-arg0.getY())
+					 , arg0.getXOnScreen(), arg0.getYOnScreen(), arg0.getClickCount(), arg0.isPopupTrigger(), arg0.getButton());
+		}
 		TowerMiner.menu.onMouseMoved(arg0);
 	}
 
 	@Override
-	public void mouseWheelMoved(final MouseWheelEvent arg0) {
+	public void mouseWheelMoved(MouseWheelEvent arg0) {
 		TowerMiner.menu.onMouseWheelMoved(arg0);
 	}
 
