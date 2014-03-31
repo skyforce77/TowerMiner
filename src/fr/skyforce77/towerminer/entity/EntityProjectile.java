@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Point;
+import java.util.Random;
 
 import javax.vecmath.Vector2d;
 
@@ -11,6 +12,7 @@ import fr.skyforce77.towerminer.TowerMiner;
 import fr.skyforce77.towerminer.maps.MapWritter;
 import fr.skyforce77.towerminer.menus.MultiPlayer;
 import fr.skyforce77.towerminer.menus.SinglePlayer;
+import fr.skyforce77.towerminer.particles.Particle;
 import fr.skyforce77.towerminer.particles.ParticleEffect;
 import fr.skyforce77.towerminer.particles.ParticleType;
 import fr.skyforce77.towerminer.protocol.packets.Packet10EntityValueUpdate;
@@ -139,6 +141,12 @@ public class EntityProjectile extends Entity {
         }
         if (getType().level == 1)
             g2d.rotate(-ro + Math.toRadians(getType().rotation), x, y + sp.CanvasY);
+        Turret shooter = (Turret) sp.byUUID(this.shooter);
+        if(getType().equals(EntityTypes.ARROW) && shooter.getData() >= 10 && new Random().nextInt(100) > 80) {
+        	Particle p = new Particle(ParticleType.CRITICAL, getLocation().x, getLocation().y, null, Color.ORANGE);
+        	p.setLiveTime(30);
+        	sp.particles.add(p);
+        }
 
     }
 
