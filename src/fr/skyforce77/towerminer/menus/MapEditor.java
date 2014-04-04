@@ -32,6 +32,7 @@ import fr.skyforce77.towerminer.menus.additionals.BlockSelectionList;
 import fr.skyforce77.towerminer.menus.additionals.ColorSelection;
 import fr.skyforce77.towerminer.menus.additionals.JNumberTextField;
 import fr.skyforce77.towerminer.particles.Particle;
+import fr.skyforce77.towerminer.particles.ParticleEffect;
 import fr.skyforce77.towerminer.ressources.RessourcesManager;
 import fr.skyforce77.towerminer.ressources.language.LanguageManager;
 

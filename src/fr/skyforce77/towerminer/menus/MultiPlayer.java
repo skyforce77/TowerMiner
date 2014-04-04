@@ -24,6 +24,7 @@ import fr.skyforce77.towerminer.maps.Maps;
 import fr.skyforce77.towerminer.menus.additionals.Chat;
 import fr.skyforce77.towerminer.multiplayer.MPInfos;
 import fr.skyforce77.towerminer.multiplayer.ProtocolManager;
+import fr.skyforce77.towerminer.particles.ParticleEffect;
 import fr.skyforce77.towerminer.protocol.BigSending;
 import fr.skyforce77.towerminer.protocol.Connect;
 import fr.skyforce77.towerminer.protocol.ObjectReceiver;
@@ -327,6 +328,8 @@ public class MultiPlayer extends SinglePlayer {
             final Packet8EntityRemove per = new Packet8EntityRemove();
             per.entity = en.getUUID();
             per.sendAllTCP();
+            if(en instanceof Mob)
+            	ParticleEffect.createMobDestructionParticles(en.getType(), this, (int)en.getLocation().getX(), (int)en.getLocation().getY());
         }
     }
 

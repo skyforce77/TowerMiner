@@ -17,6 +17,7 @@ import fr.skyforce77.towerminer.maps.MapWritter;
 import fr.skyforce77.towerminer.maps.Maps;
 import fr.skyforce77.towerminer.menus.MultiPlayer;
 import fr.skyforce77.towerminer.menus.SinglePlayer;
+import fr.skyforce77.towerminer.particles.ParticleEffect;
 import fr.skyforce77.towerminer.protocol.packets.Packet10EntityValueUpdate;
 import fr.skyforce77.towerminer.render.RenderHelper;
 

@@ -6,8 +6,12 @@ import java.util.Random;
 import javax.vecmath.Vector2d;
 
 import fr.skyforce77.towerminer.TowerMiner;
+import fr.skyforce77.towerminer.blocks.Blocks;
+import fr.skyforce77.towerminer.entity.EntityTypes;
 import fr.skyforce77.towerminer.menus.MultiPlayer;
 import fr.skyforce77.towerminer.menus.SinglePlayer;
+import fr.skyforce77.towerminer.particles.types.PTBlockBreak;
+import fr.skyforce77.towerminer.particles.types.PTMobFade;
 import fr.skyforce77.towerminer.protocol.packets.Packet18ParticleEffect;
 
 public class ParticleEffect {
@@ -19,6 +23,10 @@ public class ParticleEffect {
             createParticleAlea(ParticleType.SMOKE, ((SinglePlayer) TowerMiner.menu), x, y, data, new Color(color));
         } else if (type == 2) {
         	createParticleAlea(ParticleType.EXPLOSION, ((SinglePlayer) TowerMiner.menu), x, y, data, new Color(color));
+        } else if (type == 3) {
+        	createMobDestructionParticles(EntityTypes.getType(data), ((SinglePlayer) TowerMiner.menu), x, y);
+        } else if (type == 4) {
+        	createBlockDestructionParticles(Blocks.byId(data), color, ((SinglePlayer) TowerMiner.menu), x, y);
         }
     }
 
@@ -82,6 +90,46 @@ public class ParticleEffect {
         	}
             sp.particles.add(new Particle(type, x2, y2, null, scale, new Color(color.getRed(), color.getGreen(), color.getBlue(), alpha)).setLiveTime(time));
             i--;
+        }
+    }
+    
+    public static void createMobDestructionParticles(EntityTypes type, SinglePlayer sp, int x, int y) {
+        if (sp instanceof MultiPlayer && ((MultiPlayer) sp).server) {
+        	new Packet18ParticleEffect(x, y, 0, 3, type.getId()).sendAllTCP();
+        }
+        int height = 6;
+        int width = 6;
+        int i = 0;
+        int u = 0;
+        while(i < height) {
+        	while(u < width) {
+        		Particle p = new Particle(new PTMobFade("mobfade_"+i+"_"+u, type.getTexture(0), i, u),x,y,new Vector2d(0.1*new Random().nextInt(20)-1, 0.1*new Random().nextInt(20)-1));
+        		p.setLiveTime(50);
+        		sp.particles.add(p);
+        		u++;
+        	}
+        	u = 0;
+        	i++;
+        }
+    }
+    
+    public static void createBlockDestructionParticles(Blocks b, int data, SinglePlayer sp, int x, int y) {
+        if (sp instanceof MultiPlayer && ((MultiPlayer) sp).server) {
+        	new Packet18ParticleEffect(x, y, data, 4, b.getId()).sendAllTCP();
+        }
+        int height = 6;
+        int width = 6;
+        int i = 0;
+        int u = 0;
+        while(i < height) {
+        	while(u < width) {
+        		Particle p = new Particle(new PTBlockBreak("blockbreak_"+i+"_"+u, b, data, i, u),x,y,new Vector2d(0.1*new Random().nextInt(20)-1, 0.1*new Random().nextInt(20)-1));
+        		p.setLiveTime(50);
+        		sp.particles.add(p);
+        		u++;
+        	}
+        	u = 0;
+        	i++;
         }
     }
 

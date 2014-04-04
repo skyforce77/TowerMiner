@@ -1,11 +1,12 @@
 package fr.skyforce77.towerminer.particles;
 
+import java.awt.Graphics2D;
+
 import fr.skyforce77.towerminer.menus.SinglePlayer;
 import fr.skyforce77.towerminer.particles.types.PT16Textures;
 import fr.skyforce77.towerminer.particles.types.PTEightTextures;
+import fr.skyforce77.towerminer.particles.types.PTMobFade;
 import fr.skyforce77.towerminer.particles.types.PTScaleFade;
-
-import java.awt.*;
 
 public class ParticleType {
 
@@ -15,6 +16,9 @@ public class ParticleType {
     public static ParticleType FIREWORK = new PTEightTextures("firework", "fw");
     public static ParticleType FLAME = new PTScaleFade("flame", "flame");
     public static ParticleType EXPLOSION = new PT16Textures("explo", "explo");
+    
+    @Deprecated
+    public static ParticleType MOB = new PTMobFade("mobfade",null,0,0);
 
     private String name;
 

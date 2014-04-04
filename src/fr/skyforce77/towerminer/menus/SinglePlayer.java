@@ -31,6 +31,7 @@ import fr.skyforce77.towerminer.game.Game;
 import fr.skyforce77.towerminer.maps.MapWritter;
 import fr.skyforce77.towerminer.maps.Maps;
 import fr.skyforce77.towerminer.particles.Particle;
+import fr.skyforce77.towerminer.particles.ParticleEffect;
 import fr.skyforce77.towerminer.ressources.RessourcesManager;
 import fr.skyforce77.towerminer.ressources.language.LanguageManager;
 import fr.skyforce77.towerminer.sounds.Music;
@@ -596,6 +597,8 @@ public class SinglePlayer extends Menu {
 	}
 
 	public void onEntityRemoved(Entity en) {
+		if(!multiplayer && en instanceof Mob)
+			ParticleEffect.createMobDestructionParticles(en.getType(), this, (int)en.getLocation().getX(), (int)en.getLocation().getY());
 	}
 
 	public void onGameOver() {
