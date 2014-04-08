@@ -27,11 +27,12 @@ public class LanguageSelectionList extends JFrame {
         setSize(220, 230);
         setVisible(true);
         setTitle(LanguageManager.getText("menu.languages"));
+        setLocationRelativeTo(TowerMiner.game);
 
         final LanguageSelectionList lsl = this;
 
-        DefaultListModel listm = new DefaultListModel();
-        final JList list = new JList(listm);
+        DefaultListModel<String> listm = new DefaultListModel<String>();
+        final JList<String> list = new JList<String>(listm);
         int i = 0;
         for (String l : LanguageManager.getLanguages()) {
             listm.add(i, l);
@@ -41,7 +42,7 @@ public class LanguageSelectionList extends JFrame {
             private static final long serialVersionUID = -8142642427555971032L;
 
             @Override
-            public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+            public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
                 JLabel label = (JLabel) super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
                 label.setText((String) value);
                 return label;
@@ -51,7 +52,7 @@ public class LanguageSelectionList extends JFrame {
         list.addListSelectionListener(new ListSelectionListener() {
             @Override
             public void valueChanged(ListSelectionEvent e) {
-                LanguageManager.setLanguage((String) ((JList) e.getSource()).getSelectedValue());
+                LanguageManager.setLanguage((String) ((JList<?>) e.getSource()).getSelectedValue());
                 lsl.dispose();
                 TowerMiner.game.terminated = true;
                 TowerMiner.game.dispose();

@@ -16,7 +16,7 @@ import java.util.Set;
 public class LanguageManager {
 
     static HashMap<String, Language> languages = new HashMap<String, Language>();
-    static String def = "FranÃ§ais";
+    static String def = "Français";
 
     public static String getText(String id) {
         if (getLanguage() == null) {

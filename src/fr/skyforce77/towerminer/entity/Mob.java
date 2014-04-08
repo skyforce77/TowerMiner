@@ -1,5 +1,6 @@
 package fr.skyforce77.towerminer.entity;
 
+import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
@@ -17,7 +18,6 @@ import fr.skyforce77.towerminer.maps.MapWritter;
 import fr.skyforce77.towerminer.maps.Maps;
 import fr.skyforce77.towerminer.menus.MultiPlayer;
 import fr.skyforce77.towerminer.menus.SinglePlayer;
-import fr.skyforce77.towerminer.particles.ParticleEffect;
 import fr.skyforce77.towerminer.protocol.packets.Packet10EntityValueUpdate;
 import fr.skyforce77.towerminer.render.RenderHelper;
 
@@ -193,6 +193,12 @@ public class Mob extends Entity {
         Image i = getType().getTexture(0);
         if (hasEffect(EntityEffectType.POISONNED)) {
             i = RenderHelper.getColoredImage(i, new Color(40, 200, 40), 0.1F);
+        }
+        if (hasEffect(EntityEffectType.FREEZE)) {
+            i = RenderHelper.getColoredImage(i, Color.CYAN, 0.1F);
+        }
+        if (hasEffect(EntityEffectType.INVISIBLE)) {
+        	g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER , 0.5f));
         }
         try {
             g2d.drawImage(i, (int) x - ((MapWritter.getBlockWidth() - 10) / 2) + sp.CanvasX, (int) y - ((MapWritter.getBlockHeight() - 10) / 2) + sp.CanvasY, MapWritter.getBlockWidth() - 10, MapWritter.getBlockHeight() - 10, null);

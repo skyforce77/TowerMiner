@@ -25,6 +25,7 @@ public class BlockCreator extends JFrame {
         this.b = b;
         setSize(800, 300);
         setVisible(true);
+        setLocationRelativeTo(TowerMiner.game);
         setTitle(LanguageManager.getText("menu.editor.create.block"));
         JPanel panel = new JPanel();
         JPanel required = new JPanel();

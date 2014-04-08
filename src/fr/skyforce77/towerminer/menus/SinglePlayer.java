@@ -27,6 +27,8 @@ import fr.skyforce77.towerminer.entity.Entity;
 import fr.skyforce77.towerminer.entity.EntityTypes;
 import fr.skyforce77.towerminer.entity.Mob;
 import fr.skyforce77.towerminer.entity.Turret;
+import fr.skyforce77.towerminer.entity.effects.EntityEffect;
+import fr.skyforce77.towerminer.entity.effects.EntityEffectType;
 import fr.skyforce77.towerminer.game.Game;
 import fr.skyforce77.towerminer.maps.MapWritter;
 import fr.skyforce77.towerminer.maps.Maps;
@@ -227,6 +229,9 @@ public class SinglePlayer extends Menu {
 					spawned += type.getLevel();
 					time = (int) (30 - (0.5 * round));
 					between = time;
+					if(round >= 10 && new Random().nextInt(100) <= 5) {
+						m.addEffect(new EntityEffect(EntityEffectType.INVISIBLE, -1));
+					}
 					onEntityAdded(m);
 				}
 			} else {
@@ -247,7 +252,7 @@ public class SinglePlayer extends Menu {
 				vie = vie + 10;
 			}
 			lastvie = vie;
-
+			
 			onFinishedRound();
 		}
 

@@ -1,5 +1,6 @@
 package fr.skyforce77.towerminer.menus.additionals;
 
+import fr.skyforce77.towerminer.TowerMiner;
 import fr.skyforce77.towerminer.menus.MPJoinMenu;
 import fr.skyforce77.towerminer.multiplayer.ServerInfos;
 import fr.skyforce77.towerminer.protocol.Connect;
@@ -15,8 +16,8 @@ public class ServerSelectionList extends JFrame {
 
     private static final long serialVersionUID = -5973702249949001012L;
 
-    public final DefaultListModel listm = new DefaultListModel();
-    public final JList list = new JList(listm);
+    public final DefaultListModel<ServerInfos> listm = new DefaultListModel<ServerInfos>();
+    public final JList<ServerInfos> list = new JList<ServerInfos>(listm);
     public static ServerSelectionList instance;
 
     public ServerSelectionList() {
@@ -24,6 +25,7 @@ public class ServerSelectionList extends JFrame {
         setSize(400, 600);
         setVisible(true);
         setTitle(LanguageManager.getText("menu.mp.list"));
+        setLocationRelativeTo(TowerMiner.game);
 
         list.setSize(new Dimension((int) getSize().getWidth() - 10, 120));
 
@@ -119,7 +121,7 @@ public class ServerSelectionList extends JFrame {
             private static final long serialVersionUID = -8142642427555971032L;
 
             @Override
-            public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+            public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
                 JLabel label = (JLabel) super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
                 JLabel inf = new JLabel();
                 JLabel ping = new JLabel();

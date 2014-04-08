@@ -12,6 +12,7 @@ import fr.skyforce77.towerminer.achievements.Achievements;
 import fr.skyforce77.towerminer.api.PluginManager;
 import fr.skyforce77.towerminer.api.events.TurretPlacedEvent;
 import fr.skyforce77.towerminer.api.events.TurretUpgradeEvent;
+import fr.skyforce77.towerminer.entity.effects.EntityEffectType;
 import fr.skyforce77.towerminer.maps.MapWritter;
 import fr.skyforce77.towerminer.menus.MultiPlayer;
 import fr.skyforce77.towerminer.menus.SinglePlayer;
@@ -105,7 +106,7 @@ public class Turret extends Entity {
         Mob e = null;
         for (Entity en : sp.mobs) {
             double i = en.getLocation().distance(location.x, location.y);
-            if (i < distance && i < this.distance) {
+            if (i < distance && i < this.distance && canSee((Mob)en)) {
                 distance = i;
                 e = (Mob) en;
             }
@@ -134,7 +135,7 @@ public class Turret extends Entity {
         Mob e = null;
         for (Entity en : sp.draw) {
             double i = en.getLocation().distance(location.x, location.y);
-            if (en instanceof Mob && i < distance && i < this.distance) {
+            if (en instanceof Mob && i < distance && i < this.distance && canSee((Mob)en)) {
                 distance = i;
                 e = (Mob) en;
             }
@@ -143,7 +144,14 @@ public class Turret extends Entity {
     }
 
     public void onDamage(Mob e) {
-    };
+    }
+    
+    public boolean canSee(Mob m) {
+    	if(!m.hasEffect(EntityEffectType.INVISIBLE)) {
+    		return true;
+    	}
+    	return false;
+    }
 
     @Override
     public void draw(Graphics2D g2d, SinglePlayer sp) {

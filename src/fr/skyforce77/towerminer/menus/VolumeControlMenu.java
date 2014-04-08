@@ -47,6 +47,9 @@ public class VolumeControlMenu extends Menu {
         g2d.fillRect(0, TowerMiner.game.getHeight() / 4, TowerMiner.game.getWidth(), TowerMiner.game.getHeight() - (TowerMiner.game.getHeight() / 2));
         g2d.setFont(new Font("TimesRoman", Font.BOLD, 50));
         g2d.setColor(Color.LIGHT_GRAY);
+        if(DataBase.getValue("volume") == null) {
+        	DataBase.setValue("volume", 0.8F);
+        }
         int volume = (int) (100 + (Float) DataBase.getValue("volume"));
         g2d.drawString(LanguageManager.getText("menu.about.music") + ": " + volume + "%", 10, 240 + (xmove / 5));
         super.drawMenu(g2d);

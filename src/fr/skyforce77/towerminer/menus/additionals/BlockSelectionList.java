@@ -1,5 +1,6 @@
 package fr.skyforce77.towerminer.menus.additionals;
 
+import fr.skyforce77.towerminer.TowerMiner;
 import fr.skyforce77.towerminer.blocks.Blocks;
 import fr.skyforce77.towerminer.maps.Maps;
 import fr.skyforce77.towerminer.ressources.language.LanguageManager;
@@ -17,9 +18,10 @@ public class BlockSelectionList extends JFrame {
         setSize(200, 300);
         setVisible(true);
         setTitle(LanguageManager.getText("menu.editor.edit.block"));
-
-        DefaultListModel listm = new DefaultListModel();
-        final JList list = new JList(listm);
+        setLocationRelativeTo(TowerMiner.game);
+        
+        DefaultListModel<Blocks> listm = new DefaultListModel<Blocks>();
+        final JList<Blocks> list = new JList<Blocks>(listm);
         int i = 0;
         for (Blocks b : Blocks.getList()) {
             if (b != null && b.isVisible() && !(b.getId() == 1023 || b.getId() == 1021)) {
@@ -31,7 +33,7 @@ public class BlockSelectionList extends JFrame {
             private static final long serialVersionUID = -8142642427555971032L;
 
             @Override
-            public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+            public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
                 JLabel label = (JLabel) super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
                 label.setText(((Blocks) value).getId() + "");
                 label.setIcon(((Blocks) value).getRender().getListIcon((Blocks) value));

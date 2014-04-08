@@ -28,10 +28,10 @@ public class TowerMiner {
 
 	public static Game game;
 	public static Menu menu;
-	public static int launcherversion = 9;
+	public static int launcherversion = 10;
 	
 	public static boolean dev = true;
-	public static String version = "Beta 0.4";
+	public static String version = "Beta 0.4b";
 	
 	public static boolean launcherupdateneeded = true;
 	public static String[] os = new String[]{"linux"};

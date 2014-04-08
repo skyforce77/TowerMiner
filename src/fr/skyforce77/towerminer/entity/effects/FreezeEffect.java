@@ -4,10 +4,10 @@ import fr.skyforce77.towerminer.entity.Mob;
 
 import java.util.Random;
 
-public class FireEffect extends EntityEffectType {
+public class FreezeEffect extends EntityEffectType {
 
-    public FireEffect() {
-        super(0);
+    public FreezeEffect() {
+        super(4);
     }
 
     @Override
@@ -20,8 +20,8 @@ public class FireEffect extends EntityEffectType {
             }
 
             int i = new Random().nextInt(100);
-            if (i < 7) {
-                m.hurt(2);
+            if (i < 2) {
+                m.hurt(1);
             }
         }
     }

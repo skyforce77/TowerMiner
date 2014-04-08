@@ -91,7 +91,7 @@ public class EntityProjectile extends Entity {
                 double distance = 48 * 5;
                 for (Entity en : sp.mobs) {
                     double i = en.getLocation().distance(location.x, location.y);
-                    if (i < distance && i < distance) {
+                    if (i < distance && i < distance && shooter.canSee((Mob)en)) {
                         distance = i;
                         e = (Mob) en;
                     }
@@ -155,6 +155,8 @@ public class EntityProjectile extends Entity {
             ParticleEffect.createParticleSplash(ParticleType.POTION_SPLASH, sp, (int) getLocation().getX(), (int) getLocation().getY(), Color.GREEN);
         } else if (getType().equals(EntityTypes.WEAKNESS_POTION)) {
             ParticleEffect.createParticleSplash(ParticleType.POTION_SPLASH, sp, (int) getLocation().getX(), (int) getLocation().getY(), Color.DARK_GRAY);
+        } else if (getType().equals(EntityTypes.SNOWBALL)) {
+            ParticleEffect.createMobDestructionParticles(EntityTypes.SNOWBALL, sp, (int) getLocation().getX(), (int) getLocation().getY());
         }
     }
 

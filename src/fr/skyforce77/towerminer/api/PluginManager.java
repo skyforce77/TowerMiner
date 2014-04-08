@@ -38,6 +38,7 @@ public class PluginManager {
 			if(f.getName().contains(".jar")) {
 				try {
 					URL[] urls = new URL[]{f.toURI().toURL()};
+					@SuppressWarnings("resource")
 					URLClassLoader loader = new URLClassLoader(urls);
 					Class<?> cls = loader.loadClass("TMPlugin");
 					Plugin p = (Plugin)cls.newInstance();

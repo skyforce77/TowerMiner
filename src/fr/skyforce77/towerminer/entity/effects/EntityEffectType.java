@@ -9,6 +9,8 @@ public class EntityEffectType {
     public static EntityEffectType FIRED;
     public static EntityEffectType POISONNED;
     public static EntityEffectType SLOW;
+    public static EntityEffectType INVISIBLE;
+    public static EntityEffectType FREEZE;
 
     private static HashMap<Integer, EntityEffectType> types = new HashMap<Integer, EntityEffectType>();
 
@@ -16,6 +18,8 @@ public class EntityEffectType {
         FIRED = new FireEffect();
         POISONNED = new PoisonEffect();
         SLOW = new EntityEffectType(2);
+        INVISIBLE = new EntityEffectType(3);
+        FREEZE = new FreezeEffect();
     }
 
     public static EntityEffectType byId(int id) {

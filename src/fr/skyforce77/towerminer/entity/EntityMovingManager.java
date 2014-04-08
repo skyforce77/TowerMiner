@@ -29,11 +29,15 @@ public class EntityMovingManager {
                     	m.setRotation(Math.toRadians(270));
                     }
                     try {
+                    	int s = 10 / m.speed;
                         if (TowerMiner.menu instanceof SinglePlayer && ((SinglePlayer) TowerMiner.menu).speed.isSelected()) {
-                            Thread.sleep(10 / m.speed / 2);
-                        } else {
-                            Thread.sleep(10 / m.speed);
+                            s = s / 2;
                         }
+                        if (m.hasEffect(EntityEffectType.SLOW)) {
+                            s = s * 2;
+                        }
+                        while(m.hasEffect(EntityEffectType.FREEZE)){Thread.sleep(10l);}
+                        sleep(s);
                         while (TowerMiner.menu instanceof SinglePlayer && ((SinglePlayer) TowerMiner.menu).paused) {
                             Thread.sleep(10l);
                         }
@@ -57,6 +61,7 @@ public class EntityMovingManager {
                         if (m.hasEffect(EntityEffectType.SLOW)) {
                             s = s * 2;
                         }
+                        while(m.hasEffect(EntityEffectType.FREEZE)){Thread.sleep(10l);}
                         sleep(s);
                         while (TowerMiner.menu instanceof SinglePlayer && ((SinglePlayer) TowerMiner.menu).paused) {
                             Thread.sleep(10l);
@@ -66,6 +71,7 @@ public class EntityMovingManager {
                     }
                 }
                 m.isgoing = false;
+                move.remove(m);
             }
         });
 		move.get(m).start();
