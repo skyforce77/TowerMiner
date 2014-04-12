@@ -28,7 +28,8 @@ public class TowerMiner {
 
 	public static Game game;
 	public static Menu menu;
-	public static int launcherversion = 10;
+	public static int neededlauncherversion = 10;
+	public static int actuallauncherversion = -1;
 	
 	public static boolean dev = true;
 	public static String version = "Beta 0.4b";
@@ -43,7 +44,17 @@ public class TowerMiner {
 		usedos = os;
 		TowerMiner.player = player;
 		TowerMiner.id = id;
-		launcherversion = launchedversion;
+		actuallauncherversion = launchedversion;
+		
+		LanguageManager.initLanguages();
+		
+		if (launchedversion != -1 && launchedversion < neededlauncherversion) {
+			if (launcherupdateneeded) {
+				JOptionPane.showMessageDialog(game, LanguageManager.getText("launcher.outdated")+"\n"+launchedversion+" < "+neededlauncherversion, LanguageManager.getText("launcher.information"), JOptionPane.ERROR_MESSAGE);
+				return;
+			}
+		}
+		
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
@@ -52,7 +63,6 @@ public class TowerMiner {
 				} else {
 					count();
 				}
-				LanguageManager.initLanguages();
 				if (!RessourcesManager.getSaveDirectory().exists()) {
 					RessourcesManager.getSaveDirectory().mkdirs();
 				}
@@ -83,7 +93,7 @@ public class TowerMiner {
 		});
 	}
 
-	private static void MainAchievements(final int version, final String state, final String usedos) {
+	private static void MainAchievements(final int launchedversion, final String state, final String usedos) {
 		new Thread() {
 			@Override
 			public void run() {
@@ -93,12 +103,7 @@ public class TowerMiner {
 					e.printStackTrace();
 				}
 
-				if (version != -1 && version < launcherversion) {
-					if (launcherupdateneeded) {
-						game.dispose();
-						JOptionPane.showMessageDialog(game, LanguageManager.getText("launcher.outdated"), LanguageManager.getText("launcher.information"), JOptionPane.ERROR_MESSAGE);
-						return;
-					}
+				if (launchedversion != -1 && launchedversion < neededlauncherversion) {
 					TowerMiner.game.displayPopup(new Popup(LanguageManager.getText("launcher.update.needed"), 6000, "warning"));
 				}
 

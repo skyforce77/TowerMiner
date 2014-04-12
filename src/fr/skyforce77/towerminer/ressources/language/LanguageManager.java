@@ -54,7 +54,7 @@ public class LanguageManager {
     }
 
     public static Language getDefaultLanguage() {
-        return languages.get("FranÃ§ais");
+        return languages.get("Français");
     }
 
     public static Set<String> getLanguages() {
