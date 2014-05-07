@@ -1,16 +1,20 @@
 package fr.skyforce77.towerminer.menus;
 
-import fr.skyforce77.towerminer.TowerMiner;
-import fr.skyforce77.towerminer.game.Game;
-import fr.skyforce77.towerminer.ressources.language.LanguageManager;
-import fr.skyforce77.towerminer.sounds.Music;
-
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.FontMetrics;
+import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.WindowEvent;
 import java.util.Date;
+
+import fr.skyforce77.towerminer.TowerMiner;
+import fr.skyforce77.towerminer.game.Game;
+import fr.skyforce77.towerminer.ressources.language.LanguageManager;
+import fr.skyforce77.towerminer.sounds.Music;
 
 public class Menu {
 

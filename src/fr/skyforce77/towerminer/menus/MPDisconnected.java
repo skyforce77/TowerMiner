@@ -1,11 +1,13 @@
 package fr.skyforce77.towerminer.menus;
 
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.Graphics2D;
+
 import fr.skyforce77.towerminer.TowerMiner;
 import fr.skyforce77.towerminer.protocol.Connect;
 import fr.skyforce77.towerminer.ressources.RessourcesManager;
 import fr.skyforce77.towerminer.ressources.language.LanguageManager;
-
-import java.awt.*;
 
 public class MPDisconnected extends Menu {
 

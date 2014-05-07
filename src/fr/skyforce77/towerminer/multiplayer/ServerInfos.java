@@ -1,11 +1,11 @@
 package fr.skyforce77.towerminer.multiplayer;
 
-import fr.skyforce77.towerminer.menus.additionals.ServerSelectionList;
-import fr.skyforce77.towerminer.save.DataBase;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
+
+import fr.skyforce77.towerminer.menus.additionals.ServerSelectionList;
+import fr.skyforce77.towerminer.save.DataBase;
 
 public class ServerInfos implements Serializable {
 

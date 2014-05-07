@@ -1,8 +1,8 @@
 package fr.skyforce77.towerminer.blocks.renders;
 
-import fr.skyforce77.towerminer.blocks.Blocks;
+import java.awt.Graphics2D;
 
-import java.awt.*;
+import fr.skyforce77.towerminer.blocks.Blocks;
 
 public class AroundBlockBasedRender extends BlockRender {
 

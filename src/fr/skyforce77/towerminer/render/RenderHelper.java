@@ -1,9 +1,16 @@
 package fr.skyforce77.towerminer.render;
 
-import fr.skyforce77.towerminer.entity.Mob;
-
-import java.awt.*;
+import java.awt.AlphaComposite;
+import java.awt.Color;
+import java.awt.Graphics2D;
+import java.awt.GraphicsConfiguration;
+import java.awt.GraphicsEnvironment;
+import java.awt.Image;
+import java.awt.RenderingHints;
+import java.awt.Transparency;
 import java.awt.image.BufferedImage;
+
+import fr.skyforce77.towerminer.entity.Mob;
 
 public class RenderHelper {
 

@@ -1,8 +1,8 @@
 package fr.skyforce77.towerminer.entity.effects;
 
-import fr.skyforce77.towerminer.entity.Mob;
-
 import java.io.Serializable;
+
+import fr.skyforce77.towerminer.entity.Mob;
 
 public class EntityEffect implements Serializable {
 

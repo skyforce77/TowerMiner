@@ -1,16 +1,27 @@
 package fr.skyforce77.towerminer.menus.additionals;
 
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.DefaultListCellRenderer;
+import javax.swing.DefaultListModel;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextField;
+
 import fr.skyforce77.towerminer.TowerMiner;
 import fr.skyforce77.towerminer.menus.MPJoinMenu;
 import fr.skyforce77.towerminer.multiplayer.ServerInfos;
 import fr.skyforce77.towerminer.protocol.Connect;
 import fr.skyforce77.towerminer.protocol.packets.Packet14ServerPing;
 import fr.skyforce77.towerminer.ressources.language.LanguageManager;
-
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 public class ServerSelectionList extends JFrame {
 

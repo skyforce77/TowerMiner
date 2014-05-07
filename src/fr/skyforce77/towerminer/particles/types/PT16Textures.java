@@ -1,13 +1,14 @@
 package fr.skyforce77.towerminer.particles.types;
 
+import java.awt.Color;
+import java.awt.Graphics2D;
+
 import fr.skyforce77.towerminer.TowerMiner;
 import fr.skyforce77.towerminer.menus.SinglePlayer;
 import fr.skyforce77.towerminer.particles.Particle;
 import fr.skyforce77.towerminer.particles.ParticleType;
 import fr.skyforce77.towerminer.render.RenderHelper;
 import fr.skyforce77.towerminer.ressources.RessourcesManager;
-
-import java.awt.*;
 
 public class PT16Textures extends ParticleType {
 

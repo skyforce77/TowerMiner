@@ -1,13 +1,16 @@
 package fr.skyforce77.towerminer.menus;
 
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.Graphics2D;
+import java.io.File;
+
+import javax.swing.JFileChooser;
+
 import fr.skyforce77.towerminer.TowerMiner;
 import fr.skyforce77.towerminer.maps.Maps;
 import fr.skyforce77.towerminer.ressources.RessourcesManager;
 import fr.skyforce77.towerminer.ressources.language.LanguageManager;
-
-import javax.swing.*;
-import java.awt.*;
-import java.io.File;
 
 public class MapSelectionMenu extends Menu {
 

@@ -1,8 +1,8 @@
 package fr.skyforce77.towerminer.entity.effects;
 
-import fr.skyforce77.towerminer.entity.Mob;
-
 import java.util.Random;
+
+import fr.skyforce77.towerminer.entity.Mob;
 
 public class FireEffect extends EntityEffectType {
 

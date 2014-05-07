@@ -1,12 +1,13 @@
 package fr.skyforce77.towerminer.blocks.renders;
 
+import java.awt.Graphics2D;
+import java.io.Serializable;
+
+import javax.swing.ImageIcon;
+
 import fr.skyforce77.towerminer.TowerMiner;
 import fr.skyforce77.towerminer.blocks.Blocks;
 import fr.skyforce77.towerminer.maps.Maps;
-
-import javax.swing.*;
-import java.awt.*;
-import java.io.Serializable;
 
 public class BlockRender implements Serializable {
 

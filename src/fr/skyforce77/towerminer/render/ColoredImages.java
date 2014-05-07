@@ -1,6 +1,7 @@
 package fr.skyforce77.towerminer.render;
 
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Image;
 import java.util.HashMap;
 
 public class ColoredImages {

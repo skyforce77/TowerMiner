@@ -1,13 +1,14 @@
 package fr.skyforce77.towerminer.blocks.renders;
 
+import java.awt.Graphics2D;
+import java.awt.Point;
+import java.awt.geom.Area;
+import java.awt.geom.Rectangle2D;
+
 import fr.skyforce77.towerminer.TowerMiner;
 import fr.skyforce77.towerminer.blocks.Blocks;
 import fr.skyforce77.towerminer.maps.MapWritter;
 import fr.skyforce77.towerminer.maps.Maps;
-
-import java.awt.*;
-import java.awt.geom.Area;
-import java.awt.geom.Rectangle2D;
 
 public class WallRender extends AroundBlockBasedRender {
 

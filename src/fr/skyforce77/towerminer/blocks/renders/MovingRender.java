@@ -1,12 +1,15 @@
 package fr.skyforce77.towerminer.blocks.renders;
 
+import java.awt.Color;
+import java.awt.Graphics2D;
+import java.awt.Image;
+import java.util.HashMap;
+
+import javax.swing.ImageIcon;
+
 import fr.skyforce77.towerminer.blocks.Blocks;
 import fr.skyforce77.towerminer.maps.Maps;
 import fr.skyforce77.towerminer.render.RenderHelper;
-
-import javax.swing.*;
-import java.awt.*;
-import java.util.HashMap;
 
 public class MovingRender extends BlockRender {
 

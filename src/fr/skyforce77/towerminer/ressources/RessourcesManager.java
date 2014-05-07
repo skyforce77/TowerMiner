@@ -1,7 +1,9 @@
 package fr.skyforce77.towerminer.ressources;
 
 import java.awt.Image;
+import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -51,6 +53,24 @@ public class RessourcesManager {
     public static Image getTexture(String texture) {
         Image image = new ImageIcon(TowerMiner.class.getResource("/ressources/textures/" + texture + ".png")).getImage();
         return image;
+    }
+    
+    public static BufferedImage getBufferedTexture(String texture) {
+        try {
+			return ImageIO.read(TowerMiner.class.getResource("/ressources/textures/" + texture + ".png"));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+        return getBufferedTexture("unknown");
+    }
+    
+    public static BufferedImage getDistantBufferedTexture(String url) {
+        try {
+			return ImageIO.read(new URL(url));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+        return getBufferedTexture("unknown");
     }
 
     public static ImageIcon getIconTexture(String texture) {

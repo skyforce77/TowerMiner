@@ -1,11 +1,16 @@
 package fr.skyforce77.towerminer.achievements;
 
-import fr.skyforce77.towerminer.TowerMiner;
-import fr.skyforce77.towerminer.ressources.RessourcesManager;
-
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.FontMetrics;
+import java.awt.Graphics2D;
+import java.awt.Image;
 import java.io.Serializable;
 import java.util.Date;
+
+import fr.skyforce77.towerminer.TowerMiner;
+import fr.skyforce77.towerminer.ressources.RessourcesManager;
 
 public class Popup implements Serializable {
 

@@ -1,13 +1,14 @@
 package fr.skyforce77.towerminer.entity;
 
+import java.awt.Color;
+import java.awt.Point;
+import java.util.ArrayList;
+
 import fr.skyforce77.towerminer.TowerMiner;
 import fr.skyforce77.towerminer.menus.MultiPlayer;
 import fr.skyforce77.towerminer.menus.SinglePlayer;
 import fr.skyforce77.towerminer.particles.ParticleEffect;
 import fr.skyforce77.towerminer.particles.ParticleType;
-
-import java.awt.*;
-import java.util.ArrayList;
 
 public class Creeper extends Turret {
 

@@ -1,10 +1,12 @@
 package fr.skyforce77.towerminer.particles;
 
-import fr.skyforce77.towerminer.TowerMiner;
-import fr.skyforce77.towerminer.menus.SinglePlayer;
+import java.awt.Color;
+import java.awt.Graphics2D;
 
 import javax.vecmath.Vector2d;
-import java.awt.*;
+
+import fr.skyforce77.towerminer.TowerMiner;
+import fr.skyforce77.towerminer.menus.SinglePlayer;
 
 public class Particle {
 

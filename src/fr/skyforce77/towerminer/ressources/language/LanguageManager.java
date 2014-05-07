@@ -1,9 +1,5 @@
 package fr.skyforce77.towerminer.ressources.language;
 
-import fr.skyforce77.towerminer.TowerMiner;
-import fr.skyforce77.towerminer.ressources.RessourcesManager;
-import fr.skyforce77.towerminer.save.DataBase;
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -12,6 +8,10 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Set;
+
+import fr.skyforce77.towerminer.TowerMiner;
+import fr.skyforce77.towerminer.ressources.RessourcesManager;
+import fr.skyforce77.towerminer.save.DataBase;
 
 public class LanguageManager {
 

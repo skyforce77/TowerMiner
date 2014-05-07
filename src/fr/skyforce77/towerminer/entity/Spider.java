@@ -1,10 +1,10 @@
 package fr.skyforce77.towerminer.entity;
 
+import java.awt.Point;
+
 import fr.skyforce77.towerminer.achievements.Achievements;
 import fr.skyforce77.towerminer.entity.effects.EntityEffect;
 import fr.skyforce77.towerminer.entity.effects.EntityEffectType;
-
-import java.awt.*;
 
 public class Spider extends Turret {
 

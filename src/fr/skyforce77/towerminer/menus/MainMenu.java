@@ -6,6 +6,7 @@ import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.event.MouseEvent;
 import java.net.URL;
+
 import fr.skyforce77.towerminer.TowerMiner;
 import fr.skyforce77.towerminer.game.Game;
 import fr.skyforce77.towerminer.ressources.RessourcesManager;

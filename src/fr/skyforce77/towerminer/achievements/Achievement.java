@@ -1,12 +1,16 @@
 package fr.skyforce77.towerminer.achievements;
 
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.FontMetrics;
+import java.awt.Graphics2D;
+import java.util.Date;
+
 import fr.skyforce77.towerminer.TowerMiner;
 import fr.skyforce77.towerminer.protocol.packets.Packet3Action;
 import fr.skyforce77.towerminer.ressources.language.LanguageManager;
 import fr.skyforce77.towerminer.save.DataBase;
-
-import java.awt.*;
-import java.util.Date;
 
 public class Achievement extends Popup {
 

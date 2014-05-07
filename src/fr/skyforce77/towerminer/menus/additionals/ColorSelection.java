@@ -1,11 +1,12 @@
 package fr.skyforce77.towerminer.menus.additionals;
 
-import fr.skyforce77.towerminer.TowerMiner;
-import fr.skyforce77.towerminer.maps.Maps;
-
-import javax.swing.*;
+import javax.swing.JColorChooser;
+import javax.swing.JFrame;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+
+import fr.skyforce77.towerminer.TowerMiner;
+import fr.skyforce77.towerminer.maps.Maps;
 
 public class ColorSelection extends JFrame implements ChangeListener {
 
