@@ -26,7 +26,7 @@ public class ParticleEffect {
         } else if (type == 3) {
         	createMobDestructionParticles(EntityTypes.getType(data), ((SinglePlayer) TowerMiner.menu), x, y);
         } else if (type == 4) {
-        	createBlockDestructionParticles(Blocks.byId(data), color, ((SinglePlayer) TowerMiner.menu), x, y);
+        	createBlockDestructionParticles(Blocks.byId(color), data, ((SinglePlayer) TowerMiner.menu), x, y);
         }
     }
 
@@ -114,8 +114,8 @@ public class ParticleEffect {
     }
     
     public static void createBlockDestructionParticles(Blocks b, int data, SinglePlayer sp, int x, int y) {
-        if (sp instanceof MultiPlayer && ((MultiPlayer) sp).server) {
-        	new Packet18ParticleEffect(x, y, data, 4, b.getId()).sendAllTCP();
+    	if (sp instanceof MultiPlayer && ((MultiPlayer) sp).server) {
+        	new Packet18ParticleEffect(x, y, b.getId(), 4, data).sendAllTCP();
         }
         int height = 6;
         int width = 6;

@@ -28,14 +28,14 @@ public class TowerMiner {
 
 	public static Game game;
 	public static Menu menu;
-	public static int neededlauncherversion = 10;
+	public static int neededlauncherversion = 11;
 	public static int actuallauncherversion = -1;
 	
 	public static boolean dev = true;
-	public static String version = "Beta 0.4b";
+	public static String version = "Beta 0.4c";
 	
 	public static boolean launcherupdateneeded = true;
-	public static String[] os = new String[]{"linux"};
+	public static String[] os = new String[]{"linux","windows"};
 	public static String usedos = "linux";
 	public static String player = "Player" + new Random().nextInt(1000);
 	public static UUID id;
@@ -163,7 +163,7 @@ public class TowerMiner {
 
 	public static void main(String[] args) {
 		if (dev) {
-			startGame(-1, "ok", "linux", "dev", UUID.randomUUID(), 0);
+			startGame(-1, "ok", "windows", "dev", UUID.randomUUID(), 0);
 			return;
 		}
 		LanguageManager.initLanguages();

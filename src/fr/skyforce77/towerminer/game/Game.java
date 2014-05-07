@@ -322,6 +322,7 @@ public class Game extends JFrame implements MouseListener, MouseWheelListener, M
 			Music.stop(i);
 			i++;
 		}
+		System.exit(1);
 	}
 
 	@Override

@@ -25,6 +25,8 @@ public class BlockRender implements Serializable {
         renders[8] = new SignRender();
         renders[9] = new UnknownBlockRender();
         renders[10] = new SaplingRender();
+        renders[11] = new ColorBlockRender();
+        renders[12] = new NumberBlockRender();
     }
 
     public static Object getOverlayStorage(int x, int y) {

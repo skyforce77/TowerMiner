@@ -10,6 +10,7 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 
 import fr.skyforce77.towerminer.TowerMiner;
@@ -54,6 +55,7 @@ public class MultiPlayer extends SinglePlayer {
 
     public Chat chat;
     public JTextField chatfield;
+    public JRadioButton enablechat;
     public CopyOnWriteArrayList<String> typed = new CopyOnWriteArrayList<String>();
     public int select = 0;
 
@@ -93,22 +95,32 @@ public class MultiPlayer extends SinglePlayer {
                 if (!chatfield.getText().equals("")) {
                     chat.onMessageWritten(player, chatfield.getText());
                     typed.add(chatfield.getText());
+                    select = typed.size();
                     chatfield.setText("");
                 }
             }
         });
+        
+        enablechat = new JRadioButton();
+        enablechat.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent arg0) {
+                chat.changeState(enablechat.isSelected());
+            }
+        });
+        
         chatfield.addKeyListener(new KeyListener() {
             @Override
             public void keyPressed(KeyEvent e) {
                 if (e.getKeyCode() == KeyEvent.VK_DOWN) {
+                    if (select - 1 >= 0) {
+                        chatfield.setText(typed.get(select - 1));
+                        select--;
+                    }
+                } else if (e.getKeyCode() == KeyEvent.VK_UP) {
                     if (select + 1 < typed.size() && typed.get(select + 1) != null) {
                         chatfield.setText(typed.get(select + 1));
                         select++;
-                    }
-                } else if (e.getKeyCode() == KeyEvent.VK_UP) {
-                    if (select - 1 > typed.size() && typed.get(select - 1) != null) {
-                        chatfield.setText(typed.get(select - 1));
-                        select--;
                     }
                 }
             }
@@ -123,8 +135,10 @@ public class MultiPlayer extends SinglePlayer {
         });
         chatfield.setToolTipText(LanguageManager.getText("menu.mp.message"));
         TowerMiner.game.add(chatfield);
+        TowerMiner.game.add(enablechat);
 
         chatfield.setVisible(false);
+        enablechat.setVisible(false);
     }
     
     @Override
@@ -163,7 +177,7 @@ public class MultiPlayer extends SinglePlayer {
             }
         }
 
-        chat.draw(g2d);
+        chat.draw(g2d, this);
     }
 
     @Override
@@ -178,9 +192,10 @@ public class MultiPlayer extends SinglePlayer {
         MPInfos.matchplaying = false;
 
         chatfield.setVisible(false);
+        enablechat.setVisible(false);
 
         if (chat.opened) {
-            chat.changeState();
+            chat.changeState(false);
         }
     }
 
@@ -191,6 +206,7 @@ public class MultiPlayer extends SinglePlayer {
         countNext();
         speed.setVisible(false);
         chatfield.setVisible(true);
+        enablechat.setVisible(true);
         pause.setVisible(false);
         options.setVisible(false);
 

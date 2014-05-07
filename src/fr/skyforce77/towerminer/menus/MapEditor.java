@@ -431,7 +431,7 @@ public class MapEditor extends SinglePlayer {
 	@Override
 	public void onMouseDragged(MouseEvent e) {
 		int xl = (e.getX() / 48);
-		int yl = ((e.getY() + 8) / 48) - 1;
+		int yl = (e.getY() / 48) - 1;
 		if(Maps.getActualMap().hasPoint(new Point(xl,yl))) {
 			if (selected == 1023) {
 				Maps.getActualMap().setXDepart(xl);

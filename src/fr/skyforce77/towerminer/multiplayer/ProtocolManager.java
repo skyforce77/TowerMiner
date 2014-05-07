@@ -2,6 +2,8 @@ package fr.skyforce77.towerminer.multiplayer;
 
 import java.awt.Image;
 import java.awt.Point;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 
 import com.esotericsoftware.kryonet.Connection;
@@ -41,6 +43,7 @@ import fr.skyforce77.towerminer.protocol.packets.Packet12Popup;
 import fr.skyforce77.towerminer.protocol.packets.Packet13EntityTeleport;
 import fr.skyforce77.towerminer.protocol.packets.Packet14ServerPing;
 import fr.skyforce77.towerminer.protocol.packets.Packet15ServerInfos;
+import fr.skyforce77.towerminer.protocol.packets.Packet16Sound;
 import fr.skyforce77.towerminer.protocol.packets.Packet17Player;
 import fr.skyforce77.towerminer.protocol.packets.Packet18ParticleEffect;
 import fr.skyforce77.towerminer.protocol.packets.Packet19Particle;
@@ -48,6 +51,7 @@ import fr.skyforce77.towerminer.protocol.packets.Packet1Disconnecting;
 import fr.skyforce77.towerminer.protocol.packets.Packet20EntityData;
 import fr.skyforce77.towerminer.protocol.packets.Packet21LoadPlugin;
 import fr.skyforce77.towerminer.protocol.packets.Packet22PluginMessage;
+import fr.skyforce77.towerminer.protocol.packets.Packet23BlockChange;
 import fr.skyforce77.towerminer.protocol.packets.Packet2BigSending;
 import fr.skyforce77.towerminer.protocol.packets.Packet3Action;
 import fr.skyforce77.towerminer.protocol.packets.Packet4RoundFinished;
@@ -58,6 +62,7 @@ import fr.skyforce77.towerminer.protocol.packets.Packet8EntityRemove;
 import fr.skyforce77.towerminer.protocol.packets.Packet9MouseClick;
 import fr.skyforce77.towerminer.ressources.FileContainer;
 import fr.skyforce77.towerminer.ressources.language.LanguageManager;
+import fr.skyforce77.towerminer.sounds.Music;
 
 public class ProtocolManager implements PacketListener {
 
@@ -273,6 +278,13 @@ public class ProtocolManager implements PacketListener {
         } else if (p.getId() == 15) {
             Packet15ServerInfos pack15 = (Packet15ServerInfos) p;
             ServerInfos.onInfosReceived(pack15.name, pack15.message, pack15.date);
+        } else if (p.getId() == 16) {
+            Packet16Sound pack16 = (Packet16Sound) p;
+            try {
+				Music.playURL(pack16.channel, new URL(pack16.music), pack16.custom);
+			} catch (MalformedURLException e) {
+				e.printStackTrace();
+			}
         } else if (p.getId() == 17) {
             Packet17Player pack17 = (Packet17Player) p;
             Menu.multiplayerclient.setPlayer(pack17.player);
@@ -303,6 +315,17 @@ public class ProtocolManager implements PacketListener {
             byte[] data = BigSending.receiving.get(pack21.eid).data;
             FileContainer fc = (FileContainer) pack21.deserialize(data);
 			PluginManager.loadPlugin(fc);
+        } else if (p.getId() == 23) {
+            Packet23BlockChange pack23 = (Packet23BlockChange) p;
+            if(pack23.overlay) {
+            	Maps.getActualMap().setOverlayIdAndData(pack23.x, pack23.y, pack23.type, pack23.data);
+                if(pack23.hasStorage())
+                	Maps.getActualMap().setOverlayStorage(pack23.x, pack23.y, pack23.getStorage());
+            } else {
+                Maps.getActualMap().setBlockIdAndData(pack23.x, pack23.y, pack23.type, pack23.data);
+                if(pack23.hasStorage())
+                	Maps.getActualMap().setBlockStorage(pack23.x, pack23.y, pack23.getStorage());
+            }
         }
     }
 

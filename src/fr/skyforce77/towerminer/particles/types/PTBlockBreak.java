@@ -23,7 +23,7 @@ public class PTBlockBreak extends ParticleType {
 	@Override
     public void draw(Graphics2D g2d, SinglePlayer sp, Particle particle) {
 		g2d.setClip((int)particle.getX()+5*x, (int)particle.getY()+5*y, 5*(x+1), 5*(y+1));
-		b.getRender().onBlockRender(b, g2d, data, (int)particle.getX(), (int)particle.getY(), 30);
+		b.getRender().onBlockRender(b, g2d, data, (int)particle.getX()/48, (int)particle.getY()/48, 30);
     }
 
 }
