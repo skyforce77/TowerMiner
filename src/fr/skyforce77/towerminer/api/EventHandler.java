@@ -7,4 +7,7 @@ import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
-public @interface EventHandler {}
+public @interface EventHandler {
+	EventPriority priority() default EventPriority.THIRD;
+	int customPriority() default -1;
+}

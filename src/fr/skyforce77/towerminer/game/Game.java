@@ -25,6 +25,8 @@ import javax.swing.JPanel;
 
 import fr.skyforce77.towerminer.TowerMiner;
 import fr.skyforce77.towerminer.achievements.Popup;
+import fr.skyforce77.towerminer.api.PluginManager;
+import fr.skyforce77.towerminer.api.events.chat.PopupDisplayedEvent;
 import fr.skyforce77.towerminer.blocks.renders.BlockRender;
 import fr.skyforce77.towerminer.maps.Maps;
 import fr.skyforce77.towerminer.menus.MultiPlayer;
@@ -56,11 +58,11 @@ public class Game extends JFrame implements MouseListener, MouseWheelListener, M
 
 	public int frames = 0;
 	public int fps = 0;
-	public int freeze = 30;
+	public int freeze = 25;
 
 	public Popup popup;
 	public HashMap<Popup, Boolean> nextpopups = new HashMap<Popup, Boolean>();
-	
+
 	private int[] code = new int[] {38, 38, 40, 40, 37, 39, 37, 39, 66, 65};
 	private int progress = 0;
 	private boolean konami = false;
@@ -132,15 +134,19 @@ public class Game extends JFrame implements MouseListener, MouseWheelListener, M
 					}
 					if(popup == null) {
 						if(!nextpopups.isEmpty()) {
-							popup = (Popup)nextpopups.keySet().toArray()[0];
-							if (TowerMiner.menu instanceof MultiPlayer && nextpopups.get(popup)) {
-								MultiPlayer mp = (MultiPlayer) TowerMiner.menu;
-								if (mp.server) {
-									new Packet12Popup(popup.text, null, popup.icon).sendClientTCP();
+							PopupDisplayedEvent pde = new PopupDisplayedEvent((Popup)nextpopups.keySet().toArray()[0]);
+							PluginManager.callEvent(pde);
+							if(!pde.isCancelled()) {
+								popup = pde.getPopup();
+								if (TowerMiner.menu instanceof MultiPlayer && nextpopups.get(popup)) {
+									MultiPlayer mp = (MultiPlayer) TowerMiner.menu;
+									if (mp.server) {
+										new Packet12Popup(popup.text, null, popup.icon).sendClientTCP();
+									}
 								}
+								popup.time = new Date().getTime();
 							}
 							nextpopups.remove(popup);
-							popup.time = new Date().getTime();
 						}
 					}
 					if (TowerMiner.menu != null) {
@@ -353,8 +359,8 @@ public class Game extends JFrame implements MouseListener, MouseWheelListener, M
 	@Override
 	public void mouseDragged(MouseEvent arg0) {
 		if(konami) {
-			 arg0 = new MouseEvent(this, arg0.getID(), arg0.getWhen(), arg0.getModifiers(), (int)(getSize().getWidth()-arg0.getX()), (int)(getSize().getHeight()-arg0.getY())
-					 , arg0.getXOnScreen(), arg0.getYOnScreen(), arg0.getClickCount(), arg0.isPopupTrigger(), arg0.getButton());
+			arg0 = new MouseEvent(this, arg0.getID(), arg0.getWhen(), arg0.getModifiers(), (int)(getSize().getWidth()-arg0.getX()), (int)(getSize().getHeight()-arg0.getY())
+					, arg0.getXOnScreen(), arg0.getYOnScreen(), arg0.getClickCount(), arg0.isPopupTrigger(), arg0.getButton());
 		}
 		TowerMiner.menu.onMouseDragged(arg0);
 	}
@@ -362,8 +368,8 @@ public class Game extends JFrame implements MouseListener, MouseWheelListener, M
 	@Override
 	public void mouseMoved(MouseEvent arg0) {
 		if(konami) {
-			 arg0 = new MouseEvent(this, arg0.getID(), arg0.getWhen(), arg0.getModifiers(), (int)(getSize().getWidth()-arg0.getX()), (int)(getSize().getHeight()-arg0.getY())
-					 , arg0.getXOnScreen(), arg0.getYOnScreen(), arg0.getClickCount(), arg0.isPopupTrigger(), arg0.getButton());
+			arg0 = new MouseEvent(this, arg0.getID(), arg0.getWhen(), arg0.getModifiers(), (int)(getSize().getWidth()-arg0.getX()), (int)(getSize().getHeight()-arg0.getY())
+					, arg0.getXOnScreen(), arg0.getYOnScreen(), arg0.getClickCount(), arg0.isPopupTrigger(), arg0.getButton());
 		}
 		TowerMiner.menu.onMouseMoved(arg0);
 	}

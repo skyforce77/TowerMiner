@@ -3,8 +3,10 @@ package fr.skyforce77.towerminer.api;
 import java.beans.IntrospectionException;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.Serializable;
 import java.lang.reflect.Method;
 import java.net.URL;
@@ -12,6 +14,12 @@ import java.net.URLClassLoader;
 import java.nio.channels.FileChannel;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.jar.JarEntry;
+import java.util.jar.JarFile;
+
+import org.yaml.snakeyaml.Yaml;
+import org.yaml.snakeyaml.constructor.SafeConstructor;
 
 import com.esotericsoftware.kryonet.Connection;
 
@@ -36,17 +44,7 @@ public class PluginManager {
 		RessourcesManager.getPluginsDirectory().mkdirs();
 		for(File f : RessourcesManager.getPluginsDirectory().listFiles()) {
 			if(f.getName().contains(".jar")) {
-				try {
-					URL[] urls = new URL[]{f.toURI().toURL()};
-					@SuppressWarnings("resource")
-					URLClassLoader loader = new URLClassLoader(urls);
-					Class<?> cls = loader.loadClass("TMPlugin");
-					Plugin p = (Plugin)cls.newInstance();
-					loadPlugin(p, f);
-				} catch (Exception e) {
-					System.out.println("Can't launch "+f.getName()+" plugin.");
-					e.printStackTrace();
-				}
+				loadPlugin(f);
 			}
 		}
 	}
@@ -65,6 +63,30 @@ public class PluginManager {
 			e.printStackTrace();
 		}
 	}
+	
+	public static void loadPlugin(File f) {
+		if(f.getName().contains(".jar")) {
+			try {
+				addURLToSystemClassLoader(f.toURI().toURL());
+				@SuppressWarnings("resource")
+				JarFile jar = new JarFile(f.getPath());
+				JarEntry entry = jar.getJarEntry("plugin.yml");
+				if (entry == null) {
+					throw new FileNotFoundException("Jar does not contain plugin.yml");
+				}
+				InputStream stream = jar.getInputStream(entry);
+				Yaml yaml = new Yaml(new SafeConstructor());
+				Map<?, ?> map = asMap(yaml.load(stream));
+				Class<?> cls = ClassLoader.getSystemClassLoader().loadClass(map.get("main").toString());
+				Plugin p = (Plugin)cls.newInstance();
+				p.setPluginInfos(new PluginInfo(map));
+				loadPlugin(p, f);
+			} catch (Exception e) {
+				System.out.println("Can't launch "+f.getName()+" plugin.");
+				e.printStackTrace();
+			}
+		}
+	}
 
 	public static void loadPlugin(FileContainer fc) {
 		try {
@@ -73,17 +95,7 @@ public class PluginManager {
 			File f = new File(RessourcesManager.getServerPluginsDirectory(), fl.getName());
 			f.createNewFile();
 			move(fl, f);
-			if(f.getName().contains(".jar")) {
-				try {
-					addURLToSystemClassLoader(f.toURI().toURL());
-					Class<?> cls = ClassLoader.getSystemClassLoader().loadClass("TMPlugin");
-					Plugin p = (Plugin)cls.newInstance();
-					loadPlugin(p, f);
-				} catch (Exception e) {
-					System.out.println("Can't launch "+f.getName()+" plugin.");
-					e.printStackTrace();
-				}
-			}
+			loadPlugin(f);
 			fl.delete();
 		} catch (IOException e1) {
 			e1.printStackTrace();
@@ -196,22 +208,18 @@ public class PluginManager {
 	}
 
 	public static void callEvent(final TMEvent event) {
-		new Thread() {
-			@Override
-			public void run() {
-				callCompleteEvent(event);
-			}
-		}.start();
+		for(EventPriority ep : EventPriority.values())
+			callCompleteEvent(event, ep);
 	}
 
-	private static void callCompleteEvent(final TMEvent event) {
+	private static void callCompleteEvent(final TMEvent event, EventPriority priority) {
 		for (TMListener listener : getListeners()) {
 			Class<?> handler = listener.getClass();
 			Method[] methods = handler.getMethods();
 
 			for (int i = 0; i < methods.length; ++i) {
 				EventHandler eventHandler = methods[i].getAnnotation(EventHandler.class);
-				if (eventHandler != null) {
+				if (eventHandler != null && eventHandler.priority().equals(priority)) {
 					Class<?>[] methodParams = methods[i].getParameterTypes();
 
 					if (methodParams.length < 1)
@@ -239,6 +247,13 @@ public class PluginManager {
 	public static void sendPluginMessage(Connection c, Plugin p, int id, Serializable data) {
 		Packet22PluginMessage ppm = new Packet22PluginMessage(p.getName(), p.getVersion(), id, data);
 		ppm.sendConnectionTCP(c);
+	}
+
+	private static Map<?,?> asMap(Object object){
+		if (object instanceof Map) {
+			return (Map<?,?>) object;
+		}
+		return null;
 	}
 
 }

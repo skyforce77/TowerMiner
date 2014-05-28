@@ -12,6 +12,9 @@ import java.awt.event.WindowEvent;
 import java.util.Date;
 
 import fr.skyforce77.towerminer.TowerMiner;
+import fr.skyforce77.towerminer.api.PluginManager;
+import fr.skyforce77.towerminer.api.events.menu.MenuUnusedEvent;
+import fr.skyforce77.towerminer.api.events.menu.MenuUsedEvent;
 import fr.skyforce77.towerminer.game.Game;
 import fr.skyforce77.towerminer.ressources.language.LanguageManager;
 import fr.skyforce77.towerminer.sounds.Music;
@@ -231,6 +234,16 @@ public class Menu {
         }
     }
 
+    public void callUsed() {
+		PluginManager.callEvent(new MenuUsedEvent(this));
+    	onUsed();
+    }
+    
+    public void callUnused() {
+    	PluginManager.callEvent(new MenuUnusedEvent(this));
+    	onUnused();
+    }
+    
     public void onUsed() {
     }
 

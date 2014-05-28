@@ -1,19 +1,18 @@
-package fr.skyforce77.towerminer.api.events;
+package fr.skyforce77.towerminer.api.events.entity;
 
 import fr.skyforce77.towerminer.entity.Turret;
 
-public class TurretUpgradeEvent extends TMEvent{
+public class TurretUpgradeEvent extends EntityEvent{
 	
-	private Turret turret;
 	private int last;
 	private int now;
 
 	public TurretUpgradeEvent(Turret turret, int last, int now) {
-		this.turret = turret;
+		super(turret);
 	}
 	
 	public Turret getTurret() {
-		return turret;
+		return (Turret)getEntity();
 	}
 	
 	public int getLastLevel() {

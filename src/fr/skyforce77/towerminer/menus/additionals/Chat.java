@@ -10,7 +10,8 @@ import java.util.Date;
 
 import fr.skyforce77.towerminer.TowerMiner;
 import fr.skyforce77.towerminer.api.PluginManager;
-import fr.skyforce77.towerminer.api.events.PlayerChatEvent;
+import fr.skyforce77.towerminer.api.events.chat.PlayerChatEvent;
+import fr.skyforce77.towerminer.menus.Menu;
 import fr.skyforce77.towerminer.menus.MultiPlayer;
 import fr.skyforce77.towerminer.protocol.chat.ChatMessage;
 import fr.skyforce77.towerminer.protocol.chat.ChatModel;
@@ -23,8 +24,10 @@ public class Chat {
 	public ArrayList<ChatMessage> messages = new ArrayList<ChatMessage>();
 	public ArrayList<Long> messagedate = new ArrayList<Long>();
 	public int max = 8;
+	public Menu menu;
 
-	public Chat(final boolean server) {
+	public Chat(Menu menu) {
+		this.menu = menu;
 	}
 
 	@SuppressWarnings("deprecation")
@@ -55,15 +58,20 @@ public class Chat {
 		ChatMessage msg = new ChatMessage(name, new ChatModel(": " + message));
 		PlayerChatEvent pce = new PlayerChatEvent(msg, message);
 		PluginManager.callEvent(pce);
-		if(!pce.isCancelled())
-			new Packet11ChatMessage(msg).sendAllTCP();
+		if(!pce.isCancelled()) {
+			if(menu instanceof MultiPlayer) {
+				new Packet11ChatMessage(pce.getMessage()).sendAllTCP();
+			} else {
+				onMessageReceived(pce.getMessage());
+			}
+		}
 	}
 
 	public void changeState(boolean state) {
 		opened = state;
 	}
 
-	public void draw(final Graphics2D g2d, final MultiPlayer mp) {
+	public void draw(final Graphics2D g2d, final Menu mp) {
 		int width = 0;
 		int i = max-1;
 		int[] strings = new int[max];

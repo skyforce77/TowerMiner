@@ -12,6 +12,8 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 import fr.skyforce77.towerminer.TowerMiner;
 import fr.skyforce77.towerminer.achievements.Achievements;
+import fr.skyforce77.towerminer.api.PluginManager;
+import fr.skyforce77.towerminer.api.events.entity.MobDespawnEvent;
 import fr.skyforce77.towerminer.entity.effects.EntityEffect;
 import fr.skyforce77.towerminer.entity.effects.EntityEffectType;
 import fr.skyforce77.towerminer.maps.MapWritter;
@@ -111,6 +113,7 @@ public class Mob extends Entity {
             }
         }
         if (sp.mobs.contains(this)) {
+        	PluginManager.callEvent(new MobDespawnEvent(this));
             sp.removed.add(this);
         }
         died = true;
@@ -128,6 +131,7 @@ public class Mob extends Entity {
         SinglePlayer sp = (SinglePlayer) TowerMiner.menu;
         if (damage >= life) {
             if (!died) {
+            	PluginManager.callEvent(new MobDespawnEvent(this));
                 sp.removed.add(this);
                 sp.addGold(getType().getMaxLife());
             }

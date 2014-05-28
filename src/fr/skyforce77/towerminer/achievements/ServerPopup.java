@@ -9,6 +9,7 @@ import java.awt.Image;
 import java.util.Date;
 
 import fr.skyforce77.towerminer.TowerMiner;
+import fr.skyforce77.towerminer.menus.MultiPlayer;
 
 public class ServerPopup extends Popup {
 
@@ -30,6 +31,10 @@ public class ServerPopup extends Popup {
 
 	@Override
 	public void draw(Graphics2D g2d, int CanvasY) {
+		if(!(TowerMiner.menu instanceof MultiPlayer)) {
+			return;
+		}
+		
 		int difference = (int) ((time + displayed) - new Date().getTime());
 
 		g2d.setFont(new Font("TimesRoman", Font.CENTER_BASELINE, 26));

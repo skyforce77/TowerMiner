@@ -9,6 +9,7 @@ import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowEvent;
 import java.util.Date;
@@ -20,9 +21,13 @@ import javax.swing.JCheckBox;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JRadioButton;
+import javax.swing.JTextField;
 
 import fr.skyforce77.towerminer.TowerMiner;
 import fr.skyforce77.towerminer.achievements.Achievements;
+import fr.skyforce77.towerminer.api.PluginManager;
+import fr.skyforce77.towerminer.api.events.entity.MobSpawnEvent;
 import fr.skyforce77.towerminer.entity.Entity;
 import fr.skyforce77.towerminer.entity.EntityTypes;
 import fr.skyforce77.towerminer.entity.Mob;
@@ -32,6 +37,7 @@ import fr.skyforce77.towerminer.entity.effects.EntityEffectType;
 import fr.skyforce77.towerminer.game.Game;
 import fr.skyforce77.towerminer.maps.MapWritter;
 import fr.skyforce77.towerminer.maps.Maps;
+import fr.skyforce77.towerminer.menus.additionals.Chat;
 import fr.skyforce77.towerminer.particles.Particle;
 import fr.skyforce77.towerminer.particles.ParticleEffect;
 import fr.skyforce77.towerminer.ressources.RessourcesManager;
@@ -82,10 +88,17 @@ public class SinglePlayer extends Menu {
 
 	int selectedturret = 0;
 	Turret aimed = null;
+	
+    public Chat chat;
+    public JTextField chatfield;
+    public JRadioButton enablechat;
+    public CopyOnWriteArrayList<String> typed = new CopyOnWriteArrayList<String>();
+    public int select = 0;
 
 	public String player = "menu.mp.blue";
 
 	public SinglePlayer(boolean multi) {
+		chat = new Chat(this);
 		items = new MenuItem[3];
 		canreturn = false;
 		multiplayer = multi;
@@ -160,6 +173,59 @@ public class SinglePlayer extends Menu {
 				TowerMiner.game.dispose();
 			}
 		});
+		
+	       chatfield = new JTextField();
+	        chatfield.setPreferredSize(new Dimension(100, 30));
+	        chatfield.addActionListener(new ActionListener() {
+	            @Override
+	            public void actionPerformed(ActionEvent arg0) {
+	                if (!chatfield.getText().equals("")) {
+	                    chat.onMessageWritten(player, chatfield.getText());
+	                    typed.add(chatfield.getText());
+	                    select = typed.size();
+	                    chatfield.setText("");
+	                }
+	            }
+	        });
+	        
+	        enablechat = new JRadioButton();
+	        enablechat.addActionListener(new ActionListener() {
+	            @Override
+	            public void actionPerformed(ActionEvent arg0) {
+	                chat.changeState(enablechat.isSelected());
+	            }
+	        });
+	        
+	        chatfield.addKeyListener(new KeyListener() {
+	            @Override
+	            public void keyPressed(KeyEvent e) {
+	                if (e.getKeyCode() == KeyEvent.VK_DOWN) {
+	                    if (select - 1 >= 0) {
+	                        chatfield.setText(typed.get(select - 1));
+	                        select--;
+	                    }
+	                } else if (e.getKeyCode() == KeyEvent.VK_UP) {
+	                    if (select + 1 < typed.size() && typed.get(select + 1) != null) {
+	                        chatfield.setText(typed.get(select + 1));
+	                        select++;
+	                    }
+	                }
+	            }
+
+	            @Override
+	            public void keyReleased(KeyEvent e) {
+	            }
+
+	            @Override
+	            public void keyTyped(KeyEvent e) {
+	            }
+	        });
+	        chatfield.setToolTipText(LanguageManager.getText("menu.mp.message"));
+	        TowerMiner.game.add(chatfield);
+	        TowerMiner.game.add(enablechat);
+
+	        chatfield.setVisible(false);
+	        enablechat.setVisible(false);
 	}
 
 	public void onInit() {
@@ -225,6 +291,7 @@ public class SinglePlayer extends Menu {
 				EntityTypes type = EntityTypes.mobs.get(new Random().nextInt(EntityTypes.mobs.size()));
 				if (type.getLevel() <= tospawn - spawned) {
 					Mob m = new Mob(type);
+					PluginManager.callEvent(new MobSpawnEvent(m));
 					mobs.add(m);
 					spawned += type.getLevel();
 					time = (int) (30 - (0.5 * round));
@@ -473,6 +540,7 @@ public class SinglePlayer extends Menu {
 		g2d.drawString(LanguageManager.getText("menu.sp.round") + ": " + round, 10, 25);
 		g2d.drawString(LanguageManager.getText("menu.sp.golds") + ": " + or, (int) (45 + size.getWidth()), 25);
 		g2d.drawString(LanguageManager.getText("menu.sp.life") + ": " + vie, TowerMiner.game.getWidth() - 110, 25);
+		chat.draw(g2d, this);
 
 	}
 
@@ -572,6 +640,13 @@ public class SinglePlayer extends Menu {
 		next.setVisible(false);
 		pause.setVisible(false);
 		options.setVisible(false);
+		
+        chatfield.setVisible(false);
+        enablechat.setVisible(false);
+
+        if (chat.opened) {
+            chat.changeState(false);
+        }
 
 		if (this.getClass().equals(SinglePlayer.class)) {
 			Menu.singleplayer = new SinglePlayer(false);

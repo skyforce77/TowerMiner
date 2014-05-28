@@ -1,17 +1,10 @@
 package fr.skyforce77.towerminer.menus;
 
-import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
-import java.util.concurrent.CopyOnWriteArrayList;
-
-import javax.swing.JRadioButton;
-import javax.swing.JTextField;
 
 import fr.skyforce77.towerminer.TowerMiner;
 import fr.skyforce77.towerminer.entity.Entity;
@@ -22,7 +15,6 @@ import fr.skyforce77.towerminer.entity.Turret;
 import fr.skyforce77.towerminer.game.Game;
 import fr.skyforce77.towerminer.maps.MapWritter;
 import fr.skyforce77.towerminer.maps.Maps;
-import fr.skyforce77.towerminer.menus.additionals.Chat;
 import fr.skyforce77.towerminer.multiplayer.MPInfos;
 import fr.skyforce77.towerminer.multiplayer.ProtocolManager;
 import fr.skyforce77.towerminer.particles.ParticleEffect;
@@ -53,16 +45,9 @@ public class MultiPlayer extends SinglePlayer {
     public int clientlife = 20;
     public int clientgold = 60;
 
-    public Chat chat;
-    public JTextField chatfield;
-    public JRadioButton enablechat;
-    public CopyOnWriteArrayList<String> typed = new CopyOnWriteArrayList<String>();
-    public int select = 0;
-
     public MultiPlayer(final boolean server) {
         super(true);
         this.server = server;
-        chat = new Chat(server);
 
         player = server ? "menu.mp.blue" : "menu.mp.red";
 
@@ -86,59 +71,6 @@ public class MultiPlayer extends SinglePlayer {
                 }
             }
         });
-
-        chatfield = new JTextField();
-        chatfield.setPreferredSize(new Dimension(100, 30));
-        chatfield.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent arg0) {
-                if (!chatfield.getText().equals("")) {
-                    chat.onMessageWritten(player, chatfield.getText());
-                    typed.add(chatfield.getText());
-                    select = typed.size();
-                    chatfield.setText("");
-                }
-            }
-        });
-        
-        enablechat = new JRadioButton();
-        enablechat.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent arg0) {
-                chat.changeState(enablechat.isSelected());
-            }
-        });
-        
-        chatfield.addKeyListener(new KeyListener() {
-            @Override
-            public void keyPressed(KeyEvent e) {
-                if (e.getKeyCode() == KeyEvent.VK_DOWN) {
-                    if (select - 1 >= 0) {
-                        chatfield.setText(typed.get(select - 1));
-                        select--;
-                    }
-                } else if (e.getKeyCode() == KeyEvent.VK_UP) {
-                    if (select + 1 < typed.size() && typed.get(select + 1) != null) {
-                        chatfield.setText(typed.get(select + 1));
-                        select++;
-                    }
-                }
-            }
-
-            @Override
-            public void keyReleased(KeyEvent e) {
-            }
-
-            @Override
-            public void keyTyped(KeyEvent e) {
-            }
-        });
-        chatfield.setToolTipText(LanguageManager.getText("menu.mp.message"));
-        TowerMiner.game.add(chatfield);
-        TowerMiner.game.add(enablechat);
-
-        chatfield.setVisible(false);
-        enablechat.setVisible(false);
     }
     
     @Override
@@ -190,13 +122,6 @@ public class MultiPlayer extends SinglePlayer {
             Connect.client.stop();
         }
         MPInfos.matchplaying = false;
-
-        chatfield.setVisible(false);
-        enablechat.setVisible(false);
-
-        if (chat.opened) {
-            chat.changeState(false);
-        }
     }
 
     @Override
@@ -205,8 +130,6 @@ public class MultiPlayer extends SinglePlayer {
         next.setText(LanguageManager.getText("menu.mp.ready.button"));
         countNext();
         speed.setVisible(false);
-        chatfield.setVisible(true);
-        enablechat.setVisible(true);
         pause.setVisible(false);
         options.setVisible(false);
 

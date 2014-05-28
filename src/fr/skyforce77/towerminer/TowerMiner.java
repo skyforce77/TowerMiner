@@ -10,6 +10,8 @@ import javax.swing.SwingUtilities;
 import fr.skyforce77.towerminer.achievements.Achievements;
 import fr.skyforce77.towerminer.achievements.Popup;
 import fr.skyforce77.towerminer.api.PluginManager;
+import fr.skyforce77.towerminer.api.events.menu.MenuPreChangeEvent;
+import fr.skyforce77.towerminer.api.events.menu.MenuReturnEvent;
 import fr.skyforce77.towerminer.blocks.Blocks;
 import fr.skyforce77.towerminer.entity.EntityTypes;
 import fr.skyforce77.towerminer.entity.effects.EntityEffectType;
@@ -30,10 +32,10 @@ public class TowerMiner {
 	public static Menu menu;
 	public static int neededlauncherversion = 11;
 	public static int actuallauncherversion = -1;
-	
+
 	public static boolean dev = true;
 	public static String version = "Beta 0.4c";
-	
+
 	public static boolean launcherupdateneeded = true;
 	public static String[] os = new String[]{"linux","windows"};
 	public static String usedos = "linux";
@@ -45,16 +47,16 @@ public class TowerMiner {
 		TowerMiner.player = player;
 		TowerMiner.id = id;
 		actuallauncherversion = launchedversion;
-		
+
 		LanguageManager.initLanguages();
-		
+
 		if (launchedversion != -1 && launchedversion < neededlauncherversion) {
 			if (launcherupdateneeded) {
 				JOptionPane.showMessageDialog(game, LanguageManager.getText("launcher.outdated")+"\n"+launchedversion+" < "+neededlauncherversion, LanguageManager.getText("launcher.information"), JOptionPane.ERROR_MESSAGE);
 				return;
 			}
 		}
-		
+
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
@@ -139,26 +141,34 @@ public class TowerMiner {
 	}
 
 	public static void setMenu(Menu m) {
-		m.last = menu;
-		if (menu != null) {
-			menu.onUnused();
-			menu.selected = -1;
-			m.Xcursor = menu.Xcursor;
-			m.Ycursor = menu.Ycursor;
+		MenuPreChangeEvent mpce = new MenuPreChangeEvent(menu, m);
+		PluginManager.callEvent(mpce);
+		if(!mpce.isCancelled()) {
+			m.last = menu;
+			if (menu != null) {
+				menu.callUnused();
+				menu.selected = -1;
+				m.Xcursor = menu.Xcursor;
+				m.Ycursor = menu.Ycursor;
+			}
+			menu = mpce.getNextMenu();
+			mpce.getNextMenu().callUsed();
 		}
-		menu = m;
-		m.onUsed();
 	}
 
 	public static void returnMenu(Menu m) {
-		if (menu != null) {
-			menu.onUnused();
-			menu.selected = -1;
-			m.Xcursor = menu.Xcursor;
-			m.Ycursor = menu.Ycursor;
+		MenuReturnEvent mpce = new MenuReturnEvent(menu, m);
+		PluginManager.callEvent(mpce);
+		if(!mpce.isCancelled()) {
+			if (menu != null) {
+				menu.callUnused();
+				menu.selected = -1;
+				m.Xcursor = menu.Xcursor;
+				m.Ycursor = menu.Ycursor;
+			}
+			menu = mpce.getNextMenu();
+			mpce.getNextMenu().callUsed();
 		}
-		menu = m;
-		m.onUsed();
 	}
 
 	public static void main(String[] args) {
