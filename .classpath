@@ -4,7 +4,7 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="C:/Users/Arnaud/git/kryonet-2.21-all.jar"/>
 	<classpathentry kind="lib" path="C:/Users/Arnaud/git/vecmath-1.5.1.jar"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/TMProtocol"/>
 	<classpathentry kind="lib" path="C:/Users/Arnaud/git/snakeyaml/target/classes"/>
+	<classpathentry kind="lib" path="C:/Users/Arnaud/Dropbox/Public/TowerMiner/TMProtocol.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
