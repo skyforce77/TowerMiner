@@ -10,6 +10,7 @@ import java.util.Date;
 
 import fr.skyforce77.towerminer.TowerMiner;
 import fr.skyforce77.towerminer.api.PluginManager;
+import fr.skyforce77.towerminer.api.commands.CommandManager;
 import fr.skyforce77.towerminer.api.events.chat.PlayerChatEvent;
 import fr.skyforce77.towerminer.menus.Menu;
 import fr.skyforce77.towerminer.menus.MultiPlayer;
@@ -48,6 +49,12 @@ public class Chat {
 	}
 
 	public void onMessageWritten(String player, String message) {
+		if(message.startsWith("/")) {
+			String label = message.replaceFirst("/", "").split(" ")[0];
+			CommandManager.onCommandTyped(label, message.replaceFirst("/"+label, "").replaceFirst(" ", "").split(" "));
+			return;
+		}
+		
 		ChatModel name = new ChatModel(TowerMiner.player);
 		if (player.equals("menu.mp.red")) {
 			name.setForegroundColor(Color.RED);

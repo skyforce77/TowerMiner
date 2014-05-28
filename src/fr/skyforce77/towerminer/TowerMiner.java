@@ -10,6 +10,7 @@ import javax.swing.SwingUtilities;
 import fr.skyforce77.towerminer.achievements.Achievements;
 import fr.skyforce77.towerminer.achievements.Popup;
 import fr.skyforce77.towerminer.api.PluginManager;
+import fr.skyforce77.towerminer.api.commands.CommandManager;
 import fr.skyforce77.towerminer.api.events.menu.MenuPreChangeEvent;
 import fr.skyforce77.towerminer.api.events.menu.MenuReturnEvent;
 import fr.skyforce77.towerminer.blocks.Blocks;
@@ -33,7 +34,7 @@ public class TowerMiner {
 	public static int neededlauncherversion = 11;
 	public static int actuallauncherversion = -1;
 
-	public static boolean dev = true;
+	public static boolean dev = false;
 	public static String version = "Beta 0.4c";
 
 	public static boolean launcherupdateneeded = true;
@@ -71,6 +72,7 @@ public class TowerMiner {
 				DataBase.load();
 				ServerInfos.initServerInfos();
 				Maps.createMaps();
+				CommandManager.createCommands();
 				Blocks.createNativeBlocks();
 				ListenersManager.register(new ProtocolManager());
 				EntityTypes.createTurrets();

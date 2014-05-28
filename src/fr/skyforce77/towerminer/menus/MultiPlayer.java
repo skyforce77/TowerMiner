@@ -108,8 +108,6 @@ public class MultiPlayer extends SinglePlayer {
                 }
             }
         }
-
-        chat.draw(g2d, this);
     }
 
     @Override
@@ -132,6 +130,8 @@ public class MultiPlayer extends SinglePlayer {
         speed.setVisible(false);
         pause.setVisible(false);
         options.setVisible(false);
+        chatfield.setVisible(true);
+        enablechat.setVisible(true);
 
         TowerMiner.game.setTitle(LanguageManager.getText("towerminer") + " | " + Game.version + " | " + LanguageManager.getText("menu.multiplayer") + " | " + LanguageManager.getText("menu.editor.map") + ": " + Maps.getActualMap().getName() + " | " + LanguageManager.getText(player));
 
