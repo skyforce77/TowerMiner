@@ -9,6 +9,7 @@ import java.net.URL;
 
 import fr.skyforce77.towerminer.TowerMiner;
 import fr.skyforce77.towerminer.game.Game;
+import fr.skyforce77.towerminer.menus.additionals.Chat;
 import fr.skyforce77.towerminer.ressources.RessourcesManager;
 import fr.skyforce77.towerminer.ressources.language.LanguageManager;
 
@@ -18,6 +19,7 @@ public class MainMenu extends Menu {
 
 	public MainMenu(final Game game) {
 		super();
+		chat = new Chat(this);
 		canreturn = false;
 
 		items = new MenuItem[4];
@@ -37,6 +39,7 @@ public class MainMenu extends Menu {
 			}
 		});
 		items[1] = multi;
+		multi.enabled = !Game.offline;
 
 		items[2] = new MenuItem(2, LanguageManager.getText("menu.editor"), new Thread() {
 			@Override
@@ -79,6 +82,7 @@ public class MainMenu extends Menu {
 			g2d.setColor(Color.YELLOW);
 		g2d.drawString("@Skyforce77", TowerMiner.game.getWidth() - 135 - (xmove / 2), TowerMiner.game.getHeight() - 40);
 		super.drawMenu(g2d);
+		chat.draw(g2d, this);
 	}
 
 	@SuppressWarnings("deprecation")

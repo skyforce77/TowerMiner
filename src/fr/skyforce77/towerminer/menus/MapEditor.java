@@ -412,6 +412,7 @@ public class MapEditor extends SinglePlayer {
 	public void onUsed() {
 		bar.setVisible(true);
 		Maps.resize();
+		Blocks.addMapBlocks(Maps.getActualMap());
 		TowerMiner.game.setTitle(LanguageManager.getText("towerminer") + " | " + Game.version + " | " + LanguageManager.getText("menu.editor") + " | " + LanguageManager.getText("menu.editor.map") + ": " + Maps.getActualMap().getName());
 	}
 
@@ -432,7 +433,7 @@ public class MapEditor extends SinglePlayer {
 	public void onMouseDragged(MouseEvent e) {
 		int xl = (e.getX() / 48);
 		int yl = (e.getY() / 48) - 1;
-		if(Maps.getActualMap().hasPoint(new Point(xl,yl))) {
+		if(Maps.getActualMap().hasPoint(new Point(xl,yl)) && e.getModifiers() == 16) {
 			if (selected == 1023) {
 				Maps.getActualMap().setXDepart(xl);
 				Maps.getActualMap().setYDepart(yl);

@@ -1,6 +1,7 @@
 package fr.skyforce77.towerminer;
 
 import java.net.URL;
+import java.util.Date;
 import java.util.Random;
 import java.util.UUID;
 
@@ -34,8 +35,8 @@ public class TowerMiner {
 	public static int neededlauncherversion = 13;
 	public static int actuallauncherversion = -1;
 
-	public static boolean dev = true;
-	public static String version = "Beta 0.4c";
+	public static boolean dev = false;
+	public static String version = "Beta 0.5";
 
 	public static boolean launcherupdateneeded = true;
 	public static String[] os = new String[]{"linux","windows"};
@@ -69,7 +70,9 @@ public class TowerMiner {
 				if (!RessourcesManager.getSaveDirectory().exists()) {
 					RessourcesManager.getSaveDirectory().mkdirs();
 				}
+				printInfo("Initializing game system...");
 				DataBase.load();
+				Blocks.loadCustomBlocks();
 				ServerInfos.initServerInfos();
 				Maps.createMaps();
 				CommandManager.createCommands();
@@ -84,6 +87,7 @@ public class TowerMiner {
 				if (!RessourcesManager.getMapsDirectory().exists()) {
 					RessourcesManager.getMapsDirectory().mkdirs();
 				}
+				printInfo("Successfully initialized system!");
 
 				game = new Game();
 				Menu.initMenus(game);
@@ -187,5 +191,23 @@ public class TowerMiner {
 		try {
 			new URL("http://skyforce77.fr/count.php").openConnection().getInputStream();
 		} catch(Exception e) {}
+	}
+	
+	@SuppressWarnings("deprecation")
+	public static void print(String message, String level) {
+		Date d = new Date();
+		System.out.println("["+d.getHours()+":"+d.getMinutes()+":"+d.getSeconds()+"] "+"["+level.toUpperCase()+"] "+message);
+	}
+	
+	public static void printError(String error) {
+		print(error, "ERROR");
+	}
+	
+	public static void printWarning(String warning) {
+		print(warning, "WARNING");
+	}
+	
+	public static void printInfo(String info) {
+		print(info, "INFO");
 	}
 }

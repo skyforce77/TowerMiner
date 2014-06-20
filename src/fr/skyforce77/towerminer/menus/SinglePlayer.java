@@ -88,12 +88,6 @@ public class SinglePlayer extends Menu {
 
 	int selectedturret = 0;
 	Turret aimed = null;
-	
-    public Chat chat;
-    public JTextField chatfield;
-    public JRadioButton enablechat;
-    public CopyOnWriteArrayList<String> typed = new CopyOnWriteArrayList<String>();
-    public int select = 0;
 
 	public String player = "menu.mp.blue";
 

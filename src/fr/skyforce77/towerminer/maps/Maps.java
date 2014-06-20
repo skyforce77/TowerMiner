@@ -68,6 +68,8 @@ public class Maps implements Serializable {
     HashMap<String, Object> storage = new HashMap<String, Object>();
     Color modifier = new Color(42, 97, 14);
     public Point[] deaths = new Point[2];
+    public HashMap<Integer, String> blockids = new HashMap<>();
+    public HashMap<Integer, Integer> vanilla = new HashMap<>();
 
     public Maps() {
     }
@@ -355,6 +357,13 @@ public class Maps implements Serializable {
         try {
             FileOutputStream fichier = new FileOutputStream(file);
             ObjectOutputStream oos = new ObjectOutputStream(fichier);
+            for(String s : Blocks.getBlockIds().keySet()) {
+            	int i = Blocks.getBlockIds().get(s);
+            	if(!blockids.containsKey(i) || !blockids.get(i).equals(s)) {
+            		blockids.put(i, s);
+            		vanilla.put(i, Blocks.getCustomBlock(s).getFallback());
+            	}
+            }
             oos.writeObject(this);
             oos.flush();
             oos.close();

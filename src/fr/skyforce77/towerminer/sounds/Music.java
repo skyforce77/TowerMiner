@@ -79,7 +79,7 @@ public class Music {
                     if (fileLength == -1) {
                         if (display)
                             TowerMiner.game.displayPopup(new Popup(LanguageManager.getText("music.error"), 2000, "music_disc_gold"));
-                        System.out.println("Invalid URL or file.");
+                        TowerMiner.print("Invalid URL or File", "music");
                         return;
                     }
 
@@ -115,7 +115,7 @@ public class Music {
 
 
                 } catch (IOException e) {
-                    System.out.println("Error while trying to download the file.");
+                	TowerMiner.print("Error while trying to download the file.", "music");
                     e.printStackTrace();
                     return;
                 } finally {

@@ -1,5 +1,6 @@
 package fr.skyforce77.towerminer.api;
 
+import java.awt.Color;
 import java.beans.IntrospectionException;
 import java.io.File;
 import java.io.FileInputStream;
@@ -24,11 +25,13 @@ import org.yaml.snakeyaml.constructor.SafeConstructor;
 import com.esotericsoftware.kryonet.Connection;
 
 import fr.skyforce77.towerminer.TowerMiner;
-import fr.skyforce77.towerminer.achievements.Popup;
 import fr.skyforce77.towerminer.api.events.TMEvent;
 import fr.skyforce77.towerminer.multiplayer.MPInfos;
 import fr.skyforce77.towerminer.protocol.BigSending;
 import fr.skyforce77.towerminer.protocol.ObjectReceiver;
+import fr.skyforce77.towerminer.protocol.chat.ChatMessage;
+import fr.skyforce77.towerminer.protocol.chat.ChatModel;
+import fr.skyforce77.towerminer.protocol.chat.MessageModel;
 import fr.skyforce77.towerminer.protocol.packets.Packet21LoadPlugin;
 import fr.skyforce77.towerminer.protocol.packets.Packet22PluginMessage;
 import fr.skyforce77.towerminer.ressources.FileContainer;
@@ -53,13 +56,16 @@ public class PluginManager {
 		try {
 			plugins.add(p);
 			pluginlist.add(p.getName()+"("+p.getVersion()+")");
-			TowerMiner.game.displayPopup(new Popup(p.getName()+"("+p.getVersion()+")", 6000, "plugin"));
+			ChatModel plu = new ChatModel(p.getName());
+			plu.setForegroundColor(Color.CYAN);
+			plu.setMouseModel(new MessageModel("Version: "+p.getVersion()));
 			pluginfiles.add(f);
-			System.out.println("Enabling "+p.getName()+" plugin");
+			TowerMiner.printInfo("Enabling "+p.getName()+" plugin");
 			p.onEnable();
-			System.out.println("Successfully enabled "+p.getName()+" plugin");
+			TowerMiner.printInfo("Successfully enabled "+p.getName()+" plugin");
+			TowerMiner.menu.chat.onMessageReceived(new ChatMessage(new ChatModel("Plugin "), plu, new ChatModel(" enabled")));
 		} catch (Exception e) {
-			System.out.println("Can't launch "+p.getName()+" plugin.");
+			TowerMiner.printError("Can't enable "+p.getName()+" plugin.");
 			e.printStackTrace();
 		}
 	}
@@ -82,7 +88,7 @@ public class PluginManager {
 				p.setPluginInfos(new PluginInfo(map));
 				loadPlugin(p, f);
 			} catch (Exception e) {
-				System.out.println("Can't launch "+f.getName()+" plugin.");
+				TowerMiner.printError("Can't launch "+f.getName()+" plugin.");
 				e.printStackTrace();
 			}
 		}
@@ -200,7 +206,7 @@ public class PluginManager {
 
 	public static void registerListener(TMListener listener) {
 		handlers.add(listener);
-		System.out.println("Registered "+listener.getClass().getSimpleName());
+		TowerMiner.printInfo("Registered listener "+listener.getClass().getSimpleName());
 	}
 
 	public static List<TMListener> getListeners() {

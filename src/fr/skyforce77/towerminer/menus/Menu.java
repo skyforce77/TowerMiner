@@ -10,12 +10,17 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.WindowEvent;
 import java.util.Date;
+import java.util.concurrent.CopyOnWriteArrayList;
+
+import javax.swing.JRadioButton;
+import javax.swing.JTextField;
 
 import fr.skyforce77.towerminer.TowerMiner;
 import fr.skyforce77.towerminer.api.PluginManager;
 import fr.skyforce77.towerminer.api.events.menu.MenuUnusedEvent;
 import fr.skyforce77.towerminer.api.events.menu.MenuUsedEvent;
 import fr.skyforce77.towerminer.game.Game;
+import fr.skyforce77.towerminer.menus.additionals.Chat;
 import fr.skyforce77.towerminer.ressources.language.LanguageManager;
 import fr.skyforce77.towerminer.sounds.Music;
 
@@ -31,6 +36,11 @@ public class Menu {
     public boolean cursorinwindow = true;
     public Menu last = null;
     public boolean canreturn = true;
+    public Chat chat;
+    public JTextField chatfield;
+    public JRadioButton enablechat;
+    public CopyOnWriteArrayList<String> typed = new CopyOnWriteArrayList<String>();
+    public int select = 0;
 
     public static MainMenu mainmenu;
     public static MapEditor mapeditor;

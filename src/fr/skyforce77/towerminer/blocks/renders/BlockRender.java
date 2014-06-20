@@ -12,7 +12,7 @@ import fr.skyforce77.towerminer.maps.Maps;
 public class BlockRender implements Serializable {
 
     private static final long serialVersionUID = -5745290778062774752L;
-    public static BlockRender[] renders = new BlockRender[50];
+    public static BlockRender[] renders = new BlockRender[1000];
 
     public static void createRenders() {
         renders[0] = new BlockRender();

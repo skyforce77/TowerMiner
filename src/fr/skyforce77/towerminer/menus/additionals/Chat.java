@@ -31,12 +31,10 @@ public class Chat {
 		this.menu = menu;
 	}
 
-	@SuppressWarnings("deprecation")
 	public void onMessageReceived(ChatMessage message) {
 		messages.add(message);
 		messagedate.add(new Date().getTime());
-		Date d = new Date();
-		System.out.println("["+d.getHours()+":"+d.getMinutes()+":"+d.getSeconds()+"] "+message.toString());
+		TowerMiner.print(message.toString(), "chat");
 		
 		int h = 0;
 		while(messagedate.size() > max) {

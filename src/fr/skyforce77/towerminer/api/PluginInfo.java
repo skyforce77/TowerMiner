@@ -4,20 +4,25 @@ import java.util.Map;
 
 public class PluginInfo {
 
-	private String name, version;
 	private Map<?,?> map;
 	public PluginInfo(Map<?,?> map) {
-		this.version = map.get("version").toString();
-		this.name = map.get("name").toString();
 		this.map = map;
 	}
 	
 	public String getName() {
-		return name;
+		return map.get("name").toString();
 	}
 	
 	public String getVersion() {
-		return version;
+		return map.get("version").toString();
+	}
+	
+	public String getMain() {
+		return map.get("main").toString();
+	}
+	
+	public String getValue(String value) {
+		return map.get(value).toString();
 	}
 	
 	public Map<?, ?> getMap() {

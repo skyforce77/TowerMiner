@@ -5,6 +5,8 @@ import java.awt.Graphics2D;
 import java.awt.Image;
 import java.io.File;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Random;
 
 import javax.swing.ImageIcon;
@@ -16,14 +18,60 @@ import fr.skyforce77.towerminer.menus.SinglePlayer;
 import fr.skyforce77.towerminer.particles.Particle;
 import fr.skyforce77.towerminer.particles.ParticleType;
 import fr.skyforce77.towerminer.ressources.RessourcesManager;
+import fr.skyforce77.towerminer.save.DataBase;
 
 public class Blocks implements Serializable {
 
     private static final long serialVersionUID = 2752810401397078248L;
-    private static Blocks[] blocks;
+    private static Blocks[] blocks = new Blocks[5000];
+    private static HashMap<String, Integer> blockids = new HashMap<>();
+    protected static ArrayList<CustomBlock> customblocks = new ArrayList<>();
+    
+    @SuppressWarnings("unchecked")
+	public static void loadCustomBlocks() {
+    	Object o = DataBase.getValue("blockids");
+    	if(o != null && o instanceof HashMap) {
+    		blockids = (HashMap<String, Integer>)o;
+    	}
+    }
+    
+    public static int getMax() {
+    	int max = 5000;
+    	for(String s : blockids.keySet()) {
+    		if(blockids.get(s) > max) {
+    			max = blockids.get(s);
+    		}
+    	}
+    	return max;
+    }
+    
+    public static HashMap<String, Integer> getBlockIds() {
+    	return blockids;
+    }
+    
+    public static CustomBlock getCustomBlock(String s) {
+    	CustomBlock b = null;
+    	for(CustomBlock cb : customblocks) {
+    		if(cb.getIdentfier().equals(s)) {
+    			b = cb;
+    		}
+    	}
+    	return b;
+    }
+    
+    public static int createCustomBlock(String identifier) {
+    	if(blockids.containsKey(identifier)) {
+    		return blockids.get(identifier);
+    	} else {
+    		int id = getMax()+1;
+    		blockids.put(identifier, id);
+    		DataBase.setValue("blockids", blockids);
+    		return id;
+    	}
+    }
 
     public static void createNativeBlocks() {
-        blocks = new Blocks[5000];
+        blocks = new Blocks[getMax()+1];
         new Blocks(0, "unknown").setInvisible();
         new Blocks(1, "stone", "stone_granite", "stone_granite_smooth", "stone_diorite", "stone_diorite_smooth", "stone_andesite", "stone_andesite_smooth");
         new Blocks(2, "grass", "podzol").setAdaptColor(0);
@@ -43,7 +91,7 @@ public class Blocks implements Serializable {
         new Blocks(16, "coal_ore");
         new Blocks(17, "log", "log1", "log2", "log3", "log4", "log5", "log6", "log7", "log8", "log9", "log10", "log11");
         new Blocks(18, "leaves", "leaves1", "leaves2", "leaves3").setAdaptColor().setOverlay();
-        new Blocks(19, "sponge");
+        new Blocks(19, "sponge", "sponge_wet");
         new Blocks(20, "glass").setOverlay();
         new Blocks(21, "lapis_ore");
         new Blocks(22, "lapis_block");
@@ -182,6 +230,8 @@ public class Blocks implements Serializable {
         new Blocks(163, "coal_block");
         new Blocks(164, "ice_packed");
         new Blocks(165, "slime").setOverlay();
+        new Blocks(168, "prismarine_rough0", "prismarine_bricks", "prismarine_dark", "prismarine_rough1", "prismarine_rough2", "prismarine_rough3");
+        new Blocks(169, "sea_lantern").setRender(1);
 
         new Blocks(996, "mskeleton", "skull_skeleton").setOverlay().setRender(7);
         new Blocks(997, "wither_skeleton_mob", "skull_wither").setOverlay().setRender(7);
@@ -196,6 +246,9 @@ public class Blocks implements Serializable {
         new Blocks(1023, "fleche", "fleche1", "fleche2", "fleche3");
         new Blocks(1024, "unknown").setInvisible().setRender(9).setCantPlaceOn();
 
+        for(CustomBlock b : customblocks) {
+        	blocks[b.getId()] = b;
+        }
         BlockRender.createRenders();
     }
 
@@ -244,9 +297,22 @@ public class Blocks implements Serializable {
     }
 
     public static Blocks byId(int id) {
-        if(id < blocks.length && blocks[id] != null) {
-            return blocks[id];
-        }
+		if(Maps.getActualMap().blockids != null && Maps.getActualMap().blockids.containsKey(id)) {
+			Blocks b = Blocks.getCustomBlock(Maps.getActualMap().blockids.get(id));
+			if(b == null) {
+				if(Maps.getActualMap().vanilla.containsKey(id)) {
+					id = Maps.getActualMap().vanilla.get(id);
+					if(id < blocks.length && blocks[id] != null) {
+			            return blocks[id];
+			        }
+				}
+			}
+			return b;
+		} else {
+			if(id < blocks.length && blocks[id] != null) {
+	            return blocks[id];
+	        }
+		}
         return blocks[1024];
     }
 
