@@ -100,6 +100,8 @@ turret.range: Range
 turret.owner: Owner
 turret.cost: Total cost
 turret.speed: Speed
+turret.power: Puissance
+
 achievement: Achievements
 achievement.text: Achievement get!
 achievement.text.mp: % get

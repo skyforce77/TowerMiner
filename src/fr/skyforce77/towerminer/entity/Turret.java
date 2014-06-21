@@ -30,6 +30,7 @@ public class Turret extends Entity {
     int distance = 90;
     int price = 20;
     int cost = 30;
+    int power = 1;
     String owner = "menu.mp.blue";
     int rgb = -1;
 
@@ -43,6 +44,14 @@ public class Turret extends Entity {
         }
         PluginManager.callEvent(new TurretPlacedEvent(this));
     }
+    
+    public void setPower(int power) {
+		this.power = power;
+	}
+    
+    public int getPower() {
+		return power;
+	}
 
     public int getData() {
         return data;
@@ -162,7 +171,8 @@ public class Turret extends Entity {
         double ro = getRotation();
         g2d.rotate(ro - Math.toRadians(getType().rotation), x, y + sp.CanvasY);
         try {
-           g2d.drawImage(RenderHelper.getColoredImage(getType().getTexture(0), new Color(rgb), 0.1F), (int) x - 15 + sp.CanvasX, (int) y - 15 + sp.CanvasY, 30, 30, null);
+        	int size = 30+(int)(0.5*data);
+           g2d.drawImage(RenderHelper.getColoredImage(getType().getTexture(0), new Color(rgb), 0.1F), (int) x - size/2 + sp.CanvasX, (int) y - size/2 + sp.CanvasY, size, size, null);
         } catch (Exception e) {
         }
         g2d.rotate(-ro + Math.toRadians(getType().rotation), x, y + sp.CanvasY);
@@ -175,11 +185,13 @@ public class Turret extends Entity {
         String[] text = new String[3];
         String speed = data * 2 >= 40 ? "100%" : data * 2 + "%";
         if (sp instanceof MultiPlayer) {
-            text = new String[]{LanguageManager.getText("turret.level") + ": " + data, LanguageManager.getText("turret.range") + ": " + ((float) distance / 45),
-                    LanguageManager.getText("turret.speed") + ": " + speed, LanguageManager.getText("turret.owner") + ": " + LanguageManager.getText(owner)};
+            text = new String[]{LanguageManager.getText("turret.level") + ": " + data, LanguageManager.getText("turret.range") + ": " + (int)((float) distance / 45),
+                    LanguageManager.getText("turret.speed") + ": " + speed, LanguageManager.getText("turret.owner") + ": " + LanguageManager.getText(owner),
+                    LanguageManager.getText("turret.power") + ": " + power};
         } else {
-            text = new String[]{LanguageManager.getText("turret.level") + ": " + data, LanguageManager.getText("turret.range") + ": " + ((float) distance / 45),
-                    LanguageManager.getText("turret.speed") + ": " + speed, LanguageManager.getText("turret.cost") + ": " + cost};
+            text = new String[]{LanguageManager.getText("turret.level") + ": " + data, LanguageManager.getText("turret.range") + ": " + (int)((float) distance / 45),
+                    LanguageManager.getText("turret.speed") + ": " + speed, LanguageManager.getText("turret.cost") + ": " + cost,
+                    LanguageManager.getText("turret.power") + ": " + power};
         }
 
         g2d.setFont(new Font("TimesRoman", Font.CENTER_BASELINE, 12));
@@ -194,12 +206,13 @@ public class Turret extends Entity {
         }
 
         g2d.setColor(new Color(0, 0, 0, 150));
-        g2d.fillRect((int) x, (int) y - 64, (int) (4 + size.getWidth()), 16 * 4);
+        g2d.fillRect((int) x, (int) y - 16 * text.length, (int) (4 + size.getWidth()), 16 * text.length);
         g2d.setColor(Color.WHITE);
-        g2d.drawString(text[0], (int) x + 3, (int) y - 3);
-        g2d.drawString(text[1], (int) x + 3, (int) y - 3 - 16);
-        g2d.drawString(text[2], (int) x + 3, (int) y - 3 - 32);
-        g2d.drawString(text[3], (int) x + 3, (int) y - 3 - 48);
+        int u = 0;
+        for (String t : text) {
+        	g2d.drawString(t, (int) x + 3, (int) y - 3 - 16*u);
+        	u++;
+        }
     }
 
     public EntityTypes getProjectile() {

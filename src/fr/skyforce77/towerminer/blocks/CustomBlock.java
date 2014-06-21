@@ -42,6 +42,7 @@ public class CustomBlock extends Blocks{
         
 		this.id = Blocks.createCustomBlock(getIdentfier());
 		Blocks.customblocks.add(this);
+		TowerMiner.printInfo("Registered block "+getIdentfier()+" with id "+id);
 	}
 	
 	public CustomBlock(Plugin plugin, String name, int fallback, ImageIcon... textures) {

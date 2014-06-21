@@ -100,6 +100,7 @@ turret.range: Portée
 turret.owner: Créateur
 turret.cost: Coût total
 turret.speed: Vitesse
+turret.power: Puissance
 
 achievement: Succès
 achievement.text: Succès obtenu!

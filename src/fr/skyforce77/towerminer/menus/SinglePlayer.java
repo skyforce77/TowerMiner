@@ -459,13 +459,17 @@ public class SinglePlayer extends Menu {
 			g2d.fillRect(Xcursor, Ycursor - 16, (int) (4 + size.getWidth()), 16);
 			g2d.setColor(Color.WHITE);
 			g2d.drawString(LanguageManager.getText("menu.sp.buy") + ": " + EntityTypes.turrets.get(selectedturret).getPrice(), Xcursor + 3, Ycursor - 3);
-		} else if (aimed != null) {
+		} else if (aimed != null && aimed.getData() < 20) {
+			FontMetrics metrics = g2d.getFontMetrics(g2d.getFont());
+			int hgt = metrics.getHeight();
+			int adv = metrics.stringWidth(LanguageManager.getText("menu.sp.improve") + ": " + aimed.getPrice());
+			Dimension size = new Dimension(adv + 2, hgt + 2);
 			g2d.setColor(new Color(0, 0, 0, 150));
-			g2d.fillRect(Xcursor - 10, Ycursor - 35, 120, 40);
+			g2d.fillRect(Xcursor, Ycursor - 32, (int) (4 + size.getWidth()), 45);
 			g2d.setColor(Color.WHITE);
 			g2d.setFont(new Font("TimesRoman", Font.CENTER_BASELINE, 12));
-			g2d.drawString("(" + LanguageManager.getText("menu.sp.click.right") + ")", Xcursor, Ycursor - 15);
-			g2d.drawString(LanguageManager.getText("menu.sp.improve") + ": " + aimed.getPrice(), Xcursor, Ycursor);
+			g2d.drawString("(" + LanguageManager.getText("menu.sp.click.right") + ")", Xcursor + 3, Ycursor - 3 - 16);
+			g2d.drawString(LanguageManager.getText("menu.sp.improve") + ": " + aimed.getPrice(), Xcursor+3, (int) (Ycursor + 5 - 16 + size.getHeight()));
 		}
 
 		if (paused) {
@@ -603,7 +607,7 @@ public class SinglePlayer extends Menu {
 				aimed = null;
 			}
 		} else if (e.getModifiers() == 4) {
-			if (aimed != null && aimed.getPrice() <= or) {
+			if (aimed != null && aimed.getPrice() <= or && aimed.getData() < 20) {
 				or -= aimed.getPrice();
 				aimed.addData();
 			}

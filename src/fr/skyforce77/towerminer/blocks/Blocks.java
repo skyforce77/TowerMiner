@@ -353,6 +353,10 @@ public class Blocks implements Serializable {
         setAdaptColor(false);
         blocks[id] = this;
     }
+    
+    public ImageIcon[] getTextures() {
+    	return textures;
+    }
 
     public void resetTextures() {
         textures = new ImageIcon[16];

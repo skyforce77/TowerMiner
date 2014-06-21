@@ -114,7 +114,7 @@ public class EntityProjectile extends Entity {
                 if(sp.draw.contains(this)) {
                 	sp.draw.remove(this);
                 }
-                ((Mob) aimed).hurt(1);
+                ((Mob) aimed).hurt(((Turret) shooter).getPower());
                 ((Turret) shooter).onDamage((Mob) aimed);
                 if((sp instanceof MultiPlayer && ((MultiPlayer)sp).server) || !(sp instanceof MultiPlayer))
                 	onHurt(sp);
