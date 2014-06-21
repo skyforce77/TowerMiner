@@ -26,7 +26,11 @@ public class Witch extends Turret {
     }
     
     public boolean canSee(Mob m) {
-    	return true;
+    	double i = m.getLocation().distance(location.x, location.y);
+    	if(i < this.distance) {
+    		return true;
+    	}
+    	return false;
     };
 
 }

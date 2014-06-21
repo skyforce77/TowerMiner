@@ -14,6 +14,7 @@ import fr.skyforce77.towerminer.api.events.entity.TurretPlacedEvent;
 import fr.skyforce77.towerminer.api.events.entity.TurretUpgradeEvent;
 import fr.skyforce77.towerminer.entity.effects.EntityEffectType;
 import fr.skyforce77.towerminer.maps.MapWritter;
+import fr.skyforce77.towerminer.maps.Maps;
 import fr.skyforce77.towerminer.menus.MultiPlayer;
 import fr.skyforce77.towerminer.menus.SinglePlayer;
 import fr.skyforce77.towerminer.protocol.packets.Packet10EntityValueUpdate;
@@ -106,7 +107,7 @@ public class Turret extends Entity {
         Mob e = null;
         for (Entity en : sp.mobs) {
             double i = en.getLocation().distance(location.x, location.y);
-            if (i < distance && i < this.distance && canSee((Mob)en)) {
+            if (i < distance && i < distance && canSee((Mob)en)) {
                 distance = i;
                 e = (Mob) en;
             }
@@ -135,7 +136,7 @@ public class Turret extends Entity {
         Mob e = null;
         for (Entity en : sp.draw) {
             double i = en.getLocation().distance(location.x, location.y);
-            if (en instanceof Mob && i < distance && i < this.distance && canSee((Mob)en)) {
+            if (en instanceof Mob && i < distance && canSee((Mob)en)) {
                 distance = i;
                 e = (Mob) en;
             }
@@ -147,7 +148,8 @@ public class Turret extends Entity {
     }
     
     public boolean canSee(Mob m) {
-    	if(!m.hasEffect(EntityEffectType.INVISIBLE)) {
+    	double i = m.getLocation().distance(location.x, location.y);
+    	if(!m.hasEffect(EntityEffectType.INVISIBLE) && i < this.distance) {
     		return true;
     	}
     	return false;
@@ -202,6 +204,19 @@ public class Turret extends Entity {
 
     public EntityTypes getProjectile() {
         return EntityTypes.ARROW;
+    }
+    
+    public static boolean canPlace(int x, int y) {
+        if (Maps.getActualMap().getBlock(x, y) == null) {
+            return true;
+        }
+        if(!(Maps.getActualMap().getBlock(x, y).equals(Maps.getActualMap().getBlockPath()) && Maps.getActualMap().getOverlayBlock(x, y).equals(Maps.getActualMap().getOverlayPath()))) {
+        	if(!(Maps.getActualMap().getBlock(x, y).isLiquid() || Maps.getActualMap().getOverlayBlock(x, y).isLiquid()) &&
+        		(Maps.getActualMap().getBlock(x, y).canPlaceTurretOn() && Maps.getActualMap().getOverlayBlock(x, y).canPlaceTurretOn())) {
+        		return true;
+        	}
+        }
+        return false;
     }
 
 }

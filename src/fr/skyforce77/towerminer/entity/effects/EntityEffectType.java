@@ -11,6 +11,7 @@ public class EntityEffectType {
     public static EntityEffectType SLOW;
     public static EntityEffectType INVISIBLE;
     public static EntityEffectType FREEZE;
+    public static EntityEffectType HURT;
 
     private static HashMap<Integer, EntityEffectType> types = new HashMap<Integer, EntityEffectType>();
 
@@ -20,6 +21,7 @@ public class EntityEffectType {
         SLOW = new EntityEffectType(2);
         INVISIBLE = new EntityEffectType(3);
         FREEZE = new FreezeEffect();
+        HURT = new Hurt();
     }
 
     public static EntityEffectType byId(int id) {

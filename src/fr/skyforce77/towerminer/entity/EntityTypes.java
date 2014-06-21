@@ -28,6 +28,7 @@ public class EntityTypes {
 	public static EntityTypes CREEPER = new EntityTypes(54, RessourcesManager.getIconTexture("creeper"), 200, -90, Creeper.class);
 	public static EntityTypes WITHER_SKELETON = new EntityTypes(55, RessourcesManager.getIconTexture("wither_skeleton"), 60, -90, WitherSkeleton.class);
 	public static EntityTypes SNOW_GOLEM = new EntityTypes(56, RessourcesManager.getIconTexture("pumpkin"), 300, -90, SnowGolem.class);
+	public static EntityTypes GUARDIAN = new EntityTypes(57, RessourcesManager.getIconTexture("guardian"), 100, -90, Guardian.class);
 	
 	public static EntityTypes ARROW = new EntityTypes(100, RessourcesManager.getIconTexture("arrow"), true, 45);
 	public static EntityTypes FIREBALL = new EntityTypes(101, RessourcesManager.getIconTexture("fireball"), false, 0);
@@ -45,6 +46,7 @@ public class EntityTypes {
     	registerTurret(SPIDER);
     	registerTurret(WITHER_SKELETON);
     	registerTurret(WITCH);
+    	registerTurret(GUARDIAN);
     	registerTurret(CREEPER);
     	registerTurret(SNOW_GOLEM);
         

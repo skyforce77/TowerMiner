@@ -431,6 +431,7 @@ public class MapEditor extends SinglePlayer {
 
 	@Override
 	public void onMouseDragged(MouseEvent e) {
+		super.onMouseDragged(e);
 		int xl = (e.getX() / 48);
 		int yl = (e.getY() / 48) - 1;
 		if(Maps.getActualMap().hasPoint(new Point(xl,yl)) && e.getModifiers() == 16) {

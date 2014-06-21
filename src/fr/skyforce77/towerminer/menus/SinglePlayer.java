@@ -372,7 +372,7 @@ public class SinglePlayer extends Menu {
 					placed = (Turret) en;
 				}
 			}
-			if (EntityTypes.turrets.get(selectedturret).getPrice() <= or && !turretplaced && Maps.getActualMap().canPlaceTurret((Xcursor / MapWritter.getBlockWidth()), ((Ycursor + 8) / MapWritter.getBlockHeight()) - 1)) {
+			if (EntityTypes.turrets.get(selectedturret).getPrice() <= or && !turretplaced && Maps.getActualMap().canPlaceTurret(selectedturret, (Xcursor / MapWritter.getBlockWidth()), ((Ycursor + 8) / MapWritter.getBlockHeight()) - 1)) {
 				g2d.setColor(Color.GREEN);
 			} else {
 				g2d.setColor(Color.RED);
@@ -589,7 +589,7 @@ public class SinglePlayer extends Menu {
 					}
 				}
 
-				if (p.y - 1 > -1 && !turretplaced && EntityTypes.turrets.get(selectedturret).getPrice() <= or && Maps.getActualMap().canPlaceTurret(p.x, p.y - 1)) {
+				if (p.y - 1 > -1 && !turretplaced && EntityTypes.turrets.get(selectedturret).getPrice() <= or && Maps.getActualMap().canPlaceTurret(selectedturret, p.x, p.y - 1)) {
 					or -= EntityTypes.turrets.get(selectedturret).getPrice();
 					EntityTypes type = EntityTypes.turrets.get(selectedturret);
 					try {

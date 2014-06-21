@@ -138,6 +138,7 @@ public class Mob extends Entity {
             died = true;
         } else {
             life = life - damage;
+            addEffect(new EntityEffect(EntityEffectType.HURT, 10));
             if (sp.multiplayer) {
                 MultiPlayer mp = (MultiPlayer) sp;
                 if (mp.server) {
@@ -200,6 +201,9 @@ public class Mob extends Entity {
         }
         if (hasEffect(EntityEffectType.FREEZE)) {
             i = RenderHelper.getColoredImage(i, Color.CYAN, 0.1F);
+        }
+        if (hasEffect(EntityEffectType.HURT)) {
+            i = RenderHelper.getColoredImage(i, Color.RED, 0.5F);
         }
         if (hasEffect(EntityEffectType.INVISIBLE)) {
         	g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER , 0.5f));

@@ -12,12 +12,15 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.io.Serializable;
+import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.net.URL;
 import java.util.HashMap;
 
 import fr.skyforce77.towerminer.TowerMiner;
 import fr.skyforce77.towerminer.blocks.Blocks;
+import fr.skyforce77.towerminer.entity.Entity;
+import fr.skyforce77.towerminer.entity.EntityTypes;
 import fr.skyforce77.towerminer.ressources.RessourcesManager;
 
 public class Maps implements Serializable {
@@ -346,11 +349,22 @@ public class Maps implements Serializable {
         }
     }
 
-    public boolean canPlaceTurret(int x, int y) {
-        if (Maps.getActualMap().getBlock(x, y) == null) {
-            return true;
+    public boolean canPlaceTurret(int turret, int x, int y) {
+        EntityTypes types = EntityTypes.turrets.get(turret);
+        if(types == null) {
+        	return false;
         }
-        return !(Maps.getActualMap().getBlock(x, y).equals(Maps.getActualMap().getBlockPath()) && Maps.getActualMap().getOverlayBlock(x, y).equals(Maps.getActualMap().getOverlayPath())) && !Maps.getActualMap().getBlock(x, y).isLiquid() && Maps.getActualMap().getBlock(x, y).canPlaceTurretOn() && Maps.getActualMap().getOverlayBlock(x, y).canPlaceTurretOn();
+        Class<? extends Entity> c = types.getEntityClass();
+		try {
+			Method method = c.getMethod("canPlace", int.class, int.class);
+			Object o = method.invoke(null, x, y);
+			if(o instanceof Boolean) {
+				return (Boolean)o;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return false;
     }
 
     public Boolean serialize(File file) {

@@ -301,7 +301,7 @@ public class MultiPlayer extends SinglePlayer {
                         }
                     }
 
-                    if (p.y - 1 > -1 && !turretplaced && EntityTypes.turrets.get(selectedturret).getPrice() <= or && Maps.getActualMap().canPlaceTurret(p.x, p.y - 1)) {
+                    if (p.y - 1 > -1 && !turretplaced && EntityTypes.turrets.get(selectedturret).getPrice() <= or && Maps.getActualMap().canPlaceTurret(selectedturret, p.x, p.y - 1)) {
                         Packet9MouseClick pm = new Packet9MouseClick();
                         pm.modifier = e.getModifiers();
                         pm.x = p.x;

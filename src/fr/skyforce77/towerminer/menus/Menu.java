@@ -166,6 +166,8 @@ public class Menu {
     }
 
     public void onMouseDragged(MouseEvent e) {
+    	Xcursor = e.getX() - 2;
+        Ycursor = e.getY() - 30;
     }
 
     public void onMouseMoved(MouseEvent e) {
