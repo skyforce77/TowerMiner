@@ -39,12 +39,12 @@ public class Guardian extends Turret {
 		}
 		SinglePlayer sp = (SinglePlayer) TowerMiner.menu;
 
-		double distance = 99999;
+		int life = 99999;
 		Mob e = null;
 		for (Entity en : sp.mobs) {
-			double i = en.getLocation().distance(location.x, location.y);
-			if (i < distance && i < distance && canSee((Mob)en)) {
-				distance = i;
+			int i = ((Mob)en).getLife();
+			if (i < life && i < life && canSee((Mob)en)) {
+				life = i;
 				e = (Mob) en;
 			}
 		}
