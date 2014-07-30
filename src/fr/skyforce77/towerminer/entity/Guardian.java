@@ -146,7 +146,7 @@ public class Guardian extends Turret {
         double x = sp.Xcursor;
         double y = sp.Ycursor;
         String[] text = new String[3];
-        if (sp instanceof MultiPlayer) {
+        if (sp instanceof MultiPlayer && !((MultiPlayer)sp).player.equals(getOwner())) {
             text = new String[]{LanguageManager.getText("turret.level") + ": " + data, LanguageManager.getText("turret.range") + ": " + (int)((float) distance / 45),
                     LanguageManager.getText("turret.owner") + ": " + LanguageManager.getText(owner),
                     LanguageManager.getText("turret.power") + ": " + power};

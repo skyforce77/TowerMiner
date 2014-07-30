@@ -465,7 +465,7 @@ public class SinglePlayer extends Menu {
 			int adv = metrics.stringWidth(LanguageManager.getText("menu.sp.improve") + ": " + aimed.getPrice());
 			Dimension size = new Dimension(adv + 2, hgt + 2);
 			g2d.setColor(new Color(0, 0, 0, 150));
-			g2d.fillRect(Xcursor, Ycursor - 32, (int) (4 + size.getWidth()), 45);
+			g2d.fillRect(Xcursor, Ycursor - 32, (int) (15 + size.getWidth()), 45);
 			g2d.setColor(Color.WHITE);
 			g2d.setFont(new Font("TimesRoman", Font.CENTER_BASELINE, 12));
 			g2d.drawString("(" + LanguageManager.getText("menu.sp.click.right") + ")", Xcursor + 3, Ycursor - 3 - 16);
