@@ -81,18 +81,25 @@ public class Menu {
             for (MenuItem item : items) {
                 if (item != null) {
                     g2d.setFont(new Font("TimesRoman", Font.CENTER_BASELINE, 30));
-                    g2d.setColor(Color.WHITE);
                     if ((Xcursor > item.getX() && Xcursor < item.getX() + item.getWidth()
                             && Ycursor > item.getY() && Ycursor < item.getY() + item.getHeight() && item.enabled) || selected == item.getId()) {
+                        g2d.setColor(new Color(250, 250, 0, 20));
+                        g2d.fillRoundRect(item.getX(), item.getY(), item.getWidth(), item.getHeight(), 5, 5);
                         g2d.setColor(Color.YELLOW);
-                        g2d.drawRect(item.getX(), item.getY(), item.getWidth(), item.getHeight());
+                        g2d.drawRoundRect(item.getX(), item.getY(), item.getWidth(), item.getHeight(), 5, 5);
+                    } else {
+                    	g2d.setColor(new Color(250, 250, 250, 20));
+                        g2d.fillRoundRect(item.getX(), item.getY(), item.getWidth(), item.getHeight(), 5, 5);
+                        g2d.setColor(new Color(250, 250, 250, 30));
+                        g2d.drawRoundRect(item.getX(), item.getY(), item.getWidth(), item.getHeight(), 5, 5);
+                        g2d.setColor(Color.WHITE);
                     }
 
                     if (!item.isEnabled()) {
                         g2d.setColor(Color.GRAY);
                     }
 
-                    g2d.drawString(item.getName(), 15, 200 + 70 * item.getId());
+                    g2d.drawString(item.getName(), 15, 204 + 70 * item.getId());
                 }
             }
         }

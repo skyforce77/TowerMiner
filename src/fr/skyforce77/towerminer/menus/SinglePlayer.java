@@ -409,7 +409,7 @@ public class SinglePlayer extends Menu {
 			aimed = (Turret)byUUID(aimed.getUUID());
 		}
 		
-		if (aimed != null) {
+		if (aimed != null && !paused) {
 			g2d.setColor(new Color(0, 0, 0, 150));
 			g2d.fillOval((int) (aimed.getLocation().getX() - aimed.getDistance()), (int) (aimed.getLocation().getY() - aimed.getDistance()) + CanvasY, (int) aimed.getDistance() * 2, (int) aimed.getDistance() * 2);
 		}
@@ -433,7 +433,7 @@ public class SinglePlayer extends Menu {
 		}
 
 		boolean info = false;
-		if (aimed == null) {
+		if (aimed == null && !paused) {
 			Point p = new Point(Xcursor / MapWritter.getBlockWidth() - (CanvasX / MapWritter.getBlockWidth()), Ycursor / MapWritter.getBlockHeight() - (CanvasY / MapWritter.getBlockHeight()));
 			for (Entity en : entity) {
 				if (en instanceof Turret && en.getBlockLocation().equals(new Point(p.x, p.y - 1))) {
@@ -448,7 +448,7 @@ public class SinglePlayer extends Menu {
 				}
 			}
 		}
-		if (aimed == null && info == false) {
+		if (!paused && aimed == null && info == false) {
 			g2d.drawImage(EntityTypes.turrets.get(selectedturret).getTexture(0), Xcursor - 16, Ycursor - 16, 16, 16, null);
 			g2d.setFont(new Font("TimesRoman", Font.CENTER_BASELINE, 12));
 			FontMetrics metrics = g2d.getFontMetrics(g2d.getFont());
@@ -459,7 +459,7 @@ public class SinglePlayer extends Menu {
 			g2d.fillRect(Xcursor, Ycursor - 16, (int) (4 + size.getWidth()), 16);
 			g2d.setColor(Color.WHITE);
 			g2d.drawString(LanguageManager.getText("menu.sp.buy") + ": " + EntityTypes.turrets.get(selectedturret).getPrice(), Xcursor + 3, Ycursor - 3);
-		} else if (aimed != null && aimed.getData() < 20) {
+		} else if (!paused && aimed != null && aimed.getData() < 20) {
 			FontMetrics metrics = g2d.getFontMetrics(g2d.getFont());
 			int hgt = metrics.getHeight();
 			int adv = metrics.stringWidth(LanguageManager.getText("menu.sp.improve") + ": " + aimed.getPrice());

@@ -282,11 +282,20 @@ public class Game extends JFrame implements MouseListener, MouseWheelListener, M
 								i++;
 							}
 							konami = !konami;
-							int u = 0;
-							while(u < 180) {
-								konamirot++;
-								Thread.sleep(15l);
-								u++;
+							if(konamirot > 0) {
+								int u = 0;
+								while(u < 180) {
+									konamirot--;
+									Thread.sleep(15l);
+									u++;
+								}
+							} else {
+								int u = 0;
+								while(u < 180) {
+									konamirot++;
+									Thread.sleep(15l);
+									u++;
+								}
 							}
 							Thread.sleep(100l);
 							while(i > 0) {
