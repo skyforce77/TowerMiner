@@ -5,5 +5,8 @@
 	<classpathentry kind="lib" path="/home/skyforce77/Dropbox/Public/TowerMiner/TMProtocol.jar"/>
 	<classpathentry kind="lib" path="/home/skyforce77/Dropbox/Public/TowerMiner/version/TowerMiner.jar"/>
 	<classpathentry kind="lib" path="/home/skyforce77/Dropbox/Public/TowerMiner/version/TMLauncher.jar"/>
+	<classpathentry kind="lib" path="/home/skyforce77/Dropbox/Public/TowerMiner/kryonet-2.21-all.jar"/>
+	<classpathentry kind="lib" path="/home/skyforce77/Dropbox/Public/TowerMiner/snakeyaml/target/classes"/>
+	<classpathentry kind="lib" path="/home/skyforce77/Dropbox/Public/TowerMiner/vecmath-1.5.1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
