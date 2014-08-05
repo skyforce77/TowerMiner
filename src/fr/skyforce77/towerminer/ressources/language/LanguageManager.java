@@ -2,6 +2,7 @@ package fr.skyforce77.towerminer.ressources.language;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.InputStreamReader;
 import java.net.URL;
@@ -76,7 +77,7 @@ public class LanguageManager {
     public static void initLanguage(File f) {
         try {
             FileReader fr = new FileReader(f);
-            BufferedReader br = new BufferedReader(fr);
+            BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(f), "ISO-8859-1"));
             String name = br.readLine();
             if (name.startsWith("locale: ")) {
                 name = name.replace("locale: ", "");
@@ -98,7 +99,7 @@ public class LanguageManager {
 
     public static void initLanguage(URL url) {
         try {
-            InputStreamReader fr = new InputStreamReader(url.openConnection().getInputStream());
+            InputStreamReader fr = new InputStreamReader(url.openConnection().getInputStream(), "ISO-8859-1");
             BufferedReader br = new BufferedReader(fr);
             String name = br.readLine();
             if (name.startsWith("locale: ")) {
