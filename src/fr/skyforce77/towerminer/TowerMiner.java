@@ -36,7 +36,7 @@ public class TowerMiner {
 	public static int actuallauncherversion = -1;
 
 	public static boolean dev = true;
-	public static String version = "Beta 0.5e";
+	public static String version = "Beta 0.6";
 
 	public static boolean launcherupdateneeded = true;
 	public static String[] os = new String[]{"linux","windows"};
