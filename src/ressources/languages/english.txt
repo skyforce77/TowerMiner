@@ -1,3 +1,4 @@
+locale: EN_en
 language: English
 
 towerminer: TowerMiner
@@ -91,7 +92,7 @@ menu.about: About
 menu.about.music: Musics
 menu.about.music.text: Musics from MachinimaSound and KevinMcLeod
 menu.about.textures: Textures
-menu.about.textures.text: Textures from MinecraftÂ® All rights reserved
+menu.about.textures.text: Textures from Minecraft® All rights reserved
 
 menu.more: More
 
@@ -100,7 +101,7 @@ turret.range: Range
 turret.owner: Owner
 turret.cost: Total cost
 turret.speed: Speed
-turret.power: Power
+turret.power: Puissance
 
 achievement: Achievements
 achievement.text: Achievement get!

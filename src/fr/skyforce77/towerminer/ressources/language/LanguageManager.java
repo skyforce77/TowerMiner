@@ -9,14 +9,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Set;
 
-import fr.skyforce77.towerminer.TowerMiner;
 import fr.skyforce77.towerminer.ressources.RessourcesManager;
 import fr.skyforce77.towerminer.save.DataBase;
 
 public class LanguageManager {
 
     static HashMap<String, Language> languages = new HashMap<String, Language>();
-    static String def = "Français";
+    static String def = "FR_fr";
 
     public static String getText(String id) {
         if (getLanguage() == null) {
@@ -38,11 +37,11 @@ public class LanguageManager {
     }
 
     public static Language getLanguage() {
-        return languages.get((String) DataBase.getValue("language", def));
+        return languages.get((String) DataBase.getValue("locale", def));
     }
 
     public static String getActualLanguage() {
-        return (String) DataBase.getValue("language", def);
+        return (String) DataBase.getValue("locale", def);
     }
 
     public static Language getLanguage(String id) {
@@ -50,11 +49,11 @@ public class LanguageManager {
     }
 
     public static void setLanguage(String id) {
-        DataBase.setValue("language", id);
+        DataBase.setValue("locale", id);
     }
 
     public static Language getDefaultLanguage() {
-        return languages.get("Français");
+        return languages.get("FR_fr");
     }
 
     public static Set<String> getLanguages() {
@@ -66,13 +65,8 @@ public class LanguageManager {
             RessourcesManager.getLanguagesDirectory().mkdirs();
         }
 
-        if (TowerMiner.usedos.equalsIgnoreCase("Windows")) {
-            initLanguage(RessourcesManager.getURL("/ressources/languages/defaultWIN.txt"));
-            initLanguage(RessourcesManager.getURL("/ressources/languages/englishWIN.txt"));
-        } else {
-            initLanguage(RessourcesManager.getURL("/ressources/languages/default.txt"));
-            initLanguage(RessourcesManager.getURL("/ressources/languages/english.txt"));
-        }
+        initLanguage(RessourcesManager.getURL("/ressources/languages/default.txt"));
+        initLanguage(RessourcesManager.getURL("/ressources/languages/english.txt"));
 
         for (File f : RessourcesManager.getLanguagesDirectory().listFiles()) {
             initLanguage(f);
@@ -84,8 +78,8 @@ public class LanguageManager {
             FileReader fr = new FileReader(f);
             BufferedReader br = new BufferedReader(fr);
             String name = br.readLine();
-            if (name.startsWith("language: ")) {
-                name = name.replace("language: ", "");
+            if (name.startsWith("locale: ")) {
+                name = name.replace("locale: ", "");
                 ArrayList<String> lines = new ArrayList<String>();
                 while (true) {
                     String line = br.readLine();
@@ -107,8 +101,8 @@ public class LanguageManager {
             InputStreamReader fr = new InputStreamReader(url.openConnection().getInputStream());
             BufferedReader br = new BufferedReader(fr);
             String name = br.readLine();
-            if (name.startsWith("language: ")) {
-                name = name.replace("language: ", "");
+            if (name.startsWith("locale: ")) {
+                name = name.replace("locale: ", "");
                 ArrayList<String> lines = new ArrayList<String>();
                 while (true) {
                     String line = br.readLine();
