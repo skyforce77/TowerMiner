@@ -2,7 +2,6 @@ package fr.skyforce77.towerminer.achievements;
 
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.Image;
@@ -41,7 +40,7 @@ public class Popup implements Serializable {
     public void draw(Graphics2D g2d, int CanvasY) {
         int difference = (int) ((time + displayed) - new Date().getTime());
 
-        g2d.setFont(new Font("TimesRoman", Font.CENTER_BASELINE, 22));
+        g2d.setFont(TowerMiner.getFont(22));
         FontMetrics metrics = g2d.getFontMetrics(g2d.getFont());
         int hgt = metrics.getHeight();
         int adv = metrics.stringWidth(text);

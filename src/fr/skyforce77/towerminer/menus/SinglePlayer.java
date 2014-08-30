@@ -2,7 +2,6 @@ package fr.skyforce77.towerminer.menus;
 
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.Point;
@@ -343,14 +342,14 @@ public class SinglePlayer extends Menu {
 		if (gameover) {
 			g2d.setColor(new Color(0, 0, 0, 150));
 			g2d.fillRect(0, 0, TowerMiner.game.getWidth(), TowerMiner.game.getHeight());
-			g2d.setFont(new Font("TimesRoman", Font.CENTER_BASELINE, 40));
+			g2d.setFont(TowerMiner.getFont(40));
 			g2d.setColor(new Color(0, 0, 0, 180));
 			g2d.fillRect(TowerMiner.game.getWidth() / 2 - 150, 150, 300, 70);
 			g2d.setColor(new Color(0, 0, 20, 140));
 			g2d.fillRect(TowerMiner.game.getWidth() / 2 - 150, 150 + 70, 300, 80);
 			g2d.setColor(Color.WHITE);
 			g2d.drawString(LanguageManager.getText("menu.sp.gameover"), TowerMiner.game.getWidth() / 2 - 120, 200);
-			g2d.setFont(new Font("TimesRoman", Font.CENTER_BASELINE, 20));
+			g2d.setFont(TowerMiner.getFont(20));
 			g2d.drawString(LanguageManager.getText("menu.sp.rounds.win", (round - 1)), TowerMiner.game.getWidth() / 2 - 150, 250);
 			g2d.drawString(LanguageManager.getText("menu.sp.golds.win", orgained), TowerMiner.game.getWidth() / 2 - 150, 280);
 			return;
@@ -410,6 +409,21 @@ public class SinglePlayer extends Menu {
 		}
 		
 		if (aimed != null && !paused) {
+			if(aimed.getType().equals(EntityTypes.GUARDIAN)) {
+				g2d.setColor(new Color(0, 0, 0, 50));
+				for (Entity en : entity) {
+					if (en instanceof Turret) {
+						Turret t = (Turret)en;
+						g2d.fillOval((int) (t.getLocation().getX() - t.getDistance()), (int) (t.getLocation().getY() - t.getDistance()) + CanvasY, (int) t.getDistance() * 2, (int) t.getDistance() * 2);
+					}
+				}
+				for (Entity en : draw) {
+					if (en instanceof Turret) {
+						Turret t = (Turret)en;
+						g2d.fillOval((int) (t.getLocation().getX() - t.getDistance()), (int) (t.getLocation().getY() - t.getDistance()) + CanvasY, (int) t.getDistance() * 2, (int) t.getDistance() * 2);
+					}
+				}
+			}
 			g2d.setColor(new Color(0, 0, 0, 150));
 			g2d.fillOval((int) (aimed.getLocation().getX() - aimed.getDistance()), (int) (aimed.getLocation().getY() - aimed.getDistance()) + CanvasY, (int) aimed.getDistance() * 2, (int) aimed.getDistance() * 2);
 		}
@@ -450,7 +464,7 @@ public class SinglePlayer extends Menu {
 		}
 		if (!paused && aimed == null && info == false) {
 			g2d.drawImage(EntityTypes.turrets.get(selectedturret).getTexture(0), Xcursor - 16, Ycursor - 16, 16, 16, null);
-			g2d.setFont(new Font("TimesRoman", Font.CENTER_BASELINE, 12));
+			g2d.setFont(TowerMiner.getFont(12));
 			FontMetrics metrics = g2d.getFontMetrics(g2d.getFont());
 			int hgt = metrics.getHeight();
 			int adv = metrics.stringWidth(LanguageManager.getText("menu.sp.buy") + ": " + EntityTypes.turrets.get(selectedturret).getPrice());
@@ -467,9 +481,35 @@ public class SinglePlayer extends Menu {
 			g2d.setColor(new Color(0, 0, 0, 150));
 			g2d.fillRect(Xcursor, Ycursor - 32, (int) (15 + size.getWidth()), 45);
 			g2d.setColor(Color.WHITE);
-			g2d.setFont(new Font("TimesRoman", Font.CENTER_BASELINE, 12));
+			g2d.setFont(TowerMiner.getFont(12));
 			g2d.drawString("(" + LanguageManager.getText("menu.sp.click.right") + ")", Xcursor + 3, Ycursor - 3 - 16);
 			g2d.drawString(LanguageManager.getText("menu.sp.improve") + ": " + aimed.getPrice(), Xcursor+3, (int) (Ycursor + 5 - 16 + size.getHeight()));
+			
+			for (Mob en : mobs) {
+				if (en != null) {
+					if(aimed.canSee(en)) {
+						g2d.setColor(new Color(150, 0, 0));
+					} else {
+						g2d.setColor(Color.YELLOW);
+					}
+					g2d.drawLine((int)aimed.getLocation().getX(), (int)aimed.getLocation().getY()+CanvasY,
+							(int)en.getLocation().getX(), (int)en.getLocation().getY()+CanvasY);
+				}
+			}
+			for (Entity en : draw) {
+				if (en != null && en instanceof Mob) {
+					Mob m = (Mob)en;
+					if (en != null) {
+						if(aimed.canSee(m)) {
+							g2d.setColor(new Color(150, 0, 0));
+						} else {
+							g2d.setColor(Color.YELLOW);
+						}
+						g2d.drawLine((int)aimed.getLocation().getX(), (int)aimed.getLocation().getY()+CanvasY,
+								(int)en.getLocation().getX(), (int)en.getLocation().getY()+CanvasY);
+					}
+				}
+			}
 		}
 
 		if (paused) {
@@ -477,7 +517,7 @@ public class SinglePlayer extends Menu {
 			g2d.fillRect(0, 0, TowerMiner.game.getWidth(), TowerMiner.game.getHeight());
 			g2d.rotate(-0.1, TowerMiner.game.getWidth(), TowerMiner.game.getHeight());
 			g2d.fillRect(TowerMiner.game.getWidth() - 240, TowerMiner.game.getHeight() - 100, TowerMiner.game.getWidth(), TowerMiner.game.getWidth());
-			g2d.setFont(new Font("TimesRoman", Font.CENTER_BASELINE, 40));
+			g2d.setFont(TowerMiner.getFont(40));
 			g2d.setColor(Color.WHITE);
 			g2d.drawString(LanguageManager.getText("menu.sp.paused"), TowerMiner.game.getWidth() - 210, TowerMiner.game.getHeight() - 60);
 			g2d = (Graphics2D) g.create();
@@ -529,7 +569,7 @@ public class SinglePlayer extends Menu {
 		g2d.setColor(new Color(100, 100, 100));
 		g2d.fillRect(0, 0, TowerMiner.game.getWidth() - CanvasX, CanvasY);
 
-		g2d.setFont(new Font("TimesRoman", Font.CENTER_BASELINE, 18));
+		g2d.setFont(TowerMiner.getFont(18));
 		g2d.setColor(Color.WHITE);
 		FontMetrics metrics = g2d.getFontMetrics(g2d.getFont());
 		int hgt = metrics.getHeight();

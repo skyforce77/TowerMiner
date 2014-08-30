@@ -1,7 +1,6 @@
 package fr.skyforce77.towerminer.menus;
 
 import java.awt.Color;
-import java.awt.Font;
 import java.awt.Graphics2D;
 
 import fr.skyforce77.towerminer.TowerMiner;
@@ -43,7 +42,7 @@ public class MoreMenu extends Menu {
         g2d.setColor(new Color(0, 0, 0, 150));
         g2d.fillRect(0, 0, TowerMiner.game.getWidth(), TowerMiner.game.getHeight());
         g2d.fillRect(0, 0, TowerMiner.game.getWidth() / 2, TowerMiner.game.getHeight() * 2);
-        g2d.setFont(new Font("TimesRoman", Font.BOLD, 40));
+        g2d.setFont(TowerMiner.getFont(40));
         g2d.setColor(Color.LIGHT_GRAY);
         g2d.drawString(LanguageManager.getText("menu.more"), 10, 100 + (xmove / 5));
         super.drawMenu(g2d);

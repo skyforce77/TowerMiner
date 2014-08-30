@@ -1,7 +1,6 @@
 package fr.skyforce77.towerminer.menus;
 
 import java.awt.Color;
-import java.awt.Font;
 import java.awt.Graphics2D;
 
 import fr.skyforce77.towerminer.TowerMiner;
@@ -20,18 +19,18 @@ public class AboutMenu extends Menu {
         g2d.setColor(new Color(0, 0, 0, 150));
         g2d.fillRect(0, 0, TowerMiner.game.getWidth(), TowerMiner.game.getHeight());
         g2d.fillRect(0, TowerMiner.game.getHeight() / 4, TowerMiner.game.getWidth(), TowerMiner.game.getHeight() - (TowerMiner.game.getHeight() / 2));
-        g2d.setFont(new Font("TimesRoman", Font.BOLD, 40));
+        g2d.setFont(TowerMiner.getFont(40));
         g2d.setColor(Color.LIGHT_GRAY);
         g2d.drawString(LanguageManager.getText("menu.about"), 10, 100 + (xmove / 5));
 
-        g2d.setFont(new Font("TimesRoman", Font.BOLD, 28));
+        g2d.setFont(TowerMiner.getFont(28));
         g2d.drawString(LanguageManager.getText("menu.about.music"), 10, 180);
-        g2d.setFont(new Font("TimesRoman", Font.BOLD, 22));
+        g2d.setFont(TowerMiner.getFont(22));
         g2d.drawString(LanguageManager.getText("menu.about.music.text"), 10, 230);
 
-        g2d.setFont(new Font("TimesRoman", Font.BOLD, 28));
+        g2d.setFont(TowerMiner.getFont(28));
         g2d.drawString(LanguageManager.getText("menu.about.textures"), 10, 300);
-        g2d.setFont(new Font("TimesRoman", Font.BOLD, 22));
+        g2d.setFont(TowerMiner.getFont(22));
         g2d.drawString(LanguageManager.getText("menu.about.textures.text"), 10, 350);
         super.drawMenu(g2d);
     }

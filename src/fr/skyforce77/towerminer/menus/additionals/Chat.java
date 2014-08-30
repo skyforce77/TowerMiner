@@ -2,7 +2,6 @@ package fr.skyforce77.towerminer.menus.additionals;
 
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.util.ArrayList;
@@ -128,7 +127,7 @@ public class Chat {
 						g2d.fillRect(x, TowerMiner.game.getHeight() - i * 26 - 55, getWidth(text), 26);
 					}
 
-					g2d.setFont(new Font("TimesRoman", Font.BOLD, 20));
+					g2d.setFont(TowerMiner.getFont(20));
 					FontMetrics metrics = g2d.getFontMetrics(g2d.getFont());
 
 					drawColoredText(g2d, text, x + 2, i, -2, difference, model.getBackgroundColor());
@@ -138,7 +137,7 @@ public class Chat {
 						if(mp.Xcursor > x && mp.Xcursor < x+getWidth(text) && mp.Ycursor > TowerMiner.game.getHeight() - i * 26 - 55 && mp.Ycursor < TowerMiner.game.getHeight() - i * 26 - 55 +26) {
 							render = new Thread() {
 								public void run() {
-									g2d.setFont(new Font("TimesRoman", Font.CENTER_BASELINE, 15));
+									g2d.setFont(TowerMiner.getFont(15));
 									FontMetrics metric = g2d.getFontMetrics(g2d.getFont());
 									int hgt = metric.getHeight();
 									int adv = metric.stringWidth(model.getMouseModel().getText());
@@ -165,7 +164,7 @@ public class Chat {
 
 	public int getWidth(String text) {
 		Graphics2D g2d = (Graphics2D) TowerMiner.game.getGraphics();
-		g2d.setFont(new Font("TimesRoman", Font.BOLD, 20));
+		g2d.setFont(TowerMiner.getFont(20));
 		FontMetrics metrics = g2d.getFontMetrics(g2d.getFont());
 		return metrics.stringWidth(text) + 2;
 	}

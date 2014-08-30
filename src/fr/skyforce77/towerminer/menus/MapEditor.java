@@ -2,7 +2,6 @@ package fr.skyforce77.towerminer.menus;
 
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
@@ -272,7 +271,7 @@ public class MapEditor extends SinglePlayer {
 
 		MapWritter.drawCanvas(g2d, TowerMiner.game.CanvasX, TowerMiner.game.CanvasY);
 
-		g2d.setFont(new Font("TimesRoman", Font.CENTER_BASELINE, 18));
+		g2d.setFont(TowerMiner.getFont(18));
 		g2d.setColor(Color.WHITE);
 
 		if (cursorinwindow && (Ycursor + 8) / 48 > 0) {

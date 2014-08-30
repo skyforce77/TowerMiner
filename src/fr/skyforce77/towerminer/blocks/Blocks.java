@@ -153,7 +153,7 @@ public class Blocks implements Serializable {
             private static final long serialVersionUID = -467606498095742683L;
 
             public void onMapDraw(Graphics2D g2d, int data, int x, int y, int m, int n) {
-                if (data == 0 && TowerMiner.menu instanceof SinglePlayer && new Random().nextInt(200) <= 1) {
+                if (data != 0 && TowerMiner.menu instanceof SinglePlayer && new Random().nextInt(200) <= 1) {
                     int ix = new Random().nextInt(2) == 0 ? 1 : -1;
                     int iy = new Random().nextInt(2) == 0 ? +1 : -1;
                     ((SinglePlayer) TowerMiner.menu).particles.add(new Particle(ParticleType.SMOKE, x + 24 + new Random().nextInt(15) * ix, y + 24 + new Random().nextInt(15) * iy, null, 1f + -0.2f, new Color(255, 0, 0, 254)));

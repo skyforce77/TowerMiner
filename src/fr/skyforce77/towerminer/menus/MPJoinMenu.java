@@ -36,13 +36,13 @@ public class MPJoinMenu extends Menu {
 
         check = new JButton(LanguageManager.getText("menu.mp.client.join"));
         check.setVisible(false);
-        check.setFont(new Font("TimesRoman", Font.BOLD, 16));
+        check.setFont(TowerMiner.getFont(16));
 
         adress = new JTextField();
         adress.setVisible(false);
         adress.setToolTipText(LanguageManager.getText("menu.mp.client.adress"));
         adress.setText("localhost");
-        adress.setFont(new Font("TimesRoman", Font.BOLD, 28));
+        adress.setFont(TowerMiner.getFont(28));
 
         check.addActionListener(new ActionListener() {
             @Override

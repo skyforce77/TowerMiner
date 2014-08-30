@@ -29,12 +29,14 @@ public class EntityTypes {
 	public static EntityTypes WITHER_SKELETON = new EntityTypes(55, RessourcesManager.getIconTexture("wither_skeleton"), 60, -90, WitherSkeleton.class);
 	public static EntityTypes SNOW_GOLEM = new EntityTypes(56, RessourcesManager.getIconTexture("pumpkin"), 300, -90, SnowGolem.class);
 	public static EntityTypes GUARDIAN = new EntityTypes(57, RessourcesManager.getIconTexture("guardian"), 100, -90, Guardian.class);
+	public static EntityTypes ENDERMAN = new EntityTypes(58, RessourcesManager.getIconTexture("enderman"), 400, -90, Enderman.class);
 	
 	public static EntityTypes ARROW = new EntityTypes(100, RessourcesManager.getIconTexture("arrow"), true, 45);
 	public static EntityTypes FIREBALL = new EntityTypes(101, RessourcesManager.getIconTexture("fireball"), false, 0);
 	public static EntityTypes POISON_POTION = new EntityTypes(102, RessourcesManager.getIconTexture("poison"), false, 0);
 	public static EntityTypes WEAKNESS_POTION = new EntityTypes(103, RessourcesManager.getIconTexture("weakness"), false, 0);
 	public static EntityTypes SNOWBALL = new EntityTypes(104, RessourcesManager.getIconTexture("snowball"), false, 0);
+	public static EntityTypes ENDERPEARL = new EntityTypes(105, RessourcesManager.getIconTexture("enderpearl"), false, 0);
 
     public static ArrayList<EntityTypes> turrets = new ArrayList<EntityTypes>();
     public static ArrayList<EntityTypes> mobs = new ArrayList<EntityTypes>();
@@ -49,6 +51,7 @@ public class EntityTypes {
     	registerTurret(GUARDIAN);
     	registerTurret(CREEPER);
     	registerTurret(SNOW_GOLEM);
+    	registerTurret(ENDERMAN);
         
     	registerMob(CHICKEN);
     	registerMob(OCELOT);
@@ -65,6 +68,7 @@ public class EntityTypes {
     	registerEntity(POISON_POTION);
     	registerEntity(WEAKNESS_POTION);
     	registerEntity(SNOWBALL);
+    	registerEntity(ENDERPEARL);
     }
     
     public static void registerMob(EntityTypes mob) {

@@ -2,7 +2,6 @@ package fr.skyforce77.towerminer.entity;
 
 import java.awt.AlphaComposite;
 import java.awt.Color;
-import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Point;
@@ -217,7 +216,7 @@ public class Mob extends Entity {
             MapWritter.drawBlock(g2d, 51, 0, (int) x - ((MapWritter.getBlockWidth() - 10) / 2), (int) y - ((MapWritter.getBlockHeight() - 10) / 2), 0, TowerMiner.game.CanvasY, MapWritter.getBlockWidth() - 10);
         }
         g2d.setColor(Color.WHITE);
-        g2d.setFont(new Font("TimesRoman", Font.CENTER_BASELINE, 12));
+        g2d.setFont(TowerMiner.getFont(12));
         RenderHelper.drawLife(g2d, this);
     }
 

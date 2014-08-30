@@ -3,7 +3,6 @@ package fr.skyforce77.towerminer.menus;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.Graphics2D;
 
 import javax.swing.JPanel;
@@ -29,7 +28,7 @@ public class VolumeControlMenu extends Menu {
 
         check = new JSlider(0, 100);
         check.setVisible(false);
-        check.setFont(new Font("TimesRoman", Font.BOLD, 16));
+        check.setFont(TowerMiner.getFont(16));
         check.setValue((int) (100 + (Float) DataBase.getValue("volume", -10F)));
 
         check.addChangeListener(new ChangeListener() {
@@ -51,7 +50,7 @@ public class VolumeControlMenu extends Menu {
         g2d.setColor(new Color(0, 0, 0, 150));
         g2d.fillRect(0, 0, TowerMiner.game.getWidth(), TowerMiner.game.getHeight());
         g2d.fillRect(0, TowerMiner.game.getHeight() / 4, TowerMiner.game.getWidth(), TowerMiner.game.getHeight() - (TowerMiner.game.getHeight() / 2));
-        g2d.setFont(new Font("TimesRoman", Font.BOLD, 50));
+        g2d.setFont(TowerMiner.getFont(50));
         g2d.setColor(Color.LIGHT_GRAY);
         if(DataBase.getValue("volume") == null) {
         	DataBase.setValue("volume", 0.8F);

@@ -89,7 +89,7 @@ public class PluginManager {
 				loadPlugin(p, f);
 			} catch (Exception e) {
 				TowerMiner.printError("Can't launch "+f.getName()+" plugin.");
-				e.printStackTrace();
+				//e.printStackTrace();
 			}
 		}
 	}

@@ -1,7 +1,6 @@
 package fr.skyforce77.towerminer.blocks.renders;
 
 import java.awt.Color;
-import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.Image;
@@ -42,12 +41,12 @@ public class SignRender extends BlockRender {
 
     public void writeText(Graphics2D g2d, int x, int y, int width, int height, String text) {
     	String ltext = text;
-        g2d.setFont(new Font("TimesRoman", Font.BOLD, height / 2));
+        g2d.setFont(TowerMiner.getFont(height / 2));
         FontMetrics metrics = g2d.getFontMetrics(g2d.getFont());
         String sec = "";
         while (metrics.stringWidth(text) >= width || metrics.stringWidth(sec) >= width) {
             if (metrics.stringWidth(sec) >= width) {
-            	g2d.setFont(new Font("TimesRoman", Font.BOLD, g2d.getFont().getSize() - 1));
+            	g2d.setFont(TowerMiner.getFont(g2d.getFont().getSize() - 1));
                 metrics = g2d.getFontMetrics(g2d.getFont());
                 text = ltext;
                 sec = "";
@@ -55,7 +54,7 @@ public class SignRender extends BlockRender {
             	sec = text.substring(text.length() - 1) + sec;
                 text = text.substring(0, text.length() - 1);
             } else {
-            	g2d.setFont(new Font("TimesRoman", Font.BOLD, g2d.getFont().getSize() - 1));
+            	g2d.setFont(TowerMiner.getFont(g2d.getFont().getSize() - 1));
                 metrics = g2d.getFontMetrics(g2d.getFont());
             }
         }

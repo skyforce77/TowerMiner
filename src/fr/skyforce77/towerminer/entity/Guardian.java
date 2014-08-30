@@ -2,7 +2,6 @@ package fr.skyforce77.towerminer.entity;
 
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.Point;
@@ -156,7 +155,7 @@ public class Guardian extends Turret {
                     LanguageManager.getText("turret.power") + ": " + power};
         }
 
-        g2d.setFont(new Font("TimesRoman", Font.CENTER_BASELINE, 12));
+        g2d.setFont(TowerMiner.getFont(12));
         FontMetrics metrics = g2d.getFontMetrics(g2d.getFont());
         int hgt = metrics.getHeight();
         Dimension size = new Dimension(0, hgt + 2);

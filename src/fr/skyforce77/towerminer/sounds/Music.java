@@ -17,7 +17,6 @@ import javax.sound.sampled.DataLine;
 import javax.sound.sampled.FloatControl;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.SourceDataLine;
-import javax.sound.sampled.UnsupportedAudioFileException;
 
 import fr.skyforce77.towerminer.TowerMiner;
 import fr.skyforce77.towerminer.achievements.Popup;
@@ -34,10 +33,10 @@ public class Music {
         playing[channel] = new Music(new File(file));
         new Thread() {
             public void run() {
-                playing[channel].run();
+            	try {
+            		playing[channel].run();
+            	} catch(Exception e) {}
             }
-
-            ;
         }.start();
     }
 
@@ -55,9 +54,7 @@ public class Music {
     public static void playMusic(String name) {
         try {
             playURL(0, new URL("http://dl.dropboxusercontent.com/u/38885163/TowerMiner/music/" + name + ".wav"), false);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        } catch (Exception e) {}
     }
 
     public static void playURL(final int channel, final URL url, final boolean display) {
@@ -145,19 +142,11 @@ public class Music {
         try {
             @SuppressWarnings("unused")
             AudioFileFormat format = AudioSystem.getAudioFileFormat(fichier);
-        } catch (UnsupportedAudioFileException e1) {
-            e1.printStackTrace();
-        } catch (IOException e1) {
-            e1.printStackTrace();
-        }
+        } catch (Exception e1) {}
 
         try {
             audioInputStream = AudioSystem.getAudioInputStream(fichier);
-        } catch (UnsupportedAudioFileException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        } catch (Exception e) {}
 
         AudioFormat audioFormat = audioInputStream.getFormat();
         DataLine.Info info = new DataLine.Info(SourceDataLine.class, audioFormat);

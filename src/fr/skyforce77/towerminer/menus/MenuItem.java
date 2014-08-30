@@ -1,7 +1,6 @@
 package fr.skyforce77.towerminer.menus;
 
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 
@@ -33,11 +32,11 @@ public class MenuItem {
 
     public int getWidth() {
         Graphics2D g2d = (Graphics2D) TowerMiner.game.canvas.getGraphics();
-        FontMetrics metrics = g2d.getFontMetrics(new Font("TimesRoman", Font.CENTER_BASELINE, 30));
+        FontMetrics metrics = g2d.getFontMetrics(TowerMiner.getFont(28));
         int hgt = metrics.getHeight();
         int adv = metrics.stringWidth(name);
         Dimension size = new Dimension(adv + 2, hgt + 2);
-        return (int) size.getWidth() + 10;
+        return (int) size.getWidth()+5;
     }
 
     public int getHeight() {

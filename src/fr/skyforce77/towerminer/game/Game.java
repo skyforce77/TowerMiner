@@ -2,7 +2,6 @@ package fr.skyforce77.towerminer.game;
 
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -218,7 +217,7 @@ public class Game extends JFrame implements MouseListener, MouseWheelListener, M
 			if (fpsdisplay) {
 				g2d.fillRect(0, 0, 30, 25);
 				g2d.setColor(Color.YELLOW);
-				g2d.setFont(new Font("TimesRoman", Font.CENTER_BASELINE, 20));
+				g2d.setFont(TowerMiner.getFont(20));
 				g2d.drawString(fps + "", 0, 20);
 			}
 			if(stroboscope) {
@@ -227,7 +226,7 @@ public class Game extends JFrame implements MouseListener, MouseWheelListener, M
 				g2d.setColor(new Color(new Random().nextInt(255), new Random().nextInt(255), new Random().nextInt(255), alpha));
 				g2d.fillRect(-2000, -2000, 4000, 4000);
 				g2d.setColor(new Color(0, 0, 0, alpha));
-				g2d.setFont(new Font("TimesRoman", Font.CENTER_BASELINE, 48));
+				g2d.setFont(TowerMiner.getFont(48));
 				FontMetrics metrics = g2d.getFontMetrics(g2d.getFont());
 				int hgt = metrics.getHeight();
 				int adv = metrics.stringWidth("Konami");

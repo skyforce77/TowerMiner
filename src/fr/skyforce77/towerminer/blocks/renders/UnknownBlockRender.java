@@ -1,7 +1,6 @@
 package fr.skyforce77.towerminer.blocks.renders;
 
 import java.awt.Color;
-import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.geom.Rectangle2D;
@@ -27,7 +26,7 @@ public class UnknownBlockRender extends BlockRender {
         g2d.fillRect(x, y, pix, pix);
         g2d.setColor(Color.WHITE);
         g2d.drawRect(x, y, pix-1, pix-1);
-        g2d.setFont(new Font("TimesRoman", Font.BOLD, 20));
+        g2d.setFont(TowerMiner.getFont(20));
 
         FontMetrics metrics = g2d.getFontMetrics(g2d.getFont());
         int height = metrics.getHeight();

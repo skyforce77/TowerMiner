@@ -1,5 +1,6 @@
 package fr.skyforce77.towerminer;
 
+import java.awt.Font;
 import java.net.URL;
 import java.util.Date;
 import java.util.Random;
@@ -36,13 +37,15 @@ public class TowerMiner {
 	public static int actuallauncherversion = -1;
 
 	public static boolean dev = true;
-	public static String version = "Beta 0.5e";
+	public static String version = "Beta 0.6";
 
 	public static boolean launcherupdateneeded = true;
 	public static String[] os = new String[]{"linux","windows"};
 	public static String usedos = "linux";
 	public static String player = "Player" + new Random().nextInt(1000);
 	public static UUID id;
+	
+	private static Font font;
 
 	public static void startGame(final int launchedversion, final String state, final String os, String player, UUID id, int data) {
 		usedos = os;
@@ -88,7 +91,8 @@ public class TowerMiner {
 					RessourcesManager.getMapsDirectory().mkdirs();
 				}
 				printInfo("Successfully initialized system!");
-
+				
+				printInfo("Creating menus..");
 				game = new Game();
 				Menu.initMenus(game);
 				setMenu(Menu.mainmenu);
@@ -97,6 +101,7 @@ public class TowerMiner {
 				Music.playMusic("incursion");
 
 				PluginManager.initPlugins();
+				printInfo("Successfully launched!");
 			}
 		});
 	}
@@ -209,5 +214,22 @@ public class TowerMiner {
 	
 	public static void printInfo(String info) {
 		print(info, "INFO");
+	}
+	
+	public static Font getFont(int size) {
+		if(font == null) {
+			try {
+				font = Font.createFont(Font.TRUETYPE_FONT, new URL("https://dl.dropboxusercontent.com/u/38885163/TowerMiner/fonts/default.ttf").openStream());
+			} catch (Exception e) {
+				TowerMiner.printError("Can't load font");
+				font = new Font("TimesRoman", Font.BOLD, size);
+			}
+		}
+		
+		if(size > 22) {
+			size-=2;
+		}
+		
+		return font.deriveFont(font.getStyle(), size);
 	}
 }

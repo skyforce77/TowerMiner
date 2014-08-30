@@ -2,7 +2,6 @@ package fr.skyforce77.towerminer.achievements;
 
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.Image;
@@ -37,14 +36,14 @@ public class ServerPopup extends Popup {
 		
 		int difference = (int) ((time + displayed) - new Date().getTime());
 
-		g2d.setFont(new Font("TimesRoman", Font.CENTER_BASELINE, 26));
+		g2d.setFont(TowerMiner.getFont(26));
 		FontMetrics metrics = g2d.getFontMetrics(g2d.getFont());
 		int hgt = metrics.getHeight();
 		int adv = metrics.stringWidth(text);
 
 		for(String s : description) {
-			if(g2d.getFontMetrics(new Font("TimesRoman", Font.CENTER_BASELINE, 20)).stringWidth(s) > adv) {
-				adv = g2d.getFontMetrics(new Font("TimesRoman", Font.CENTER_BASELINE, 20)).stringWidth(s);
+			if(g2d.getFontMetrics(TowerMiner.getFont(20)).stringWidth(s) > adv) {
+				adv = g2d.getFontMetrics(TowerMiner.getFont(20)).stringWidth(s);
 			}
 		}
 
@@ -77,7 +76,7 @@ public class ServerPopup extends Popup {
 		g2d.setColor(Color.WHITE);
 		g2d.drawRect((int) (x - 8 - size.getHeight()/2), (int) (y+height-10), (int) (size.getWidth() + 10 + size.getHeight()), (int) 10);
 
-		g2d.setFont(new Font("TimesRoman", Font.CENTER_BASELINE, 20));
+		g2d.setFont(TowerMiner.getFont(20));
 		int i = 2;
 		for(String s : description) {
 			g2d.drawString(s, (int) (x - 4 + size.getHeight()/2), y + (int) (i*size.getHeight() - 4));

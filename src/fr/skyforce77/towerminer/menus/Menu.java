@@ -2,7 +2,6 @@ package fr.skyforce77.towerminer.menus;
 
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
@@ -80,7 +79,7 @@ public class Menu {
         if (items != null) {
             for (MenuItem item : items) {
                 if (item != null) {
-                    g2d.setFont(new Font("TimesRoman", Font.CENTER_BASELINE, 30));
+                    g2d.setFont(TowerMiner.getFont(26));
                     if ((Xcursor > item.getX() && Xcursor < item.getX() + item.getWidth()
                             && Ycursor > item.getY() && Ycursor < item.getY() + item.getHeight() && item.enabled) || selected == item.getId()) {
                         g2d.setColor(new Color(250, 250, 0, 20));
@@ -105,8 +104,8 @@ public class Menu {
         }
 
         if (last != null && canreturn) {
-            g2d.setFont(new Font("TimesRoman", Font.CENTER_BASELINE, 14));
-            FontMetrics metrics = g2d.getFontMetrics(new Font("TimesRoman", Font.CENTER_BASELINE, 14));
+            g2d.setFont(TowerMiner.getFont(14));
+            FontMetrics metrics = g2d.getFontMetrics(TowerMiner.getFont(14));
             int hgt = metrics.getHeight();
             int adv = metrics.stringWidth(LanguageManager.getText("menu.back"));
             Dimension size = new Dimension(adv + 5, hgt + 5);
@@ -202,7 +201,7 @@ public class Menu {
             }
         }
         if (last != null && canreturn) {
-            FontMetrics metrics = ((Graphics2D) TowerMiner.game.canvas.getGraphics()).getFontMetrics(new Font("TimesRoman", Font.CENTER_BASELINE, 14));
+            FontMetrics metrics = ((Graphics2D) TowerMiner.game.canvas.getGraphics()).getFontMetrics(TowerMiner.getFont(14));
             int hgt = metrics.getHeight();
             int adv = metrics.stringWidth(LanguageManager.getText("menu.back"));
             Dimension size = new Dimension(adv + 2, hgt + 2);

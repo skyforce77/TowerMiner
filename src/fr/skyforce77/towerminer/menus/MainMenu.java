@@ -2,7 +2,6 @@ package fr.skyforce77.towerminer.menus;
 
 import java.awt.Color;
 import java.awt.Desktop;
-import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.event.MouseEvent;
 import java.net.URL;
@@ -61,10 +60,9 @@ public class MainMenu extends Menu {
 		g2d.setColor(new Color(0, 0, 0, 150));
 		g2d.fillRect(0, 0, TowerMiner.game.getWidth(), TowerMiner.game.getHeight());
 		g2d.fillRect(0, 0, TowerMiner.game.getWidth() / 2, TowerMiner.game.getHeight() * 2);
-		g2d.setFont(new Font("TimesRoman", Font.BOLD, 40));
+		g2d.drawImage(RessourcesManager.getTexture("TowerMiner"), 0, 30, TowerMiner.game.getWidth() / 2, TowerMiner.game.getHeight() / 5, null);
 		g2d.setColor(Color.LIGHT_GRAY);
-		g2d.drawString(LanguageManager.getText("towerminer"), 10, 100 + (xmove / 5));
-		g2d.setFont(new Font("TimesRoman", Font.BOLD, 18));
+		g2d.setFont(TowerMiner.getFont(18));
 
 		int xmin = TowerMiner.game.getWidth() - 135 - (xmove / 2);
 		int ymin = TowerMiner.game.getHeight() - 40;
@@ -80,6 +78,7 @@ public class MainMenu extends Menu {
 
 		if (hovertwitter)
 			g2d.setColor(Color.YELLOW);
+		g2d.setFont(TowerMiner.getFont(16));
 		g2d.drawString("@Skyforce77", TowerMiner.game.getWidth() - 135 - (xmove / 2), TowerMiner.game.getHeight() - 40);
 		super.drawMenu(g2d);
 		chat.draw(g2d, this);
