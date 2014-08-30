@@ -133,7 +133,7 @@ public class Guardian extends Turret {
 					if(tir > 0) {
 						g = (float)tir/(float)f;
 					}
-					g2d.drawImage(RenderHelper.getColoredImage(RessourcesManager.getTexture("guardian_beam"), new Color(250, 250-(int)(250*g), 0), 1F), (int) x - 8 + sp.CanvasX, (int) y +32*images + sp.CanvasY, 16, 32, null);
+					g2d.drawImage(RenderHelper.getColoredImage(RessourcesManager.getTexture("guardian_beam"), new Color(250, 250-(int)(240*g), 0), 1F), (int) x - 8 + sp.CanvasX, (int) y +32*images + sp.CanvasY, 16, 32, null);
 					images--;
 				}
 			}

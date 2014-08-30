@@ -1,5 +1,6 @@
 package fr.skyforce77.towerminer;
 
+import java.awt.Color;
 import java.awt.Font;
 import java.net.URL;
 import java.util.Date;
@@ -20,9 +21,12 @@ import fr.skyforce77.towerminer.entity.EntityTypes;
 import fr.skyforce77.towerminer.entity.effects.EntityEffectType;
 import fr.skyforce77.towerminer.game.Game;
 import fr.skyforce77.towerminer.maps.Maps;
+import fr.skyforce77.towerminer.menus.ChatContainer;
 import fr.skyforce77.towerminer.menus.Menu;
 import fr.skyforce77.towerminer.multiplayer.ProtocolManager;
 import fr.skyforce77.towerminer.multiplayer.ServerInfos;
+import fr.skyforce77.towerminer.protocol.chat.ChatMessage;
+import fr.skyforce77.towerminer.protocol.chat.ChatModel;
 import fr.skyforce77.towerminer.protocol.listeners.ListenersManager;
 import fr.skyforce77.towerminer.ressources.RessourcesManager;
 import fr.skyforce77.towerminer.ressources.language.LanguageManager;
@@ -36,7 +40,7 @@ public class TowerMiner {
 	public static int neededlauncherversion = 13;
 	public static int actuallauncherversion = -1;
 
-	public static boolean dev = true;
+	public static boolean dev = false;
 	public static String version = "Beta 0.6";
 
 	public static boolean launcherupdateneeded = true;
@@ -206,10 +210,22 @@ public class TowerMiner {
 	
 	public static void printError(String error) {
 		print(error, "ERROR");
+		if(menu instanceof ChatContainer) {
+			ChatModel head = new ChatModel("[Error] ");
+			head.setForegroundColor(Color.RED);
+			ChatMessage message = new ChatMessage(head, new ChatModel(error));
+			((ChatContainer)menu).getChat().onMessageReceived(message);
+		}
 	}
 	
 	public static void printWarning(String warning) {
 		print(warning, "WARNING");
+		if(menu instanceof ChatContainer) {
+			ChatModel head = new ChatModel("[Warning] ");
+			head.setForegroundColor(Color.ORANGE);
+			ChatMessage message = new ChatMessage(head, new ChatModel(warning));
+			((ChatContainer)menu).getChat().onMessageReceived(message);
+		}
 	}
 	
 	public static void printInfo(String info) {

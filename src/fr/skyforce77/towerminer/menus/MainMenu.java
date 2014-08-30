@@ -12,7 +12,7 @@ import fr.skyforce77.towerminer.menus.additionals.Chat;
 import fr.skyforce77.towerminer.ressources.RessourcesManager;
 import fr.skyforce77.towerminer.ressources.language.LanguageManager;
 
-public class MainMenu extends Menu {
+public class MainMenu extends Menu implements ChatContainer{
 
 	private boolean hovertwitter = false;
 
@@ -103,5 +103,10 @@ public class MainMenu extends Menu {
 			}
 		}
 		super.onMouseClicked(e);
+	}
+
+	@Override
+	public Chat getChat() {
+		return chat;
 	}
 }

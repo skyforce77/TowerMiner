@@ -43,7 +43,7 @@ import fr.skyforce77.towerminer.ressources.RessourcesManager;
 import fr.skyforce77.towerminer.ressources.language.LanguageManager;
 import fr.skyforce77.towerminer.sounds.Music;
 
-public class SinglePlayer extends Menu {
+public class SinglePlayer extends Menu implements ChatContainer{
 
 	public int CanvasX = 0;
 	public int CanvasY = 40;
@@ -781,5 +781,10 @@ public class SinglePlayer extends Menu {
 				}
 			}
 		}.start();
+	}
+	
+	@Override
+	public Chat getChat() {
+		return chat;
 	}
 }
