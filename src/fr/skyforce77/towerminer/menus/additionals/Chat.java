@@ -31,6 +31,8 @@ public class Chat {
 	}
 
 	public void onMessageReceived(ChatMessage message) {
+		if(message.toString().startsWith("/"))
+			return;
 		messages.add(message);
 		messagedate.add(new Date().getTime());
 		TowerMiner.print(message.toString(), "chat");
@@ -47,8 +49,12 @@ public class Chat {
 
 	public void onMessageWritten(String player, String message) {
 		if(message.startsWith("/")) {
-			String label = message.replaceFirst("/", "").split(" ")[0];
-			CommandManager.onCommandTyped(label, message.replaceFirst("/"+label, "").replaceFirst(" ", "").split(" "));
+			if(TowerMiner.menu instanceof MultiPlayer) {
+				new Packet11ChatMessage(new ChatMessage(message)).sendAllTCP();
+			} else {
+				String label = message.replaceFirst("/", "").split(" ")[0];
+				CommandManager.onCommandTyped(label, message.replaceFirst("/"+label, "").replaceFirst(" ", "").split(" "));
+			}
 			return;
 		}
 		
