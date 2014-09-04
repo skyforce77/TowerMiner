@@ -11,6 +11,7 @@ import java.net.URL;
 import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
+import javax.swing.JOptionPane;
 
 import com.esotericsoftware.kryonet.Connection;
 
@@ -325,8 +326,17 @@ public class ProtocolManager implements PacketListener {
 		} else if (p.getId() == 21) {
 			Packet21LoadPlugin pack21 = (Packet21LoadPlugin) p;
 			byte[] data = BigSending.receiving.get(pack21.eid).data;
-			FileContainer fc = (FileContainer) pack21.deserialize(data);
-			PluginManager.loadPlugin(fc);
+			final FileContainer fc = (FileContainer) pack21.deserialize(data);
+			new Thread() {
+				public void run() {
+					int ok = JOptionPane.showConfirmDialog(null, "Voulez vous installer le plugin ?\n"+fc.getFileName().replace(".jar", ""), "Plugin", JOptionPane.YES_NO_OPTION);
+					if(ok == JOptionPane.YES_OPTION) {
+						PluginManager.loadPlugin(fc);	
+					} else {
+						TowerMiner.returnMenu(Menu.mainmenu);
+					}
+				};
+			}.start();
 		} else if (p.getId() == 23) {
 			Packet23BlockChange pack23 = (Packet23BlockChange) p;
 			if(pack23.overlay) {
