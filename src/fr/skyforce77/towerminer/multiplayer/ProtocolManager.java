@@ -97,7 +97,7 @@ public class ProtocolManager implements PacketListener {
 		} else if (p.getId() == 11) {
 			Packet11ChatMessage pack11 = (Packet11ChatMessage) p;
 			mp = ((MultiPlayer) TowerMiner.menu);
-			mp.chat.onMessageReceived(pack11.getMessage());
+			mp.chat.onMessageReceived(c, pack11.getMessage());
 			if (!pack11.response) {
 				pack11.response = true;
 				pack11.sendAllTCP();

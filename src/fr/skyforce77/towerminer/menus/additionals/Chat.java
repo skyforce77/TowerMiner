@@ -7,6 +7,8 @@ import java.awt.Graphics2D;
 import java.util.ArrayList;
 import java.util.Date;
 
+import com.esotericsoftware.kryonet.Connection;
+
 import fr.skyforce77.towerminer.TowerMiner;
 import fr.skyforce77.towerminer.api.PluginManager;
 import fr.skyforce77.towerminer.api.commands.CommandManager;
@@ -32,8 +34,10 @@ public class Chat {
 	}
 
 	public void onMessageReceived(ChatMessage message) {
-		if(message.toString().startsWith("/"))
+		if(message.toString().startsWith("/")) {
 			return;
+		}
+		
 		messages.add(message);
 		messagedate.add(new Date().getTime());
 		TowerMiner.print(message.toString(), "chat");
@@ -47,10 +51,20 @@ public class Chat {
 			h++;
 		}
 	}
+	
+	public void onMessageReceived(Connection c, ChatMessage message) {
+		if(message.toString().startsWith("/") && TowerMiner.menu instanceof MultiPlayer && ((MultiPlayer)TowerMiner.menu).server) {
+			String command = message.toString();
+			String label = command.replaceFirst("/", "").split(" ")[0];
+			CommandManager.onCommandTyped(new CommandSender(c), label, command.replaceFirst("/"+label, "").replaceFirst(" ", "").split(" "));
+			return;
+		}
+		onMessageReceived(message);
+	}
 
 	public void onMessageWritten(String player, String message) {
 		if(message.startsWith("/")) {
-			if(TowerMiner.menu instanceof MultiPlayer) {
+			if(TowerMiner.menu instanceof MultiPlayer && !((MultiPlayer)TowerMiner.menu).server) {
 				new Packet11ChatMessage(new ChatMessage(message)).sendAllTCP();
 			} else {
 				String label = message.replaceFirst("/", "").split(" ")[0];
