@@ -1,6 +1,7 @@
 package fr.skyforce77.towerminer.api;
 
 import fr.skyforce77.towerminer.TowerMiner;
+import fr.skyforce77.towerminer.menus.ChatContainer;
 import fr.skyforce77.towerminer.menus.SinglePlayer;
 import fr.skyforce77.towerminer.multiplayer.MPInfos;
 import fr.skyforce77.towerminer.multiplayer.ProtocolManager;
@@ -10,16 +11,20 @@ import fr.skyforce77.towerminer.protocol.packets.Packet11ChatMessage;
 
 public class Utils {
 
-	public static SinglePlayer getMultiPlayer() {
+	public static SinglePlayer getSinglePlayer() {
 		return (SinglePlayer)TowerMiner.menu;
 	}
 	
+	public static ChatContainer getChatContainer() {
+		return (ChatContainer)TowerMiner.menu;
+	}
+	
 	public static void write(String s) {
-		getMultiPlayer().chat.onMessageReceived(new ChatMessage(s));
+		getChatContainer().getChat().onMessageReceived(new ChatMessage(s));
 	}
 	
 	public static void write(ChatMessage m) {
-		getMultiPlayer().chat.onMessageReceived(m);
+		getChatContainer().getChat().onMessageReceived(m);
 	}
 	
 	public static void broadcast(String s) {
@@ -27,7 +32,7 @@ public class Utils {
 	}
 	
 	public static void broadcast(ChatMessage m) {
-		getMultiPlayer().chat.onMessageReceived(m);
+		getChatContainer().getChat().onMessageReceived(m);
 		sendTCP(new Packet11ChatMessage(m));
 	}
 	

@@ -60,7 +60,7 @@ public class CommandManager {
 		return commands.keySet();
 	}
 
-	public static void onCommandTyped(String label, String[] args) {
+	public static void onCommandTyped(CommandSender sender, String label, String[] args) {
 		CommandTypedEvent cte = new CommandTypedEvent(label, args);
 		PluginManager.callEvent(cte);
 		if(!cte.isCancelled()) {
@@ -71,7 +71,7 @@ public class CommandManager {
 			if(isCommand(cte.getLabel())) {
 				if(getCommand(cte.getLabel()).isCorrect(cte.getArguments())) {
 					try {
-						getCommand(cte.getLabel()).onTyped(cte.getArguments());
+						getCommand(cte.getLabel()).onTyped(new CommandSender(), cte.getArguments());
 					} catch(Exception e) {
 						e.printStackTrace();
 					}

@@ -1,15 +1,14 @@
 package fr.skyforce77.towerminer.api.commands;
 
 import fr.skyforce77.towerminer.TowerMiner;
-import fr.skyforce77.towerminer.api.Utils;
 import fr.skyforce77.towerminer.protocol.Protocol;
 
 public class CommandVersion extends Command {
 
 	@Override
-	public void onTyped(String[] args) {
-		Utils.write("Protocol: "+Protocol.version);
-		Utils.write("TowerMiner: "+TowerMiner.version);
+	public void onTyped(CommandSender sender, String[] args) {
+		sender.sendMessage("Protocol: "+Protocol.version);
+		sender.sendMessage("TowerMiner: "+TowerMiner.version);
 	}
 	
 	@Override

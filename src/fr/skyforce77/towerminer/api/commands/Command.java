@@ -15,7 +15,7 @@ public class Command {
 	public boolean isalias;
 	public String real;
 	
-	public void onTyped(String[] args) {}
+	public void onTyped(CommandSender sender, String[] args) {}
 	
 	public void onInitialized(String label) {}
 	

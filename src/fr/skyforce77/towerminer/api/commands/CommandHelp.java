@@ -2,7 +2,6 @@ package fr.skyforce77.towerminer.api.commands;
 
 import java.util.ArrayList;
 
-import fr.skyforce77.towerminer.api.Utils;
 import fr.skyforce77.towerminer.api.commands.Argument.ArgumentType;
 import fr.skyforce77.towerminer.protocol.chat.ChatMessage;
 
@@ -12,29 +11,29 @@ public class CommandHelp extends Command {
 	ArrayList<ArrayList<String>> pages = new ArrayList<>();
 	
 	@Override
-	public void onTyped(String[] args) {
+	public void onTyped(CommandSender sender, String[] args) {
 		update();
 		if(args.length == 1 && args[0].equals("")) {
-			sendPage(0);
+			sendPage(sender, 0);
 		} else if(args.length == 1 && !args[0].equals("") && isNumber(args[0])) {
-			sendPage(Integer.parseInt(args[0])-1);
+			sendPage(sender, Integer.parseInt(args[0])-1);
 		}
 	}
 	
-	public void sendPage(int number) {
+	public void sendPage(CommandSender sender, int number) {
 		if(number > pagesnumber) {
-			Utils.write("Page #"+(number+1)+" do not exists");
+			sender.sendMessage("Page #"+(number+1)+" do not exists");
 			return;
 		}
-		Utils.write("<Commands> Page: "+(number+1)+"/"+(pagesnumber+1));
+		sender.sendMessage("<Commands> Page: "+(number+1)+"/"+(pagesnumber+1));
 		for(String command : pages.get(number)) {
 			Command c = CommandManager.getCommand(command);
 			if(c.getUse() == null) {
-				Utils.write("- "+command);
+				sender.sendMessage("- "+command);
 			} else {
 				ChatMessage message = new ChatMessage("- ");
 				message.add(c.getUse());
-				Utils.write(message);
+				sender.sendMessage(message);
 			}
 		}
 	}

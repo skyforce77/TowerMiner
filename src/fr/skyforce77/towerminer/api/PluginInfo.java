@@ -5,6 +5,7 @@ import java.util.Map;
 public class PluginInfo {
 
 	private Map<?,?> map;
+	
 	public PluginInfo(Map<?,?> map) {
 		this.map = map;
 	}

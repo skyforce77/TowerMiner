@@ -10,6 +10,7 @@ import java.util.Date;
 import fr.skyforce77.towerminer.TowerMiner;
 import fr.skyforce77.towerminer.api.PluginManager;
 import fr.skyforce77.towerminer.api.commands.CommandManager;
+import fr.skyforce77.towerminer.api.commands.CommandSender;
 import fr.skyforce77.towerminer.api.events.chat.PlayerChatEvent;
 import fr.skyforce77.towerminer.menus.Menu;
 import fr.skyforce77.towerminer.menus.MultiPlayer;
@@ -53,7 +54,7 @@ public class Chat {
 				new Packet11ChatMessage(new ChatMessage(message)).sendAllTCP();
 			} else {
 				String label = message.replaceFirst("/", "").split(" ")[0];
-				CommandManager.onCommandTyped(label, message.replaceFirst("/"+label, "").replaceFirst(" ", "").split(" "));
+				CommandManager.onCommandTyped(new CommandSender(), label, message.replaceFirst("/"+label, "").replaceFirst(" ", "").split(" "));
 			}
 			return;
 		}
