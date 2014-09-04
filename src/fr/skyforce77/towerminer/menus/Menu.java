@@ -110,17 +110,26 @@ public class Menu {
             int adv = metrics.stringWidth(LanguageManager.getText("menu.back"));
             Dimension size = new Dimension(adv + 5, hgt + 5);
             Dimension rect = new Dimension((int) size.getWidth() + 3, (int) size.getHeight());
-            g2d.setColor(new Color(0, 0, 0, 150));
-            g2d.fillRect((int) (TowerMiner.game.getWidth() - rect.getWidth()), (int) (TowerMiner.game.getHeight() - rect.getHeight() - 29),
-                    (int) rect.getWidth(), (int) rect.getHeight());
-            g2d.setColor(Color.WHITE);
+            
             if (Xcursor < TowerMiner.game.getWidth() && Xcursor > TowerMiner.game.getWidth() - rect.getWidth()
                     && Ycursor < TowerMiner.game.getHeight() && Ycursor > TowerMiner.game.getHeight() - rect.getHeight() - 29) {
+                g2d.setColor(new Color(250, 250, 0, 20));
+                g2d.fillRoundRect((int) (TowerMiner.game.getWidth() - rect.getWidth()), (int) (TowerMiner.game.getHeight() - rect.getHeight() - 29),
+                        (int) rect.getWidth(), (int) rect.getHeight(), 5, 5);
                 g2d.setColor(Color.YELLOW);
+                g2d.drawRoundRect((int) (TowerMiner.game.getWidth() - rect.getWidth()), (int) (TowerMiner.game.getHeight() - rect.getHeight() - 29),
+                        (int) rect.getWidth(), (int) rect.getHeight(), 5, 5);
+            } else {
+            	g2d.setColor(new Color(250, 250, 250, 20));
+                g2d.fillRoundRect((int) (TowerMiner.game.getWidth() - rect.getWidth()), (int) (TowerMiner.game.getHeight() - rect.getHeight() - 29),
+                        (int) rect.getWidth(), (int) rect.getHeight(), 5, 5);
+                g2d.setColor(new Color(250, 250, 250, 30));
+                g2d.drawRoundRect((int) (TowerMiner.game.getWidth() - rect.getWidth()), (int) (TowerMiner.game.getHeight() - rect.getHeight() - 29),
+                        (int) rect.getWidth(), (int) rect.getHeight(), 5, 5);
+                g2d.setColor(Color.WHITE);
             }
-            g2d.drawRect((int) (TowerMiner.game.getWidth() - rect.getWidth()), (int) (TowerMiner.game.getHeight() - rect.getHeight() - 29),
-                    (int) rect.getWidth(), (int) rect.getHeight());
-            g2d.drawString(LanguageManager.getText("menu.back"), (int) (TowerMiner.game.getWidth() - (size.getWidth() - 2)), (int) (TowerMiner.game.getHeight() - 30));
+
+            g2d.drawString(LanguageManager.getText("menu.back"), (int) (TowerMiner.game.getWidth() - (size.getWidth() - 2)), (int) (TowerMiner.game.getHeight() - 35));
         }
 
         if (TowerMiner.game.popup != null && TowerMiner.game.popup.time + TowerMiner.game.popup.displayed > new Date().getTime()) {
