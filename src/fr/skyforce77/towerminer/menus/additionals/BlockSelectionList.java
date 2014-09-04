@@ -16,6 +16,7 @@ import javax.swing.JScrollPane;
 
 import fr.skyforce77.towerminer.TowerMiner;
 import fr.skyforce77.towerminer.blocks.Blocks;
+import fr.skyforce77.towerminer.blocks.CustomBlock;
 import fr.skyforce77.towerminer.maps.Maps;
 import fr.skyforce77.towerminer.ressources.language.LanguageManager;
 
@@ -33,7 +34,7 @@ public class BlockSelectionList extends JFrame {
         final JList<Blocks> list = new JList<Blocks>(listm);
         int i = 0;
         for (Blocks b : Blocks.getList()) {
-            if (b != null && b.isVisible() && !(b.getId() == 1023 || b.getId() == 1021)) {
+            if (b != null && !(b instanceof CustomBlock) && b.isVisible() && !(b.getId() == 1023 || b.getId() == 1021)) {
                 listm.add(i, b);
                 i++;
             }
