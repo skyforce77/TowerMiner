@@ -211,10 +211,10 @@ public class Chat {
 									int hgt = metric.getHeight();
 									int adv = metric.stringWidth(model.getMouseModel().getText());
 									Dimension size = new Dimension(adv + 2, hgt + 2);
-									g2d.setColor(new Color(0, 0, 0, 200));
-									g2d.fillRect(mp.Xcursor, mp.Ycursor - 16, (int) (4 + size.getWidth()), 16);
-									g2d.setColor(Color.WHITE);
-									g2d.drawRect(mp.Xcursor, mp.Ycursor - 16, (int) (4 + size.getWidth()), 16);
+									g2d.setColor(new Color(0, 0, 0, 220));
+					                g2d.fillRoundRect(mp.Xcursor, mp.Ycursor - (int)size.getHeight() + 2, (int) (4 + size.getWidth()), (int)size.getHeight(), 5, 5);
+					                g2d.setColor(new Color(250, 250, 250, 250));
+					                g2d.drawRoundRect(mp.Xcursor, mp.Ycursor - (int)size.getHeight() + 2, (int) (4 + size.getWidth()), (int)size.getHeight(), 5, 5);
 									drawColoredText(g2d, model.getMouseModel().getText(), mp.Xcursor + 5, mp.Ycursor - 5, 10000, model.getMouseModel().getBackgroundColor());
 									drawColoredText(g2d, model.getMouseModel().getText(), mp.Xcursor + 3, mp.Ycursor - 3, 10000, model.getMouseModel().getForegroundColor());
 								};

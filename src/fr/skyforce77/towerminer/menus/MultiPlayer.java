@@ -150,7 +150,7 @@ public class MultiPlayer extends SinglePlayer {
                         break;
                     }
                     try {
-                        sleep(100l);
+                        sleep(1000l);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
