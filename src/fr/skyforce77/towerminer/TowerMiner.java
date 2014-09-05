@@ -41,7 +41,7 @@ public class TowerMiner {
 	public static int actuallauncherversion = -1;
 
 	public static boolean dev = true;
-	public static String version = "Beta 0.6";
+	public static String version = "Beta 0.7";
 
 	public static boolean launcherupdateneeded = true;
 	public static String[] os = new String[]{"linux","windows"};
@@ -106,6 +106,8 @@ public class TowerMiner {
 
 				PluginManager.initPlugins();
 				printInfo("Successfully launched!");
+				
+				CommandManager.createTerminal();
 			}
 		});
 	}

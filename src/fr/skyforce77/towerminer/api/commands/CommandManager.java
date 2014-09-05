@@ -95,31 +95,38 @@ public class CommandManager {
 	}
 
 	public static void createTerminal() {
-		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		new Thread() {
+			@Override
+			public void run() {
+				while(TowerMiner.game != null) {
+					BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
-		String line = null;
+					String line = null;
 
-		try {
-			line = br.readLine();
-		} catch (IOException ioe) {
-			TowerMiner.printError("IO error trying to read command!");
-		}
-		
-		String label;
-		if(line.contains(" ")) {
-			label = line.split(" ")[0];
-		} else {
-			label = line;
-		}
-		
-		String[] args;
-		if(line.contains(" ")) {
-			args = line.replace(label,"").split(" ");
-		} else {
-			args = new String[0];
-		}
-		
-		onCommandTyped(new CommandSender(SenderType.CONSOLE), label, args);
+					try {
+						line = br.readLine();
+					} catch (IOException ioe) {
+						TowerMiner.printError("IO error trying to read command!");
+					}
+
+					String label;
+					if(line.contains(" ")) {
+						label = line.split(" ")[0];
+					} else {
+						label = line;
+					}
+
+					String[] args;
+					if(line.contains(" ")) {
+						args = line.replace(label,"").split(" ");
+					} else {
+						args = new String[]{""};
+					}
+
+					onCommandTyped(new CommandSender(SenderType.CONSOLE), label, args);
+				}
+			}
+		}.start();
 	}
 
 }

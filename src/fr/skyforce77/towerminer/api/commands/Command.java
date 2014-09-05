@@ -17,6 +17,9 @@ public class Command {
 	
 	public void onTyped(CommandSender sender, String[] args) {}
 	
+	@Deprecated
+	public void onTyped(String[] args) {}
+	
 	public void onInitialized(String label) {}
 	
 	public void setArguments(Argument... args) {
