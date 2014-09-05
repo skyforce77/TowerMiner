@@ -102,6 +102,7 @@ public class MainMenu extends Menu implements ChatContainer{
 				}
 			}
 		}
+		chat.onClick();
 		super.onMouseClicked(e);
 	}
 

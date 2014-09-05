@@ -1,11 +1,18 @@
 package fr.skyforce77.towerminer.menus.additionals;
 
 import java.awt.Color;
+import java.awt.Desktop;
+import java.awt.Desktop.Action;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
+import java.awt.font.TextAttribute;
+import java.io.IOException;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Map;
 
 import com.esotericsoftware.kryonet.Connection;
 
@@ -38,11 +45,11 @@ public class Chat {
 		if(message.toString().startsWith("/")) {
 			return;
 		}
-		
+
 		messages.add(message);
 		messagedate.add(new Date().getTime());
 		TowerMiner.print(message.toString(), "chat");
-		
+
 		int h = 0;
 		while(messagedate.size() > max) {
 			if(messagedate.get(h) != null) {
@@ -52,7 +59,7 @@ public class Chat {
 			h++;
 		}
 	}
-	
+
 	public void onMessageReceived(Connection c, ChatMessage message) {
 		if(message.toString().startsWith("/") && TowerMiner.menu instanceof MultiPlayer && ((MultiPlayer)TowerMiner.menu).server) {
 			String command = message.toString();
@@ -73,7 +80,7 @@ public class Chat {
 			}
 			return;
 		}
-		
+
 		ChatModel name = new ChatModel(TowerMiner.player);
 		if (player.equals("menu.mp.red")) {
 			name.setForegroundColor(Color.RED);
@@ -81,7 +88,8 @@ public class Chat {
 			name.setForegroundColor(Color.CYAN);
 		}
 
-		ChatMessage msg = new ChatMessage(name, new ChatModel(": " + message));
+		ChatMessage msg = new ChatMessage(name, new ChatModel(": "));
+		msg.add(getText(message));
 		PlayerChatEvent pce = new PlayerChatEvent(msg, message);
 		PluginManager.callEvent(pce);
 		if(!pce.isCancelled()) {
@@ -93,10 +101,31 @@ public class Chat {
 		}
 	}
 
+	public ChatMessage getText(String message) {
+		String[] t = message.split(" ");
+		ChatModel[] models = new ChatModel[t.length];
+		int i = 0;
+		for(String s : t) {
+			if(s.startsWith("http")) {
+				ChatModel m = new ChatModel(s);
+				m.setForegroundColor(new Color(100, 100, 200));
+				m.setUnderlined(true);
+				m.setLink(true);
+				models[i] = m;
+			}
+
+			if(models[i] == null)
+				models[i] = new ChatModel(t[i]);
+			i++;
+		}
+		return new ChatMessage(models);
+	}
+
 	public void changeState(boolean state) {
 		opened = state;
 	}
 
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public void draw(final Graphics2D g2d, final Menu mp) {
 		int width = 0;
 		int i = max-1;
@@ -149,10 +178,28 @@ public class Chat {
 						g2d.fillRect(x, TowerMiner.game.getHeight() - i * 26 - 55, getWidth(text), 26);
 					}
 
-					g2d.setFont(TowerMiner.getFont(20));
-					FontMetrics metrics = g2d.getFontMetrics(g2d.getFont());
+					Font font = TowerMiner.getFont(20);
+
+					if(model.isBold())
+						font = font.deriveFont(Font.BOLD);
+					if(model.isItalic())
+						font = font.deriveFont(Font.ITALIC);
+
+					g2d.setFont(font);
 
 					drawColoredText(g2d, text, x + 2, i, -2, difference, model.getBackgroundColor());
+
+					Map attributes = font.getAttributes();
+					if(model.isUnderlined())
+						attributes.put(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_ON);
+					if(model.isUnderlined())
+						attributes.put(TextAttribute.STRIKETHROUGH, TextAttribute.STRIKETHROUGH_ON);
+
+					font = font.deriveFont(attributes);
+					g2d.setFont(font);
+
+					FontMetrics metrics = g2d.getFontMetrics(g2d.getFont());
+
 					drawColoredText(g2d, text, x, i, 0, difference, model.getForegroundColor());
 
 					if(model.getMouseModel() != null && model.getMouseModel().getText() != null) {
@@ -181,6 +228,72 @@ public class Chat {
 		}
 		if(render != null) {
 			render.run();
+		}
+	}
+
+	@SuppressWarnings({ })
+	public void onClick() {
+		int width = 0;
+		int i = max-1;
+		int[] strings = new int[max];
+		int g = 0;
+		while(g <= i) {
+			strings[g] = -1;
+			g++;
+		}
+		int n = messagedate.size() - 1;
+		while (n >= 0) {
+			if (i >= 0 && (messagedate.get(n) + 10000 > new Date().getTime() || opened)) {
+				strings[i] = n;
+				i--;
+
+				int adv = getWidth(getRaw(messages.get(n)));
+				if (adv > width)
+					width = adv;
+			}
+			n--;
+		}
+		i = max-1;
+		for (int s : strings) {
+			if (s != -1 && strings.length != 0 && (messagedate.size() > s || opened) && messagedate.get(s) != null) {
+				int x = 0;
+				for (final ChatModel model : messages.get(s).getModels()) {
+					String text = LanguageManager.getText(model.getText());
+					if (model.getOption() != null) {
+						text = LanguageManager.getText(model.getText(), model.getOption());
+					}
+
+					Font font = TowerMiner.getFont(20);
+
+					if(model.isBold())
+						font = font.deriveFont(Font.BOLD);
+					if(model.isItalic())
+						font = font.deriveFont(Font.ITALIC);
+
+					Graphics2D g2d = (Graphics2D)TowerMiner.game.getGraphics();
+					g2d.setFont(font);
+					FontMetrics metrics = g2d.getFontMetrics(g2d.getFont());
+
+					Menu mp = TowerMiner.menu;
+					if(mp.Xcursor > x && mp.Xcursor < x+getWidth(text) && mp.Ycursor > TowerMiner.game.getHeight() - i * 26 - 55 && mp.Ycursor < TowerMiner.game.getHeight() - i * 26 - 55 +26) {
+						if(model.isLink()) {
+							if (Desktop.isDesktopSupported()) {
+								Desktop desktop = Desktop.getDesktop();
+								if (desktop.isSupported(Action.BROWSE)) {
+									try {
+										desktop.browse(URI.create(model.getText()));
+										return;
+									} catch (IOException e) {
+										e.printStackTrace();
+									}
+								}
+							}
+						}
+					}
+					x = x + metrics.stringWidth(text);
+				}
+			}
+			i--;
 		}
 	}
 
