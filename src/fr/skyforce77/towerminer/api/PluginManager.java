@@ -32,9 +32,9 @@ import fr.skyforce77.towerminer.protocol.ObjectReceiver;
 import fr.skyforce77.towerminer.protocol.chat.ChatMessage;
 import fr.skyforce77.towerminer.protocol.chat.ChatModel;
 import fr.skyforce77.towerminer.protocol.chat.MessageModel;
+import fr.skyforce77.towerminer.protocol.containers.FileContainer;
 import fr.skyforce77.towerminer.protocol.packets.Packet21LoadPlugin;
 import fr.skyforce77.towerminer.protocol.packets.Packet22PluginMessage;
-import fr.skyforce77.towerminer.ressources.FileContainer;
 import fr.skyforce77.towerminer.ressources.RessourcesManager;
 
 public class PluginManager {
