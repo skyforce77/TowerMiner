@@ -1,8 +1,12 @@
 package fr.skyforce77.towerminer.api.commands;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.Set;
 
+import fr.skyforce77.towerminer.TowerMiner;
 import fr.skyforce77.towerminer.api.PluginManager;
 import fr.skyforce77.towerminer.api.Utils;
 import fr.skyforce77.towerminer.api.events.chat.CommandTypedEvent;
@@ -71,7 +75,7 @@ public class CommandManager {
 			if(isCommand(cte.getLabel())) {
 				if(getCommand(cte.getLabel()).isCorrect(cte.getArguments())) {
 					try {
-						getCommand(cte.getLabel()).onTyped(new CommandSender(), cte.getArguments());
+						getCommand(cte.getLabel()).onTyped(sender, cte.getArguments());
 					} catch(Exception e) {
 						e.printStackTrace();
 					}
@@ -88,6 +92,34 @@ public class CommandManager {
 				Utils.write("Unknown command, type /help for help");
 			}
 		}
+	}
+
+	public static void createTerminal() {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+
+		String line = null;
+
+		try {
+			line = br.readLine();
+		} catch (IOException ioe) {
+			TowerMiner.printError("IO error trying to read command!");
+		}
+		
+		String label;
+		if(line.contains(" ")) {
+			label = line.split(" ")[0];
+		} else {
+			label = line;
+		}
+		
+		String[] args;
+		if(line.contains(" ")) {
+			args = line.replace(label,"").split(" ");
+		} else {
+			args = new String[0];
+		}
+		
+		onCommandTyped(new CommandSender(SenderType.CONSOLE), label, args);
 	}
 
 }
