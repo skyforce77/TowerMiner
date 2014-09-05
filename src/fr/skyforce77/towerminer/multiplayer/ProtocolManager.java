@@ -214,17 +214,23 @@ public class ProtocolManager implements PacketListener {
 				try {
 					en = EntityTypes.getType(pack6.type).getEntityClass().getConstructor(EntityTypes.class, Turret.class, Mob.class)
 							.newInstance(EntityTypes.getType(pack6.type), (Turret)mp.byUUID(pack6.shooter), (Mob)mp.byUUID(pack6.mob));
-				} catch (Exception e) {}
+				} catch (Exception e) {
+					en = new EntityProjectile(EntityTypes.SKELETON, (Turret)mp.byUUID(pack6.shooter), (Mob)mp.byUUID(pack6.mob));
+				}
 			} else if(!pack6.owner.equals("") && pack6 != null) {
 				try {
 					en = EntityTypes.getType(pack6.type).getEntityClass().getConstructor(EntityTypes.class, Point.class, String.class)
 							.newInstance(EntityTypes.getType(pack6.type), new Point(pack6.x, pack6.y), pack6.owner);
-				} catch (Exception e) {}
+				} catch (Exception e) {
+					en = new Turret(EntityTypes.SKELETON, new Point(pack6.x, pack6.y), pack6.owner);
+				}
 			} else {
 				try {
 					en = EntityTypes.getType(pack6.type).getEntityClass().getConstructor(EntityTypes.class)
 							.newInstance(EntityTypes.getType(pack6.type));
-				} catch (Exception e) {}
+				} catch (Exception e) {
+					en = new Mob(EntityTypes.CHICKEN);
+				}
 			}
 			en.uuid = pack6.eid;
 
