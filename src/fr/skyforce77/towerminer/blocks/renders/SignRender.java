@@ -79,11 +79,11 @@ public class SignRender extends BlockRender {
     
     @Override
     public boolean needNBT(int id) {
-    	return true;
+        return true;
     }
     
     @Override
     public String formatNBT(int id) {
-    	return "text";
+        return "text";
     }
 }

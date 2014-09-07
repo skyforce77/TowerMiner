@@ -1,16 +1,16 @@
 package fr.skyforce77.towerminer.api.commands;
 
-import java.awt.Color;
-import java.util.ArrayList;
-
 import fr.skyforce77.towerminer.protocol.chat.ChatMessage;
 import fr.skyforce77.towerminer.protocol.chat.ChatModel;
 import fr.skyforce77.towerminer.protocol.chat.MessageModel;
 
+import java.awt.*;
+import java.util.ArrayList;
+
 public class Command {
 
 	private Argument[] arguments;
-	private ArrayList<String> alias = new ArrayList<>();
+	private ArrayList<String> alias = new ArrayList<String>();
 	public String label;
 	public boolean isalias;
 	public String real;

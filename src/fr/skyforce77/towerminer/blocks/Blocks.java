@@ -1,16 +1,5 @@
 package fr.skyforce77.towerminer.blocks;
 
-import java.awt.Color;
-import java.awt.Graphics2D;
-import java.awt.Image;
-import java.io.File;
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Random;
-
-import javax.swing.ImageIcon;
-
 import fr.skyforce77.towerminer.TowerMiner;
 import fr.skyforce77.towerminer.blocks.renders.BlockRender;
 import fr.skyforce77.towerminer.maps.Maps;
@@ -20,12 +9,20 @@ import fr.skyforce77.towerminer.particles.ParticleType;
 import fr.skyforce77.towerminer.ressources.RessourcesManager;
 import fr.skyforce77.towerminer.save.DataBase;
 
+import javax.swing.*;
+import java.awt.*;
+import java.io.File;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Random;
+
 public class Blocks implements Serializable {
 
     private static final long serialVersionUID = 2752810401397078248L;
     private static Blocks[] blocks = new Blocks[5000];
-    private static HashMap<String, Integer> blockids = new HashMap<>();
-    protected static ArrayList<CustomBlock> customblocks = new ArrayList<>();
+    private static HashMap<String, Integer> blockids = new HashMap<String, Integer>();
+    protected static ArrayList<CustomBlock> customblocks = new ArrayList<CustomBlock>();
     
     @SuppressWarnings("unchecked")
 	public static void loadCustomBlocks() {

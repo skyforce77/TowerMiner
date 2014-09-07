@@ -1,14 +1,14 @@
 package fr.skyforce77.towerminer.api.commands;
 
-import java.util.ArrayList;
-
 import fr.skyforce77.towerminer.api.commands.Argument.ArgumentType;
 import fr.skyforce77.towerminer.protocol.chat.ChatMessage;
+
+import java.util.ArrayList;
 
 public class CommandHelp extends Command {
 
 	int pagesnumber = 0;
-	ArrayList<ArrayList<String>> pages = new ArrayList<>();
+	ArrayList<ArrayList<String>> pages = new ArrayList<ArrayList<String>>();
 	
 	@Override
 	public void onTyped(CommandSender sender, String[] args) {
@@ -41,15 +41,15 @@ public class CommandHelp extends Command {
 	public void update() {
 		int i = 1;
 		pagesnumber = 0;
-		pages = new ArrayList<>();
-		ArrayList<String> commands = new ArrayList<>();
+		pages = new ArrayList<ArrayList<String>>();
+		ArrayList<String> commands = new ArrayList<String>();
 		for(String command : CommandManager.getCommands()) {
 			if(i < 8) {
 				commands.add(command);
 				i++;
 			} else {
 				pages.add(commands);
-				commands = new ArrayList<>();
+				commands = new ArrayList<String>();
 				commands.add(command);
 				i = 2;
 				pagesnumber++;
