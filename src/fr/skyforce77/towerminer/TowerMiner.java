@@ -1,15 +1,5 @@
 package fr.skyforce77.towerminer;
 
-import java.awt.Color;
-import java.awt.Font;
-import java.net.URL;
-import java.util.Date;
-import java.util.Random;
-import java.util.UUID;
-
-import javax.swing.JOptionPane;
-import javax.swing.SwingUtilities;
-
 import fr.skyforce77.towerminer.achievements.Achievements;
 import fr.skyforce77.towerminer.achievements.Popup;
 import fr.skyforce77.towerminer.api.PluginManager;
@@ -33,6 +23,13 @@ import fr.skyforce77.towerminer.ressources.language.LanguageManager;
 import fr.skyforce77.towerminer.save.DataBase;
 import fr.skyforce77.towerminer.sounds.Music;
 
+import javax.swing.*;
+import java.awt.*;
+import java.net.URL;
+import java.util.Date;
+import java.util.Random;
+import java.util.UUID;
+
 public class TowerMiner {
 
 	public static Game game;
@@ -48,14 +45,16 @@ public class TowerMiner {
 	public static String usedos = "linux";
 	public static String player = "Player" + new Random().nextInt(1000);
 	public static UUID id;
-	
-	private static Font font;
+    public static int ldata;
+
+    private static Font font;
 
 	public static void startGame(final int launchedversion, final String state, final String os, String player, UUID id, int data) {
 		usedos = os;
 		TowerMiner.player = player;
 		TowerMiner.id = id;
 		actuallauncherversion = launchedversion;
+        ldata = data;
 
 		LanguageManager.initLanguages();
 
@@ -69,11 +68,8 @@ public class TowerMiner {
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
-				if (state.equals("offline")) {
-					Game.offline = true;
-				} else {
-					count();
-				}
+                Game.offline = state.equals("offline");
+
 				if (!RessourcesManager.getSaveDirectory().exists()) {
 					RessourcesManager.getSaveDirectory().mkdirs();
 				}
@@ -106,8 +102,9 @@ public class TowerMiner {
 
 				PluginManager.initPlugins();
 				printInfo("Successfully launched!");
-				
-				CommandManager.createTerminal();
+                onLaunched(state);
+
+                CommandManager.createTerminal();
 			}
 		});
 	}
@@ -195,13 +192,6 @@ public class TowerMiner {
 		}
 		LanguageManager.initLanguages();
 		JOptionPane.showMessageDialog(game, "- " + LanguageManager.getText("launcher.without") + "\n- " + LanguageManager.getText("launcher.outdated"), LanguageManager.getText("launcher.information"), JOptionPane.ERROR_MESSAGE);
-		return;
-	}
-
-	public static void count() {
-		try {
-			new URL("http://skyforce77.fr/count.php").openConnection().getInputStream();
-		} catch(Exception e) {}
 	}
 	
 	@SuppressWarnings("deprecation")
