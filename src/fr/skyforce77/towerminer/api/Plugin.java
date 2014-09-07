@@ -7,15 +7,15 @@ public class Plugin {
 	public void onEnable() {}
 	
 	public boolean isPluginNeededByClient() {
-		return false;
+        return false;
 	}
 	
 	public PluginInfo getInfos() {
-		return info;
+        return info;
 	}
 	
 	public void setPluginInfos(PluginInfo info) {
-		this.info = info;
+        this.info = info;
 	}
 	
 	public String getName() {
