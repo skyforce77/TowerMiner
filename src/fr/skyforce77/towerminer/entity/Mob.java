@@ -1,14 +1,5 @@
 package fr.skyforce77.towerminer.entity;
 
-import java.awt.AlphaComposite;
-import java.awt.Color;
-import java.awt.Graphics2D;
-import java.awt.Image;
-import java.awt.Point;
-import java.util.ArrayList;
-import java.util.Random;
-import java.util.concurrent.CopyOnWriteArrayList;
-
 import fr.skyforce77.towerminer.TowerMiner;
 import fr.skyforce77.towerminer.achievements.Achievements;
 import fr.skyforce77.towerminer.api.PluginManager;
@@ -21,6 +12,11 @@ import fr.skyforce77.towerminer.menus.MultiPlayer;
 import fr.skyforce77.towerminer.menus.SinglePlayer;
 import fr.skyforce77.towerminer.protocol.packets.Packet10EntityValueUpdate;
 import fr.skyforce77.towerminer.render.RenderHelper;
+
+import java.awt.*;
+import java.util.ArrayList;
+import java.util.Random;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class Mob extends Entity {
 
@@ -47,6 +43,10 @@ public class Mob extends Entity {
 
     public int getLife() {
         return life;
+    }
+
+    public void setLife(int life) {
+        this.life = life;
     }
 
     @Override
@@ -112,15 +112,11 @@ public class Mob extends Entity {
             }
         }
         if (sp.mobs.contains(this)) {
-        	PluginManager.callEvent(new MobDespawnEvent(this));
+            PluginManager.callAsyncEvent(new MobDespawnEvent(this));
             sp.removed.add(this);
         }
         died = true;
         return location;
-    }
-
-    public void setLife(int life) {
-        this.life = life;
     }
 
     public void hurt(int damage) {
@@ -130,7 +126,7 @@ public class Mob extends Entity {
         SinglePlayer sp = (SinglePlayer) TowerMiner.menu;
         if (damage >= life) {
             if (!died) {
-            	PluginManager.callEvent(new MobDespawnEvent(this));
+                PluginManager.callAsyncEvent(new MobDespawnEvent(this));
                 sp.removed.add(this);
                 sp.addGold(getType().getMaxLife());
             }

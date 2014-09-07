@@ -156,9 +156,9 @@ public class TowerMiner {
 
 	public static void setMenu(Menu m) {
 		MenuPreChangeEvent mpce = new MenuPreChangeEvent(menu, m);
-		PluginManager.callEvent(mpce);
-		if(!mpce.isCancelled()) {
-			m.last = menu;
+        PluginManager.callSyncEvent(mpce);
+        if (!mpce.isCancelled()) {
+            m.last = menu;
 			if (menu != null) {
 				menu.callUnused();
 				menu.selected = -1;
@@ -172,9 +172,9 @@ public class TowerMiner {
 
 	public static void returnMenu(Menu m) {
 		MenuReturnEvent mpce = new MenuReturnEvent(menu, m);
-		PluginManager.callEvent(mpce);
-		if(!mpce.isCancelled()) {
-			if (menu != null) {
+        PluginManager.callSyncEvent(mpce);
+        if (!mpce.isCancelled()) {
+            if (menu != null) {
 				menu.callUnused();
 				menu.selected = -1;
 				m.Xcursor = menu.Xcursor;

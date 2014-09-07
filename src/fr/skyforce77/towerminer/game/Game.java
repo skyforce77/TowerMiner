@@ -121,9 +121,9 @@ public class Game extends JFrame implements MouseListener, MouseWheelListener, M
 					if(popup == null) {
 						if(!nextpopups.isEmpty()) {
 							PopupDisplayedEvent pde = new PopupDisplayedEvent((Popup)nextpopups.keySet().toArray()[0]);
-							PluginManager.callEvent(pde);
-							if(!pde.isCancelled()) {
-								popup = pde.getPopup();
+                            PluginManager.callSyncEvent(pde);
+                            if (!pde.isCancelled()) {
+                                popup = pde.getPopup();
 								if (TowerMiner.menu instanceof MultiPlayer && nextpopups.get(popup)) {
 									MultiPlayer mp = (MultiPlayer) TowerMiner.menu;
 									if (mp.server) {
@@ -267,13 +267,13 @@ public class Game extends JFrame implements MouseListener, MouseWheelListener, M
 
 	@Override
     public void windowActivated(WindowEvent arg0) {
-        PluginManager.callEvent(new MenuWindowActivatedEvent(TowerMiner.menu, arg0));
+        PluginManager.callAsyncEvent(new MenuWindowActivatedEvent(TowerMiner.menu, arg0));
         TowerMiner.menu.onWindowActivated(arg0);
     }
 
 	@Override
     public void windowClosed(WindowEvent arg0) {
-        PluginManager.callEvent(new MenuWindowClosedEvent(TowerMiner.menu, arg0));
+        PluginManager.callAsyncEvent(new MenuWindowClosedEvent(TowerMiner.menu, arg0));
         TowerMiner.menu.onWindowClosed(arg0);
         int i = 0;
         while (i < 10) {
@@ -285,37 +285,37 @@ public class Game extends JFrame implements MouseListener, MouseWheelListener, M
 
 	@Override
     public void windowClosing(WindowEvent arg0) {
-        PluginManager.callEvent(new MenuWindowClosingEvent(TowerMiner.menu, arg0));
+        PluginManager.callAsyncEvent(new MenuWindowClosingEvent(TowerMiner.menu, arg0));
         TowerMiner.menu.onWindowClosing(arg0);
     }
 
 	@Override
     public void windowDeactivated(WindowEvent arg0) {
-        PluginManager.callEvent(new MenuWindowDeactivatedEvent(TowerMiner.menu, arg0));
+        PluginManager.callAsyncEvent(new MenuWindowDeactivatedEvent(TowerMiner.menu, arg0));
         TowerMiner.menu.onWindowDeactivated(arg0);
     }
 
 	@Override
     public void windowDeiconified(WindowEvent arg0) {
-        PluginManager.callEvent(new MenuWindowDeiconifiedEvent(TowerMiner.menu, arg0));
+        PluginManager.callAsyncEvent(new MenuWindowDeiconifiedEvent(TowerMiner.menu, arg0));
         TowerMiner.menu.onWindowDeiconified(arg0);
     }
 
 	@Override
     public void windowIconified(WindowEvent arg0) {
-        PluginManager.callEvent(new MenuWindowIconifiedEvent(TowerMiner.menu, arg0));
+        PluginManager.callAsyncEvent(new MenuWindowIconifiedEvent(TowerMiner.menu, arg0));
         TowerMiner.menu.onWindowIconified(arg0);
     }
 
 	@Override
     public void windowOpened(WindowEvent arg0) {
-        PluginManager.callEvent(new MenuWindowOpenedEvent(TowerMiner.menu, arg0));
+        PluginManager.callAsyncEvent(new MenuWindowOpenedEvent(TowerMiner.menu, arg0));
         TowerMiner.menu.onWindowOpened(arg0);
     }
 
 	@Override
     public void mouseDragged(MouseEvent arg0) {
-        PluginManager.callEvent(new MenuMouseDraggedEvent(TowerMiner.menu, arg0));
+        PluginManager.callAsyncEvent(new MenuMouseDraggedEvent(TowerMiner.menu, arg0));
         if (konami) {
             arg0 = new MouseEvent(this, arg0.getID(), arg0.getWhen(), arg0.getModifiers(), (int) (getSize().getWidth() - arg0.getX()), (int) (getSize().getHeight() - arg0.getY())
                     , arg0.getXOnScreen(), arg0.getYOnScreen(), arg0.getClickCount(), arg0.isPopupTrigger(), arg0.getButton());
@@ -325,7 +325,7 @@ public class Game extends JFrame implements MouseListener, MouseWheelListener, M
 
 	@Override
     public void mouseMoved(MouseEvent arg0) {
-        PluginManager.callEvent(new MenuMouseMovedEvent(TowerMiner.menu, arg0));
+        PluginManager.callAsyncEvent(new MenuMouseMovedEvent(TowerMiner.menu, arg0));
         if(konami) {
 			arg0 = new MouseEvent(this, arg0.getID(), arg0.getWhen(), arg0.getModifiers(), (int)(getSize().getWidth()-arg0.getX()), (int)(getSize().getHeight()-arg0.getY())
 					, arg0.getXOnScreen(), arg0.getYOnScreen(), arg0.getClickCount(), arg0.isPopupTrigger(), arg0.getButton());
@@ -335,37 +335,37 @@ public class Game extends JFrame implements MouseListener, MouseWheelListener, M
 
 	@Override
     public void mouseWheelMoved(MouseWheelEvent arg0) {
-        PluginManager.callEvent(new MenuMouseWheelMovedEvent(TowerMiner.menu, arg0));
+        PluginManager.callAsyncEvent(new MenuMouseWheelMovedEvent(TowerMiner.menu, arg0));
         TowerMiner.menu.onMouseWheelMoved(arg0);
     }
 
 	@Override
     public void mouseClicked(MouseEvent arg0) {
-        PluginManager.callEvent(new MenuMouseClickedEvent(TowerMiner.menu, arg0));
+        PluginManager.callAsyncEvent(new MenuMouseClickedEvent(TowerMiner.menu, arg0));
         TowerMiner.menu.onMouseClicked(arg0);
     }
 
 	@Override
     public void mouseEntered(MouseEvent arg0) {
-        PluginManager.callEvent(new MenuMouseEnteredEvent(TowerMiner.menu, arg0));
+        PluginManager.callAsyncEvent(new MenuMouseEnteredEvent(TowerMiner.menu, arg0));
         TowerMiner.menu.onMouseEntered(arg0);
     }
 
 	@Override
     public void mouseExited(MouseEvent arg0) {
-        PluginManager.callEvent(new MenuMouseExitedEvent(TowerMiner.menu, arg0));
+        PluginManager.callAsyncEvent(new MenuMouseExitedEvent(TowerMiner.menu, arg0));
         TowerMiner.menu.onMouseExited(arg0);
     }
 
 	@Override
     public void mousePressed(MouseEvent arg0) {
-        PluginManager.callEvent(new MenuMousePressedEvent(TowerMiner.menu, arg0));
+        PluginManager.callAsyncEvent(new MenuMousePressedEvent(TowerMiner.menu, arg0));
         TowerMiner.menu.onMousePressed(arg0);
     }
 
 	@Override
     public void mouseReleased(MouseEvent arg0) {
-        PluginManager.callEvent(new MenuMouseReleasedEvent(TowerMiner.menu, arg0));
+        PluginManager.callAsyncEvent(new MenuMouseReleasedEvent(TowerMiner.menu, arg0));
         TowerMiner.menu.onMouseReleased(arg0);
     }
 
@@ -393,7 +393,7 @@ public class Game extends JFrame implements MouseListener, MouseWheelListener, M
             }
 
             MenuRenderEvent event = new MenuRenderEvent(TowerMiner.menu);
-            PluginManager.callEvent(event);
+            PluginManager.callSyncEvent(event);
             if (!event.isReplaceRender()) {
                 TowerMiner.menu.drawMenu(g2d);
             }

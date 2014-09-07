@@ -1,28 +1,5 @@
 package fr.skyforce77.towerminer.menus;
 
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.FontMetrics;
-import java.awt.Graphics2D;
-import java.awt.Point;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.WindowEvent;
-import java.util.Date;
-import java.util.Random;
-import java.util.concurrent.CopyOnWriteArrayList;
-
-import javax.swing.JButton;
-import javax.swing.JCheckBox;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
-import javax.swing.JRadioButton;
-import javax.swing.JTextField;
-
 import fr.skyforce77.towerminer.TowerMiner;
 import fr.skyforce77.towerminer.achievements.Achievements;
 import fr.skyforce77.towerminer.api.PluginManager;
@@ -42,6 +19,13 @@ import fr.skyforce77.towerminer.particles.ParticleEffect;
 import fr.skyforce77.towerminer.ressources.RessourcesManager;
 import fr.skyforce77.towerminer.ressources.language.LanguageManager;
 import fr.skyforce77.towerminer.sounds.Music;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+import java.util.Date;
+import java.util.Random;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class SinglePlayer extends Menu implements ChatContainer{
 
@@ -63,32 +47,25 @@ public class SinglePlayer extends Menu implements ChatContainer{
 	public int vie;
 	public int or;
 	public int orgained;
-
-	int tospawn;
-	int spawned;
-	int between;
-	int time;
-
 	public CopyOnWriteArrayList<Mob> mobs = new CopyOnWriteArrayList<Mob>();
 	public CopyOnWriteArrayList<Entity> entity = new CopyOnWriteArrayList<Entity>();
 	public CopyOnWriteArrayList<Entity> removed = new CopyOnWriteArrayList<Entity>();
 	public CopyOnWriteArrayList<Entity> draw = new CopyOnWriteArrayList<Entity>();
-
 	public CopyOnWriteArrayList<Particle> particles = new CopyOnWriteArrayList<Particle>();
-
 	public JMenuItem pause;
 	public JButton next;
 	public JCheckBox speed;
 	public JMenu options;
 	public JMenuBar bar;
-
 	public boolean multiplayer;
 	public boolean renderarrow = true;
-
-	int selectedturret = 0;
-	Turret aimed = null;
-
-	public String player = "menu.mp.blue";
+    public String player = "menu.mp.blue";
+    int tospawn;
+    int spawned;
+    int between;
+    int time;
+    int selectedturret = 0;
+    Turret aimed = null;
 
 	public SinglePlayer(boolean multi) {
 		chat = new Chat(this);
@@ -284,9 +261,9 @@ public class SinglePlayer extends Menu implements ChatContainer{
 				EntityTypes type = EntityTypes.mobs.get(new Random().nextInt(EntityTypes.mobs.size()));
 				if (type.getLevel() <= tospawn - spawned) {
 					Mob m = new Mob(type);
-					PluginManager.callEvent(new MobSpawnEvent(m));
-					mobs.add(m);
-					spawned += type.getLevel();
+                    PluginManager.callAsyncEvent(new MobSpawnEvent(m));
+                    mobs.add(m);
+                    spawned += type.getLevel();
 					time = (int) (30 - (0.5 * round));
 					between = time;
 					if(round >= 10 && new Random().nextInt(100) <= 5) {

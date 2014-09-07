@@ -1,11 +1,5 @@
 package fr.skyforce77.towerminer.entity;
 
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.FontMetrics;
-import java.awt.Graphics2D;
-import java.awt.Point;
-
 import fr.skyforce77.towerminer.TowerMiner;
 import fr.skyforce77.towerminer.achievements.Achievements;
 import fr.skyforce77.towerminer.api.PluginManager;
@@ -19,6 +13,8 @@ import fr.skyforce77.towerminer.menus.SinglePlayer;
 import fr.skyforce77.towerminer.protocol.packets.Packet10EntityValueUpdate;
 import fr.skyforce77.towerminer.render.RenderHelper;
 import fr.skyforce77.towerminer.ressources.language.LanguageManager;
+
+import java.awt.*;
 
 public class Turret extends Entity {
 
@@ -41,16 +37,29 @@ public class Turret extends Entity {
         if (TowerMiner.menu instanceof MultiPlayer) {
         	rgb = owner.equals("menu.mp.red") ? Color.RED.getRGB() : Color.BLUE.getRGB();
         }
-        PluginManager.callEvent(new TurretPlacedEvent(this));
+        PluginManager.callAsyncEvent(new TurretPlacedEvent(this));
     }
-    
-    public void setPower(int power) {
-		this.power = power;
-	}
+
+    public static boolean canPlace(int x, int y) {
+        if (Maps.getActualMap().getBlock(x, y) == null) {
+            return true;
+        }
+        if (!(Maps.getActualMap().getBlock(x, y).equals(Maps.getActualMap().getBlockPath()) && Maps.getActualMap().getOverlayBlock(x, y).equals(Maps.getActualMap().getOverlayPath()))) {
+            if (!(Maps.getActualMap().getBlock(x, y).isLiquid() || Maps.getActualMap().getOverlayBlock(x, y).isLiquid()) &&
+                    (Maps.getActualMap().getBlock(x, y).canPlaceTurretOn() && Maps.getActualMap().getOverlayBlock(x, y).canPlaceTurretOn())) {
+                return true;
+            }
+        }
+        return false;
+    }
     
     public int getPower() {
 		return power;
 	}
+
+    public void setPower(int power) {
+        this.power = power;
+    }
 
     public int getData() {
         return data;
@@ -101,12 +110,12 @@ public class Turret extends Entity {
         cost += price;
         price = price + (price / 3);
         new Packet10EntityValueUpdate(getUUID(), "turretdata", data).sendAllTCP();
-        PluginManager.callEvent(new TurretUpgradeEvent(this, data-1, data));
+        PluginManager.callAsyncEvent(new TurretUpgradeEvent(this, data - 1, data));
     }
-
+    
     @Override
     public void onTick() {
-        if (!(TowerMiner.menu instanceof SinglePlayer) || (TowerMiner.menu instanceof MultiPlayer && !((MultiPlayer)TowerMiner.menu).server)) {
+        if (!(TowerMiner.menu instanceof SinglePlayer) || (TowerMiner.menu instanceof MultiPlayer && !((MultiPlayer) TowerMiner.menu).server)) {
             return;
         }
         SinglePlayer sp = (SinglePlayer) TowerMiner.menu;
@@ -115,7 +124,7 @@ public class Turret extends Entity {
         Mob e = null;
         for (Entity en : sp.mobs) {
             double i = en.getLocation().distance(location.x, location.y);
-            if (i < distance && i < distance && canSee((Mob)en)) {
+            if (i < distance && i < distance && canSee((Mob) en)) {
                 distance = i;
                 e = (Mob) en;
             }
@@ -133,7 +142,7 @@ public class Turret extends Entity {
 
         setRotationAim(e);
     }
-    
+
     public void onClientTick() {
         if (!(TowerMiner.menu instanceof SinglePlayer)) {
             return;
@@ -144,7 +153,7 @@ public class Turret extends Entity {
         Mob e = null;
         for (Entity en : sp.draw) {
             double i = en.getLocation().distance(location.x, location.y);
-            if (en instanceof Mob && i < distance && canSee((Mob)en)) {
+            if (en instanceof Mob && i < distance && canSee((Mob) en)) {
                 distance = i;
                 e = (Mob) en;
             }
@@ -154,13 +163,13 @@ public class Turret extends Entity {
 
     public void onDamage(Mob e) {
     }
-    
+
     public boolean canSee(Mob m) {
-    	double i = m.getLocation().distance(location.x, location.y);
-    	if(!m.hasEffect(EntityEffectType.INVISIBLE) && i < this.distance) {
-    		return true;
-    	}
-    	return false;
+        double i = m.getLocation().distance(location.x, location.y);
+        if (!m.hasEffect(EntityEffectType.INVISIBLE) && i < this.distance) {
+            return true;
+        }
+        return false;
     }
 
     @Override
@@ -170,8 +179,8 @@ public class Turret extends Entity {
         double ro = getRotation();
         g2d.rotate(ro - Math.toRadians(getType().rotation), x, y + sp.CanvasY);
         try {
-        	int size = 30+(int)(0.5*data);
-           g2d.drawImage(RenderHelper.getColoredImage(getType().getTexture(0), new Color(rgb), 0.1F), (int) x - size/2 + sp.CanvasX, (int) y - size/2 + sp.CanvasY, size, size, null);
+            int size = 30 + (int) (0.5 * data);
+            g2d.drawImage(RenderHelper.getColoredImage(getType().getTexture(0), new Color(rgb), 0.1F), (int) x - size / 2 + sp.CanvasX, (int) y - size / 2 + sp.CanvasY, size, size, null);
         } catch (Exception e) {
         }
         g2d.rotate(-ro + Math.toRadians(getType().rotation), x, y + sp.CanvasY);
@@ -183,12 +192,12 @@ public class Turret extends Entity {
         double y = sp.Ycursor;
         String[] text = new String[3];
         String speed = data * 2 >= 40 ? "100%" : data * 2 + "%";
-        if (sp instanceof MultiPlayer && !((MultiPlayer)sp).player.equals(getOwner())) {
-            text = new String[]{LanguageManager.getText("turret.level") + ": " + data, LanguageManager.getText("turret.range") + ": " + (int)((float) distance / 45),
+        if (sp instanceof MultiPlayer && !((MultiPlayer) sp).player.equals(getOwner())) {
+            text = new String[]{LanguageManager.getText("turret.level") + ": " + data, LanguageManager.getText("turret.range") + ": " + (int) ((float) distance / 45),
                     LanguageManager.getText("turret.speed") + ": " + speed, LanguageManager.getText("turret.owner") + ": " + LanguageManager.getText(owner),
                     LanguageManager.getText("turret.power") + ": " + power};
         } else {
-            text = new String[]{LanguageManager.getText("turret.level") + ": " + data, LanguageManager.getText("turret.range") + ": " + (int)((float) distance / 45),
+            text = new String[]{LanguageManager.getText("turret.level") + ": " + data, LanguageManager.getText("turret.range") + ": " + (int) ((float) distance / 45),
                     LanguageManager.getText("turret.speed") + ": " + speed, LanguageManager.getText("turret.cost") + ": " + cost,
                     LanguageManager.getText("turret.power") + ": " + power};
         }
@@ -209,26 +218,13 @@ public class Turret extends Entity {
         g2d.setColor(Color.WHITE);
         int u = 0;
         for (String t : text) {
-        	g2d.drawString(t, (int) x + 3, (int) y - 3 - 16*u);
-        	u++;
+            g2d.drawString(t, (int) x + 3, (int) y - 3 - 16 * u);
+            u++;
         }
     }
 
     public EntityTypes getProjectile() {
         return EntityTypes.ARROW;
-    }
-    
-    public static boolean canPlace(int x, int y) {
-        if (Maps.getActualMap().getBlock(x, y) == null) {
-            return true;
-        }
-        if(!(Maps.getActualMap().getBlock(x, y).equals(Maps.getActualMap().getBlockPath()) && Maps.getActualMap().getOverlayBlock(x, y).equals(Maps.getActualMap().getOverlayPath()))) {
-        	if(!(Maps.getActualMap().getBlock(x, y).isLiquid() || Maps.getActualMap().getOverlayBlock(x, y).isLiquid()) &&
-        		(Maps.getActualMap().getBlock(x, y).canPlaceTurretOn() && Maps.getActualMap().getOverlayBlock(x, y).canPlaceTurretOn())) {
-        		return true;
-        	}
-        }
-        return false;
     }
 
 }

@@ -1,21 +1,6 @@
 package fr.skyforce77.towerminer.menus.additionals;
 
-import java.awt.Color;
-import java.awt.Desktop;
-import java.awt.Desktop.Action;
-import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.FontMetrics;
-import java.awt.Graphics2D;
-import java.awt.font.TextAttribute;
-import java.io.IOException;
-import java.net.URI;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Map;
-
 import com.esotericsoftware.kryonet.Connection;
-
 import fr.skyforce77.towerminer.TowerMiner;
 import fr.skyforce77.towerminer.api.PluginManager;
 import fr.skyforce77.towerminer.api.commands.CommandManager;
@@ -28,6 +13,15 @@ import fr.skyforce77.towerminer.protocol.chat.ChatMessage;
 import fr.skyforce77.towerminer.protocol.chat.ChatModel;
 import fr.skyforce77.towerminer.protocol.packets.Packet11ChatMessage;
 import fr.skyforce77.towerminer.ressources.language.LanguageManager;
+
+import java.awt.*;
+import java.awt.Desktop.Action;
+import java.awt.font.TextAttribute;
+import java.io.IOException;
+import java.net.URI;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.Map;
 
 public class Chat {
 
@@ -91,9 +85,9 @@ public class Chat {
 		ChatMessage msg = new ChatMessage(name, new ChatModel(": "));
 		msg.add(getText(message));
 		PlayerChatEvent pce = new PlayerChatEvent(msg, message);
-		PluginManager.callEvent(pce);
-		if(!pce.isCancelled()) {
-			if(menu instanceof MultiPlayer) {
+        PluginManager.callSyncEvent(pce);
+        if (!pce.isCancelled()) {
+            if(menu instanceof MultiPlayer) {
 				new Packet11ChatMessage(pce.getMessage()).sendAllTCP();
 			} else {
 				onMessageReceived(pce.getMessage());

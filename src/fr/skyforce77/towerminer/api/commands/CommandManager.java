@@ -1,16 +1,16 @@
 package fr.skyforce77.towerminer.api.commands;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.HashMap;
-import java.util.Set;
-
 import fr.skyforce77.towerminer.TowerMiner;
 import fr.skyforce77.towerminer.api.PluginManager;
 import fr.skyforce77.towerminer.api.Utils;
 import fr.skyforce77.towerminer.api.events.chat.CommandTypedEvent;
 import fr.skyforce77.towerminer.protocol.chat.ChatMessage;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.HashMap;
+import java.util.Set;
 
 public class CommandManager {
 
@@ -66,9 +66,9 @@ public class CommandManager {
 
 	public static void onCommandTyped(CommandSender sender, String label, String[] args) {
 		CommandTypedEvent cte = new CommandTypedEvent(label, args);
-		PluginManager.callEvent(cte);
-		if(!cte.isCancelled()) {
-			String s = cte.getLabel();
+        PluginManager.callSyncEvent(cte);
+        if (!cte.isCancelled()) {
+            String s = cte.getLabel();
 			for(String a : cte.getArguments()) {
 				s = s+" "+a;
 			}
