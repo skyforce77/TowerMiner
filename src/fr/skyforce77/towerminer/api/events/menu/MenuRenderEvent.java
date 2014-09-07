@@ -1,8 +1,8 @@
 package fr.skyforce77.towerminer.api.events.menu;
 
-import fr.skyforce77.towerminer.menus.Menu;
+import java.awt.Graphics2D;
 
-import java.awt.*;
+import fr.skyforce77.towerminer.menus.Menu;
 
 public class MenuRenderEvent extends MenuEvent {
 
@@ -29,8 +29,7 @@ public class MenuRenderEvent extends MenuEvent {
         this.replace = replace;
     }
 
-    public class RenderRunnable {
-        public void run(Graphics2D g2d) {
-        }
+    public static class RenderRunnable {
+        public void run(Graphics2D g2d) {}
     }
 }
