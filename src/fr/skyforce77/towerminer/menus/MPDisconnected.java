@@ -1,12 +1,11 @@
 package fr.skyforce77.towerminer.menus;
 
-import java.awt.Color;
-import java.awt.Graphics2D;
-
 import fr.skyforce77.towerminer.TowerMiner;
 import fr.skyforce77.towerminer.protocol.Connect;
 import fr.skyforce77.towerminer.ressources.RessourcesManager;
 import fr.skyforce77.towerminer.ressources.language.LanguageManager;
+
+import java.awt.*;
 
 public class MPDisconnected extends Menu {
 
@@ -33,7 +32,7 @@ public class MPDisconnected extends Menu {
     @Override
     public void onUsed() {
         TowerMiner.game.resize(800, 500);
-        new Thread() {
+        new Thread("Disconnected") {
             public void run() {
                 try {
                     Thread.sleep(5000l);

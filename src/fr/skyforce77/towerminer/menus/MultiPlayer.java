@@ -121,7 +121,7 @@ public class MultiPlayer extends SinglePlayer {
 
         TowerMiner.game.setTitle(LanguageManager.getText("towerminer") + " | " + Game.version + " | " + LanguageManager.getText("menu.multiplayer") + " | " + LanguageManager.getText("menu.editor.map") + ": " + Maps.getActualMap().getName() + " | " + LanguageManager.getText(player));
 
-        new Thread() {
+        new Thread("MultiPlayerConnectionVerification") {
             public void run() {
                 while (true) {
                     if ((Connect.client != null && !Connect.client.isConnected()) || (Connect.server != null && !MPInfos.connection.isConnected())) {
@@ -161,8 +161,8 @@ public class MultiPlayer extends SinglePlayer {
         pr.round = round;
         pr.sendAllTCP();
 
-        new Thread() {
-        	public void run() {
+        new Thread("EntityDataSending") {
+            public void run() {
                 if (server) {
                     for (Entity en : entity) {
                         sendData(en);
@@ -206,7 +206,7 @@ public class MultiPlayer extends SinglePlayer {
     }
     
     public void sendData(final Entity en) {
-    	new Thread() {
+        new Thread("EntityData-" + en.getUUID()) {
             @Override
             public void run() {
                 BigSending.sendBigObject(en, MPInfos.connection, new ObjectReceiver.ReceivingThread() {

@@ -198,8 +198,8 @@ public class Chat {
 
 					if(model.getMouseModel() != null && model.getMouseModel().getText() != null) {
 						if(mp.Xcursor > x && mp.Xcursor < x+getWidth(text) && mp.Ycursor > TowerMiner.game.getHeight() - i * 26 - 55 && mp.Ycursor < TowerMiner.game.getHeight() - i * 26 - 55 +26) {
-							render = new Thread() {
-								public void run() {
+                            render = new Thread("MouseModelRender") {
+                                public void run() {
 									g2d.setFont(TowerMiner.getFont(15));
 									FontMetrics metric = g2d.getFontMetrics(g2d.getFont());
 									int hgt = metric.getHeight();

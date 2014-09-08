@@ -1,12 +1,20 @@
 package fr.skyforce77.towerminer.render;
 
-import java.awt.Color;
-import java.awt.Image;
+import java.awt.*;
 import java.util.HashMap;
 
 public class ColoredImages {
 
     private static HashMap<ColoredImages, Image> images = new HashMap<ColoredImages, Image>();
+    public Color color;
+    public Image image;
+    public float alpha;
+
+    public ColoredImages(Image image, Color color, float alpha) {
+        this.color = color;
+        this.image = image;
+        this.alpha = alpha;
+    }
 
     public static void add(ColoredImages infos, Image colored) {
         images.put(infos, colored);
@@ -18,16 +26,6 @@ public class ColoredImages {
 
     public static Image getImage(ColoredImages infos) {
         return images.get(infos);
-    }
-
-    public Color color;
-    public Image image;
-    public float alpha;
-
-    public ColoredImages(Image image, Color color, float alpha) {
-        this.color = color;
-        this.image = image;
-        this.alpha = alpha;
     }
 
     @Override

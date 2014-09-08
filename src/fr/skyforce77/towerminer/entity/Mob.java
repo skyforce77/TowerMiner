@@ -35,9 +35,9 @@ public class Mob extends Entity {
         last = new Point(0, 0);
         life = type.getMaxLife();
         speed = type.getSpeed();
-        
-        if(type.equals(EntityTypes.MUSHCOW)) {
-        	Achievements.unlockAchievement(8);
+
+        if (type.equals(EntityTypes.MUSHCOW)) {
+            Achievements.unlockAchievement(8);
         }
     }
 
@@ -52,7 +52,7 @@ public class Mob extends Entity {
     @Override
     public void onTick() {
         final Mob m = this;
-        new Thread() {
+        new Thread("MobTick-" + m.getUUID()) {
             @Override
             public void run() {
                 for (EntityEffect effect : effects) {
@@ -201,7 +201,7 @@ public class Mob extends Entity {
             i = RenderHelper.getColoredImage(i, Color.RED, 0.5F);
         }
         if (hasEffect(EntityEffectType.INVISIBLE)) {
-        	g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER , 0.5f));
+            g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.5f));
         }
         try {
             g2d.drawImage(i, (int) x - ((MapWritter.getBlockWidth() - 10) / 2) + sp.CanvasX, (int) y - ((MapWritter.getBlockHeight() - 10) / 2) + sp.CanvasY, MapWritter.getBlockWidth() - 10, MapWritter.getBlockHeight() - 10, null);

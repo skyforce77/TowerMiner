@@ -298,10 +298,10 @@ public class ProtocolManager implements PacketListener {
 			Packet21LoadPlugin pack21 = (Packet21LoadPlugin) p;
 			byte[] data = BigSending.receiving.get(pack21.eid).data;
 			final FileContainer fc = (FileContainer) pack21.deserialize(data);
-			new Thread() {
-				public void run() {
-					int ok = JOptionPane.showConfirmDialog(null, "Voulez vous installer le plugin ?\n"+fc.getFileName().replace(".jar", ""), "Plugin", JOptionPane.YES_NO_OPTION);
-					if(ok == JOptionPane.YES_OPTION) {
+            new Thread("PluginAutoInstall") {
+                public void run() {
+                    int ok = JOptionPane.showConfirmDialog(null, LanguageManager.getText("plugin.auto.want", fc.getFileName().replace(".jar", "")), "Plugin", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+                    if(ok == JOptionPane.YES_OPTION) {
 						PluginManager.loadPlugin(fc);	
 					} else {
 						TowerMiner.returnMenu(Menu.mainmenu);
@@ -344,8 +344,8 @@ public class ProtocolManager implements PacketListener {
 				MPInfos.matchplaying = true;
 				((MPServerWait) TowerMiner.menu).text = LanguageManager.getText("menu.mp.server.connect");
 				MPInfos.connection = c;
-				new Thread() {
-					public void run() {
+                new Thread("MultiPlayerInfos") {
+                    public void run() {
 						if (!PluginManager.canConnect(pack.getPlugins())) {
 							PluginManager.sendNeededPlugins(pack.getPlugins());
 						}

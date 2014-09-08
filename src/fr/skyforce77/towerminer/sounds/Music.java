@@ -1,45 +1,41 @@
 package fr.skyforce77.towerminer.sounds;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
-import java.net.URLConnection;
-import java.nio.channels.FileChannel;
-
-import javax.sound.sampled.AudioFileFormat;
-import javax.sound.sampled.AudioFormat;
-import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.DataLine;
-import javax.sound.sampled.FloatControl;
-import javax.sound.sampled.LineUnavailableException;
-import javax.sound.sampled.SourceDataLine;
-
 import fr.skyforce77.towerminer.TowerMiner;
 import fr.skyforce77.towerminer.achievements.Popup;
 import fr.skyforce77.towerminer.ressources.RessourcesManager;
 import fr.skyforce77.towerminer.ressources.language.LanguageManager;
 import fr.skyforce77.towerminer.save.DataBase;
 
+import javax.sound.sampled.*;
+import java.io.*;
+import java.net.URL;
+import java.net.URLConnection;
+import java.nio.channels.FileChannel;
+
 public class Music {
 
     private static Music[] playing = new Music[10];
+    AudioInputStream audioInputStream = null;
+    SourceDataLine line;
+    File fichier;
+    boolean stopped = false;
+
+    public Music(File f) {
+        fichier = f;
+    }
 
     public static void play(final int channel, String file) {
         stop(channel);
         playing[channel] = new Music(new File(file));
-        new Thread() {
+        new Thread("MusicPlaying") {
             public void run() {
-            	try {
-            		playing[channel].run();
-            	} catch(Exception e) {}
+                try {
+                    playing[channel].run();
+                } catch (Exception e) {
+                }
             }
         }.start();
     }
-
 
     public static void stop(int channel) {
         if (playing[channel] != null) {
@@ -54,11 +50,12 @@ public class Music {
     public static void playMusic(String name) {
         try {
             playURL(0, new URL("http://dl.dropboxusercontent.com/u/38885163/TowerMiner/music/" + name + ".wav"), false);
-        } catch (Exception e) {}
+        } catch (Exception e) {
+        }
     }
 
     public static void playURL(final int channel, final URL url, final boolean display) {
-        new Thread() {
+        new Thread("MusicURLDownload") {
             @Override
             public void run() {
                 String chemin = RessourcesManager.getDirectory().getPath() + "/sounds";
@@ -112,7 +109,7 @@ public class Music {
 
 
                 } catch (IOException e) {
-                	TowerMiner.print("Error while trying to download the file.", "music");
+                    TowerMiner.print("Error while trying to download the file.", "music");
                     e.printStackTrace();
                     return;
                 } finally {
@@ -128,25 +125,44 @@ public class Music {
         }.start();
     }
 
+    @SuppressWarnings({"resource"})
+    private static void copyFile(File sourceFile, File destFile) throws IOException {
+        if (!destFile.exists()) {
+            destFile.createNewFile();
+        }
 
-    AudioInputStream audioInputStream = null;
-    SourceDataLine line;
-    File fichier;
-    boolean stopped = false;
+        FileChannel source = null;
+        FileChannel destination = null;
+        try {
+            source = new FileInputStream(sourceFile).getChannel();
+            destination = new FileOutputStream(destFile).getChannel();
 
-    public Music(File f) {
-        fichier = f;
+            // previous code: destination.transferFrom(source, 0, source.size());
+            // to avoid infinite loops, should be:
+            long count = 0;
+            long size = source.size();
+            while ((count += destination.transferFrom(source, count, size - count)) < size) ;
+        } finally {
+            if (source != null) {
+                source.close();
+            }
+            if (destination != null) {
+                destination.close();
+            }
+        }
     }
 
     public void run() {
         try {
             @SuppressWarnings("unused")
             AudioFileFormat format = AudioSystem.getAudioFileFormat(fichier);
-        } catch (Exception e1) {}
+        } catch (Exception e1) {
+        }
 
         try {
             audioInputStream = AudioSystem.getAudioInputStream(fichier);
-        } catch (Exception e) {}
+        } catch (Exception e) {
+        }
 
         AudioFormat audioFormat = audioInputStream.getFormat();
         DataLine.Info info = new DataLine.Info(SourceDataLine.class, audioFormat);
@@ -187,32 +203,5 @@ public class Music {
 
     public void stop() {
         stopped = true;
-    }
-
-    @SuppressWarnings({"resource"})
-    private static void copyFile(File sourceFile, File destFile) throws IOException {
-        if (!destFile.exists()) {
-            destFile.createNewFile();
-        }
-
-        FileChannel source = null;
-        FileChannel destination = null;
-        try {
-            source = new FileInputStream(sourceFile).getChannel();
-            destination = new FileOutputStream(destFile).getChannel();
-
-            // previous code: destination.transferFrom(source, 0, source.size());
-            // to avoid infinite loops, should be:
-            long count = 0;
-            long size = source.size();
-            while ((count += destination.transferFrom(source, count, size - count)) < size) ;
-        } finally {
-            if (source != null) {
-                source.close();
-            }
-            if (destination != null) {
-                destination.close();
-            }
-        }
     }
 }

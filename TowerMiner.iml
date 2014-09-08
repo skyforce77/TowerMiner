@@ -17,16 +17,7 @@
     </content>
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="inheritedJdk" />
-    <orderEntry type="module-library">
-      <library name="TMProtocol.jar">
-        <CLASSES>
-          <root url="jar://$USER_HOME$/Dropbox/Public/TowerMiner/TMProtocol.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
+    <orderEntry type="module-library" exported="">
       <library name="kryonet-2.21-all.jar">
         <CLASSES>
           <root url="jar://$USER_HOME$/Dropbox/Public/TowerMiner/kryonet-2.21-all.jar!/" />
@@ -35,7 +26,7 @@
         <SOURCES />
       </library>
     </orderEntry>
-    <orderEntry type="module-library">
+    <orderEntry type="module-library" exported="">
       <library name="classes">
         <CLASSES>
           <root url="file://$USER_HOME$/Dropbox/Public/TowerMiner/snakeyaml/target/classes" />
@@ -44,10 +35,19 @@
         <SOURCES />
       </library>
     </orderEntry>
-    <orderEntry type="module-library">
+    <orderEntry type="module-library" exported="">
       <library name="vecmath-1.5.1.jar">
         <CLASSES>
           <root url="jar://$USER_HOME$/Dropbox/Public/TowerMiner/vecmath-1.5.1.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library" exported="">
+      <library>
+        <CLASSES>
+          <root url="jar://$USER_HOME$/Dropbox/Public/TowerMiner/TMProtocol.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />

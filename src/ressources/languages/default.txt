@@ -128,3 +128,5 @@ achievement.desc.9: A vaincu la manche 50
 music.error: Téléchargement impossible
 music.downloading: Téléchargement de %
 music.finished: Téléchargement terminé
+
+plugin.auto.want: Voulez vous installer le plugin % ?\nCeci peux être dangereux

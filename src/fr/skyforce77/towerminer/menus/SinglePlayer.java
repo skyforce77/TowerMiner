@@ -730,8 +730,8 @@ public class SinglePlayer extends Menu implements ChatContainer{
 	}
 
 	public void countNext() {
-		new Thread() {
-			@Override
+        new Thread("NextButton") {
+            @Override
 			public void run() {
 				try {
 					long date = new Date().getTime();
