@@ -266,8 +266,8 @@ public class SinglePlayer extends Menu implements ChatContainer{
                     spawned += type.getLevel();
 					time = (int) (30 - (0.5 * round));
 					between = time;
-					if(round >= 10 && new Random().nextInt(100) <= 5) {
-						m.addEffect(new EntityEffect(EntityEffectType.INVISIBLE, -1));
+                    if (round >= 10 && new Random().nextInt(100) <= round * 1.2) {
+                        m.addEffect(new EntityEffect(EntityEffectType.INVISIBLE, -1));
 					}
 					onEntityAdded(m);
 				}
@@ -693,9 +693,11 @@ public class SinglePlayer extends Menu implements ChatContainer{
 	}
 
 	public void onEntityRemoved(Entity en) {
-		if(!multiplayer && en instanceof Mob)
-			ParticleEffect.createMobDestructionParticles(en.getType(), this, (int)en.getLocation().getX(), (int)en.getLocation().getY());
-	}
+        if (!multiplayer && en instanceof Mob) {
+            int translucent = ((Mob) en).hasEffect(EntityEffectType.INVISIBLE) ? 1 : 0;
+            ParticleEffect.createMobDestructionParticles(en.getType(), this, (int) en.getLocation().getX(), (int) en.getLocation().getY(), translucent);
+        }
+    }
 
 	public void onGameOver() {
 	}

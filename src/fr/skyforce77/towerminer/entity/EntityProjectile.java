@@ -1,13 +1,5 @@
 package fr.skyforce77.towerminer.entity;
 
-import java.awt.Color;
-import java.awt.Graphics2D;
-import java.awt.Image;
-import java.awt.Point;
-import java.util.Random;
-
-import javax.vecmath.Vector2d;
-
 import fr.skyforce77.towerminer.TowerMiner;
 import fr.skyforce77.towerminer.maps.MapWritter;
 import fr.skyforce77.towerminer.menus.MultiPlayer;
@@ -16,6 +8,10 @@ import fr.skyforce77.towerminer.particles.Particle;
 import fr.skyforce77.towerminer.particles.ParticleEffect;
 import fr.skyforce77.towerminer.particles.ParticleType;
 import fr.skyforce77.towerminer.protocol.packets.Packet10EntityValueUpdate;
+
+import javax.vecmath.Vector2d;
+import java.awt.*;
+import java.util.Random;
 
 public class EntityProjectile extends Entity {
 
@@ -156,7 +152,7 @@ public class EntityProjectile extends Entity {
         } else if (getType().equals(EntityTypes.WEAKNESS_POTION)) {
             ParticleEffect.createParticleSplash(ParticleType.POTION_SPLASH, sp, (int) getLocation().getX(), (int) getLocation().getY(), Color.DARK_GRAY);
         } else if (getType().equals(EntityTypes.SNOWBALL)) {
-            ParticleEffect.createMobDestructionParticles(EntityTypes.SNOWBALL, sp, (int) getLocation().getX(), (int) getLocation().getY());
+            ParticleEffect.createMobDestructionParticles(EntityTypes.SNOWBALL, sp, (int) getLocation().getX(), (int) getLocation().getY(), 0);
         }
     }
 

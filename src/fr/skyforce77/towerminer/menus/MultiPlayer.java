@@ -1,17 +1,8 @@
 package fr.skyforce77.towerminer.menus;
 
-import java.awt.Graphics2D;
-import java.awt.Point;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
-
 import fr.skyforce77.towerminer.TowerMiner;
-import fr.skyforce77.towerminer.entity.Entity;
-import fr.skyforce77.towerminer.entity.EntityProjectile;
-import fr.skyforce77.towerminer.entity.EntityTypes;
-import fr.skyforce77.towerminer.entity.Mob;
-import fr.skyforce77.towerminer.entity.Turret;
+import fr.skyforce77.towerminer.entity.*;
+import fr.skyforce77.towerminer.entity.effects.EntityEffectType;
 import fr.skyforce77.towerminer.game.Game;
 import fr.skyforce77.towerminer.maps.MapWritter;
 import fr.skyforce77.towerminer.maps.Maps;
@@ -21,18 +12,13 @@ import fr.skyforce77.towerminer.particles.ParticleEffect;
 import fr.skyforce77.towerminer.protocol.BigSending;
 import fr.skyforce77.towerminer.protocol.Connect;
 import fr.skyforce77.towerminer.protocol.ObjectReceiver;
-import fr.skyforce77.towerminer.protocol.packets.Packet12Popup;
-import fr.skyforce77.towerminer.protocol.packets.Packet13EntityTeleport;
-import fr.skyforce77.towerminer.protocol.packets.Packet1Disconnecting;
-import fr.skyforce77.towerminer.protocol.packets.Packet20EntityData;
-import fr.skyforce77.towerminer.protocol.packets.Packet3Action;
-import fr.skyforce77.towerminer.protocol.packets.Packet4RoundFinished;
-import fr.skyforce77.towerminer.protocol.packets.Packet5UpdateInfos;
-import fr.skyforce77.towerminer.protocol.packets.Packet6EntityCreate;
-import fr.skyforce77.towerminer.protocol.packets.Packet7EntityMove;
-import fr.skyforce77.towerminer.protocol.packets.Packet8EntityRemove;
-import fr.skyforce77.towerminer.protocol.packets.Packet9MouseClick;
+import fr.skyforce77.towerminer.protocol.packets.*;
 import fr.skyforce77.towerminer.ressources.language.LanguageManager;
+
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
 
 public class MultiPlayer extends SinglePlayer {
 
@@ -267,8 +253,10 @@ public class MultiPlayer extends SinglePlayer {
             final Packet8EntityRemove per = new Packet8EntityRemove();
             per.entity = en.getUUID();
             per.sendAllTCP();
-            if(en instanceof Mob)
-            	ParticleEffect.createMobDestructionParticles(en.getType(), this, (int)en.getLocation().getX(), (int)en.getLocation().getY());
+            if (en instanceof Mob) {
+                int translucent = ((Mob) en).hasEffect(EntityEffectType.INVISIBLE) ? 1 : 0;
+                ParticleEffect.createMobDestructionParticles(en.getType(), this, (int) en.getLocation().getX(), (int) en.getLocation().getY(), translucent);
+            }
         }
     }
 
