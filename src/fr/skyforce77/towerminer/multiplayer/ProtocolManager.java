@@ -1,19 +1,41 @@
 package fr.skyforce77.towerminer.multiplayer;
 
+import java.awt.Image;
+import java.awt.Point;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.ArrayList;
+
+import javax.imageio.ImageIO;
+import javax.swing.JOptionPane;
+
 import com.esotericsoftware.kryonet.Connection;
+
 import fr.skyforce77.towerminer.TowerMiner;
 import fr.skyforce77.towerminer.achievements.Achievement;
 import fr.skyforce77.towerminer.achievements.Achievements;
 import fr.skyforce77.towerminer.achievements.Popup;
 import fr.skyforce77.towerminer.achievements.ServerPopup;
 import fr.skyforce77.towerminer.api.PluginManager;
+import fr.skyforce77.towerminer.api.Utils;
 import fr.skyforce77.towerminer.api.events.PluginMessageEvent;
-import fr.skyforce77.towerminer.entity.*;
+import fr.skyforce77.towerminer.entity.Entity;
+import fr.skyforce77.towerminer.entity.EntityProjectile;
+import fr.skyforce77.towerminer.entity.EntityTypes;
+import fr.skyforce77.towerminer.entity.Mob;
+import fr.skyforce77.towerminer.entity.Turret;
 import fr.skyforce77.towerminer.entity.effects.EntityEffect;
 import fr.skyforce77.towerminer.entity.effects.EntityEffectType;
 import fr.skyforce77.towerminer.maps.Maps;
-import fr.skyforce77.towerminer.menus.*;
+import fr.skyforce77.towerminer.menus.MPClientWait;
+import fr.skyforce77.towerminer.menus.MPDisconnected;
+import fr.skyforce77.towerminer.menus.MPServerWait;
 import fr.skyforce77.towerminer.menus.Menu;
+import fr.skyforce77.towerminer.menus.MultiPlayer;
 import fr.skyforce77.towerminer.particles.Particle;
 import fr.skyforce77.towerminer.particles.ParticleEffect;
 import fr.skyforce77.towerminer.protocol.BigSending;
@@ -25,21 +47,35 @@ import fr.skyforce77.towerminer.protocol.chat.ChatModel;
 import fr.skyforce77.towerminer.protocol.chat.MessageModel;
 import fr.skyforce77.towerminer.protocol.containers.FileContainer;
 import fr.skyforce77.towerminer.protocol.listeners.PacketListener;
-import fr.skyforce77.towerminer.protocol.packets.*;
+import fr.skyforce77.towerminer.protocol.packets.Packet;
+import fr.skyforce77.towerminer.protocol.packets.Packet0Connecting;
+import fr.skyforce77.towerminer.protocol.packets.Packet10EntityValueUpdate;
+import fr.skyforce77.towerminer.protocol.packets.Packet11ChatMessage;
+import fr.skyforce77.towerminer.protocol.packets.Packet12Popup;
+import fr.skyforce77.towerminer.protocol.packets.Packet13EntityTeleport;
+import fr.skyforce77.towerminer.protocol.packets.Packet14ServerPing;
+import fr.skyforce77.towerminer.protocol.packets.Packet15ServerInfos;
+import fr.skyforce77.towerminer.protocol.packets.Packet16Sound;
+import fr.skyforce77.towerminer.protocol.packets.Packet17Player;
+import fr.skyforce77.towerminer.protocol.packets.Packet18ParticleEffect;
+import fr.skyforce77.towerminer.protocol.packets.Packet19Particle;
+import fr.skyforce77.towerminer.protocol.packets.Packet1Disconnecting;
+import fr.skyforce77.towerminer.protocol.packets.Packet20EntityData;
+import fr.skyforce77.towerminer.protocol.packets.Packet21LoadPlugin;
+import fr.skyforce77.towerminer.protocol.packets.Packet22PluginMessage;
+import fr.skyforce77.towerminer.protocol.packets.Packet23BlockChange;
+import fr.skyforce77.towerminer.protocol.packets.Packet24ServerPopup;
+import fr.skyforce77.towerminer.protocol.packets.Packet2BigSending;
+import fr.skyforce77.towerminer.protocol.packets.Packet3Action;
+import fr.skyforce77.towerminer.protocol.packets.Packet4RoundFinished;
+import fr.skyforce77.towerminer.protocol.packets.Packet5UpdateInfos;
+import fr.skyforce77.towerminer.protocol.packets.Packet6EntityCreate;
+import fr.skyforce77.towerminer.protocol.packets.Packet7EntityMove;
+import fr.skyforce77.towerminer.protocol.packets.Packet8EntityRemove;
+import fr.skyforce77.towerminer.protocol.packets.Packet9MouseClick;
 import fr.skyforce77.towerminer.ressources.RessourcesManager;
 import fr.skyforce77.towerminer.ressources.language.LanguageManager;
 import fr.skyforce77.towerminer.sounds.Music;
-
-import javax.imageio.ImageIO;
-import javax.swing.*;
-import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.ArrayList;
 
 public class ProtocolManager implements PacketListener {
 
@@ -300,11 +336,16 @@ public class ProtocolManager implements PacketListener {
 			final FileContainer fc = (FileContainer) pack21.deserialize(data);
             new Thread("PluginAutoInstall") {
                 public void run() {
+                	Packet21LoadPlugin load = new Packet21LoadPlugin();
                     int ok = JOptionPane.showConfirmDialog(null, LanguageManager.getText("plugin.auto.want", fc.getFileName().replace(".jar", "")), "Plugin", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
                     if(ok == JOptionPane.YES_OPTION) {
-						PluginManager.loadPlugin(fc);	
+						PluginManager.loadPlugin(fc);
+						load.installed = true;
+						load.sendAllTCP();
 					} else {
 						TowerMiner.returnMenu(Menu.mainmenu);
+						load.installed = false;
+						load.sendAllTCP();
 					}
 				};
 			}.start();
@@ -346,8 +387,13 @@ public class ProtocolManager implements PacketListener {
 				MPInfos.connection = c;
                 new Thread("MultiPlayerInfos") {
                     public void run() {
+                    	boolean sent = true;
 						if (!PluginManager.canConnect(pack.getPlugins())) {
-							PluginManager.sendNeededPlugins(pack.getPlugins());
+							sent = PluginManager.sendNeededPlugins(pack.getPlugins());
+						}
+						if(!sent) {
+							TowerMiner.returnMenu(Menu.mainmenu);
+							Utils.write("Client refused plugin sending");
 						}
 						new Packet3Action("sendingmap").sendConnectionTCP(MPInfos.connection);
 						BigSending.sendBigObject(Maps.getActualMap(), MPInfos.connection, new ReceivingThread() {
@@ -436,6 +482,10 @@ public class ProtocolManager implements PacketListener {
 			}
 		} else if (p.getId() == 14) {
 			new Packet15ServerInfos(((Packet14ServerPing) p).name, "A client server").sendConnectionTCP(c);
+		} else if (p.getId() == 21) {
+			Packet21LoadPlugin pack21 = (Packet21LoadPlugin) p;
+			PluginManager.pluginsreceived =  pack21.installed;
+			PluginManager.responsereceived = true;
 		}
 	}
 

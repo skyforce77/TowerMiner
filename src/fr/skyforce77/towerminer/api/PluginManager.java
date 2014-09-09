@@ -35,6 +35,8 @@ public class PluginManager {
     private static ArrayList<File> pluginfiles = new ArrayList<File>();
     private static ArrayList<String> pluginlist = new ArrayList<String>();
     private static List<TMListener> handlers = new ArrayList<TMListener>();
+    public static boolean responsereceived = false;
+    public static boolean pluginsreceived = false;
 
     public static void initPlugins() {
         RessourcesManager.getPluginsDirectory().mkdirs();
@@ -142,7 +144,7 @@ public class PluginManager {
         return s;
     }
 
-    public static void sendNeededPlugins(ArrayList<String> pl) {
+    public static boolean sendNeededPlugins(ArrayList<String> pl) {
         for (final Plugin p : plugins) {
             if (p.isPluginNeededByClient()) {
                 if (!pl.contains(pluginlist.get(plugins.indexOf(p)))) {
@@ -155,13 +157,21 @@ public class PluginManager {
                                 pe.sendAllTCP();
                             }
                         });
-                        Thread.sleep(1000l);
+                        while(!responsereceived) {
+                        	Thread.sleep(1000l);
+                        }
+                        responsereceived = false;
+                        if(pluginsreceived) {
+                        	pluginsreceived = false;
+                        	return true;
+                        }
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
                 }
             }
         }
+        return false;
     }
 
     @SuppressWarnings("resource")
