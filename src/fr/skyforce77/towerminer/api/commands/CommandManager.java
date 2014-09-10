@@ -23,12 +23,19 @@ public class CommandManager {
     }
 
     public static void register(String label, Command command) {
-        commands.put(label, command);
-        command.label = label;
-        command.onInitialized(label);
+    	String dlabel = label;
+    	int data = 0;
+    	while(commands.containsKey(dlabel)) {
+    		dlabel = label+data;
+    		data++;
+    	}
+    	
+        commands.put(dlabel, command);
+        command.label = dlabel;
+        command.onInitialized(dlabel);
 
         for (String s : command.getAlias()) {
-            registerAlias(label, s);
+            registerAlias(dlabel, s);
         }
     }
 
