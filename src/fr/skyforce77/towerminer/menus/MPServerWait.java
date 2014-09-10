@@ -32,6 +32,7 @@ public class MPServerWait extends Menu {
     public void onUsed() {
         Connect.initServer();
         TowerMiner.game.resize(800, 500);
+        text = LanguageManager.getText("menu.mp.server.wait");
     }
 
 }

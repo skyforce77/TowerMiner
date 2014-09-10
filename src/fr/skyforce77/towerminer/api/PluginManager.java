@@ -3,6 +3,7 @@ package fr.skyforce77.towerminer.api;
 import com.esotericsoftware.kryonet.Connection;
 import fr.skyforce77.towerminer.TowerMiner;
 import fr.skyforce77.towerminer.api.events.TMEvent;
+import fr.skyforce77.towerminer.menus.Menu;
 import fr.skyforce77.towerminer.multiplayer.MPInfos;
 import fr.skyforce77.towerminer.protocol.BigSending;
 import fr.skyforce77.towerminer.protocol.ObjectReceiver;
@@ -158,12 +159,14 @@ public class PluginManager {
                             }
                         });
                         while(!responsereceived) {
-                        	Thread.sleep(1000l);
+                        	Thread.sleep(100l);
                         }
                         responsereceived = false;
                         if(pluginsreceived) {
                         	pluginsreceived = false;
                         	return true;
+                        } else {
+                            TowerMiner.returnMenu(Menu.mainmenu);
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
