@@ -1,5 +1,15 @@
 package fr.skyforce77.towerminer;
 
+import java.awt.Color;
+import java.awt.Font;
+import java.net.URL;
+import java.util.Date;
+import java.util.Random;
+import java.util.UUID;
+
+import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
+
 import fr.skyforce77.towerminer.achievements.Achievements;
 import fr.skyforce77.towerminer.achievements.Popup;
 import fr.skyforce77.towerminer.api.PluginManager;
@@ -22,13 +32,6 @@ import fr.skyforce77.towerminer.ressources.RessourcesManager;
 import fr.skyforce77.towerminer.ressources.language.LanguageManager;
 import fr.skyforce77.towerminer.save.DataBase;
 import fr.skyforce77.towerminer.sounds.Music;
-
-import javax.swing.*;
-import java.awt.*;
-import java.net.URL;
-import java.util.Date;
-import java.util.Random;
-import java.util.UUID;
 
 public class TowerMiner {
 
@@ -104,7 +107,8 @@ public class TowerMiner {
                 printInfo("Successfully launched!");
                 onLaunched(state);
 
-                CommandManager.createTerminal();
+                if(usedos.equals("linux"))
+                	CommandManager.createTerminal();
             }
         });
     }
