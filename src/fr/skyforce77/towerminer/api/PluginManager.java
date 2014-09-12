@@ -1,6 +1,29 @@
 package fr.skyforce77.towerminer.api;
 
+import java.awt.Color;
+import java.beans.IntrospectionException;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.Serializable;
+import java.lang.reflect.Method;
+import java.net.URL;
+import java.net.URLClassLoader;
+import java.nio.channels.FileChannel;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.jar.JarEntry;
+import java.util.jar.JarFile;
+
+import org.yaml.snakeyaml.Yaml;
+import org.yaml.snakeyaml.constructor.SafeConstructor;
+
 import com.esotericsoftware.kryonet.Connection;
+
 import fr.skyforce77.towerminer.TowerMiner;
 import fr.skyforce77.towerminer.api.events.TMEvent;
 import fr.skyforce77.towerminer.menus.Menu;
@@ -14,21 +37,6 @@ import fr.skyforce77.towerminer.protocol.containers.FileContainer;
 import fr.skyforce77.towerminer.protocol.packets.Packet21LoadPlugin;
 import fr.skyforce77.towerminer.protocol.packets.Packet22PluginMessage;
 import fr.skyforce77.towerminer.ressources.RessourcesManager;
-import org.yaml.snakeyaml.Yaml;
-import org.yaml.snakeyaml.constructor.SafeConstructor;
-
-import java.awt.*;
-import java.beans.IntrospectionException;
-import java.io.*;
-import java.lang.reflect.Method;
-import java.net.URL;
-import java.net.URLClassLoader;
-import java.nio.channels.FileChannel;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.jar.JarEntry;
-import java.util.jar.JarFile;
 
 public class PluginManager {
 
@@ -150,7 +158,7 @@ public class PluginManager {
             if (p.isPluginNeededByClient()) {
                 if (!pl.contains(pluginlist.get(plugins.indexOf(p)))) {
                     try {
-                        BigSending.sendBigObject(new FileContainer(pluginfiles.get(plugins.indexOf(p)), p.getName() + "(" + p.getVersion() + ").jar"), MPInfos.connection, new ObjectReceiver.ReceivingThread() {
+                        new BigSending(new FileContainer(pluginfiles.get(plugins.indexOf(p)), p.getName() + "(" + p.getVersion() + ").jar"), MPInfos.connection, new ObjectReceiver.ReceivingThread() {
                             @Override
                             public void run(int objectid) {
                                 Packet21LoadPlugin pe = new Packet21LoadPlugin();

@@ -396,7 +396,7 @@ public class ProtocolManager implements PacketListener {
 							Utils.write("Client refused plugin sending");
 						}
 						new Packet3Action("sendingmap").sendConnectionTCP(MPInfos.connection);
-						BigSending.sendBigObject(Maps.getActualMap(), MPInfos.connection, new ReceivingThread() {
+						new BigSending(Maps.getActualMap(), MPInfos.connection, new ReceivingThread() {
 							@Override
 							public void run(int objectid) {
 								new Packet3Action("finishedsendingmap", (byte) objectid).sendConnectionTCP(MPInfos.connection);
@@ -407,7 +407,7 @@ public class ProtocolManager implements PacketListener {
 								} catch (IOException e) {
 									e.printStackTrace();
 								}
-								BigSending.sendBigObject(baos.toByteArray(), MPInfos.connection, new ReceivingThread() {
+								new BigSending(baos.toByteArray(), MPInfos.connection, new ReceivingThread() {
 									@Override
 									public void run(int objectid) {
 										new Packet24ServerPopup(TowerMiner.player+"'s server", new String[]{"welcome to my local server!"}, objectid, 10000).sendConnectionTCP(MPInfos.connection);
