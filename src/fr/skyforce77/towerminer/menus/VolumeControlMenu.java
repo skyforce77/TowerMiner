@@ -26,15 +26,16 @@ public class VolumeControlMenu extends Menu {
         bpanel.setOpaque(false);
         bpanel.setVisible(false);
 
-        check = new JSlider(0, 100);
+        check = new JSlider(0, 65536);
         check.setVisible(false);
         check.setFont(TowerMiner.getFont(16));
-        check.setValue((int) (100 + (Float) DataBase.getValue("volume", -10F)));
+        check.setValue((int)(float)DataBase.getValue("volume", 65536F));
 
         check.addChangeListener(new ChangeListener() {
             @Override
             public void stateChanged(ChangeEvent arg0) {
-                DataBase.setValue("volume", -(float) (100 - check.getValue()));
+                DataBase.setValue("volume", (float)check.getValue());
+                System.out.println(check.getValue());
             }
         });
 
@@ -52,10 +53,11 @@ public class VolumeControlMenu extends Menu {
         g2d.fillRect(0, TowerMiner.game.getHeight() / 4, TowerMiner.game.getWidth(), TowerMiner.game.getHeight() - (TowerMiner.game.getHeight() / 2));
         g2d.setFont(TowerMiner.getFont(50));
         g2d.setColor(Color.LIGHT_GRAY);
-        if(DataBase.getValue("volume") == null) {
-        	DataBase.setValue("volume", 0.8F);
+        if(DataBase.getValue("volume") == null || (float)DataBase.getValue("volume") < 0) {
+        	DataBase.setValue("volume", 65536F);
         }
-        int volume = (int) (100 + (Float) DataBase.getValue("volume"));
+        float value = (Float) DataBase.getValue("volume");
+        int volume = (int) (value/65536F*100F);
         g2d.drawString(LanguageManager.getText("menu.about.music") + ": " + volume + "%", 10, 240 + (xmove / 5));
         super.drawMenu(g2d);
     }

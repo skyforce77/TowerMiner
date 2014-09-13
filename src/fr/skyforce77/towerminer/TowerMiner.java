@@ -40,7 +40,7 @@ public class TowerMiner {
     public static int neededlauncherversion = 13;
     public static int actuallauncherversion = -1;
 
-    public static boolean dev = false;
+    public static boolean dev = true;
     public static String version = "Beta 0.7b";
 
     public static boolean launcherupdateneeded = true;
