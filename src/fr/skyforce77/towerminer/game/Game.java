@@ -423,7 +423,7 @@ public class Game extends JFrame implements MouseListener, MouseWheelListener, M
 
 			MenuRenderEvent event = new MenuRenderEvent(TowerMiner.menu);
 			PluginManager.callSyncEvent(event);
-			if (event.getReplaceRenders().size() > 0) {
+			if (event.getReplaceRenders().size() == 0) {
 				TowerMiner.menu.drawMenu(g2d);
 			}
 

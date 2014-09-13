@@ -149,8 +149,6 @@ public class Music {
             source = new FileInputStream(sourceFile).getChannel();
             destination = new FileOutputStream(destFile).getChannel();
 
-            // previous code: destination.transferFrom(source, 0, source.size());
-            // to avoid infinite loops, should be:
             long count = 0;
             long size = source.size();
             while ((count += destination.transferFrom(source, count, size - count)) < size) ;

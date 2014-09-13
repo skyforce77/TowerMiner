@@ -35,7 +35,6 @@ public class VolumeControlMenu extends Menu {
             @Override
             public void stateChanged(ChangeEvent arg0) {
                 DataBase.setValue("volume", (float)check.getValue());
-                System.out.println(check.getValue());
             }
         });
 
