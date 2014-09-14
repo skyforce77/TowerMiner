@@ -423,6 +423,7 @@ public class ProtocolManager implements PacketListener {
 			MPDisconnected m = new MPDisconnected();
 			m.reason = LanguageManager.getText(pack1.reason);
 			m.text = LanguageManager.getText("menu.mp.connection.client");
+			MPInfos.remove();
 			TowerMiner.returnMenu(m);
 		} else if (p.getId() == 2) {
 			Packet2BigSending pack2 = (Packet2BigSending) p;

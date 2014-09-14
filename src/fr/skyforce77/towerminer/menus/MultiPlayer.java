@@ -139,7 +139,7 @@ public class MultiPlayer extends SinglePlayer {
         new Thread("MultiPlayerConnectionVerification") {
             public void run() {
                 while (true) {
-                    if ((Connect.client != null && !Connect.client.isConnected()) || (Connect.server != null && !MPInfos.connection.isConnected())) {
+                    if ((Connect.client != null && !Connect.client.isConnected()) || (Connect.server != null && (MPInfos.connection != null && !MPInfos.connection.isConnected()))) {
                         if (TowerMiner.menu instanceof MultiPlayer) {
                             MPDisconnected d = new MPDisconnected();
                             d.reason = LanguageManager.getText("menu.mp.connection.lost");
