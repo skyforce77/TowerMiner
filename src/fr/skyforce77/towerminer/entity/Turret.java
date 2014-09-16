@@ -1,5 +1,11 @@
 package fr.skyforce77.towerminer.entity;
 
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.FontMetrics;
+import java.awt.Graphics2D;
+import java.awt.Point;
+
 import fr.skyforce77.towerminer.TowerMiner;
 import fr.skyforce77.towerminer.achievements.Achievements;
 import fr.skyforce77.towerminer.api.PluginManager;
@@ -14,28 +20,26 @@ import fr.skyforce77.towerminer.protocol.packets.Packet10EntityValueUpdate;
 import fr.skyforce77.towerminer.render.RenderHelper;
 import fr.skyforce77.towerminer.ressources.language.LanguageManager;
 
-import java.awt.*;
-
 public class Turret extends Entity {
 
     private static final long serialVersionUID = 5758076475226543055L;
 
     int tir = 0;
-    int data = 1;
+    /*int level = 1;
     int distance = 90;
     int price = 20;
     int cost = 30;
     int power = 1;
     String owner = "menu.mp.blue";
-    int rgb = -1;
+    int color = -1;*/
 
     public Turret(EntityTypes type, Point location, String owner) {
         super(type);
-        this.owner = owner;
-        this.location = new Point(location.x * MapWritter.getBlockWidth() + (MapWritter.getBlockWidth() / 2), location.y * MapWritter.getBlockHeight() + (MapWritter.getBlockHeight() / 2));
-        cost = type.getPrice();
+        data.addString("owner", owner);
+        setLocation(new Point(location.x * MapWritter.getBlockWidth() + (MapWritter.getBlockWidth() / 2), location.y * MapWritter.getBlockHeight() + (MapWritter.getBlockHeight() / 2)));
+        data.addInteger("cost", type.getPrice());
         if (TowerMiner.menu instanceof MultiPlayer) {
-        	rgb = owner.equals("menu.mp.red") ? Color.RED.getRGB() : Color.BLUE.getRGB();
+        	setColor(owner.equals("menu.mp.red") ? Color.RED : Color.BLUE);
         }
         PluginManager.callAsyncEvent(new TurretPlacedEvent(this));
     }
@@ -54,63 +58,63 @@ public class Turret extends Entity {
     }
     
     public int getPower() {
-		return power;
+		return data.getInteger("power");
 	}
 
     public void setPower(int power) {
-        this.power = power;
+    	data.addInteger("power", power);
     }
 
-    public int getData() {
-        return data;
+    public int getLevel() {
+        return data.getInteger("level");
     }
 
     public int getPrice() {
-        return price;
+        return data.getInteger("price");
     }
 
     public int getCost() {
-        return cost;
+        return data.getInteger("cost");
     }
 
     public String getOwner() {
-        return owner;
+        return data.getString("owner");
     }
 
     public Color getColor() {
-        return new Color(rgb);
+        return new Color(data.getInteger("color"));
     }
 
     public void setColor(Color color) {
-        rgb = color.getRGB();
+        data.addInteger("color", color.getRGB());
     }
 
     public boolean isOwner(String owner) {
-        return this.owner.equals(owner);
+        return getOwner().equals(owner);
     }
 
     public double getDistance() {
-        return distance;
+        return data.getDouble("distance");
     }
 
     public void addData() {
         if (TowerMiner.menu instanceof SinglePlayer) {
             SinglePlayer sp = (SinglePlayer) TowerMiner.menu;
-            if (sp.getPlayer().equals(owner)) {
+            if (sp.getPlayer().equals(getOwner())) {
                 Achievements.unlockAchievement(1);
-                if (data + 1 == 10) {
+                if (getLevel() + 1 == 10) {
                     Achievements.unlockAchievement(2);
-                } else if (data + 1 == 18) {
+                } else if (getLevel() + 1 == 18) {
                     Achievements.unlockAchievement(3);
                 }
             }
         }
-        data++;
-        distance += 10;
-        cost += price;
-        price = price + (price / 3);
-        new Packet10EntityValueUpdate(getUUID(), "turretdata", data).sendAllTCP();
-        PluginManager.callAsyncEvent(new TurretUpgradeEvent(this, data - 1, data));
+        data.addInteger("level", data.getInteger("level")+1);
+        data.addDouble("distance", data.getDouble("distance")+10.0);
+        data.addInteger("cost", data.getInteger("cost")+data.getInteger("price"));
+        data.addInteger("price", data.getInteger("price")+(data.getInteger("price")/3));
+        new Packet10EntityValueUpdate(getUUID(), "turretdata", getLevel()).sendAllTCP();
+        PluginManager.callAsyncEvent(new TurretUpgradeEvent(this, getLevel() - 1, getLevel()));
     }
     
     @Override
@@ -123,14 +127,14 @@ public class Turret extends Entity {
         double distance = 99999;
         Mob e = null;
         for (Entity en : sp.mobs) {
-            double i = en.getLocation().distance(location.x, location.y);
+            double i = en.getLocation().distance(getLocation().x, getLocation().y);
             if (i < distance && i < distance && canSee((Mob) en)) {
                 distance = i;
                 e = (Mob) en;
             }
         }
 
-        if (tir >= 40 - (data * 2)) {
+        if (tir >= 40 - (getLevel() * 2)) {
             if (e != null) {
                 new EntityProjectile(getProjectile(), this, e);
                 //sp.onEntityTeleport(this, getLocation());
@@ -152,7 +156,7 @@ public class Turret extends Entity {
         double distance = 99999;
         Mob e = null;
         for (Entity en : sp.draw) {
-            double i = en.getLocation().distance(location.x, location.y);
+            double i = en.getLocation().distance(getLocation().x, getLocation().y);
             if (en instanceof Mob && i < distance && canSee((Mob) en)) {
                 distance = i;
                 e = (Mob) en;
@@ -165,8 +169,8 @@ public class Turret extends Entity {
     }
 
     public boolean canSee(Mob m) {
-        double i = m.getLocation().distance(location.x, location.y);
-        if (!m.hasEffect(EntityEffectType.INVISIBLE) && i < this.distance) {
+        double i = m.getLocation().distance(getLocation().x, getLocation().y);
+        if (!m.hasEffect(EntityEffectType.INVISIBLE) && i < getDistance()) {
             return true;
         }
         return false;
@@ -179,8 +183,8 @@ public class Turret extends Entity {
         double ro = getRotation();
         g2d.rotate(ro - Math.toRadians(getType().rotation), x, y + sp.CanvasY);
         try {
-            int size = 30 + (int) (0.5 * data);
-            g2d.drawImage(RenderHelper.getColoredImage(getType().getTexture(0), new Color(rgb), 0.1F), (int) x - size / 2 + sp.CanvasX, (int) y - size / 2 + sp.CanvasY, size, size, null);
+            int size = 30 + (int) (0.5 * getLevel());
+            g2d.drawImage(RenderHelper.getColoredImage(getType().getTexture(0), getColor(), 0.1F), (int) x - size / 2 + sp.CanvasX, (int) y - size / 2 + sp.CanvasY, size, size, null);
         } catch (Exception e) {
         }
         g2d.rotate(-ro + Math.toRadians(getType().rotation), x, y + sp.CanvasY);
@@ -191,15 +195,15 @@ public class Turret extends Entity {
         double x = sp.Xcursor;
         double y = sp.Ycursor;
         String[] text = new String[3];
-        String speed = data * 2 >= 40 ? "100%" : data * 2 + "%";
+        String speed = getLevel() * 2 >= 40 ? "100%" : getLevel() * 2 + "%";
         if (sp instanceof MultiPlayer && !((MultiPlayer) sp).player.equals(getOwner())) {
-            text = new String[]{LanguageManager.getText("turret.level") + ": " + data, LanguageManager.getText("turret.range") + ": " + (int) ((float) distance / 45),
-                    LanguageManager.getText("turret.speed") + ": " + speed, LanguageManager.getText("turret.owner") + ": " + LanguageManager.getText(owner),
-                    LanguageManager.getText("turret.power") + ": " + power};
+            text = new String[]{LanguageManager.getText("turret.level") + ": " + data, LanguageManager.getText("turret.range") + ": " + (int) ((float) getDistance() / 45),
+                    LanguageManager.getText("turret.speed") + ": " + speed, LanguageManager.getText("turret.owner") + ": " + LanguageManager.getText(getOwner()),
+                    LanguageManager.getText("turret.power") + ": " + getPower()};
         } else {
-            text = new String[]{LanguageManager.getText("turret.level") + ": " + data, LanguageManager.getText("turret.range") + ": " + (int) ((float) distance / 45),
-                    LanguageManager.getText("turret.speed") + ": " + speed, LanguageManager.getText("turret.cost") + ": " + cost,
-                    LanguageManager.getText("turret.power") + ": " + power};
+            text = new String[]{LanguageManager.getText("turret.level") + ": " + data, LanguageManager.getText("turret.range") + ": " + (int) ((float) getDistance() / 45),
+                    LanguageManager.getText("turret.speed") + ": " + speed, LanguageManager.getText("turret.cost") + ": " + getCost(),
+                    LanguageManager.getText("turret.power") + ": " + getPower()};
         }
 
         g2d.setFont(TowerMiner.getFont(12));

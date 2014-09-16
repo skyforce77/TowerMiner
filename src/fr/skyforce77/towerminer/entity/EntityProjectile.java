@@ -17,17 +17,18 @@ public class EntityProjectile extends Entity {
 
     private static final long serialVersionUID = -4837863653471130636L;
 
-    private int shooter;
-    private int aimed;
-    private Vector2d last = new Vector2d(0, 0);
+    //private int shooter;
+    //private int aimed;
+    //private Vector2d last = new Vector2d(0, 0);
 
     public EntityProjectile(EntityTypes type, Turret shooter, Mob aimed) {
         super(type);
-        this.shooter = shooter.getUUID();
-        this.aimed = aimed.getUUID();
+        data.addInteger("shooter", shooter.getUUID());
+        data.addInteger("aimed", aimed.getUUID());
+        data.addObject("last", new Vector2d(0, 0));
         setLocation(shooter.getLocation());
 
-        Vector2d vec = new Vector2d(aimed.getLocation().getX() - getLocation().getX() + last.x, aimed.getLocation().getY() - getLocation().getY() + last.y);
+        Vector2d vec = new Vector2d(aimed.getLocation().getX() - getLocation().getX() + getLastPostition().x, aimed.getLocation().getY() - getLocation().getY() + getLastPostition().y);
         double r1 = vec.angle(new Vector2d(0, -1));
         double r2 = vec.angle(new Vector2d(-1, 0));
         if (r2 <= Math.PI / 2) {
@@ -41,26 +42,30 @@ public class EntityProjectile extends Entity {
     }
 
     public int getShooter() {
-        return shooter;
+    	return data.getInteger("shooter");
     }
 
     public int getAimed() {
-        return aimed;
+        return data.getInteger("aimed");
     }
 
     public void setAimed(int entity) {
-        aimed = entity;
+        data.addInteger("aimed", entity);
+    }
+    
+    public Vector2d getLastPostition() {
+    	return (Vector2d)data.getObject("last");
     }
 
     @Override
     public void onTick() {
         if (TowerMiner.menu instanceof SinglePlayer) {
             SinglePlayer sp = (SinglePlayer) TowerMiner.menu;
-            Turret shooter = (Turret) sp.byUUID(this.shooter);
-            Entity aimed = sp.byUUID(this.aimed);
+            Turret shooter = (Turret) sp.byUUID(getShooter());
+            Entity aimed = sp.byUUID(getAimed());
 
             if (shooter != null && aimed != null) {
-                Vector2d vec = new Vector2d(aimed.getLocation().getX() - getLocation().getX() + last.x, aimed.getLocation().getY() - getLocation().getY() + last.y);
+                Vector2d vec = new Vector2d(aimed.getLocation().getX() - getLocation().getX() + getLastPostition().x, aimed.getLocation().getY() - getLocation().getY() + getLastPostition().y);
                 double r1 = vec.angle(new Vector2d(0, -1));
                 double r2 = vec.angle(new Vector2d(-1, 0));
                 if (r2 <= Math.PI / 2) {
@@ -70,32 +75,24 @@ public class EntityProjectile extends Entity {
                 }
 
                 vec.normalize();
-                int nx = (int) (getLocation().getX() + vec.x * (6 + (0.2 * shooter.getData())));
-                int ny = (int) (getLocation().getY() + vec.y * (6 + (0.2 * shooter.getData())));
+                int nx = (int) (getLocation().getX() + vec.x * (6 + (0.2 * shooter.getLevel())));
+                int ny = (int) (getLocation().getY() + vec.y * (6 + (0.2 * shooter.getLevel())));
                 setLocation(new Point(nx, ny));
-                last = vec;
-                /*if (sp instanceof MultiPlayer && ((MultiPlayer) sp).server) {
-                    Packet13EntityTeleport tp = new Packet13EntityTeleport();
-                    tp.entity = getUUID();
-                    tp.rotation = getRotation();
-                    tp.x = (int) getLocation().getX();
-                    tp.y = (int) getLocation().getY();
-                    tp.sendAllTCP();
-                }*/
+                data.addObject("last", vec);
             } else {
                 Mob e = null;
                 double distance = 48 * 5;
                 for (Entity en : sp.mobs) {
-                    double i = en.getLocation().distance(location.x, location.y);
+                    double i = en.getLocation().distance(getLocation().x, getLocation().y);
                     if (i < distance && i < distance && shooter.canSee((Mob)en)) {
                         distance = i;
                         e = (Mob) en;
                     }
                 }
                 if (e != null && shooter != null) {
-                    this.aimed = e.getUUID();
+                    setAimed(e.getUUID());
                     if (sp instanceof MultiPlayer && ((MultiPlayer) sp).server) {
-                        new Packet10EntityValueUpdate(getUUID(), "aimanother", this.aimed).sendAllTCP();
+                        new Packet10EntityValueUpdate(getUUID(), "aimanother", getAimed()).sendAllTCP();
                     }
                 } else {
                     sp.removed.add(this);
@@ -137,8 +134,8 @@ public class EntityProjectile extends Entity {
         }
         if (getType().level == 1)
             g2d.rotate(-ro + Math.toRadians(getType().rotation), x, y + sp.CanvasY);
-        Turret shooter = (Turret) sp.byUUID(this.shooter);
-        if(getType().equals(EntityTypes.ARROW) && shooter.getData() >= 10 && new Random().nextInt(100) > 80) {
+        Turret shooter = (Turret) sp.byUUID(getShooter());
+        if(getType().equals(EntityTypes.ARROW) && shooter.getLevel() >= 10 && new Random().nextInt(100) > 80) {
         	Particle p = new Particle(ParticleType.CRITICAL, getLocation().x, getLocation().y, null, Color.ORANGE);
         	p.setLiveTime(30);
         	sp.particles.add(p);

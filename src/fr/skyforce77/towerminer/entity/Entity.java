@@ -11,42 +11,44 @@ import javax.vecmath.Vector2d;
 import fr.skyforce77.towerminer.TowerMiner;
 import fr.skyforce77.towerminer.maps.MapWritter;
 import fr.skyforce77.towerminer.menus.SinglePlayer;
+import fr.skyforce77.towerminer.protocol.save.TMStorage;
 
 public class Entity implements Serializable {
 
     private static final long serialVersionUID = -4582237877637415632L;
     public static ArrayList<Integer> uuidused = new ArrayList<Integer>();
 
-    int type;
-    public int uuid = -1;
-    double rotation = 0.0d;
-    Point location;
+    protected TMStorage data = new TMStorage();
 
     public Entity(EntityTypes type) {
-        this.type = type.getId();
+        data.addInteger("type", type.getId());
 
-        while (uuid == -1) {
+        while (getUUID() == -1) {
             int id = new Random().nextInt(Integer.MAX_VALUE);
             if (!uuidused.contains(id)) {
-                uuid = id;
+                data.addInteger("uuid", id);
             }
         }
     }
 
     public int getUUID() {
-        return uuid;
+        return data.getInteger("uuid");
+    }
+    
+    public TMStorage getData() {
+        return data;
     }
 
     public EntityTypes getType() {
-        return EntityTypes.getType(type);
+        return EntityTypes.getType(data.getInteger("type"));
     }
 
     public double getRotation() {
-        return rotation;
+        return data.getDouble("rotation");
     }
 
     public void setRotation(double rotation) {
-        this.rotation = rotation;
+    	data.addDouble("rotation", rotation);
     }
 
     public void setRotationAim(Entity en) {
@@ -61,19 +63,19 @@ public class Entity implements Serializable {
     }
 
     public Point getLocation() {
-        return location;
+        return (Point)data.getObject("location");
     }
 
     public Vector2d getVecLocation() {
-        return new Vector2d(location.getX(), location.getY());
+        return new Vector2d(getLocation().getX(), getLocation().getY());
     }
 
     public Point getBlockLocation() {
-        return new Point(location.x / MapWritter.getBlockWidth() + (TowerMiner.game.CanvasX / MapWritter.getBlockWidth()), location.y / MapWritter.getBlockHeight() + (TowerMiner.game.CanvasY / MapWritter.getBlockHeight()));
+        return new Point(getLocation().x / MapWritter.getBlockWidth() + (TowerMiner.game.CanvasX / MapWritter.getBlockWidth()), getLocation().y / MapWritter.getBlockHeight() + (TowerMiner.game.CanvasY / MapWritter.getBlockHeight()));
     }
 
     public void setLocation(Point location) {
-        this.location = location;
+    	data.addObject("location", location);
     }
 
     public Point getDirection() {
