@@ -20,7 +20,7 @@ public class SnowGolem extends Turret {
 
     @Override
     public void onDamage(Mob e) {
-        e.addEffect(new EntityEffect(EntityEffectType.FREEZE, 10 * getData()));
+        e.addEffect(new EntityEffect(EntityEffectType.FREEZE, 10 * getLevel()));
     }
 
     @Override
@@ -45,7 +45,7 @@ public class SnowGolem extends Turret {
             }
         }
 
-        if (tir >= 40 - (data * 2)) {
+        if (tir >= 40 - (getLevel() * 2)) {
             if (e != null) {
                 new EntityProjectile(getProjectile(), this, e);
                 //sp.onEntityTeleport(this, getLocation());

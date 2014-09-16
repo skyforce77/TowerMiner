@@ -17,18 +17,25 @@ import fr.skyforce77.towerminer.ressources.language.LanguageManager;
 public class Guardian extends Turret {
 
 	private static final long serialVersionUID = 185462L;
-	int aimed = -1;
 
 	public Guardian(EntityTypes type, Point location, String owner) {
 		super(type, location, owner);
-		distance = 30;
+		data.addDouble("distance", 30.0);
 	}
 
 	@Override
-	public void addData() {
-		super.addData();
-		setPower(power+1);
-		distance = 30;
+	public void addLevel() {
+		super.addLevel();
+		setPower(getPower()+1);
+		data.addDouble("distance", 30.0);
+	}
+	
+	public int getAimedEntity() {
+		return data.getInteger("aimedentity");
+	}
+	
+	public void setAimedEntity(int entity) {
+		data.addInteger("aimedentity", entity);
 	}
 
 	@Override
@@ -49,14 +56,14 @@ public class Guardian extends Turret {
 		}
 
 		if(e != null) {
-			aimed = e.getUUID();
+			setAimedEntity(e.getUUID());
 		} else {
-			aimed = -1;
+			setAimedEntity(-1);
 		}
 
-		if (tir >= 80 - (data * 2)) {
+		if (tir >= 80 - (getLevel()* 2)) {
 			if (e != null) {
-				e.hurt(power);
+				e.hurt(getPower());
 				onDamage(e);
 				tir = 0;
 			}
@@ -89,13 +96,13 @@ public class Guardian extends Turret {
 
 	@Override
 	public void draw(Graphics2D g2d, SinglePlayer sp) {
-		int size = 50+(int)(0.5*data);
+		int size = 50+(int)(0.5*getLevel());
 		double x = getLocation().getX();
 		double y = getLocation().getY();
 		double ro = getRotation();
 		g2d.rotate(ro - Math.toRadians(getType().rotation), x, y + sp.CanvasY);
 		try {
-			g2d.drawImage(RenderHelper.getColoredImage(getType().getTexture(0), new Color(rgb), 0.1F), (int) x - size/2 + sp.CanvasX, (int) y - size/2 + sp.CanvasY, size, size, null);
+			g2d.drawImage(RenderHelper.getColoredImage(getType().getTexture(0), getColor(), 0.1F), (int) x - size/2 + sp.CanvasX, (int) y - size/2 + sp.CanvasY, size, size, null);
 		} catch (Exception e) {
 		}
 		g2d.rotate(-ro + Math.toRadians(getType().rotation), x, y + sp.CanvasY);
@@ -104,12 +111,12 @@ public class Guardian extends Turret {
 		g2d.rotate(ro - Math.toRadians(180), x, y + sp.CanvasY);
 		if(sp instanceof MultiPlayer) {
 			MultiPlayer mp = (MultiPlayer)sp;
-			if(!mp.server && (aimed == -1 || sp.byUUID(aimed) == null)) {
+			if(!mp.server && (getAimedEntity() == -1 || sp.byUUID(getAimedEntity()) == null)) {
 				double distance = 99999;
 				Mob e = null;
 				for (Entity en : sp.draw) {
 					if(en instanceof Mob) {
-						double i = en.getLocation().distance(location.x, location.y);
+						double i = en.getLocation().distance(getLocation().x, getLocation().y);
 						if (i < distance && i < distance && canSee((Mob)en)) {
 							distance = i;
 							e = (Mob) en;
@@ -118,17 +125,17 @@ public class Guardian extends Turret {
 				}
 
 				if(e != null) {
-					aimed = e.getUUID();
+					setAimedEntity(e.getUUID());
 				}
 			}
 		}
-		if(aimed != -1) {
-			Entity a = sp.byUUID(aimed);
+		if(getAimedEntity() != -1) {
+			Entity a = sp.byUUID(getAimedEntity());
 			if(a != null) {
-				double i = a.getLocation().distance(location.x, location.y);
+				double i = a.getLocation().distance(getLocation().x, getLocation().y);
 				int images = (int)i/32;
 				while(images != 0) {
-					int f = (80 - (data * 2));
+					int f = (80 - (getLevel() * 2));
 					float g = 0F;
 					if(tir > 0) {
 						g = (float)tir/(float)f;
@@ -146,13 +153,13 @@ public class Guardian extends Turret {
         double y = sp.Ycursor;
         String[] text = new String[3];
         if (sp instanceof MultiPlayer && !((MultiPlayer)sp).player.equals(getOwner())) {
-            text = new String[]{LanguageManager.getText("turret.level") + ": " + data, LanguageManager.getText("turret.range") + ": " + (int)((float) distance / 45),
-                    LanguageManager.getText("turret.owner") + ": " + LanguageManager.getText(owner),
-                    LanguageManager.getText("turret.power") + ": " + power};
+            text = new String[]{LanguageManager.getText("turret.level") + ": " + data, LanguageManager.getText("turret.range") + ": " + (int)((float) getDistance() / 45),
+                    LanguageManager.getText("turret.owner") + ": " + LanguageManager.getText(getOwner()),
+                    LanguageManager.getText("turret.power") + ": " + getPower()};
         } else {
-            text = new String[]{LanguageManager.getText("turret.level") + ": " + data, LanguageManager.getText("turret.range") + ": " + (int)((float) distance / 45),
-                    LanguageManager.getText("turret.cost") + ": " + cost,
-                    LanguageManager.getText("turret.power") + ": " + power};
+            text = new String[]{LanguageManager.getText("turret.level") + ": " + data, LanguageManager.getText("turret.range") + ": " + (int)((float) getDistance() / 45),
+                    LanguageManager.getText("turret.cost") + ": " + getCost(),
+                    LanguageManager.getText("turret.power") + ": " + getPower()};
         }
 
         g2d.setFont(TowerMiner.getFont(12));

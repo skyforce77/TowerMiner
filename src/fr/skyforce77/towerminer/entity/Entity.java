@@ -18,7 +18,7 @@ public class Entity implements Serializable {
     private static final long serialVersionUID = -4582237877637415632L;
     public static ArrayList<Integer> uuidused = new ArrayList<Integer>();
 
-    protected TMStorage data = new TMStorage();
+    public TMStorage data = new TMStorage();
 
     public Entity(EntityTypes type) {
         data.addInteger("type", type.getId());
@@ -33,6 +33,10 @@ public class Entity implements Serializable {
 
     public int getUUID() {
         return data.getInteger("uuid");
+    }
+    
+    public void setUUID(int id) {
+    	data.addInteger("uuid", id);
     }
     
     public TMStorage getData() {

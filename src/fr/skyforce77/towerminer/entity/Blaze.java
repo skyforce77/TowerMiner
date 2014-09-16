@@ -17,7 +17,7 @@ public class Blaze extends Turret {
 
     @Override
     public void onDamage(Mob e) {
-        e.addEffect(new EntityEffect(EntityEffectType.FIRED, 50 * getData()));
+        e.addEffect(new EntityEffect(EntityEffectType.FIRED, 50 * getLevel()));
     }
 
     @Override

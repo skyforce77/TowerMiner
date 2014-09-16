@@ -1,5 +1,14 @@
 package fr.skyforce77.towerminer.entity;
 
+import java.awt.AlphaComposite;
+import java.awt.Color;
+import java.awt.Graphics2D;
+import java.awt.Image;
+import java.awt.Point;
+import java.util.ArrayList;
+import java.util.Random;
+import java.util.concurrent.CopyOnWriteArrayList;
+
 import fr.skyforce77.towerminer.TowerMiner;
 import fr.skyforce77.towerminer.achievements.Achievements;
 import fr.skyforce77.towerminer.api.PluginManager;
@@ -13,40 +22,56 @@ import fr.skyforce77.towerminer.menus.SinglePlayer;
 import fr.skyforce77.towerminer.protocol.packets.Packet10EntityValueUpdate;
 import fr.skyforce77.towerminer.render.RenderHelper;
 
-import java.awt.*;
-import java.util.ArrayList;
-import java.util.Random;
-import java.util.concurrent.CopyOnWriteArrayList;
-
 public class Mob extends Entity {
 
     private static final long serialVersionUID = -995513747690476657L;
 
-    Point last;
+    Point last = new Point(0, 0);
     boolean isgoing = false;
-    int life;
-    boolean died = false;
-    int speed = 1;
-    CopyOnWriteArrayList<EntityEffect> effects = new CopyOnWriteArrayList<EntityEffect>();
 
     public Mob(EntityTypes type) {
         super(type);
-        location = new Point(Maps.getActualMap().getXDepart() * MapWritter.getBlockWidth() + (MapWritter.getBlockWidth() / 2), Maps.getActualMap().getYDepart() * MapWritter.getBlockHeight() + (MapWritter.getBlockHeight() / 2));
-        last = new Point(0, 0);
-        life = type.getMaxLife();
-        speed = type.getSpeed();
+        setLocation(new Point(Maps.getActualMap().getXDepart() * MapWritter.getBlockWidth() + (MapWritter.getBlockWidth() / 2), Maps.getActualMap().getYDepart() * MapWritter.getBlockHeight() + (MapWritter.getBlockHeight() / 2)));
+        setLife(type.getMaxLife());
+        setSpeed(type.getSpeed());
+        setEffects(new CopyOnWriteArrayList<EntityEffect>());
 
         if (type.equals(EntityTypes.MUSHCOW)) {
             Achievements.unlockAchievement(8);
         }
     }
 
+    public boolean isDead() {
+        return data.getBoolean("isdead");
+    }
+    
+    public void setDead(boolean dead) {
+        data.addBoolean("isdead", dead);
+    }
+   
+    public int getSpeed() {
+        return data.getInteger("speed");
+    }
+
+    public void setSpeed(int speed) {
+        data.addInteger("speed", speed);
+    }
+    
     public int getLife() {
-        return life;
+        return data.getInteger("life");
     }
 
     public void setLife(int life) {
-        this.life = life;
+        data.addInteger("life", life);
+    }
+    
+    @SuppressWarnings("unchecked")
+	public CopyOnWriteArrayList<EntityEffect> getEffects() {
+    	return (CopyOnWriteArrayList<EntityEffect>)data.getObject("effects");
+    }
+    
+    public void setEffects(CopyOnWriteArrayList<EntityEffect> effects) {
+    	data.addObject("effects", effects);
     }
 
     @Override
@@ -55,7 +80,7 @@ public class Mob extends Entity {
         new Thread("MobTick-" + m.getUUID()) {
             @Override
             public void run() {
-                for (EntityEffect effect : effects) {
+                for (EntityEffect effect : getEffects()) {
                     effect.onTick(m);
                 }
 
@@ -96,17 +121,17 @@ public class Mob extends Entity {
                 return points.get(new Random().nextInt(points.size()));
             }
         }
-        if (!died) {
+        if (!isDead()) {
             if (!sp.multiplayer) {
-                sp.vie = sp.vie - life;
+                sp.vie = sp.vie - getLife();
             } else {
                 MultiPlayer mp = (MultiPlayer) sp;
                 if (mp.server) {
                     if (Maps.getActualMap().getDeathPoints()[0].equals(getBlockLocation())) {
-                        sp.vie = sp.vie - life;
+                        sp.vie = sp.vie - getLife();
                     }
                     if (Maps.getActualMap().getDeathPoints()[1].equals(getBlockLocation())) {
-                        mp.setClientLife(mp.clientlife - life);
+                        mp.setClientLife(mp.clientlife - getLife());
                     }
                 }
             }
@@ -115,8 +140,8 @@ public class Mob extends Entity {
             PluginManager.callAsyncEvent(new MobDespawnEvent(this));
             sp.removed.add(this);
         }
-        died = true;
-        return location;
+        setDead(true);
+        return getBlockLocation();
     }
 
     public void hurt(int damage) {
@@ -124,27 +149,27 @@ public class Mob extends Entity {
             return;
         }
         SinglePlayer sp = (SinglePlayer) TowerMiner.menu;
-        if (damage >= life) {
-            if (!died) {
+        if (damage >= getLife()) {
+            if (!isDead()) {
                 PluginManager.callAsyncEvent(new MobDespawnEvent(this));
                 sp.removed.add(this);
                 sp.addGold(getType().getMaxLife());
             }
-            died = true;
+            setDead(true);;
         } else {
-            life = life - damage;
+            setLife(getLife() - damage);
             addEffect(new EntityEffect(EntityEffectType.HURT, 10));
             if (sp.multiplayer) {
                 MultiPlayer mp = (MultiPlayer) sp;
                 if (mp.server) {
-                    new Packet10EntityValueUpdate(this.getUUID(), "life", life).sendAllTCP();
+                    new Packet10EntityValueUpdate(this.getUUID(), "life", getLife()).sendAllTCP();
                 }
             }
         }
     }
 
     public boolean hasEffect(EntityEffectType type) {
-        for (EntityEffect effect : effects) {
+        for (EntityEffect effect : getEffects()) {
             if (effect.getType().getID() == type.getID()) {
                 return true;
             }
@@ -153,7 +178,7 @@ public class Mob extends Entity {
     }
 
     public EntityEffect getEffect(EntityEffectType type) {
-        for (EntityEffect effect : effects) {
+        for (EntityEffect effect : getEffects()) {
             if (effect.getType().getID() == type.getID()) {
                 return effect;
             }
@@ -163,7 +188,9 @@ public class Mob extends Entity {
 
     public void removeEffect(EntityEffectType type) {
         if (hasEffect(type)) {
-            effects.remove(getEffect(type));
+            CopyOnWriteArrayList<EntityEffect> ef = getEffects();
+            ef.remove(getEffect(type));
+            setEffects(ef);
             new Packet10EntityValueUpdate(getUUID(), "rmveffect", type.getID()).sendAllTCP();
         }
     }
@@ -179,7 +206,9 @@ public class Mob extends Entity {
         }
 
         if (can) {
-            effects.add(effect);
+        	CopyOnWriteArrayList<EntityEffect> ef = getEffects();
+            ef.add(effect);
+            setEffects(ef);
             new Packet10EntityValueUpdate(getUUID(), "addeffect", effect).sendAllTCP();
         }
     }

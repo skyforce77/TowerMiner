@@ -30,17 +30,17 @@ public class Creeper extends Turret {
         double distance = 99999;
         Mob e = null;
         for (Entity en : sp.mobs) {
-            double i = en.getLocation().distance(location.x, location.y);
-            if (i < distance && i < this.distance) {
+            double i = en.getLocation().distance(getLocation().x, getLocation().y);
+            if (i < distance && i < getDistance()) {
                 distance = i;
                 e = (Mob) en;
             }
-            if (i < this.distance) {
+            if (i < getDistance()) {
                 mobs.add((Mob) en);
             }
         }
 
-        if (tir >= 60 - (data * 2)) {
+        if (tir >= 60 - (getLevel() * 2)) {
             if (e != null) {
                 for(Mob m : mobs) {
                 	onDamage(m);

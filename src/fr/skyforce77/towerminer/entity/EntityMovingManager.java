@@ -29,7 +29,7 @@ public class EntityMovingManager {
                         m.setRotation(Math.toRadians(270));
                     }
                     try {
-                        int s = 10 / m.speed;
+                        int s = 10 / m.getSpeed();
                         if (TowerMiner.menu instanceof SinglePlayer && ((SinglePlayer) TowerMiner.menu).speed.isSelected()) {
                             s = s / 2;
                         }
@@ -56,7 +56,7 @@ public class EntityMovingManager {
                         m.setRotation(Math.toRadians(0));
                     }
                     try {
-                        int s = 10 / m.speed;
+                        int s = 10 / m.getSpeed();
                         if (TowerMiner.menu instanceof SinglePlayer && ((SinglePlayer) TowerMiner.menu).speed.isSelected()) {
                             s = s / 2;
                         }

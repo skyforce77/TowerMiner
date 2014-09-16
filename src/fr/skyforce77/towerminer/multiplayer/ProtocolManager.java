@@ -233,7 +233,7 @@ public class ProtocolManager implements PacketListener {
 					en = new Mob(EntityTypes.CHICKEN);
 				}
 			}
-			en.uuid = pack6.eid;
+			en.setUUID(pack6.eid);
 
 			for (Entity es : mp.draw) {
 				if (en != null && es.getUUID() == en.getUUID()) {
@@ -274,8 +274,8 @@ public class ProtocolManager implements PacketListener {
 					} else if (pack10.value.equals("turretdata")) {
 						int data = (Integer) pack10.deserialize(pack10.data);
 						Turret tu = (Turret) ens;
-						while (tu.getData() < data) {
-							tu.addData();
+						while (tu.getLevel() < data) {
+							tu.addLevel();
 						}
 					} else if (pack10.value.equals("life")) {
 						int data = (Integer) pack10.deserialize(pack10.data);
@@ -473,7 +473,7 @@ public class ProtocolManager implements PacketListener {
 			} else if (pack9.modifier == 4) {
 				if (aimed != null && aimed.getPrice() <= mp.clientgold) {
 					mp.setClientGold(mp.clientgold - aimed.getPrice());
-					aimed.addData();
+					aimed.addLevel();
 				}
 			} else if (pack9.modifier == 8) {
 				if (aimed != null) {

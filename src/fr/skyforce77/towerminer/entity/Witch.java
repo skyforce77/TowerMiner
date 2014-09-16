@@ -17,7 +17,7 @@ public class Witch extends Turret {
 
     @Override
     public void onDamage(Mob e) {
-        e.addEffect(new EntityEffect(EntityEffectType.SLOW, 40 * getData()));
+        e.addEffect(new EntityEffect(EntityEffectType.SLOW, 40 * getLevel()));
     }
 
     @Override
@@ -26,8 +26,8 @@ public class Witch extends Turret {
     }
     
     public boolean canSee(Mob m) {
-    	double i = m.getLocation().distance(location.x, location.y);
-    	if(i < this.distance) {
+    	double i = m.getLocation().distance(getLocation().x, getLocation().y);
+    	if(i < getDistance()) {
     		return true;
     	}
     	return false;

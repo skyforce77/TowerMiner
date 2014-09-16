@@ -1,5 +1,28 @@
 package fr.skyforce77.towerminer.menus;
 
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.FontMetrics;
+import java.awt.Graphics2D;
+import java.awt.Point;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.WindowEvent;
+import java.util.Date;
+import java.util.Random;
+import java.util.concurrent.CopyOnWriteArrayList;
+
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JRadioButton;
+import javax.swing.JTextField;
+
 import fr.skyforce77.towerminer.TowerMiner;
 import fr.skyforce77.towerminer.achievements.Achievements;
 import fr.skyforce77.towerminer.api.PluginManager;
@@ -19,13 +42,6 @@ import fr.skyforce77.towerminer.particles.ParticleEffect;
 import fr.skyforce77.towerminer.ressources.RessourcesManager;
 import fr.skyforce77.towerminer.ressources.language.LanguageManager;
 import fr.skyforce77.towerminer.sounds.Music;
-
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.*;
-import java.util.Date;
-import java.util.Random;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 public class SinglePlayer extends Menu implements ChatContainer{
 
@@ -450,7 +466,7 @@ public class SinglePlayer extends Menu implements ChatContainer{
 			g2d.fillRect(Xcursor, Ycursor - 16, (int) (4 + size.getWidth()), 16);
 			g2d.setColor(Color.WHITE);
 			g2d.drawString(LanguageManager.getText("menu.sp.buy") + ": " + EntityTypes.turrets.get(selectedturret).getPrice(), Xcursor + 3, Ycursor - 3);
-		} else if (!paused && aimed != null && aimed.getData() < 20) {
+		} else if (!paused && aimed != null && aimed.getLevel() < 20) {
 			FontMetrics metrics = g2d.getFontMetrics(g2d.getFont());
 			int hgt = metrics.getHeight();
 			int adv = metrics.stringWidth(LanguageManager.getText("menu.sp.improve") + ": " + aimed.getPrice());
@@ -625,9 +641,9 @@ public class SinglePlayer extends Menu implements ChatContainer{
 				aimed = null;
 			}
 		} else if (e.getModifiers() == 4) {
-			if (aimed != null && aimed.getPrice() <= or && aimed.getData() < 20) {
+			if (aimed != null && aimed.getPrice() <= or && aimed.getLevel() < 20) {
 				or -= aimed.getPrice();
-				aimed.addData();
+				aimed.addLevel();
 			}
 		} else if (e.getModifiers() == 8) {
 			if (aimed != null) {

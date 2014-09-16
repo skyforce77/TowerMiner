@@ -12,8 +12,8 @@ public class WitherSkeleton extends Turret {
 
     @Override
     public boolean canSee(Mob m) {
-    	double i = m.getLocation().distance(location.x, location.y);
-    	if(i < this.distance) {
+    	double i = m.getLocation().distance(getLocation().x, getLocation().y);
+    	if(i < getDistance()) {
     		return true;
     	}
     	return false;

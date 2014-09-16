@@ -17,7 +17,7 @@ public class Spider extends Turret {
 
     @Override
     public void onDamage(Mob e) {
-        e.addEffect(new EntityEffect(EntityEffectType.POISONNED, 40 * getData()));
+        e.addEffect(new EntityEffect(EntityEffectType.POISONNED, 40 * getLevel()));
     }
 
     @Override

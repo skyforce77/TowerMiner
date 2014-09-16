@@ -25,13 +25,6 @@ public class Turret extends Entity {
     private static final long serialVersionUID = 5758076475226543055L;
 
     int tir = 0;
-    /*int level = 1;
-    int distance = 90;
-    int price = 20;
-    int cost = 30;
-    int power = 1;
-    String owner = "menu.mp.blue";
-    int color = -1;*/
 
     public Turret(EntityTypes type, Point location, String owner) {
         super(type);
@@ -97,7 +90,7 @@ public class Turret extends Entity {
         return data.getDouble("distance");
     }
 
-    public void addData() {
+    public void addLevel() {
         if (TowerMiner.menu instanceof SinglePlayer) {
             SinglePlayer sp = (SinglePlayer) TowerMiner.menu;
             if (sp.getPlayer().equals(getOwner())) {
