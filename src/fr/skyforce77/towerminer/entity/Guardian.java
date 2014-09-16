@@ -20,6 +20,7 @@ public class Guardian extends Turret {
 
 	public Guardian(EntityTypes type, Point location, String owner) {
 		super(type, location, owner);
+		setAimedEntity(-1);
 		data.addDouble("distance", 30.0);
 	}
 
@@ -153,11 +154,11 @@ public class Guardian extends Turret {
         double y = sp.Ycursor;
         String[] text = new String[3];
         if (sp instanceof MultiPlayer && !((MultiPlayer)sp).player.equals(getOwner())) {
-            text = new String[]{LanguageManager.getText("turret.level") + ": " + data, LanguageManager.getText("turret.range") + ": " + (int)((float) getDistance() / 45),
+            text = new String[]{LanguageManager.getText("turret.level") + ": " + getLevel(), LanguageManager.getText("turret.range") + ": " + (int)((float) getDistance() / 45),
                     LanguageManager.getText("turret.owner") + ": " + LanguageManager.getText(getOwner()),
                     LanguageManager.getText("turret.power") + ": " + getPower()};
         } else {
-            text = new String[]{LanguageManager.getText("turret.level") + ": " + data, LanguageManager.getText("turret.range") + ": " + (int)((float) getDistance() / 45),
+            text = new String[]{LanguageManager.getText("turret.level") + ": " + getLevel(), LanguageManager.getText("turret.range") + ": " + (int)((float) getDistance() / 45),
                     LanguageManager.getText("turret.cost") + ": " + getCost(),
                     LanguageManager.getText("turret.power") + ": " + getPower()};
         }

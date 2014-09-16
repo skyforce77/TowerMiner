@@ -1,5 +1,13 @@
 package fr.skyforce77.towerminer.entity;
 
+import java.awt.Color;
+import java.awt.Graphics2D;
+import java.awt.Image;
+import java.awt.Point;
+import java.util.Random;
+
+import javax.vecmath.Vector2d;
+
 import fr.skyforce77.towerminer.TowerMiner;
 import fr.skyforce77.towerminer.maps.MapWritter;
 import fr.skyforce77.towerminer.menus.MultiPlayer;
@@ -9,17 +17,9 @@ import fr.skyforce77.towerminer.particles.ParticleEffect;
 import fr.skyforce77.towerminer.particles.ParticleType;
 import fr.skyforce77.towerminer.protocol.packets.Packet10EntityValueUpdate;
 
-import javax.vecmath.Vector2d;
-import java.awt.*;
-import java.util.Random;
-
 public class EntityProjectile extends Entity {
 
     private static final long serialVersionUID = -4837863653471130636L;
-
-    //private int shooter;
-    //private int aimed;
-    //private Vector2d last = new Vector2d(0, 0);
 
     public EntityProjectile(EntityTypes type, Turret shooter, Mob aimed) {
         super(type);

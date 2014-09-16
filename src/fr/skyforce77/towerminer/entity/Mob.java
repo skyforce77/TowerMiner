@@ -35,6 +35,7 @@ public class Mob extends Entity {
         setLife(type.getMaxLife());
         setSpeed(type.getSpeed());
         setEffects(new CopyOnWriteArrayList<EntityEffect>());
+        setDead(false);
 
         if (type.equals(EntityTypes.MUSHCOW)) {
             Achievements.unlockAchievement(8);

@@ -31,6 +31,11 @@ public class Turret extends Entity {
         data.addString("owner", owner);
         setLocation(new Point(location.x * MapWritter.getBlockWidth() + (MapWritter.getBlockWidth() / 2), location.y * MapWritter.getBlockHeight() + (MapWritter.getBlockHeight() / 2)));
         data.addInteger("cost", type.getPrice());
+        data.addInteger("level", 1);
+        data.addDouble("distance", 90.0);
+        data.addInteger("price", 20);
+        data.addInteger("cost", 30);
+        setPower(1);
         if (TowerMiner.menu instanceof MultiPlayer) {
         	setColor(owner.equals("menu.mp.red") ? Color.RED : Color.BLUE);
         }
@@ -190,11 +195,11 @@ public class Turret extends Entity {
         String[] text = new String[3];
         String speed = getLevel() * 2 >= 40 ? "100%" : getLevel() * 2 + "%";
         if (sp instanceof MultiPlayer && !((MultiPlayer) sp).player.equals(getOwner())) {
-            text = new String[]{LanguageManager.getText("turret.level") + ": " + data, LanguageManager.getText("turret.range") + ": " + (int) ((float) getDistance() / 45),
+            text = new String[]{LanguageManager.getText("turret.level") + ": " + getLevel(), LanguageManager.getText("turret.range") + ": " + (int) ((float) getDistance() / 45),
                     LanguageManager.getText("turret.speed") + ": " + speed, LanguageManager.getText("turret.owner") + ": " + LanguageManager.getText(getOwner()),
                     LanguageManager.getText("turret.power") + ": " + getPower()};
         } else {
-            text = new String[]{LanguageManager.getText("turret.level") + ": " + data, LanguageManager.getText("turret.range") + ": " + (int) ((float) getDistance() / 45),
+            text = new String[]{LanguageManager.getText("turret.level") + ": " + getLevel(), LanguageManager.getText("turret.range") + ": " + (int) ((float) getDistance() / 45),
                     LanguageManager.getText("turret.speed") + ": " + speed, LanguageManager.getText("turret.cost") + ": " + getCost(),
                     LanguageManager.getText("turret.power") + ": " + getPower()};
         }

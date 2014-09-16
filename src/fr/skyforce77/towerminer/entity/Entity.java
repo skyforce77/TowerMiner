@@ -18,15 +18,18 @@ public class Entity implements Serializable {
     private static final long serialVersionUID = -4582237877637415632L;
     public static ArrayList<Integer> uuidused = new ArrayList<Integer>();
 
-    public TMStorage data = new TMStorage();
+    public TMStorage data;
 
     public Entity(EntityTypes type) {
+    	data = new TMStorage();
         data.addInteger("type", type.getId());
 
+        setUUID(-1);
         while (getUUID() == -1) {
             int id = new Random().nextInt(Integer.MAX_VALUE);
             if (!uuidused.contains(id)) {
                 data.addInteger("uuid", id);
+                uuidused.add(id);
             }
         }
     }
@@ -94,7 +97,7 @@ public class Entity implements Serializable {
         return vector;
     }
 
-    public void onTick() {
+	public void onTick() {
     }
 
     public void draw(Graphics2D g2d, SinglePlayer sp) {
