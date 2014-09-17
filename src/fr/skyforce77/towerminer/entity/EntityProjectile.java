@@ -15,7 +15,7 @@ import fr.skyforce77.towerminer.menus.SinglePlayer;
 import fr.skyforce77.towerminer.particles.Particle;
 import fr.skyforce77.towerminer.particles.ParticleEffect;
 import fr.skyforce77.towerminer.particles.ParticleType;
-import fr.skyforce77.towerminer.protocol.packets.Packet10EntityValueUpdate;
+import fr.skyforce77.towerminer.protocol.packets.Packet10DataValueUpdate;
 
 public class EntityProjectile extends Entity {
 
@@ -92,7 +92,7 @@ public class EntityProjectile extends Entity {
                 if (e != null && shooter != null) {
                     setAimed(e.getUUID());
                     if (sp instanceof MultiPlayer && ((MultiPlayer) sp).server) {
-                        new Packet10EntityValueUpdate(getUUID(), "aimanother", getAimed()).sendAllTCP();
+                        new Packet10DataValueUpdate(getUUID(), "aimed", getAimed()).sendAllTCP();
                     }
                 } else {
                     sp.removed.add(this);

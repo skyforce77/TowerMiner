@@ -16,7 +16,6 @@ import fr.skyforce77.towerminer.maps.MapWritter;
 import fr.skyforce77.towerminer.maps.Maps;
 import fr.skyforce77.towerminer.menus.MultiPlayer;
 import fr.skyforce77.towerminer.menus.SinglePlayer;
-import fr.skyforce77.towerminer.protocol.packets.Packet10EntityValueUpdate;
 import fr.skyforce77.towerminer.render.RenderHelper;
 import fr.skyforce77.towerminer.ressources.language.LanguageManager;
 
@@ -111,7 +110,9 @@ public class Turret extends Entity {
         data.addDouble("distance", data.getDouble("distance")+10.0);
         data.addInteger("cost", data.getInteger("cost")+data.getInteger("price"));
         data.addInteger("price", data.getInteger("price")+(data.getInteger("price")/3));
-        new Packet10EntityValueUpdate(getUUID(), "turretdata", getLevel()).sendAllTCP();
+        if(TowerMiner.menu instanceof MultiPlayer) {
+        	((MultiPlayer)TowerMiner.menu).sendData(this);
+        }
         PluginManager.callAsyncEvent(new TurretUpgradeEvent(this, getLevel() - 1, getLevel()));
     }
     

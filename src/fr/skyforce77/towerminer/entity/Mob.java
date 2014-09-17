@@ -19,7 +19,7 @@ import fr.skyforce77.towerminer.maps.MapWritter;
 import fr.skyforce77.towerminer.maps.Maps;
 import fr.skyforce77.towerminer.menus.MultiPlayer;
 import fr.skyforce77.towerminer.menus.SinglePlayer;
-import fr.skyforce77.towerminer.protocol.packets.Packet10EntityValueUpdate;
+import fr.skyforce77.towerminer.protocol.packets.Packet10DataValueUpdate;
 import fr.skyforce77.towerminer.render.RenderHelper;
 
 public class Mob extends Entity {
@@ -163,7 +163,7 @@ public class Mob extends Entity {
             if (sp.multiplayer) {
                 MultiPlayer mp = (MultiPlayer) sp;
                 if (mp.server) {
-                    new Packet10EntityValueUpdate(this.getUUID(), "life", getLife()).sendAllTCP();
+                    new Packet10DataValueUpdate(this.getUUID(), "life", getLife()).sendAllTCP();
                 }
             }
         }
@@ -192,7 +192,7 @@ public class Mob extends Entity {
             CopyOnWriteArrayList<EntityEffect> ef = getEffects();
             ef.remove(getEffect(type));
             setEffects(ef);
-            new Packet10EntityValueUpdate(getUUID(), "rmveffect", type.getID()).sendAllTCP();
+            new Packet10DataValueUpdate(getUUID(), "effects", ef).sendAllTCP();
         }
     }
 
@@ -210,7 +210,7 @@ public class Mob extends Entity {
         	CopyOnWriteArrayList<EntityEffect> ef = getEffects();
             ef.add(effect);
             setEffects(ef);
-            new Packet10EntityValueUpdate(getUUID(), "addeffect", effect).sendAllTCP();
+            new Packet10DataValueUpdate(getUUID(), "effects", ef).sendAllTCP();
         }
     }
 

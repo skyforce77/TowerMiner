@@ -6,6 +6,7 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.Serializable;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -28,8 +29,6 @@ import fr.skyforce77.towerminer.entity.EntityProjectile;
 import fr.skyforce77.towerminer.entity.EntityTypes;
 import fr.skyforce77.towerminer.entity.Mob;
 import fr.skyforce77.towerminer.entity.Turret;
-import fr.skyforce77.towerminer.entity.effects.EntityEffect;
-import fr.skyforce77.towerminer.entity.effects.EntityEffectType;
 import fr.skyforce77.towerminer.maps.Maps;
 import fr.skyforce77.towerminer.menus.MPClientWait;
 import fr.skyforce77.towerminer.menus.MPDisconnected;
@@ -49,7 +48,7 @@ import fr.skyforce77.towerminer.protocol.containers.FileContainer;
 import fr.skyforce77.towerminer.protocol.listeners.PacketListener;
 import fr.skyforce77.towerminer.protocol.packets.Packet;
 import fr.skyforce77.towerminer.protocol.packets.Packet0Connecting;
-import fr.skyforce77.towerminer.protocol.packets.Packet10EntityValueUpdate;
+import fr.skyforce77.towerminer.protocol.packets.Packet10DataValueUpdate;
 import fr.skyforce77.towerminer.protocol.packets.Packet11ChatMessage;
 import fr.skyforce77.towerminer.protocol.packets.Packet12Popup;
 import fr.skyforce77.towerminer.protocol.packets.Packet13EntityTeleport;
@@ -264,27 +263,11 @@ public class ProtocolManager implements PacketListener {
 				}
 			}
 		} else if (p.getId() == 10) {
-			Packet10EntityValueUpdate pack10 = (Packet10EntityValueUpdate) p;
+			Packet10DataValueUpdate pack10 = (Packet10DataValueUpdate) p;
 			mp = ((MultiPlayer) TowerMiner.menu);
 			for (Entity ens : mp.draw) {
 				if (ens.getUUID() == pack10.entity) {
-					if (pack10.value.equals("addeffect")) {
-						((Mob) ens).addEffect((EntityEffect) pack10.deserialize(pack10.data));
-					} else if (pack10.value.equals("rmveffect")) {
-						((Mob) ens).removeEffect(EntityEffectType.byId((Integer) pack10.deserialize(pack10.data)));
-					} else if (pack10.value.equals("turretdata")) {
-						int data = (Integer) pack10.deserialize(pack10.data);
-						Turret tu = (Turret) ens;
-						while (tu.getLevel() < data) {
-							tu.addLevel();
-						}
-					} else if (pack10.value.equals("life")) {
-						int data = (Integer) pack10.deserialize(pack10.data);
-						((Mob) ens).setLife(data);
-					} else if (pack10.value.equals("aimanother")) {
-						int aim = (Integer) pack10.deserialize(pack10.data);
-						((EntityProjectile) ens).setAimed(aim);
-					}
+					ens.getData().addObject(pack10.value, (Serializable)pack10.deserialize(pack10.data));
 				}
 			}
 		} else if (p.getId() == 13) {
