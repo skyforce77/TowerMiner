@@ -25,7 +25,7 @@ import fr.skyforce77.towerminer.protocol.ObjectReceiver;
 import fr.skyforce77.towerminer.protocol.packets.Packet12Popup;
 import fr.skyforce77.towerminer.protocol.packets.Packet13EntityTeleport;
 import fr.skyforce77.towerminer.protocol.packets.Packet1Disconnecting;
-import fr.skyforce77.towerminer.protocol.packets.Packet20EntityData;
+import fr.skyforce77.towerminer.protocol.packets.Packet20EntityStorage;
 import fr.skyforce77.towerminer.protocol.packets.Packet3Action;
 import fr.skyforce77.towerminer.protocol.packets.Packet4RoundFinished;
 import fr.skyforce77.towerminer.protocol.packets.Packet5UpdateInfos;
@@ -228,11 +228,10 @@ public class MultiPlayer extends SinglePlayer {
 		new Thread("EntityData-" + en.getUUID()) {
 			@Override
 			public void run() {
-				new BigSending(en, MPInfos.connection, new ObjectReceiver.ReceivingThread() {
+				new BigSending(en.getData(), MPInfos.connection, new ObjectReceiver.ReceivingThread() {
 					@Override
 					public void run(int objectid) {
-						Packet20EntityData pe = new Packet20EntityData();
-						pe.eid = objectid;
+						Packet20EntityStorage pe = new Packet20EntityStorage(en.getUUID(), objectid);
 						pe.sendAllTCP();
 					}
 				});

@@ -60,7 +60,7 @@ import fr.skyforce77.towerminer.protocol.packets.Packet17Player;
 import fr.skyforce77.towerminer.protocol.packets.Packet18ParticleEffect;
 import fr.skyforce77.towerminer.protocol.packets.Packet19Particle;
 import fr.skyforce77.towerminer.protocol.packets.Packet1Disconnecting;
-import fr.skyforce77.towerminer.protocol.packets.Packet20EntityData;
+import fr.skyforce77.towerminer.protocol.packets.Packet20EntityStorage;
 import fr.skyforce77.towerminer.protocol.packets.Packet21LoadPlugin;
 import fr.skyforce77.towerminer.protocol.packets.Packet22PluginMessage;
 import fr.skyforce77.towerminer.protocol.packets.Packet23BlockChange;
@@ -73,6 +73,7 @@ import fr.skyforce77.towerminer.protocol.packets.Packet6EntityCreate;
 import fr.skyforce77.towerminer.protocol.packets.Packet7EntityMove;
 import fr.skyforce77.towerminer.protocol.packets.Packet8EntityRemove;
 import fr.skyforce77.towerminer.protocol.packets.Packet9MouseClick;
+import fr.skyforce77.towerminer.protocol.save.TMStorage;
 import fr.skyforce77.towerminer.ressources.RessourcesManager;
 import fr.skyforce77.towerminer.ressources.language.LanguageManager;
 import fr.skyforce77.towerminer.sounds.Music;
@@ -316,19 +317,14 @@ public class ProtocolManager implements PacketListener {
 			mp = ((MultiPlayer) TowerMiner.menu);
 			mp.particles.add((Particle) pack19.deserialize(pack19.particle));
 		} else if (p.getId() == 20) {
-			Packet20EntityData pack20 = (Packet20EntityData) p;
+			Packet20EntityStorage pack20 = (Packet20EntityStorage) p;
 			mp = ((MultiPlayer) TowerMiner.menu);
-			byte[] data = BigSending.receiving.get(pack20.eid).data;
-			Entity en = (Entity) pack20.deserialize(data);
+			byte[] data = BigSending.receiving.get(pack20.bigsendingid).data;
+			TMStorage tms = (TMStorage) pack20.deserialize(data);
 			for (Entity es : mp.draw) {
-				if (en != null && es.getUUID() == en.getUUID()) {
-					mp.draw.remove(es);
+				if (tms != null && es.getUUID() == pack20.entityid) {
+					es.getData().add(tms);
 				}
-			}
-			if (en != null && !mp.draw.contains(en)) {
-				mp.draw.add(en);
-				if(en instanceof Mob)
-					((Mob)en).onTick();
 			}
 		} else if (p.getId() == 21) {
 			Packet21LoadPlugin pack21 = (Packet21LoadPlugin) p;
