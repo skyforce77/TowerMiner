@@ -1,10 +1,6 @@
 package fr.skyforce77.towerminer.ressources;
 
-import fr.skyforce77.towerminer.TowerMiner;
-
-import javax.imageio.ImageIO;
-import javax.swing.*;
-import java.awt.*;
+import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -12,6 +8,11 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
+
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
+
+import fr.skyforce77.towerminer.TowerMiner;
 
 public class RessourcesManager {
 
@@ -39,9 +40,7 @@ public class RessourcesManager {
                         try {
                             Image img = ImageIO.read(new URL(url));
                             imgurls.put(url, img);
-                        } catch (Exception e) {
-                            dl.remove(url);
-                        }
+                        } catch (Exception e) {}
                     }
                 }.start();
             }
