@@ -184,7 +184,8 @@ public class MultiPlayer extends SinglePlayer {
 			public void run() {
 				if (server) {
 					for (Entity en : entity) {
-						sendData(en);
+						//sendData(en);
+						onEntityTeleport(en, en.getLocation());
 						try {
 							Thread.sleep(50l);
 						} catch (Exception e) {}

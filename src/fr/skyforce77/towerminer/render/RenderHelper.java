@@ -15,6 +15,9 @@ import fr.skyforce77.towerminer.entity.Mob;
 public class RenderHelper {
 
     public static void drawBar(Graphics2D g2d, int pourcent, int x, int y, int width, int height) {
+    	if(pourcent <= 0 && pourcent > 100) {
+    		return;
+    	}
         Color color = g2d.getColor();
         g2d.fillRect(x, y, width, height);
         g2d.setColor(new Color(100 - pourcent, pourcent, 0, color.getAlpha()));
