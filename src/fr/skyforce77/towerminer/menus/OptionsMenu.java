@@ -29,6 +29,13 @@ public class OptionsMenu extends Menu {
                 TowerMiner.setMenu(Menu.volumecontrol);
             }
         });
+        
+        items[2] = new MenuItem(2, LanguageManager.getText("menu.about.server"), new Thread() {
+            @Override
+            public void run() {
+                TowerMiner.setMenu(Menu.serverprops);
+            }
+        });
     }
 
     public void drawMenu(Graphics2D g2d) {

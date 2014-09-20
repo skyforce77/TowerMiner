@@ -75,6 +75,7 @@ import fr.skyforce77.towerminer.protocol.packets.Packet9MouseClick;
 import fr.skyforce77.towerminer.protocol.save.TMStorage;
 import fr.skyforce77.towerminer.ressources.RessourcesManager;
 import fr.skyforce77.towerminer.ressources.language.LanguageManager;
+import fr.skyforce77.towerminer.save.DataBase;
 import fr.skyforce77.towerminer.sounds.Music;
 
 public class ProtocolManager implements PacketListener {
@@ -389,7 +390,10 @@ public class ProtocolManager implements PacketListener {
 								new BigSending(baos.toByteArray(), MPInfos.connection, new ReceivingThread() {
 									@Override
 									public void run(int objectid) {
-										new Packet24ServerPopup(TowerMiner.player+"'s server", new String[]{"welcome to my local server!"}, objectid, 10000).sendConnectionTCP(MPInfos.connection);
+										String name = (String)DataBase.getValue("server_name", "%p's server");
+										name = name.replaceAll("%p", TowerMiner.player);
+										String[] desc = ((String)DataBase.getValue("server_desc","Welcome to my local server!\nHave a good time")).split("\n");
+										new Packet24ServerPopup(name, desc, objectid, 10000).sendConnectionTCP(MPInfos.connection);
 									}
 								});
 							}

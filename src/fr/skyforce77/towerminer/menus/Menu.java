@@ -1,5 +1,19 @@
 package fr.skyforce77.towerminer.menus;
 
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.FontMetrics;
+import java.awt.Graphics2D;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseWheelEvent;
+import java.awt.event.WindowEvent;
+import java.util.Date;
+import java.util.concurrent.CopyOnWriteArrayList;
+
+import javax.swing.JRadioButton;
+import javax.swing.JTextField;
+
 import fr.skyforce77.towerminer.TowerMiner;
 import fr.skyforce77.towerminer.api.PluginManager;
 import fr.skyforce77.towerminer.api.events.menu.MenuUnusedEvent;
@@ -8,15 +22,6 @@ import fr.skyforce77.towerminer.game.Game;
 import fr.skyforce77.towerminer.menus.additionals.Chat;
 import fr.skyforce77.towerminer.ressources.language.LanguageManager;
 import fr.skyforce77.towerminer.sounds.Music;
-
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.KeyEvent;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseWheelEvent;
-import java.awt.event.WindowEvent;
-import java.util.Date;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 public class Menu {
 
@@ -35,6 +40,7 @@ public class Menu {
     public static AboutMenu about;
     public static VolumeControlMenu volumecontrol;
     public static AchievementsMenu achievements;
+    public static ServerPropertiesMenu serverprops;
     public MenuItem[] items = null;
     public int selected = -1;
     public int xmove = 0;
@@ -67,6 +73,7 @@ public class Menu {
         about = new AboutMenu();
         volumecontrol = new VolumeControlMenu();
         achievements = new AchievementsMenu();
+        serverprops = new ServerPropertiesMenu();
     }
 
     public void drawMenu(Graphics2D g2d) {

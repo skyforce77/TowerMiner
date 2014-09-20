@@ -6,6 +6,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 
+import com.esotericsoftware.kryonet.Connection;
+
 import fr.skyforce77.towerminer.TowerMiner;
 import fr.skyforce77.towerminer.entity.Entity;
 import fr.skyforce77.towerminer.entity.EntityProjectile;
@@ -91,28 +93,34 @@ public class MultiPlayer extends SinglePlayer {
 	public void drawMenu(Graphics2D g2d) {
 		super.drawMenu(g2d);
 
-		if(gameover) {
-			boolean team = Maps.getActualMap().getDeathPoints()[0].equals(Maps.getActualMap().getDeathPoints()[1]);
-			try {
-				if (team) {
-					new Packet1Disconnecting(LanguageManager.getText("menu.mp.gameover.survive", round - 1)).sendAllTCP();
-					if (server) {
-						new ProtocolManager().onServerReceived(MPInfos.connection, new Packet1Disconnecting(LanguageManager.getText("menu.mp.gameover.survive", round - 1)));
-					} else {
-						new ProtocolManager().onClientReceived(MPInfos.connection, new Packet1Disconnecting(LanguageManager.getText("menu.mp.gameover.survive", round - 1)));
-					}
-				} else {
-					new Packet1Disconnecting(LanguageManager.getText("menu.mp.gameover.lose", round)).sendAllTCP();
-					if (server) {
-						new ProtocolManager().onClientReceived(MPInfos.connection, new Packet1Disconnecting(LanguageManager.getText("menu.mp.gameover.win")));
-					} else {
-						new ProtocolManager().onServerReceived(MPInfos.connection, new Packet1Disconnecting(LanguageManager.getText("menu.mp.gameover.win")));
+		new Thread("GameOver") {
+			@Override
+			public void run() {
+				if(gameover) {
+					boolean team = Maps.getActualMap().getDeathPoints()[0].equals(Maps.getActualMap().getDeathPoints()[1]);
+					try {
+						Connection co = MPInfos.connection;
+						if (team) {
+							new Packet1Disconnecting(LanguageManager.getText("menu.mp.gameover.survive", round - 1)).sendAllTCP();
+							if (server) {
+								new ProtocolManager().onServerReceived(co, new Packet1Disconnecting(LanguageManager.getText("menu.mp.gameover.survive", round - 1)));
+							} else {
+								new ProtocolManager().onClientReceived(co, new Packet1Disconnecting(LanguageManager.getText("menu.mp.gameover.survive", round - 1)));
+							}
+						} else {
+							new Packet1Disconnecting(LanguageManager.getText("menu.mp.gameover.lose", round)).sendAllTCP();
+							if (server) {
+								new ProtocolManager().onClientReceived(co, new Packet1Disconnecting(LanguageManager.getText("menu.mp.gameover.win")));
+							} else {
+								new ProtocolManager().onServerReceived(co, new Packet1Disconnecting(LanguageManager.getText("menu.mp.gameover.win")));
+							}
+						}
+					} catch(Exception e) {
+						e.printStackTrace();
 					}
 				}
-			} catch(Exception e) {
-				e.printStackTrace();
 			}
-		}
+		}.start();
 	}
 
 	@Override
@@ -179,20 +187,6 @@ public class MultiPlayer extends SinglePlayer {
 		pr.life = clientlife;
 		pr.round = round;
 		pr.sendAllTCP();
-
-		new Thread("EntityDataSending") {
-			public void run() {
-				if (server) {
-					for (Entity en : entity) {
-						//sendData(en);
-						onEntityTeleport(en, en.getLocation());
-						try {
-							Thread.sleep(50l);
-						} catch (Exception e) {}
-					}
-				}
-			};
-		}.start();
 	}
 
 	public void setClientGold(int gold) {

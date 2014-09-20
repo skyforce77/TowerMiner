@@ -21,6 +21,7 @@ menu.maps: Cartes
 menu.options: Options
 menu.back: Retour
 menu.languages: Langues
+menu.about.server: Serveur
 
 menu.editor.file: Fichier
 menu.editor.file.filter: MTMAP seulement
