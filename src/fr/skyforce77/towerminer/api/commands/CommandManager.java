@@ -1,16 +1,15 @@
 package fr.skyforce77.towerminer.api.commands;
 
-import fr.skyforce77.towerminer.TowerMiner;
-import fr.skyforce77.towerminer.api.PluginManager;
-import fr.skyforce77.towerminer.api.Utils;
-import fr.skyforce77.towerminer.api.events.chat.CommandTypedEvent;
-import fr.skyforce77.towerminer.protocol.chat.ChatMessage;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.Set;
+
+import fr.skyforce77.towerminer.TowerMiner;
+import fr.skyforce77.towerminer.api.PluginManager;
+import fr.skyforce77.towerminer.api.events.chat.CommandTypedEvent;
+import fr.skyforce77.towerminer.protocol.chat.ChatMessage;
 
 public class CommandManager {
 
