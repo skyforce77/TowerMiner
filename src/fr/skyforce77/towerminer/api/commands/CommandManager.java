@@ -90,13 +90,13 @@ public class CommandManager {
                     if (getCommand(cte.getLabel()).getUse() != null) {
                         ChatMessage message = new ChatMessage("Incorrect arguments. Usage: /");
                         message.add(getCommand(cte.getLabel()).getUse());
-                        Utils.write(message);
+                        sender.sendMessage(message);
                     } else {
-                        Utils.write("Incorrect arguments. Usage: /" + cte.getLabel());
+                    	sender.sendMessage("Incorrect arguments. Usage: /" + cte.getLabel());
                     }
                 }
             } else {
-                Utils.write("Unknown command, type /help for help");
+            	sender.sendMessage("Unknown command, type /help for help");
             }
         }
     }
