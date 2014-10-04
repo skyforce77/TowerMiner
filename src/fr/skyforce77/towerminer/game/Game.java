@@ -207,29 +207,11 @@ public class Game extends JFrame implements MouseListener, MouseWheelListener, M
 	}
 
 	public void displayPopup(Popup popup) {
-		if (this.popup == null) {
-			this.popup = popup;
-			this.popup.time = new Date().getTime();
-		} else {
-			this.nextpopups.put(popup, false);
-		}
+		this.nextpopups.put(popup, false);
 	}
 
 	public void displayMultiPlayerPopup(Popup popup) {
-		if (this.popup == null) {
-			if (TowerMiner.menu instanceof MultiPlayer) {
-				MultiPlayer mp = (MultiPlayer) TowerMiner.menu;
-				if (mp.server) {
-					new Packet12Popup(popup.text, null, popup.icon).sendClientTCP();
-					this.popup = popup;
-				}
-			} else {
-				this.popup = popup;
-			}
-			this.popup.time = new Date().getTime();
-		} else {
-			this.nextpopups.put(popup, false);
-		}
+		this.nextpopups.put(popup, false);
 	}
 
 	@Override

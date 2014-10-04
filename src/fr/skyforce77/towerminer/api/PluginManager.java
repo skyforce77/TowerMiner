@@ -65,9 +65,19 @@ public class PluginManager {
             plu.setMouseModel(new MessageModel("Version: " + p.getVersion()));
             pluginfiles.add(f);
             TowerMiner.printInfo("Enabling " + p.getName() + " plugin");
-            p.onEnable();
-            TowerMiner.printInfo("Successfully enabled " + p.getName() + " plugin");
-            TowerMiner.menu.chat.onMessageReceived(new ChatMessage(new ChatModel("Plugin "), plu, new ChatModel(" enabled")));
+            PluginStatus status = p.onEnable();
+            ChatModel chatstate = new ChatModel(" enabled");
+            if(status.getCode() >= 2) {
+            	chatstate = new ChatModel(" not enabled");
+            	chatstate.setForegroundColor(Color.ORANGE);
+            } else if(status.equals(PluginStatus.WARNING)) {
+            	TowerMiner.printWarning("Enabled " + p.getName() + " plugin with warnings.");
+            	chatstate.setForegroundColor(Color.YELLOW);
+            } else {
+            	TowerMiner.printInfo("Successfully enabled " + p.getName() + " plugin");
+            	chatstate.setForegroundColor(Color.GREEN);
+            }
+            TowerMiner.menu.chat.onMessageReceived(new ChatMessage(new ChatModel("Plugin "), plu, chatstate));
         } catch (Exception e) {
             TowerMiner.printError("Can't enable " + p.getName() + " plugin.");
             e.printStackTrace();
@@ -93,7 +103,7 @@ public class PluginManager {
                 loadPlugin(p, f);
             } catch (Exception e) {
                 TowerMiner.printError("Can't launch " + f.getName() + " plugin.");
-                //e.printStackTrace();
+                e.printStackTrace();
             }
         }
     }

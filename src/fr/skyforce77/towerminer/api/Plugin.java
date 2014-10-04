@@ -4,7 +4,9 @@ public class Plugin {
 
 	private PluginInfo info;
 	
-	public void onEnable() {}
+	public PluginStatus onEnable() {
+		return PluginStatus.OK;
+	}
 	
 	public boolean isPluginNeededByClient() {
         return false;
