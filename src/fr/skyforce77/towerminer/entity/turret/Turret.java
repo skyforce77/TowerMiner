@@ -111,7 +111,6 @@ public class Turret extends Entity {
             }
         }
         data.addInteger("level", data.getInteger("level")+1);
-        setPower(getPower()+1);
         data.addDouble("distance", data.getDouble("distance")+10.0);
         data.addInteger("cost", data.getInteger("cost")+data.getInteger("price"));
         data.addInteger("price", data.getInteger("price")+(data.getInteger("price")/3));

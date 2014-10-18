@@ -37,7 +37,7 @@ public class SlimeBall extends EntityProjectile {
     	if(getLevel() > 1) {
     		int count = 0;
             for (Entity en : sp.mobs) {
-            	if(count < 5) {
+            	if(count < 5 && !en.equals(e)) {
             		SlimeBall s = new SlimeBall(getType(), (Turret)sp.byUUID(getShooter()), (Mob)en, getLevel()-1);
             		s.setLocation(getLocation());
             		s.spawn();
