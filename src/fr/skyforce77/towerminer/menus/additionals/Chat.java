@@ -1,6 +1,21 @@
 package fr.skyforce77.towerminer.menus.additionals;
 
+import java.awt.Color;
+import java.awt.Desktop;
+import java.awt.Desktop.Action;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.FontMetrics;
+import java.awt.Graphics2D;
+import java.awt.font.TextAttribute;
+import java.io.IOException;
+import java.net.URI;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.Map;
+
 import com.esotericsoftware.kryonet.Connection;
+
 import fr.skyforce77.towerminer.TowerMiner;
 import fr.skyforce77.towerminer.api.PluginManager;
 import fr.skyforce77.towerminer.api.commands.CommandManager;
@@ -13,15 +28,6 @@ import fr.skyforce77.towerminer.protocol.chat.ChatMessage;
 import fr.skyforce77.towerminer.protocol.chat.ChatModel;
 import fr.skyforce77.towerminer.protocol.packets.Packet11ChatMessage;
 import fr.skyforce77.towerminer.ressources.language.LanguageManager;
-
-import java.awt.*;
-import java.awt.Desktop.Action;
-import java.awt.font.TextAttribute;
-import java.io.IOException;
-import java.net.URI;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Map;
 
 public class Chat {
 
@@ -82,12 +88,12 @@ public class Chat {
 			name.setForegroundColor(Color.CYAN);
 		}
 
-		ChatMessage msg = new ChatMessage(name, new ChatModel(": "));
+		ChatMessage msg = new ChatMessage(name, new ChatModel(":"));
 		msg.add(getText(message));
 		PlayerChatEvent pce = new PlayerChatEvent(msg, message);
-        PluginManager.callSyncEvent(pce);
-        if (!pce.isCancelled()) {
-            if(menu instanceof MultiPlayer) {
+		PluginManager.callSyncEvent(pce);
+		if (!pce.isCancelled()) {
+			if(menu instanceof MultiPlayer) {
 				new Packet11ChatMessage(pce.getMessage()).sendAllTCP();
 			} else {
 				onMessageReceived(pce.getMessage());
@@ -97,22 +103,18 @@ public class Chat {
 
 	public ChatMessage getText(String message) {
 		String[] t = message.split(" ");
-		ChatModel[] models = new ChatModel[t.length];
-		int i = 0;
+		ChatMessage cms = new ChatMessage();
 		for(String s : t) {
+			cms.addModel(new ChatModel(" "));
 			if(s.startsWith("http")) {
 				ChatModel m = new ChatModel(s);
-				m.setForegroundColor(new Color(100, 100, 200));
-				m.setUnderlined(true);
 				m.setLink(true);
-				models[i] = m;
+				cms.addModel(m);
+			} else {
+				cms.addModel(new ChatModel(s));
 			}
-
-			if(models[i] == null)
-				models[i] = new ChatModel(t[i]);
-			i++;
 		}
-		return new ChatMessage(models);
+		return cms;
 	}
 
 	public void changeState(boolean state) {
@@ -184,9 +186,9 @@ public class Chat {
 					drawColoredText(g2d, text, x + 2, i, -2, difference, model.getBackgroundColor());
 
 					Map attributes = font.getAttributes();
-					if(model.isUnderlined())
+					if(model.isUnderlined() || model.isLink())
 						attributes.put(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_ON);
-					if(model.isUnderlined())
+					if(model.isStriked())
 						attributes.put(TextAttribute.STRIKETHROUGH, TextAttribute.STRIKETHROUGH_ON);
 
 					font = font.deriveFont(attributes);
@@ -194,25 +196,33 @@ public class Chat {
 
 					FontMetrics metrics = g2d.getFontMetrics(g2d.getFont());
 
-					drawColoredText(g2d, text, x, i, 0, difference, model.getForegroundColor());
+					if(!model.isLink())
+						drawColoredText(g2d, text, x, i, 0, difference, model.getForegroundColor());
+					else
+						drawColoredText(g2d, text, x, i, 0, difference, new Color(100, 100, 200));
 
-					if(model.getMouseModel() != null && model.getMouseModel().getText() != null) {
+					if(model.isLink() || (model.getMouseModel() != null && model.getMouseModel().getText() != null)) {
 						if(mp.Xcursor > x && mp.Xcursor < x+getWidth(text) && mp.Ycursor > TowerMiner.game.getHeight() - i * 26 - 55 && mp.Ycursor < TowerMiner.game.getHeight() - i * 26 - 55 +26) {
-                            render = new Thread("MouseModelRender") {
-                                public void run() {
-									g2d.setFont(TowerMiner.getFont(15));
-									FontMetrics metric = g2d.getFontMetrics(g2d.getFont());
-									int hgt = metric.getHeight();
-									int adv = metric.stringWidth(model.getMouseModel().getText());
-									Dimension size = new Dimension(adv + 2, hgt + 2);
-									g2d.setColor(new Color(0, 0, 0, 220));
-					                g2d.fillRoundRect(mp.Xcursor, mp.Ycursor - (int)size.getHeight() + 2, (int) (4 + size.getWidth()), (int)size.getHeight(), 5, 5);
-					                g2d.setColor(new Color(250, 250, 250, 250));
-					                g2d.drawRoundRect(mp.Xcursor, mp.Ycursor - (int)size.getHeight() + 2, (int) (4 + size.getWidth()), (int)size.getHeight(), 5, 5);
-									drawColoredText(g2d, model.getMouseModel().getText(), mp.Xcursor + 5, mp.Ycursor - 5, 10000, model.getMouseModel().getBackgroundColor());
-									drawColoredText(g2d, model.getMouseModel().getText(), mp.Xcursor + 3, mp.Ycursor - 3, 10000, model.getMouseModel().getForegroundColor());
+							if(model.isLink())
+								drawColoredText(g2d, text, x, i, 0, difference, new Color(100, 100, 230));
+
+							if(model.getMouseModel() != null && model.getMouseModel().getText() != null) {
+								render = new Thread("MouseModelRender") {
+									public void run() {
+										g2d.setFont(TowerMiner.getFont(15));
+										FontMetrics metric = g2d.getFontMetrics(g2d.getFont());
+										int hgt = metric.getHeight();
+										int adv = metric.stringWidth(model.getMouseModel().getText());
+										Dimension size = new Dimension(adv + 2, hgt + 2);
+										g2d.setColor(new Color(0, 0, 0, 220));
+										g2d.fillRoundRect(mp.Xcursor, mp.Ycursor - (int)size.getHeight() + 2, (int) (4 + size.getWidth()), (int)size.getHeight(), 5, 5);
+										g2d.setColor(new Color(250, 250, 250, 250));
+										g2d.drawRoundRect(mp.Xcursor, mp.Ycursor - (int)size.getHeight() + 2, (int) (4 + size.getWidth()), (int)size.getHeight(), 5, 5);
+										drawColoredText(g2d, model.getMouseModel().getText(), mp.Xcursor + 5, mp.Ycursor - 5, 10000, model.getMouseModel().getBackgroundColor());
+										drawColoredText(g2d, model.getMouseModel().getText(), mp.Xcursor + 3, mp.Ycursor - 3, 10000, model.getMouseModel().getForegroundColor());
+									};
 								};
-							};
+							}
 						}
 					}
 					x = x + metrics.stringWidth(text);

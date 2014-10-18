@@ -72,16 +72,17 @@ public class SinglePlayer extends Menu implements ChatContainer{
 	public JButton next;
 	public JCheckBox speed;
 	public JMenu options;
+	public JMenu chatmenu;
 	public JMenuBar bar;
 	public boolean multiplayer;
 	public boolean renderarrow = true;
-    public String player = "menu.mp.blue";
-    int tospawn;
-    int spawned;
-    int between;
-    int time;
-    int selectedturret = 0;
-    Turret aimed = null;
+	public String player = "menu.mp.blue";
+	int tospawn;
+	int spawned;
+	int between;
+	int time;
+	int selectedturret = 0;
+	Turret aimed = null;
 
 	public SinglePlayer(boolean multi) {
 		chat = new Chat(this);
@@ -159,59 +160,63 @@ public class SinglePlayer extends Menu implements ChatContainer{
 				TowerMiner.game.dispose();
 			}
 		});
-		
-	       chatfield = new JTextField();
-	        chatfield.setPreferredSize(new Dimension(100, 30));
-	        chatfield.addActionListener(new ActionListener() {
-	            @Override
-	            public void actionPerformed(ActionEvent arg0) {
-	                if (!chatfield.getText().equals("")) {
-	                    chat.onMessageWritten(player, chatfield.getText());
-	                    typed.add(chatfield.getText());
-	                    select = typed.size();
-	                    chatfield.setText("");
-	                }
-	            }
-	        });
-	        
-	        enablechat = new JRadioButton();
-	        enablechat.addActionListener(new ActionListener() {
-	            @Override
-	            public void actionPerformed(ActionEvent arg0) {
-	                chat.changeState(enablechat.isSelected());
-	            }
-	        });
-	        
-	        chatfield.addKeyListener(new KeyListener() {
-	            @Override
-	            public void keyPressed(KeyEvent e) {
-	                if (e.getKeyCode() == KeyEvent.VK_DOWN) {
-	                    if (select - 1 >= 0) {
-	                        chatfield.setText(typed.get(select - 1));
-	                        select--;
-	                    }
-	                } else if (e.getKeyCode() == KeyEvent.VK_UP) {
-	                    if (select + 1 < typed.size() && typed.get(select + 1) != null) {
-	                        chatfield.setText(typed.get(select + 1));
-	                        select++;
-	                    }
-	                }
-	            }
 
-	            @Override
-	            public void keyReleased(KeyEvent e) {
-	            }
+		chatmenu = new JMenu(LanguageManager.getText("menu.chat"));
+		bar.add(chatmenu);
+		chatmenu.setVisible(false);
 
-	            @Override
-	            public void keyTyped(KeyEvent e) {
-	            }
-	        });
-	        chatfield.setToolTipText(LanguageManager.getText("menu.mp.message"));
-	        TowerMiner.game.add(chatfield);
-	        TowerMiner.game.add(enablechat);
+		chatfield = new JTextField();
+		chatfield.setPreferredSize(new Dimension(100, 30));
+		chatfield.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				if (!chatfield.getText().equals("")) {
+					chat.onMessageWritten(player, chatfield.getText());
+					typed.add(chatfield.getText());
+					select = typed.size();
+					chatfield.setText("");
+				}
+			}
+		});
 
-	        chatfield.setVisible(false);
-	        enablechat.setVisible(false);
+		enablechat = new JRadioButton(LanguageManager.getText("menu.chat.enabled"));
+		enablechat.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				chat.changeState(enablechat.isSelected());
+			}
+		});
+
+		chatfield.addKeyListener(new KeyListener() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				if (e.getKeyCode() == KeyEvent.VK_DOWN) {
+					if (select - 1 >= 0) {
+						chatfield.setText(typed.get(select - 1));
+						select--;
+					}
+				} else if (e.getKeyCode() == KeyEvent.VK_UP) {
+					if (select + 1 < typed.size() && typed.get(select + 1) != null) {
+						chatfield.setText(typed.get(select + 1));
+						select++;
+					}
+				}
+			}
+
+			@Override
+			public void keyReleased(KeyEvent e) {
+			}
+
+			@Override
+			public void keyTyped(KeyEvent e) {
+			}
+		});
+		chatfield.setToolTipText(LanguageManager.getText("menu.mp.message"));
+		chatmenu.add(chatfield);
+		chatmenu.add(enablechat);
+
+		chatfield.setVisible(false);
+		enablechat.setVisible(false);
 	}
 
 	public void onInit() {
@@ -258,12 +263,12 @@ public class SinglePlayer extends Menu implements ChatContainer{
 		if(pcount >= 300) {
 			perase = pcount - 300;
 		}
-		
+
 		while(perase > 0) {
 			particles.remove(perase);
 			perase--;
 		}
-		
+
 		for (Particle p : particles) {
 			p.onTick();
 		}
@@ -277,13 +282,13 @@ public class SinglePlayer extends Menu implements ChatContainer{
 				EntityTypes type = EntityTypes.mobs.get(new Random().nextInt(EntityTypes.mobs.size()));
 				if (type.getLevel() <= tospawn - spawned) {
 					Mob m = new Mob(type);
-                    PluginManager.callAsyncEvent(new MobSpawnEvent(m));
-                    mobs.add(m);
-                    spawned += type.getLevel();
+					PluginManager.callAsyncEvent(new MobSpawnEvent(m));
+					mobs.add(m);
+					spawned += type.getLevel();
 					time = (int) (30 - (0.5 * round));
 					between = time;
-                    if (round >= 10 && new Random().nextInt(100) <= round * 1.2) {
-                        m.addEffect(new EntityEffect(EntityEffectType.INVISIBLE, -1));
+					if (round >= 10 && new Random().nextInt(100) <= round * 1.2) {
+						m.addEffect(new EntityEffect(EntityEffectType.INVISIBLE, -1));
 					}
 					onEntityAdded(m);
 				}
@@ -305,7 +310,7 @@ public class SinglePlayer extends Menu implements ChatContainer{
 				vie = vie + 10;
 			}
 			lastvie = vie;
-			
+
 			onFinishedRound();
 		}
 
@@ -400,7 +405,7 @@ public class SinglePlayer extends Menu implements ChatContainer{
 		} else if(aimed != null) {
 			aimed = (Turret)byUUID(aimed.getUUID());
 		}
-		
+
 		if (aimed != null && !paused) {
 			if(aimed.getType().equals(EntityTypes.GUARDIAN)) {
 				g2d.setColor(new Color(0, 0, 0, 50));
@@ -477,7 +482,7 @@ public class SinglePlayer extends Menu implements ChatContainer{
 			g2d.setFont(TowerMiner.getFont(12));
 			g2d.drawString("(" + LanguageManager.getText("menu.sp.click.right") + ")", Xcursor + 3, Ycursor - 3 - 16);
 			g2d.drawString(LanguageManager.getText("menu.sp.improve") + ": " + aimed.getPrice(), Xcursor+3, (int) (Ycursor + 5 - 16 + size.getHeight()));
-			
+
 			for (Mob en : mobs) {
 				if (en != null) {
 					if(aimed.canSee(en)) {
@@ -672,13 +677,13 @@ public class SinglePlayer extends Menu implements ChatContainer{
 		next.setVisible(false);
 		pause.setVisible(false);
 		options.setVisible(false);
-		
-        chatfield.setVisible(false);
-        enablechat.setVisible(false);
+		chatmenu.setVisible(false);
+		chatfield.setVisible(false);
+		enablechat.setVisible(false);
 
-        if (chat.opened) {
-            chat.changeState(false);
-        }
+		if (chat.opened) {
+			chat.changeState(false);
+		}
 
 		if (this.getClass().equals(SinglePlayer.class)) {
 			Menu.singleplayer = new SinglePlayer(false);
@@ -709,11 +714,11 @@ public class SinglePlayer extends Menu implements ChatContainer{
 	}
 
 	public void onEntityRemoved(Entity en) {
-        if (!multiplayer && en instanceof Mob) {
-            int translucent = ((Mob) en).hasEffect(EntityEffectType.INVISIBLE) ? 1 : 0;
-            ParticleEffect.createMobDestructionParticles(en.getType(), this, (int) en.getLocation().getX(), (int) en.getLocation().getY(), translucent);
-        }
-    }
+		if (!multiplayer && en instanceof Mob) {
+			int translucent = ((Mob) en).hasEffect(EntityEffectType.INVISIBLE) ? 1 : 0;
+			ParticleEffect.createMobDestructionParticles(en.getType(), this, (int) en.getLocation().getX(), (int) en.getLocation().getY(), translucent);
+		}
+	}
 
 	public void onGameOver() {
 	}
@@ -746,8 +751,8 @@ public class SinglePlayer extends Menu implements ChatContainer{
 	}
 
 	public void countNext() {
-        new Thread("NextButton") {
-            @Override
+		new Thread("NextButton") {
+			@Override
 			public void run() {
 				try {
 					long date = new Date().getTime();
@@ -778,7 +783,7 @@ public class SinglePlayer extends Menu implements ChatContainer{
 			}
 		}.start();
 	}
-	
+
 	@Override
 	public Chat getChat() {
 		return chat;

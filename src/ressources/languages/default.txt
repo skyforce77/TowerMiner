@@ -97,6 +97,9 @@ menu.about.textures.text: Textures appartenant à Minecraft® Tous droits réservés
 
 menu.more: Plus
 
+menu.chat: Chat
+menu.chat.enabled: Toujours affiché
+
 turret.level: Niveau
 turret.range: Portée
 turret.owner: Créateur

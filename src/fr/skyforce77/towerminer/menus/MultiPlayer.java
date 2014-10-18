@@ -143,6 +143,7 @@ public class MultiPlayer extends SinglePlayer {
 		speed.setVisible(false);
 		pause.setVisible(false);
 		options.setVisible(false);
+		chatmenu.setVisible(true);
 		chatfield.setVisible(true);
 		enablechat.setVisible(true);
 
