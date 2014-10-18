@@ -1,4 +1,4 @@
-package fr.skyforce77.towerminer.entity;
+package fr.skyforce77.towerminer.entity.turret;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -7,6 +7,9 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 
 import fr.skyforce77.towerminer.TowerMiner;
+import fr.skyforce77.towerminer.entity.Entity;
+import fr.skyforce77.towerminer.entity.EntityTypes;
+import fr.skyforce77.towerminer.entity.mob.Mob;
 import fr.skyforce77.towerminer.maps.Maps;
 import fr.skyforce77.towerminer.menus.MultiPlayer;
 import fr.skyforce77.towerminer.menus.SinglePlayer;
@@ -101,12 +104,12 @@ public class Guardian extends Turret {
 		double x = getLocation().getX();
 		double y = getLocation().getY();
 		double ro = getRotation();
-		g2d.rotate(ro - Math.toRadians(getType().rotation), x, y + sp.CanvasY);
+		g2d.rotate(ro - Math.toRadians(getType().getRotation()), x, y + sp.CanvasY);
 		try {
 			g2d.drawImage(RenderHelper.getColoredImage(getType().getTexture(0), getColor(), 0.1F), (int) x - size/2 + sp.CanvasX, (int) y - size/2 + sp.CanvasY, size, size, null);
 		} catch (Exception e) {
 		}
-		g2d.rotate(-ro + Math.toRadians(getType().rotation), x, y + sp.CanvasY);
+		g2d.rotate(-ro + Math.toRadians(getType().getRotation()), x, y + sp.CanvasY);
 
 		g2d = (Graphics2D)g2d.create();
 		g2d.rotate(ro - Math.toRadians(180), x, y + sp.CanvasY);

@@ -2,7 +2,7 @@ package fr.skyforce77.towerminer.entity.effects;
 
 import java.util.HashMap;
 
-import fr.skyforce77.towerminer.entity.Mob;
+import fr.skyforce77.towerminer.entity.mob.Mob;
 
 public class EntityEffectType {
 

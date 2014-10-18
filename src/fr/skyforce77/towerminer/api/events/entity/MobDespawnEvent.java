@@ -1,6 +1,6 @@
 package fr.skyforce77.towerminer.api.events.entity;
 
-import fr.skyforce77.towerminer.entity.Mob;
+import fr.skyforce77.towerminer.entity.mob.Mob;
 
 public class MobDespawnEvent extends EntityEvent{
 	

@@ -1,20 +1,19 @@
-package fr.skyforce77.towerminer.entity;
+package fr.skyforce77.towerminer.entity.projectile;
 
-import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Point;
-import java.util.Random;
 
 import javax.vecmath.Vector2d;
 
 import fr.skyforce77.towerminer.TowerMiner;
+import fr.skyforce77.towerminer.entity.Entity;
+import fr.skyforce77.towerminer.entity.EntityTypes;
+import fr.skyforce77.towerminer.entity.mob.Mob;
+import fr.skyforce77.towerminer.entity.turret.Turret;
 import fr.skyforce77.towerminer.maps.MapWritter;
 import fr.skyforce77.towerminer.menus.MultiPlayer;
 import fr.skyforce77.towerminer.menus.SinglePlayer;
-import fr.skyforce77.towerminer.particles.Particle;
-import fr.skyforce77.towerminer.particles.ParticleEffect;
-import fr.skyforce77.towerminer.particles.ParticleType;
 import fr.skyforce77.towerminer.protocol.packets.Packet10DataValueUpdate;
 
 public class EntityProjectile extends Entity {
@@ -36,9 +35,6 @@ public class EntityProjectile extends Entity {
         } else {
             setRotation(r1);
         }
-
-        ((SinglePlayer) TowerMiner.menu).entity.add(this);
-        ((SinglePlayer) TowerMiner.menu).onEntityAdded(this);
     }
 
     public int getShooter() {
@@ -110,7 +106,7 @@ public class EntityProjectile extends Entity {
                 ((Mob) aimed).hurt(((Turret) shooter).getPower());
                 ((Turret) shooter).onDamage((Mob) aimed);
                 if((sp instanceof MultiPlayer && ((MultiPlayer)sp).server) || !(sp instanceof MultiPlayer))
-                	onHurt(sp);
+                	onHurt(sp, (Mob)aimed);
             }
         }
     }
@@ -120,8 +116,8 @@ public class EntityProjectile extends Entity {
         double x = getLocation().getX();
         double y = getLocation().getY();
         double ro = getRotation();
-        if (getType().level == 1)
-            g2d.rotate(ro - Math.toRadians(getType().rotation), x, y + sp.CanvasY);
+        if (getType().getLevel() == 1)
+            g2d.rotate(ro - Math.toRadians(getType().getRotation()), x, y + sp.CanvasY);
         Image i = getType().getTexture(0);
         try {
             int s = 20;
@@ -132,25 +128,15 @@ public class EntityProjectile extends Entity {
             g2d.drawImage(i, (int) x - ((MapWritter.getBlockWidth() - s) / 2) + sp.CanvasX, (int) y + 14 - ((MapWritter.getBlockHeight() - s) / 2) + sp.CanvasY, MapWritter.getBlockWidth() - s, MapWritter.getBlockHeight() - s, null);
         } catch (Exception e) {
         }
-        if (getType().level == 1)
-            g2d.rotate(-ro + Math.toRadians(getType().rotation), x, y + sp.CanvasY);
-        Turret shooter = (Turret) sp.byUUID(getShooter());
-        if(getType().equals(EntityTypes.ARROW) && shooter.getLevel() >= 10 && new Random().nextInt(100) > 80) {
-        	Particle p = new Particle(ParticleType.CRITICAL, getLocation().x, getLocation().y, null, Color.ORANGE);
-        	p.setLiveTime(30);
-        	sp.particles.add(p);
-        }
-
+        if (getType().getLevel() == 1)
+            g2d.rotate(-ro + Math.toRadians(getType().getRotation()), x, y + sp.CanvasY);
     }
-
-    public void onHurt(SinglePlayer sp) {
-        if (getType().equals(EntityTypes.POISON_POTION)) {
-            ParticleEffect.createParticleSplash(ParticleType.POTION_SPLASH, sp, (int) getLocation().getX(), (int) getLocation().getY(), Color.GREEN);
-        } else if (getType().equals(EntityTypes.WEAKNESS_POTION)) {
-            ParticleEffect.createParticleSplash(ParticleType.POTION_SPLASH, sp, (int) getLocation().getX(), (int) getLocation().getY(), Color.DARK_GRAY);
-        } else if (getType().equals(EntityTypes.SNOWBALL)) {
-            ParticleEffect.createMobDestructionParticles(EntityTypes.SNOWBALL, sp, (int) getLocation().getX(), (int) getLocation().getY(), 0);
-        }
+    
+    public void onHurt(SinglePlayer sp, Mob e) {}
+    
+    public void spawn() {
+        ((SinglePlayer) TowerMiner.menu).entity.add(this);
+        ((SinglePlayer) TowerMiner.menu).onEntityAdded(this);
     }
 
 }

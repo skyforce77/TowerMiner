@@ -1,8 +1,10 @@
-package fr.skyforce77.towerminer.entity;
+package fr.skyforce77.towerminer.entity.turret;
 
 import java.awt.Point;
 
+import fr.skyforce77.towerminer.entity.EntityTypes;
 import fr.skyforce77.towerminer.entity.effects.EntityEffectType;
+import fr.skyforce77.towerminer.entity.mob.Mob;
 
 public class Enderman extends Turret {
 
@@ -17,9 +19,8 @@ public class Enderman extends Turret {
         e.removeEffect(EntityEffectType.INVISIBLE);
     }
 
-    @Override
     public EntityTypes getProjectile() {
-        return EntityTypes.ENDERPEARL;
+    	return EntityTypes.ENDERPEARL;
     }
     
     public boolean canSee(Mob m) {

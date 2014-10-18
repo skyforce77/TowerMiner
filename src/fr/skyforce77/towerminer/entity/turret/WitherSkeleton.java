@@ -1,6 +1,9 @@
-package fr.skyforce77.towerminer.entity;
+package fr.skyforce77.towerminer.entity.turret;
 
 import java.awt.Point;
+
+import fr.skyforce77.towerminer.entity.EntityTypes;
+import fr.skyforce77.towerminer.entity.mob.Mob;
 
 public class WitherSkeleton extends Turret {
 

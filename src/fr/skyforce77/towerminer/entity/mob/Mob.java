@@ -1,4 +1,4 @@
-package fr.skyforce77.towerminer.entity;
+package fr.skyforce77.towerminer.entity.mob;
 
 import java.awt.AlphaComposite;
 import java.awt.Color;
@@ -13,6 +13,8 @@ import fr.skyforce77.towerminer.TowerMiner;
 import fr.skyforce77.towerminer.achievements.Achievements;
 import fr.skyforce77.towerminer.api.PluginManager;
 import fr.skyforce77.towerminer.api.events.entity.MobDespawnEvent;
+import fr.skyforce77.towerminer.entity.Entity;
+import fr.skyforce77.towerminer.entity.EntityTypes;
 import fr.skyforce77.towerminer.entity.effects.EntityEffect;
 import fr.skyforce77.towerminer.entity.effects.EntityEffectType;
 import fr.skyforce77.towerminer.maps.MapWritter;

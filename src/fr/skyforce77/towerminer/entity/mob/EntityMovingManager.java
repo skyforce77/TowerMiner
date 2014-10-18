@@ -1,4 +1,4 @@
-package fr.skyforce77.towerminer.entity;
+package fr.skyforce77.towerminer.entity.mob;
 
 import fr.skyforce77.towerminer.TowerMiner;
 import fr.skyforce77.towerminer.entity.effects.EntityEffectType;

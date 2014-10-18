@@ -1,11 +1,14 @@
-package fr.skyforce77.towerminer.entity;
+package fr.skyforce77.towerminer.entity.turret;
 
 import java.awt.Point;
 
 import fr.skyforce77.towerminer.TowerMiner;
 import fr.skyforce77.towerminer.achievements.Achievements;
+import fr.skyforce77.towerminer.entity.Entity;
+import fr.skyforce77.towerminer.entity.EntityTypes;
 import fr.skyforce77.towerminer.entity.effects.EntityEffect;
 import fr.skyforce77.towerminer.entity.effects.EntityEffectType;
+import fr.skyforce77.towerminer.entity.mob.Mob;
 import fr.skyforce77.towerminer.menus.MultiPlayer;
 import fr.skyforce77.towerminer.menus.SinglePlayer;
 
@@ -23,9 +26,8 @@ public class SnowGolem extends Turret {
         e.addEffect(new EntityEffect(EntityEffectType.FREEZE, 10 * getLevel()));
     }
 
-    @Override
     public EntityTypes getProjectile() {
-        return EntityTypes.SNOWBALL;
+    	return EntityTypes.SNOWBALL;
     }
     
     @Override
@@ -47,8 +49,7 @@ public class SnowGolem extends Turret {
 
         if (tir >= 40 - (getLevel() * 2)) {
             if (e != null) {
-                new EntityProjectile(getProjectile(), this, e);
-                //sp.onEntityTeleport(this, getLocation());
+                createProjectile(e).spawn();
                 tir = 0;
             }
         } else {

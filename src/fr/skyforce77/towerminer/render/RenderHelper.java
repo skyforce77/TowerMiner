@@ -10,7 +10,7 @@ import java.awt.RenderingHints;
 import java.awt.Transparency;
 import java.awt.image.BufferedImage;
 
-import fr.skyforce77.towerminer.entity.Mob;
+import fr.skyforce77.towerminer.entity.mob.Mob;
 
 public class RenderHelper {
 

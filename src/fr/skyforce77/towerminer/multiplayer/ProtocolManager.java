@@ -25,10 +25,11 @@ import fr.skyforce77.towerminer.api.PluginManager;
 import fr.skyforce77.towerminer.api.Utils;
 import fr.skyforce77.towerminer.api.events.PluginMessageEvent;
 import fr.skyforce77.towerminer.entity.Entity;
-import fr.skyforce77.towerminer.entity.EntityProjectile;
 import fr.skyforce77.towerminer.entity.EntityTypes;
-import fr.skyforce77.towerminer.entity.Mob;
-import fr.skyforce77.towerminer.entity.Turret;
+import fr.skyforce77.towerminer.entity.mob.Mob;
+import fr.skyforce77.towerminer.entity.projectile.Arrow;
+import fr.skyforce77.towerminer.entity.projectile.EntityProjectile;
+import fr.skyforce77.towerminer.entity.turret.Turret;
 import fr.skyforce77.towerminer.maps.Maps;
 import fr.skyforce77.towerminer.menus.MPClientWait;
 import fr.skyforce77.towerminer.menus.MPDisconnected;
@@ -217,7 +218,7 @@ public class ProtocolManager implements PacketListener {
 					en = EntityTypes.getType(pack6.type).getEntityClass().getConstructor(EntityTypes.class, Turret.class, Mob.class)
 							.newInstance(EntityTypes.getType(pack6.type), (Turret)mp.byUUID(pack6.shooter), (Mob)mp.byUUID(pack6.mob));
 				} catch (Exception e) {
-					en = new EntityProjectile(EntityTypes.SKELETON, (Turret)mp.byUUID(pack6.shooter), (Mob)mp.byUUID(pack6.mob));
+					en = new Arrow(EntityTypes.ARROW, (Turret)mp.byUUID(pack6.shooter), (Mob)mp.byUUID(pack6.mob));
 				}
 			} else if(!pack6.owner.equals("") && pack6 != null) {
 				try {

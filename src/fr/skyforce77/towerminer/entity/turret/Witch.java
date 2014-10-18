@@ -1,10 +1,12 @@
-package fr.skyforce77.towerminer.entity;
+package fr.skyforce77.towerminer.entity.turret;
 
 import java.awt.Point;
 
 import fr.skyforce77.towerminer.achievements.Achievements;
+import fr.skyforce77.towerminer.entity.EntityTypes;
 import fr.skyforce77.towerminer.entity.effects.EntityEffect;
 import fr.skyforce77.towerminer.entity.effects.EntityEffectType;
+import fr.skyforce77.towerminer.entity.mob.Mob;
 
 public class Witch extends Turret {
 
@@ -20,9 +22,8 @@ public class Witch extends Turret {
         e.addEffect(new EntityEffect(EntityEffectType.SLOW, 40 * getLevel()));
     }
 
-    @Override
     public EntityTypes getProjectile() {
-        return EntityTypes.WEAKNESS_POTION;
+    	return EntityTypes.WEAKNESS_POTION;
     }
     
     public boolean canSee(Mob m) {

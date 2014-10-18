@@ -5,6 +5,23 @@ import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
 
+import fr.skyforce77.towerminer.entity.mob.Mob;
+import fr.skyforce77.towerminer.entity.projectile.Arrow;
+import fr.skyforce77.towerminer.entity.projectile.EntityProjectile;
+import fr.skyforce77.towerminer.entity.projectile.PotionPoison;
+import fr.skyforce77.towerminer.entity.projectile.PotionWeakness;
+import fr.skyforce77.towerminer.entity.projectile.SlimeBall;
+import fr.skyforce77.towerminer.entity.projectile.SnowBall;
+import fr.skyforce77.towerminer.entity.turret.Blaze;
+import fr.skyforce77.towerminer.entity.turret.Creeper;
+import fr.skyforce77.towerminer.entity.turret.Enderman;
+import fr.skyforce77.towerminer.entity.turret.Guardian;
+import fr.skyforce77.towerminer.entity.turret.Slime;
+import fr.skyforce77.towerminer.entity.turret.SnowGolem;
+import fr.skyforce77.towerminer.entity.turret.Spider;
+import fr.skyforce77.towerminer.entity.turret.Turret;
+import fr.skyforce77.towerminer.entity.turret.Witch;
+import fr.skyforce77.towerminer.entity.turret.WitherSkeleton;
 import fr.skyforce77.towerminer.ressources.RessourcesManager;
 
 public class EntityTypes {
@@ -20,6 +37,7 @@ public class EntityTypes {
 	public static EntityTypes HORSE = new EntityTypes(7, RessourcesManager.getIconTexture("horse"), 30, 4, 130);
 	public static EntityTypes BABYMUSHCOW = new EntityTypes(8, RessourcesManager.getIconTexture("minimushroomcow"), 100, 1, 350);
 	public static EntityTypes MUSHCOW = new EntityTypes(9, RessourcesManager.getIconTexture("mushroomcow"), 200, 1, 1000);
+	public static EntityTypes RABBIT = new EntityTypes(10, RessourcesManager.getIconTexture("rabbit"), 600, 1, 5000);
 	
 	public static EntityTypes SKELETON = new EntityTypes(50, RessourcesManager.getIconTexture("skeleton"), -90);
 	public static EntityTypes BLAZE = new EntityTypes(51, RessourcesManager.getIconTexture("blaze"), 50, 90, Blaze.class);
@@ -30,13 +48,15 @@ public class EntityTypes {
 	public static EntityTypes SNOW_GOLEM = new EntityTypes(56, RessourcesManager.getIconTexture("pumpkin"), 300, -90, SnowGolem.class);
 	public static EntityTypes GUARDIAN = new EntityTypes(57, RessourcesManager.getIconTexture("guardian"), 100, -90, Guardian.class);
 	public static EntityTypes ENDERMAN = new EntityTypes(58, RessourcesManager.getIconTexture("enderman"), 400, -90, Enderman.class);
+	public static EntityTypes SLIME = new EntityTypes(59, RessourcesManager.getIconTexture("mobslime"), 2000, -90, Slime.class);
 	
-	public static EntityTypes ARROW = new EntityTypes(100, RessourcesManager.getIconTexture("arrow"), true, 45);
+	public static EntityTypes ARROW = new EntityTypes(100, RessourcesManager.getIconTexture("arrow"), true, 45, Arrow.class);
 	public static EntityTypes FIREBALL = new EntityTypes(101, RessourcesManager.getIconTexture("fireball"), false, 0);
-	public static EntityTypes POISON_POTION = new EntityTypes(102, RessourcesManager.getIconTexture("poison"), false, 0);
-	public static EntityTypes WEAKNESS_POTION = new EntityTypes(103, RessourcesManager.getIconTexture("weakness"), false, 0);
-	public static EntityTypes SNOWBALL = new EntityTypes(104, RessourcesManager.getIconTexture("snowball"), false, 0);
+	public static EntityTypes POISON_POTION = new EntityTypes(102, RessourcesManager.getIconTexture("poison"), false, 0, PotionPoison.class);
+	public static EntityTypes WEAKNESS_POTION = new EntityTypes(103, RessourcesManager.getIconTexture("weakness"), false, 0, PotionWeakness.class);
+	public static EntityTypes SNOWBALL = new EntityTypes(104, RessourcesManager.getIconTexture("snowball"), false, 0, SnowBall.class);
 	public static EntityTypes ENDERPEARL = new EntityTypes(105, RessourcesManager.getIconTexture("enderpearl"), false, 0);
+	public static EntityTypes SLIME_BALL = new EntityTypes(106, RessourcesManager.getIconTexture("slimeball"), false, 0, SlimeBall.class);
 
     public static ArrayList<EntityTypes> turrets = new ArrayList<EntityTypes>();
     public static ArrayList<EntityTypes> mobs = new ArrayList<EntityTypes>();
@@ -52,6 +72,7 @@ public class EntityTypes {
     	registerTurret(CREEPER);
     	registerTurret(SNOW_GOLEM);
     	registerTurret(ENDERMAN);
+    	registerTurret(SLIME);
         
     	registerMob(CHICKEN);
     	registerMob(OCELOT);
@@ -62,6 +83,7 @@ public class EntityTypes {
     	registerMob(HORSE);
     	registerMob(BABYMUSHCOW);
     	registerMob(MUSHCOW);
+    	registerMob(RABBIT);
         
     	registerEntity(ARROW);
     	registerEntity(FIREBALL);
@@ -69,6 +91,7 @@ public class EntityTypes {
     	registerEntity(WEAKNESS_POTION);
     	registerEntity(SNOWBALL);
     	registerEntity(ENDERPEARL);
+    	registerEntity(SLIME_BALL);
     }
     
     public static void registerMob(EntityTypes mob) {
@@ -148,6 +171,14 @@ public class EntityTypes {
         this.level = canrotate ? 1 : 0;
         this.rotation = rotation;
         classe = EntityProjectile.class;
+        this.id = id;
+    }
+    
+    public EntityTypes(int id, ImageIcon texture, boolean canrotate, int rotation, Class<? extends EntityProjectile> classe) {
+        this.textures[0] = texture;
+        this.level = canrotate ? 1 : 0;
+        this.rotation = rotation;
+        this.classe = classe;
         this.id = id;
     }
 
