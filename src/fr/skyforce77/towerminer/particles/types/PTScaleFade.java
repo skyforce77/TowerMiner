@@ -4,7 +4,7 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 
 import fr.skyforce77.towerminer.TowerMiner;
-import fr.skyforce77.towerminer.menus.SinglePlayer;
+import fr.skyforce77.towerminer.menus.Menu;
 import fr.skyforce77.towerminer.particles.Particle;
 import fr.skyforce77.towerminer.particles.ParticleType;
 import fr.skyforce77.towerminer.render.RenderHelper;
@@ -20,7 +20,7 @@ public class PTScaleFade extends ParticleType {
     }
 
     @Override
-    public void draw(Graphics2D g2d, SinglePlayer sp, Particle particle) {
+    public void draw(Graphics2D g2d, Menu m, Particle particle) {
         float l1 = 100 * particle.getTicksLived() / particle.getLiveTime();
         float scale = particle.getScale() * (1 - (l1 / 100));
         int size = (int) (16 * scale);

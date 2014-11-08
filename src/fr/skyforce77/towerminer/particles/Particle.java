@@ -6,7 +6,7 @@ import java.awt.Graphics2D;
 import javax.vecmath.Vector2d;
 
 import fr.skyforce77.towerminer.TowerMiner;
-import fr.skyforce77.towerminer.menus.SinglePlayer;
+import fr.skyforce77.towerminer.menus.Menu;
 
 public class Particle {
 
@@ -98,12 +98,12 @@ public class Particle {
         type.onTick(this);
 
         if (lived >= livetime) {
-            ((SinglePlayer) TowerMiner.menu).particles.remove(this);
+            TowerMiner.game.particles.remove(this);
         }
     }
 
-    public void draw(Graphics2D g2d, SinglePlayer sp) {
-        type.draw(g2d, sp, this);
+    public void draw(Graphics2D g2d, Menu m) {
+        type.draw(g2d, m, this);
     }
 
 }

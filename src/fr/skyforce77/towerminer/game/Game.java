@@ -18,6 +18,7 @@ import java.awt.event.WindowListener;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Random;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -47,6 +48,7 @@ import fr.skyforce77.towerminer.blocks.renders.BlockRender;
 import fr.skyforce77.towerminer.maps.Maps;
 import fr.skyforce77.towerminer.menus.MultiPlayer;
 import fr.skyforce77.towerminer.menus.SinglePlayer;
+import fr.skyforce77.towerminer.particles.Particle;
 import fr.skyforce77.towerminer.protocol.packets.Packet12Popup;
 import fr.skyforce77.towerminer.ressources.RessourcesManager;
 import fr.skyforce77.towerminer.ressources.language.LanguageManager;
@@ -77,6 +79,7 @@ public class Game extends JFrame implements MouseListener, MouseWheelListener, M
 
 	public Popup popup;
 	public HashMap<Popup, Boolean> nextpopups = new HashMap<Popup, Boolean>();
+	public CopyOnWriteArrayList<Particle> particles = new CopyOnWriteArrayList<Particle>();
 
 	private int[] code = new int[]{38, 38, 40, 40, 37, 39, 37, 39, 66, 65};
 	private int progress = 0;
@@ -166,6 +169,22 @@ public class Game extends JFrame implements MouseListener, MouseWheelListener, M
 					}
 					if (TowerMiner.menu != null) {
 						TowerMiner.menu.onTick();
+						
+						int pcount = particles.size();
+						int perase = 0;
+						if(pcount >= 300) {
+							perase = pcount - 300;
+						}
+
+						while(perase > 0) {
+							particles.remove(perase);
+							perase--;
+						}
+
+						for (Particle p : particles) {
+							p.onTick();
+						}
+						
 						for (BlockRender r : BlockRender.renders) {
 							if (r != null) {
 								r.onGameTick();
@@ -407,6 +426,11 @@ public class Game extends JFrame implements MouseListener, MouseWheelListener, M
 			PluginManager.callSyncEvent(event);
 			if (event.getReplaceRenders().size() == 0) {
 				TowerMiner.menu.drawMenu(g2d);
+				for (Particle p : particles) {
+					if (p != null) {
+						p.draw((Graphics2D) g.create(), TowerMiner.menu);
+					}
+				}
 			}
 
 			for(RenderRunnable rd : event.getReplaceRenders())

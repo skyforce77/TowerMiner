@@ -1,12 +1,12 @@
 package fr.skyforce77.towerminer.particles;
 
-import fr.skyforce77.towerminer.menus.SinglePlayer;
+import java.awt.Graphics2D;
+
+import fr.skyforce77.towerminer.menus.Menu;
 import fr.skyforce77.towerminer.particles.types.PT16Textures;
 import fr.skyforce77.towerminer.particles.types.PTEightTextures;
 import fr.skyforce77.towerminer.particles.types.PTMobFade;
 import fr.skyforce77.towerminer.particles.types.PTScaleFade;
-
-import java.awt.*;
 
 public class ParticleType {
 
@@ -33,7 +33,7 @@ public class ParticleType {
     public void onTick(Particle particle) {
     }
 
-    public void draw(Graphics2D g2d, SinglePlayer sp, Particle particle) {
+    public void draw(Graphics2D g2d, Menu m, Particle particle) {
     }
 
 }

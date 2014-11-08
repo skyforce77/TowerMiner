@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.util.Random;
 
+import fr.skyforce77.towerminer.TowerMiner;
 import fr.skyforce77.towerminer.entity.EntityTypes;
 import fr.skyforce77.towerminer.entity.mob.Mob;
 import fr.skyforce77.towerminer.entity.turret.Turret;
@@ -27,7 +28,7 @@ public class Arrow extends EntityProjectile {
         if(shooter.getLevel() >= 10 && new Random().nextInt(100) > 80) {
         	Particle p = new Particle(ParticleType.CRITICAL, getLocation().x, getLocation().y, null, Color.ORANGE);
         	p.setLiveTime(30);
-        	sp.particles.add(p);
+        	TowerMiner.game.particles.add(p);
         }
 
     }

@@ -1,5 +1,16 @@
 package fr.skyforce77.towerminer.blocks;
 
+import java.awt.Color;
+import java.awt.Graphics2D;
+import java.awt.Image;
+import java.io.File;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Random;
+
+import javax.swing.ImageIcon;
+
 import fr.skyforce77.towerminer.TowerMiner;
 import fr.skyforce77.towerminer.blocks.renders.BlockRender;
 import fr.skyforce77.towerminer.maps.Maps;
@@ -8,14 +19,6 @@ import fr.skyforce77.towerminer.particles.Particle;
 import fr.skyforce77.towerminer.particles.ParticleType;
 import fr.skyforce77.towerminer.ressources.RessourcesManager;
 import fr.skyforce77.towerminer.save.DataBase;
-
-import javax.swing.*;
-import java.awt.*;
-import java.io.File;
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Random;
 
 public class Blocks implements Serializable {
 
@@ -122,7 +125,7 @@ public class Blocks implements Serializable {
 
             public void onMapDraw(Graphics2D g2d, int data, int x, int y, int m, int n) {
                 if (data == 0 && TowerMiner.menu instanceof SinglePlayer && new Random().nextInt(200) <= 1)
-                    ((SinglePlayer) TowerMiner.menu).particles.add(new Particle(ParticleType.FLAME, x + 24, y + 24, null, 1.2f));
+                    TowerMiner.game.particles.add(new Particle(ParticleType.FLAME, x + 24, y + 24, null, 1.2f));
             }
 
             ;
@@ -138,7 +141,7 @@ public class Blocks implements Serializable {
                         int ix = new Random().nextInt(2) == 0 ? 1 : -1;
                         int iy = new Random().nextInt(2) == 0 ? +1 : -1;
                         int is = new Random().nextInt(2) == 0 ? +1 : -1;
-                        ((SinglePlayer) TowerMiner.menu).particles.add(new Particle(ParticleType.FLAME, x + 24 + new Random().nextInt(30) * ix, y + 24 + new Random().nextInt(30) * iy, null, 1f + (new Random().nextInt(20) / 40) * is));
+                        TowerMiner.game.particles.add(new Particle(ParticleType.FLAME, x + 24 + new Random().nextInt(30) * ix, y + 24 + new Random().nextInt(30) * iy, null, 1f + (new Random().nextInt(20) / 40) * is));
                         i--;
                     }
                 }
@@ -153,7 +156,7 @@ public class Blocks implements Serializable {
                 if (data != 0 && TowerMiner.menu instanceof SinglePlayer && new Random().nextInt(200) <= 1) {
                     int ix = new Random().nextInt(2) == 0 ? 1 : -1;
                     int iy = new Random().nextInt(2) == 0 ? +1 : -1;
-                    ((SinglePlayer) TowerMiner.menu).particles.add(new Particle(ParticleType.SMOKE, x + 24 + new Random().nextInt(15) * ix, y + 24 + new Random().nextInt(15) * iy, null, 1f + -0.2f, new Color(255, 0, 0, 254)));
+                    TowerMiner.game.particles.add(new Particle(ParticleType.SMOKE, x + 24 + new Random().nextInt(15) * ix, y + 24 + new Random().nextInt(15) * iy, null, 1f + -0.2f, new Color(255, 0, 0, 254)));
                 }
             }
         }.setOverlay().setRender(3);
@@ -171,7 +174,7 @@ public class Blocks implements Serializable {
                 if (data == 0 && TowerMiner.menu instanceof SinglePlayer && new Random().nextInt(200) <= 1) {
                     int ix = new Random().nextInt(2) == 0 ? 1 : -1;
                     int iy = new Random().nextInt(2) == 0 ? +1 : -1;
-                    ((SinglePlayer) TowerMiner.menu).particles.add(new Particle(ParticleType.SMOKE, x + 24 + new Random().nextInt(15) * ix, y + 24 + new Random().nextInt(15) * iy, null, 1f + -0.2f, new Color(255, 0, 0, 254)));
+                    TowerMiner.game.particles.add(new Particle(ParticleType.SMOKE, x + 24 + new Random().nextInt(15) * ix, y + 24 + new Random().nextInt(15) * iy, null, 1f + -0.2f, new Color(255, 0, 0, 254)));
                 }
             }
 

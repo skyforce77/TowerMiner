@@ -300,7 +300,7 @@ public class ProtocolManager implements PacketListener {
 		} else if (p.getId() == 19) {
 			Packet19Particle pack19 = (Packet19Particle) p;
 			mp = ((MultiPlayer) TowerMiner.menu);
-			mp.particles.add((Particle) pack19.deserialize(pack19.particle));
+			TowerMiner.game.particles.add((Particle) pack19.deserialize(pack19.particle));
 		} else if (p.getId() == 20) {
 			Packet20EntityStorage pack20 = (Packet20EntityStorage) p;
 			mp = ((MultiPlayer) TowerMiner.menu);

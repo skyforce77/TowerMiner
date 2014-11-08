@@ -1,6 +1,7 @@
 package fr.skyforce77.towerminer.menus;
 
 import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
@@ -78,6 +79,7 @@ public class Menu {
 
     public void drawMenu(Graphics2D g2d) {
         if (items != null) {
+        	boolean hover = false;
             for (MenuItem item : items) {
                 if (item != null) {
                     g2d.setFont(TowerMiner.getFont(26));
@@ -87,6 +89,7 @@ public class Menu {
                         g2d.fillRoundRect(item.getX(), item.getY(), item.getWidth(), item.getHeight(), 5, 5);
                         g2d.setColor(Color.YELLOW);
                         g2d.drawRoundRect(item.getX(), item.getY(), item.getWidth(), item.getHeight(), 5, 5);
+                        hover = true;
                     } else {
                     	g2d.setColor(new Color(250, 250, 250, 20));
                         g2d.fillRoundRect(item.getX(), item.getY(), item.getWidth(), item.getHeight(), 5, 5);
@@ -102,6 +105,11 @@ public class Menu {
                     g2d.drawString(item.getName(), 15, 204 + 70 * item.getId());
                 }
             }
+    		if(hover) {
+    			TowerMiner.game.setCursor(new Cursor(Cursor.HAND_CURSOR));
+    		} else {
+    			TowerMiner.game.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+    		}
         }
 
         if (last != null && canreturn) {
@@ -276,6 +284,7 @@ public class Menu {
     }
 
     public void onUnused() {
+    	TowerMiner.game.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
     }
 
     public int getFirstVisibleItem() {

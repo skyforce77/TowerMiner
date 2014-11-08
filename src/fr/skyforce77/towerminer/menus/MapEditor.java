@@ -30,7 +30,6 @@ import fr.skyforce77.towerminer.menus.additionals.BlockCreator;
 import fr.skyforce77.towerminer.menus.additionals.BlockSelectionList;
 import fr.skyforce77.towerminer.menus.additionals.ColorSelection;
 import fr.skyforce77.towerminer.menus.additionals.JNumberTextField;
-import fr.skyforce77.towerminer.particles.Particle;
 import fr.skyforce77.towerminer.ressources.RessourcesManager;
 import fr.skyforce77.towerminer.ressources.language.LanguageManager;
 
@@ -302,12 +301,6 @@ public class MapEditor extends SinglePlayer {
 			xt = (int) (Maps.getActualMap().getDeathPoints()[1].getX() * 48);
 			yt = (int) (Maps.getActualMap().getDeathPoints()[1].getY() * 48);
 			g2d.drawImage(RessourcesManager.getTexture("death1"), xt, yt + 40, 48, 48, null);
-		}
-
-		for (Particle p : particles) {
-			if (p != null) {
-				p.draw((Graphics2D) g2d.create(), this);
-			}
 		}
 
 		if (TowerMiner.game.popup != null && TowerMiner.game.popup.time + TowerMiner.game.popup.displayed > new Date().getTime()) {

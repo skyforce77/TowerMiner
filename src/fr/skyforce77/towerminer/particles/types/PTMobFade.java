@@ -1,11 +1,13 @@
 package fr.skyforce77.towerminer.particles.types;
 
+import java.awt.AlphaComposite;
+import java.awt.Graphics2D;
+import java.awt.Image;
+
 import fr.skyforce77.towerminer.entity.EntityTypes;
-import fr.skyforce77.towerminer.menus.SinglePlayer;
+import fr.skyforce77.towerminer.menus.Menu;
 import fr.skyforce77.towerminer.particles.Particle;
 import fr.skyforce77.towerminer.particles.ParticleType;
-
-import java.awt.*;
 
 public class PTMobFade extends ParticleType {
 
@@ -22,7 +24,7 @@ public class PTMobFade extends ParticleType {
     }
 
 	@Override
-    public void draw(Graphics2D g2d, SinglePlayer sp, Particle particle) {
+    public void draw(Graphics2D g2d, Menu m, Particle particle) {
         if (translucent) {
             g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.5f));
         }

@@ -1,5 +1,10 @@
 package fr.skyforce77.towerminer.particles;
 
+import java.awt.Color;
+import java.util.Random;
+
+import javax.vecmath.Vector2d;
+
 import fr.skyforce77.towerminer.TowerMiner;
 import fr.skyforce77.towerminer.blocks.Blocks;
 import fr.skyforce77.towerminer.entity.EntityTypes;
@@ -8,10 +13,6 @@ import fr.skyforce77.towerminer.menus.SinglePlayer;
 import fr.skyforce77.towerminer.particles.types.PTBlockBreak;
 import fr.skyforce77.towerminer.particles.types.PTMobFade;
 import fr.skyforce77.towerminer.protocol.packets.Packet18ParticleEffect;
-
-import javax.vecmath.Vector2d;
-import java.awt.*;
-import java.util.Random;
 
 public class ParticleEffect {
 
@@ -36,17 +37,17 @@ public class ParticleEffect {
 
         double d = 2 * Math.PI;
         while (d >= 0) {
-            sp.particles.add(new Particle(type, x + (int) (Math.cos(d) * 10), y + (int) (Math.sin(d) * 10), new Vector2d(Math.cos(d), Math.sin(d)), 0.6f, color).setLiveTime(50));
+            TowerMiner.game.particles.add(new Particle(type, x + (int) (Math.cos(d) * 10), y + (int) (Math.sin(d) * 10), new Vector2d(Math.cos(d), Math.sin(d)), 0.6f, color).setLiveTime(50));
             d -= 0.4f;
         }
 
         d = 2 * Math.PI;
         while (d >= 0) {
-            sp.particles.add(new Particle(type, x + (int) (Math.cos(d) * 5), y + (int) (Math.sin(d) * 5), new Vector2d(Math.cos(d) * 0.7, Math.sin(d) * 0.7), 0.8f, color).setLiveTime(50));
+        	TowerMiner.game.particles.add(new Particle(type, x + (int) (Math.cos(d) * 5), y + (int) (Math.sin(d) * 5), new Vector2d(Math.cos(d) * 0.7, Math.sin(d) * 0.7), 0.8f, color).setLiveTime(50));
             d -= 0.6f;
         }
 
-        sp.particles.add(new Particle(type, x, y, null, color).setLiveTime(50));
+        TowerMiner.game.particles.add(new Particle(type, x, y, null, color).setLiveTime(50));
     }
     
     public static void createParticleAlea(ParticleType type, SinglePlayer sp, int x, int y, int zone, Color color) {
@@ -87,7 +88,7 @@ public class ParticleEffect {
         	} else {
         		y2 = y - new Random().nextInt(zone+1);
         	}
-            sp.particles.add(new Particle(type, x2, y2, null, scale, new Color(color.getRed(), color.getGreen(), color.getBlue(), alpha)).setLiveTime(time));
+        	TowerMiner.game.particles.add(new Particle(type, x2, y2, null, scale, new Color(color.getRed(), color.getGreen(), color.getBlue(), alpha)).setLiveTime(time));
             i--;
         }
     }
@@ -104,7 +105,7 @@ public class ParticleEffect {
         	while(u < width) {
                 Particle p = new Particle(new PTMobFade("mobfade_" + i + "_" + u, type.getTexture(0), i, u, translucent), x, y, new Vector2d(0.1 * new Random().nextInt(20) - 1, 0.1 * new Random().nextInt(20) - 1));
                 p.setLiveTime(50);
-        		sp.particles.add(p);
+                TowerMiner.game.particles.add(p);
         		u++;
         	}
         	u = 0;
@@ -124,7 +125,7 @@ public class ParticleEffect {
         	while(u < width) {
         		Particle p = new Particle(new PTBlockBreak("blockbreak_"+i+"_"+u, b, data, i, u),x,y,new Vector2d(0.1*new Random().nextInt(20)-1, 0.1*new Random().nextInt(20)-1));
         		p.setLiveTime(50);
-        		sp.particles.add(p);
+        		TowerMiner.game.particles.add(p);
         		u++;
         	}
         	u = 0;

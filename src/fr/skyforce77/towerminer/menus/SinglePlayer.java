@@ -37,7 +37,6 @@ import fr.skyforce77.towerminer.game.Game;
 import fr.skyforce77.towerminer.maps.MapWritter;
 import fr.skyforce77.towerminer.maps.Maps;
 import fr.skyforce77.towerminer.menus.additionals.Chat;
-import fr.skyforce77.towerminer.particles.Particle;
 import fr.skyforce77.towerminer.particles.ParticleEffect;
 import fr.skyforce77.towerminer.ressources.RessourcesManager;
 import fr.skyforce77.towerminer.ressources.language.LanguageManager;
@@ -67,7 +66,6 @@ public class SinglePlayer extends Menu implements ChatContainer{
 	public CopyOnWriteArrayList<Entity> entity = new CopyOnWriteArrayList<Entity>();
 	public CopyOnWriteArrayList<Entity> removed = new CopyOnWriteArrayList<Entity>();
 	public CopyOnWriteArrayList<Entity> draw = new CopyOnWriteArrayList<Entity>();
-	public CopyOnWriteArrayList<Particle> particles = new CopyOnWriteArrayList<Particle>();
 	public JMenuItem pause;
 	public JButton next;
 	public JCheckBox speed;
@@ -258,21 +256,6 @@ public class SinglePlayer extends Menu implements ChatContainer{
 			onUpdate();
 		}
 
-		int pcount = particles.size();
-		int perase = 0;
-		if(pcount >= 300) {
-			perase = pcount - 300;
-		}
-
-		while(perase > 0) {
-			particles.remove(perase);
-			perase--;
-		}
-
-		for (Particle p : particles) {
-			p.onTick();
-		}
-
 		super.onTick();
 	}
 
@@ -435,12 +418,6 @@ public class SinglePlayer extends Menu implements ChatContainer{
 		for (Entity en : draw) {
 			if (en != null && !(en instanceof Mob)) {
 				en.draw((Graphics2D) g.create(), this);
-			}
-		}
-
-		for (Particle p : particles) {
-			if (p != null) {
-				p.draw((Graphics2D) g.create(), this);
 			}
 		}
 

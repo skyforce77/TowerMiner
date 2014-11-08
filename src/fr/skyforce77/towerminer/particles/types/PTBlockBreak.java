@@ -3,7 +3,7 @@ package fr.skyforce77.towerminer.particles.types;
 import java.awt.Graphics2D;
 
 import fr.skyforce77.towerminer.blocks.Blocks;
-import fr.skyforce77.towerminer.menus.SinglePlayer;
+import fr.skyforce77.towerminer.menus.Menu;
 import fr.skyforce77.towerminer.particles.Particle;
 import fr.skyforce77.towerminer.particles.ParticleType;
 
@@ -21,7 +21,7 @@ public class PTBlockBreak extends ParticleType {
 	}
 
 	@Override
-    public void draw(Graphics2D g2d, SinglePlayer sp, Particle particle) {
+    public void draw(Graphics2D g2d, Menu m, Particle particle) {
 		g2d.setClip((int)particle.getX()+5*x, (int)particle.getY()+5*y, 5*(x+1), 5*(y+1));
 		b.getRender().onBlockRender(b, g2d, data, (int)particle.getX()/48, (int)particle.getY()/48, 30);
     }

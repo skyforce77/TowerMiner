@@ -4,7 +4,7 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 
 import fr.skyforce77.towerminer.TowerMiner;
-import fr.skyforce77.towerminer.menus.SinglePlayer;
+import fr.skyforce77.towerminer.menus.Menu;
 import fr.skyforce77.towerminer.particles.Particle;
 import fr.skyforce77.towerminer.particles.ParticleType;
 import fr.skyforce77.towerminer.render.RenderHelper;
@@ -20,7 +20,7 @@ public class PTEightTextures extends ParticleType {
     }
 
     @Override
-    public void draw(Graphics2D g2d, SinglePlayer sp, Particle particle) {
+    public void draw(Graphics2D g2d, Menu m, Particle particle) {
         int size = (int) (16 * particle.getScale());
         int size2 = size / 2;
         g2d.setClip((int) (particle.getX() - size2), (int) (particle.getY() - size2) + TowerMiner.game.CanvasY, size, size);
