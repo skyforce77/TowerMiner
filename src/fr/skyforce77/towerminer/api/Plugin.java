@@ -1,5 +1,9 @@
 package fr.skyforce77.towerminer.api;
 
+import java.io.File;
+
+import fr.skyforce77.towerminer.ressources.RessourcesManager;
+
 public class Plugin {
 
 	private PluginInfo info;
@@ -26,6 +30,13 @@ public class Plugin {
 	
 	public String getVersion() {
 		return info.getVersion();
+	}
+	
+	public File getDirectory() {
+		File f = new File(RessourcesManager.getDirectory(), "/plugins/"+getName());
+		if(!f.exists())
+			f.mkdirs();
+		return f;
 	}
 	
 }

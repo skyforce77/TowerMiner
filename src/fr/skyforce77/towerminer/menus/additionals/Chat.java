@@ -108,7 +108,7 @@ public class Chat {
 			cms.addModel(new ChatModel(" "));
 			if(s.startsWith("http")) {
 				ChatModel m = new ChatModel(s);
-				m.setLink(true);
+				m.setLink(s);
 				cms.addModel(m);
 			} else {
 				cms.addModel(new ChatModel(s));
@@ -174,7 +174,7 @@ public class Chat {
 						g2d.fillRect(x, TowerMiner.game.getHeight() - i * 26 - 55, getWidth(text), 26);
 					}
 
-					Font font = TowerMiner.getFont(20);
+					Font font = TowerMiner.getFont(12);
 
 					if(model.isBold())
 						font = font.deriveFont(Font.BOLD);
@@ -196,10 +196,11 @@ public class Chat {
 
 					FontMetrics metrics = g2d.getFontMetrics(g2d.getFont());
 
-					if(!model.isLink())
+					if(!model.isLink() || !model.getForegroundColor().equals(new Color(255,255,255))) {
 						drawColoredText(g2d, text, x, i, 0, difference, model.getForegroundColor());
-					else
+					} else {
 						drawColoredText(g2d, text, x, i, 0, difference, new Color(100, 100, 200));
+					}
 
 					if(model.isLink() || (model.getMouseModel() != null && model.getMouseModel().getText() != null)) {
 						if(mp.Xcursor > x && mp.Xcursor < x+getWidth(text) && mp.Ycursor > TowerMiner.game.getHeight() - i * 26 - 55 && mp.Ycursor < TowerMiner.game.getHeight() - i * 26 - 55 +26) {
@@ -209,7 +210,7 @@ public class Chat {
 							if(model.getMouseModel() != null && model.getMouseModel().getText() != null) {
 								render = new Thread("MouseModelRender") {
 									public void run() {
-										g2d.setFont(TowerMiner.getFont(15));
+										g2d.setFont(TowerMiner.getFont(12));
 										FontMetrics metric = g2d.getFontMetrics(g2d.getFont());
 										int hgt = metric.getHeight();
 										int adv = metric.stringWidth(model.getMouseModel().getText());
@@ -285,7 +286,7 @@ public class Chat {
 								Desktop desktop = Desktop.getDesktop();
 								if (desktop.isSupported(Action.BROWSE)) {
 									try {
-										desktop.browse(URI.create(model.getText()));
+										desktop.browse(URI.create(model.getLink()));
 										return;
 									} catch (IOException e) {
 										e.printStackTrace();
@@ -303,7 +304,7 @@ public class Chat {
 
 	public int getWidth(String text) {
 		Graphics2D g2d = (Graphics2D) TowerMiner.game.getGraphics();
-		g2d.setFont(TowerMiner.getFont(20));
+		g2d.setFont(TowerMiner.getFont(12));
 		FontMetrics metrics = g2d.getFontMetrics(g2d.getFont());
 		return metrics.stringWidth(text) + 2;
 	}
