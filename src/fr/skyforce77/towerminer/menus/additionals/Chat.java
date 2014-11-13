@@ -7,6 +7,7 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.font.TextAttribute;
 import java.io.IOException;
 import java.net.URI;
@@ -17,16 +18,21 @@ import java.util.Map;
 import com.esotericsoftware.kryonet.Connection;
 
 import fr.skyforce77.towerminer.TowerMiner;
+import fr.skyforce77.towerminer.achievements.Popup;
 import fr.skyforce77.towerminer.api.PluginManager;
 import fr.skyforce77.towerminer.api.commands.CommandManager;
 import fr.skyforce77.towerminer.api.commands.CommandSender;
 import fr.skyforce77.towerminer.api.commands.SenderType;
+import fr.skyforce77.towerminer.api.events.chat.ChatPluginActionEvent;
 import fr.skyforce77.towerminer.api.events.chat.PlayerChatEvent;
 import fr.skyforce77.towerminer.menus.Menu;
 import fr.skyforce77.towerminer.menus.MultiPlayer;
 import fr.skyforce77.towerminer.protocol.chat.ChatMessage;
 import fr.skyforce77.towerminer.protocol.chat.ChatModel;
+import fr.skyforce77.towerminer.protocol.chat.IconModel;
 import fr.skyforce77.towerminer.protocol.packets.Packet11ChatMessage;
+import fr.skyforce77.towerminer.render.RenderHelper;
+import fr.skyforce77.towerminer.ressources.RessourcesManager;
 import fr.skyforce77.towerminer.ressources.language.LanguageManager;
 
 public class Chat {
@@ -164,16 +170,6 @@ public class Chat {
 						text = LanguageManager.getText(model.getText(), model.getOption());
 					}
 
-					if (model.getHighlightColor() != null) {
-						Color h = model.getHighlightColor();
-						if (difference < 3000) {
-							g2d.setColor(new Color(h.getRed(), h.getGreen(), h.getBlue(), difference / 20));
-						} else {
-							g2d.setColor(new Color(h.getRed(), h.getGreen(), h.getBlue(), 150));
-						}
-						g2d.fillRect(x, TowerMiner.game.getHeight() - i * 26 - 55, getWidth(text), 26);
-					}
-
 					Font font = TowerMiner.getFont(12);
 
 					if(model.isBold())
@@ -182,8 +178,6 @@ public class Chat {
 						font = font.deriveFont(Font.ITALIC);
 
 					g2d.setFont(font);
-
-					drawColoredText(g2d, text, x + 2, i, -2, difference, model.getBackgroundColor());
 
 					Map attributes = font.getAttributes();
 					if(model.isUnderlined() || model.isLink())
@@ -195,17 +189,43 @@ public class Chat {
 					g2d.setFont(font);
 
 					FontMetrics metrics = g2d.getFontMetrics(g2d.getFont());
-
-					if(!model.isLink() || !model.getForegroundColor().equals(new Color(255,255,255))) {
-						drawColoredText(g2d, text, x, i, 0, difference, model.getForegroundColor());
+					
+					if(model instanceof IconModel) {
+						IconModel im = (IconModel)model;
+						Image image = RessourcesManager.getDistantImage(im.getImage(), "unknown");
+						g2d.drawImage(image, x+((metrics.stringWidth(text)-26)/2), TowerMiner.game.getHeight() - i * 26 - 55, 26, 26, null);
 					} else {
-						drawColoredText(g2d, text, x, i, 0, difference, new Color(100, 100, 200));
+						if (model.getHighlightColor() != null) {
+							Color h = model.getHighlightColor();
+							if (difference < 3000) {
+								g2d.setColor(new Color(h.getRed(), h.getGreen(), h.getBlue(), difference / 20));
+							} else {
+								g2d.setColor(new Color(h.getRed(), h.getGreen(), h.getBlue(), 150));
+							}
+							g2d.fillRect(x, TowerMiner.game.getHeight() - i * 26 - 55, getWidth(text), 26);
+						}
+						
+						drawColoredText(g2d, text, x + 2, i, -2, difference, model.getBackgroundColor());
+						
+						if(!model.isLink() || !model.getForegroundColor().equals(new Color(255,255,255))) {
+							drawColoredText(g2d, text, x, i, 0, difference, model.getForegroundColor());
+						} else {
+							drawColoredText(g2d, text, x, i, 0, difference, new Color(100, 100, 200));
+						}
 					}
 
 					if(model.isLink() || (model.getMouseModel() != null && model.getMouseModel().getText() != null)) {
 						if(mp.Xcursor > x && mp.Xcursor < x+getWidth(text) && mp.Ycursor > TowerMiner.game.getHeight() - i * 26 - 55 && mp.Ycursor < TowerMiner.game.getHeight() - i * 26 - 55 +26) {
-							if(model.isLink())
-								drawColoredText(g2d, text, x, i, 0, difference, new Color(100, 100, 230));
+							if(model.isLink()) {
+								if(model instanceof IconModel) {
+									IconModel im = (IconModel)model;
+									Image image = RessourcesManager.getDistantImage(im.getImage(), "unknown");
+									image = RenderHelper.getColoredImage(image, Color.BLUE, 0.2f);
+									g2d.drawImage(image, x+((metrics.stringWidth(text)-26)/2), TowerMiner.game.getHeight() - i * 26 - 55, 26, 26, null);
+								} else {
+									drawColoredText(g2d, text, x, i, 0, difference, new Color(100, 100, 230));
+								}
+							}
 
 							if(model.getMouseModel() != null && model.getMouseModel().getText() != null) {
 								render = new Thread("MouseModelRender") {
@@ -282,7 +302,22 @@ public class Chat {
 					Menu mp = TowerMiner.menu;
 					if(mp.Xcursor > x && mp.Xcursor < x+getWidth(text) && mp.Ycursor > TowerMiner.game.getHeight() - i * 26 - 55 && mp.Ycursor < TowerMiner.game.getHeight() - i * 26 - 55 +26) {
 						if(model.isLink()) {
-							if (Desktop.isDesktopSupported()) {
+							if(model.getLink().startsWith("tmplugin://")) {
+								String channel = model.getLink().replaceFirst("tmplugin://", "").split(".")[0];
+								String action = model.getLink().replaceFirst("tmplugin://", "").split(".")[1];
+								PluginManager.callAsyncEvent(new ChatPluginActionEvent(channel, action));
+							} else if(model.getLink().startsWith("tmcmd://")) {
+								if(TowerMiner.menu.chatfield != null) {
+									String fieldtext = model.getLink().replaceFirst("tmcmd://", "");
+									TowerMiner.menu.chatfield.setText(fieldtext);
+									TowerMiner.game.displayPopup(new Popup(LanguageManager.getText("chat.click.command"), 4000l));
+								}
+							} else if(model.getLink().startsWith("tmtypecmd://")) {
+								String cmd = model.getLink().replaceFirst("tmtypecmd://", "");
+								String label = cmd.split(" ")[0].replaceFirst("/", "");
+								String[] args = cmd.replaceFirst(cmd.split(" ")[0], "").replaceFirst(" ", "").split(" ");
+								CommandManager.onCommandTyped(new CommandSender(SenderType.CHAT), label, args);
+							} else if (Desktop.isDesktopSupported()) {
 								Desktop desktop = Desktop.getDesktop();
 								if (desktop.isSupported(Action.BROWSE)) {
 									try {

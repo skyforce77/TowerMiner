@@ -134,3 +134,5 @@ music.downloading: Downloading %
 music.finished: Successfull download
 
 plugin.auto.want: Do you want to download % plugin from server?\nIt can be dangerous
+
+chat.click.command: Added command to your chat

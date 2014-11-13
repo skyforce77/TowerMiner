@@ -19,6 +19,7 @@ public class CommandManager {
     public static void createCommands() {
         register("help", new CommandHelp());
         register("version", new CommandVersion());
+        register("echo", new CommandEcho());
     }
 
     public static void register(String label, Command command) {
