@@ -125,7 +125,7 @@ public class CommandManager {
 
                     String[] args;
                     if (line.contains(" ")) {
-                        args = line.replace(label, "").split(" ");
+                        args = line.replace(label+" ", "").split(" ");
                     } else {
                         args = new String[]{""};
                     }

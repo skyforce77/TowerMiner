@@ -592,7 +592,8 @@ public class SinglePlayer extends Menu implements ChatContainer{
 
 	@Override
 	public void onMouseClicked(MouseEvent e) {
-		chat.onClick();
+		if(chat.onClick(TowerMiner.game.getGraphics(),this))
+			return;
 		if (e.getModifiers() == 16) {
 			if (paused) {
 				super.onMouseClicked(e);

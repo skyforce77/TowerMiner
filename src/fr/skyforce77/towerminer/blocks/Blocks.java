@@ -240,6 +240,7 @@ public class Blocks implements Serializable {
         new Blocks(1000, "creepermob", "skull_creeper").setOverlay().setRender(7);
         new Blocks(1001, "unknown").setRender(11);
         new Blocks(1002, "unknown").setRender(12);
+        new Blocks(1003, "unknown").setOverlay().setRender(13);
 
         new Blocks(1021, "death", "death1");
         new Blocks(1022, "null").setInvisible().setOverlay();

@@ -6,6 +6,7 @@ import java.awt.Desktop.Action;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.FontMetrics;
+import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.font.TextAttribute;
@@ -189,7 +190,7 @@ public class Chat {
 					g2d.setFont(font);
 
 					FontMetrics metrics = g2d.getFontMetrics(g2d.getFont());
-					
+
 					if(model instanceof IconModel) {
 						IconModel im = (IconModel)model;
 						Image image = RessourcesManager.getDistantImage(im.getImage(), "unknown");
@@ -204,9 +205,9 @@ public class Chat {
 							}
 							g2d.fillRect(x, TowerMiner.game.getHeight() - i * 26 - 55, getWidth(text), 26);
 						}
-						
+
 						drawColoredText(g2d, text, x + 2, i, -2, difference, model.getBackgroundColor());
-						
+
 						if(!model.isLink() || !model.getForegroundColor().equals(new Color(255,255,255))) {
 							drawColoredText(g2d, text, x, i, 0, difference, model.getForegroundColor());
 						} else {
@@ -256,8 +257,8 @@ public class Chat {
 		}
 	}
 
-	@SuppressWarnings({ })
-	public void onClick() {
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public boolean onClick(Graphics g2d, Menu mp) {
 		int width = 0;
 		int i = max-1;
 		int[] strings = new int[max];
@@ -288,20 +289,29 @@ public class Chat {
 						text = LanguageManager.getText(model.getText(), model.getOption());
 					}
 
-					Font font = TowerMiner.getFont(20);
+					Font font = TowerMiner.getFont(12);
 
 					if(model.isBold())
 						font = font.deriveFont(Font.BOLD);
 					if(model.isItalic())
 						font = font.deriveFont(Font.ITALIC);
 
-					Graphics2D g2d = (Graphics2D)TowerMiner.game.getGraphics();
 					g2d.setFont(font);
+
+					Map attributes = font.getAttributes();
+					if(model.isUnderlined() || model.isLink())
+						attributes.put(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_ON);
+					if(model.isStriked())
+						attributes.put(TextAttribute.STRIKETHROUGH, TextAttribute.STRIKETHROUGH_ON);
+
+					font = font.deriveFont(attributes);
+					g2d.setFont(font);
+
 					FontMetrics metrics = g2d.getFontMetrics(g2d.getFont());
 
-					Menu mp = TowerMiner.menu;
-					if(mp.Xcursor > x && mp.Xcursor < x+getWidth(text) && mp.Ycursor > TowerMiner.game.getHeight() - i * 26 - 55 && mp.Ycursor < TowerMiner.game.getHeight() - i * 26 - 55 +26) {
-						if(model.isLink()) {
+					if(model.isLink() || (model.getMouseModel() != null && model.getMouseModel().getText() != null)) {
+						if(mp.Xcursor > x && mp.Xcursor < x+getWidth(text) && mp.Ycursor > TowerMiner.game.getHeight() - i * 26 - 55 && mp.Ycursor < TowerMiner.game.getHeight() - i * 26 - 55 +26) {
+							if(model.isLink()) {
 							if(model.getLink().startsWith("tmplugin://")) {
 								String channel = model.getLink().replaceFirst("tmplugin://", "").split(".")[0];
 								String action = model.getLink().replaceFirst("tmplugin://", "").split(".")[1];
@@ -322,11 +332,12 @@ public class Chat {
 								if (desktop.isSupported(Action.BROWSE)) {
 									try {
 										desktop.browse(URI.create(model.getLink()));
-										return;
 									} catch (IOException e) {
 										e.printStackTrace();
 									}
 								}
+							}
+							return true;
 							}
 						}
 					}
@@ -335,6 +346,7 @@ public class Chat {
 			}
 			i--;
 		}
+		return false;
 	}
 
 	public int getWidth(String text) {

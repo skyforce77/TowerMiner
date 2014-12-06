@@ -102,8 +102,8 @@ public class MainMenu extends Menu implements ChatContainer{
 				}
 			}
 		}
-		chat.onClick();
-		super.onMouseClicked(e);
+		if(!chat.onClick(TowerMiner.game.getGraphics(),this))
+			super.onMouseClicked(e);
 	}
 
 	@Override
