@@ -12,6 +12,7 @@ import java.awt.event.MouseWheelEvent;
 import java.io.File;
 import java.util.Date;
 
+import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
@@ -49,6 +50,7 @@ public class MapEditor extends SinglePlayer {
 	public JMenuItem editblock;
 	public JMenuItem mdata;
 	public JTextField bdata;
+	public JButton rdata;
 	public JLabel ldata;
 
 	public MapEditor() {
@@ -201,6 +203,16 @@ public class MapEditor extends SinglePlayer {
 		ldata = new JLabel();
 		ldata.setPreferredSize(new Dimension(90, 20));
 		mdata.add(ldata);
+		
+		rdata = new JButton(LanguageManager.getText("menu.editor.delete"));
+		rdata.setPreferredSize(new Dimension(90, 20));
+		mdata.add(rdata);
+		rdata.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				bdata.setText("");
+			}
+		});
 
 		color = new JMenuItem();
 		color.setText(LanguageManager.getText("menu.editor.map.color"));
@@ -263,9 +275,13 @@ public class MapEditor extends SinglePlayer {
 
 		if(mdata != null && mdata.isVisible() && !Blocks.byId(selected).getRender().needNBT(selected)) {
 			mdata.setVisible(false);
-		} else if(mdata != null && !mdata.isVisible() && Blocks.byId(selected).getRender().needNBT(selected)) {
-			mdata.setVisible(true);
-			ldata.setText(Blocks.byId(selected).getRender().formatNBT(selected));
+		} else if(mdata != null && Blocks.byId(selected).getRender().needNBT(selected)) {
+			if(!mdata.isVisible())
+				mdata.setVisible(true);
+			
+			String format = Blocks.byId(selected).getRender().formatNBT(selected);
+			if(!ldata.getText().equals(format))
+				ldata.setText(format);
 		}
 
 		MapWritter.drawCanvas(g2d, TowerMiner.game.CanvasX, TowerMiner.game.CanvasY);

@@ -65,6 +65,7 @@ import fr.skyforce77.towerminer.protocol.packets.Packet21LoadPlugin;
 import fr.skyforce77.towerminer.protocol.packets.Packet22PluginMessage;
 import fr.skyforce77.towerminer.protocol.packets.Packet23BlockChange;
 import fr.skyforce77.towerminer.protocol.packets.Packet24ServerPopup;
+import fr.skyforce77.towerminer.protocol.packets.Packet25WindowTitle;
 import fr.skyforce77.towerminer.protocol.packets.Packet2BigSending;
 import fr.skyforce77.towerminer.protocol.packets.Packet3Action;
 import fr.skyforce77.towerminer.protocol.packets.Packet4RoundFinished;
@@ -350,6 +351,11 @@ public class ProtocolManager implements PacketListener {
 				e.printStackTrace();
 			}
 			TowerMiner.game.displayPopup(new ServerPopup(pack24.message, pack24.description, pack24.time, bu));
+		} else if (p.getId() == 25) {
+			Packet25WindowTitle pack25 = (Packet25WindowTitle)p;
+			if(TowerMiner.game != null) {
+				TowerMiner.game.setTitle(pack25.getTitle());
+			}
 		}
 	}
 
