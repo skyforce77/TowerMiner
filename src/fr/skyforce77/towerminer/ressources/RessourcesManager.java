@@ -121,8 +121,10 @@ public class RessourcesManager {
         return new File(getDirectory(), "/plugins");
     }
     
-    public static File getServerPluginsDirectory() {
-        return new File(getDirectory(), "/serverplugins");
+    public static File getServerPluginsDirectory(String server) {
+        File f = new File(getDirectory(), "/serverplugins/"+server);
+        f.mkdirs();
+        return f;
     }
 
     public static File getLanguagesDirectory() {

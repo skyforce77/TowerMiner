@@ -69,6 +69,7 @@ public class PluginManager {
             ChatModel chatstate = new ChatModel(" enabled");
             if(status.getCode() >= 2) {
             	chatstate = new ChatModel(" not enabled");
+            	chatstate.setMouseModel(new MessageModel("#"+status.getCode()));
             	chatstate.setForegroundColor(Color.ORANGE);
             } else if(status.equals(PluginStatus.WARNING)) {
             	TowerMiner.printWarning("Enabled " + p.getName() + " plugin with warnings.");
@@ -108,11 +109,10 @@ public class PluginManager {
         }
     }
 
-    public static void loadPlugin(FileContainer fc) {
+    public static void loadPlugin(String server, FileContainer fc) {
         try {
             File fl = fc.recreate(RessourcesManager.getTempDirectory());
-            RessourcesManager.getServerPluginsDirectory().mkdir();
-            File f = new File(RessourcesManager.getServerPluginsDirectory(), fl.getName());
+            File f = new File(RessourcesManager.getServerPluginsDirectory(server), fl.getName());
             f.createNewFile();
             move(fl, f);
             loadPlugin(f);

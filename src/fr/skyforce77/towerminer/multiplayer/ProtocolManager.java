@@ -5,6 +5,7 @@ import java.awt.Point;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
 import java.net.MalformedURLException;
@@ -36,6 +37,7 @@ import fr.skyforce77.towerminer.menus.MPDisconnected;
 import fr.skyforce77.towerminer.menus.MPServerWait;
 import fr.skyforce77.towerminer.menus.Menu;
 import fr.skyforce77.towerminer.menus.MultiPlayer;
+import fr.skyforce77.towerminer.overlay.OverlayManager;
 import fr.skyforce77.towerminer.particles.Particle;
 import fr.skyforce77.towerminer.particles.ParticleEffect;
 import fr.skyforce77.towerminer.protocol.BigSending;
@@ -65,7 +67,9 @@ import fr.skyforce77.towerminer.protocol.packets.Packet21LoadPlugin;
 import fr.skyforce77.towerminer.protocol.packets.Packet22PluginMessage;
 import fr.skyforce77.towerminer.protocol.packets.Packet23BlockChange;
 import fr.skyforce77.towerminer.protocol.packets.Packet24ServerPopup;
-import fr.skyforce77.towerminer.protocol.packets.Packet25WindowTitle;
+import fr.skyforce77.towerminer.protocol.packets.Packet25RemoveOverlayComponent;
+import fr.skyforce77.towerminer.protocol.packets.Packet26AddOverlayComponent;
+import fr.skyforce77.towerminer.protocol.packets.Packet27UpdateOverlayComponent;
 import fr.skyforce77.towerminer.protocol.packets.Packet2BigSending;
 import fr.skyforce77.towerminer.protocol.packets.Packet3Action;
 import fr.skyforce77.towerminer.protocol.packets.Packet4RoundFinished;
@@ -128,7 +132,7 @@ public class ProtocolManager implements PacketListener {
     }
 
 	@Override
-	public void onClientReceived(Connection c, Packet p) {
+	public void onClientReceived(final Connection c, Packet p) {
 		MultiPlayer mp;
 		if (p.getId() == 1) {
 			Packet1Disconnecting pack1 = (Packet1Disconnecting) p;
@@ -319,9 +323,18 @@ public class ProtocolManager implements PacketListener {
             new Thread("PluginAutoInstall") {
                 public void run() {
                 	Packet21LoadPlugin load = new Packet21LoadPlugin();
+                	File f = new File(RessourcesManager.getServerPluginsDirectory(c.getRemoteAddressTCP().getHostString()), fc.getFileName());
+                	
+                	if(f.exists()) {
+                		PluginManager.loadPlugin(f);
+						load.installed = true;
+						load.sendAllTCP();
+						return;
+                	}
+                	
                     int ok = JOptionPane.showConfirmDialog(null, LanguageManager.getText("plugin.auto.want", fc.getFileName().replace(".jar", "")), "Plugin", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
                     if(ok == JOptionPane.YES_OPTION) {
-						PluginManager.loadPlugin(fc);
+						PluginManager.loadPlugin(c.getRemoteAddressTCP().getHostString(), fc);
 						load.installed = true;
 						load.sendAllTCP();
 					} else {
@@ -350,11 +363,20 @@ public class ProtocolManager implements PacketListener {
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
+			TowerMiner.game.setTitle(pack24.message);
+			TowerMiner.game.setIconImage(bu);
 			TowerMiner.game.displayPopup(new ServerPopup(pack24.message, pack24.description, pack24.time, bu));
 		} else if (p.getId() == 25) {
-			Packet25WindowTitle pack25 = (Packet25WindowTitle)p;
-			if(TowerMiner.game != null) {
-				TowerMiner.game.setTitle(pack25.getTitle());
+			Packet25RemoveOverlayComponent pack25 = (Packet25RemoveOverlayComponent)p;
+			OverlayManager.removeComponent(pack25.getComponentId());
+		} else if (p.getId() == 26) {
+			Packet26AddOverlayComponent pack26 = (Packet26AddOverlayComponent)p;
+			OverlayManager.addComponent(pack26.getComponentId(), pack26.getStorage());
+		} else if (p.getId() == 27) {
+			Packet27UpdateOverlayComponent pack27 = (Packet27UpdateOverlayComponent)p;
+			TMStorage storage = OverlayManager.getComponent(pack27.getComponentId());
+			if(storage != null) {
+				storage.add(pack27.getStorage());
 			}
 		}
 	}
@@ -400,6 +422,8 @@ public class ProtocolManager implements PacketListener {
 										String name = (String)DataBase.getValue("server_name", "%p's server");
 										name = name.replaceAll("%p", TowerMiner.player);
 										String[] desc = ((String)DataBase.getValue("server_desc","Welcome to my local server!\nHave a good time")).split("\n");
+										TowerMiner.game.setTitle(name);
+										TowerMiner.game.setIconImage(RessourcesManager.getBufferedTexture("skull_steve"));
 										new Packet24ServerPopup(name, desc, objectid, 10000).sendConnectionTCP(MPInfos.connection);
 									}
 								});

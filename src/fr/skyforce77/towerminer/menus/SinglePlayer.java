@@ -553,7 +553,6 @@ public class SinglePlayer extends Menu implements ChatContainer{
 		g2d.drawString(LanguageManager.getText("menu.sp.round") + ": " + round, 10, 25);
 		g2d.drawString(LanguageManager.getText("menu.sp.golds") + ": " + or, (int) (45 + size.getWidth()), 25);
 		g2d.drawString(LanguageManager.getText("menu.sp.life") + ": " + vie, TowerMiner.game.getWidth() - 110, 25);
-		chat.draw(g2d, this);
 
 	}
 

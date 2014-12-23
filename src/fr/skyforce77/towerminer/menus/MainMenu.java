@@ -81,7 +81,6 @@ public class MainMenu extends Menu implements ChatContainer{
 		g2d.setFont(TowerMiner.getFont(16));
 		g2d.drawString("@Skyforce77", TowerMiner.game.getWidth() - 135 - (xmove / 2), TowerMiner.game.getHeight() - 40);
 		super.drawMenu(g2d);
-		chat.draw(g2d, this);
 	}
 
 	@SuppressWarnings("deprecation")

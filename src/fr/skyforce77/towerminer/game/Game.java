@@ -48,6 +48,7 @@ import fr.skyforce77.towerminer.blocks.renders.BlockRender;
 import fr.skyforce77.towerminer.maps.Maps;
 import fr.skyforce77.towerminer.menus.MultiPlayer;
 import fr.skyforce77.towerminer.menus.SinglePlayer;
+import fr.skyforce77.towerminer.overlay.OverlayManager;
 import fr.skyforce77.towerminer.particles.Particle;
 import fr.skyforce77.towerminer.protocol.packets.Packet12Popup;
 import fr.skyforce77.towerminer.ressources.RessourcesManager;
@@ -431,6 +432,12 @@ public class Game extends JFrame implements MouseListener, MouseWheelListener, M
 						p.draw((Graphics2D) g.create(), TowerMiner.menu);
 					}
 				}
+				for(String s : OverlayManager.getComponents()) {
+					OverlayManager.drawComponent((Graphics2D)g2d.create(), s);
+				}
+			}
+			if(TowerMiner.menu.chat != null) {
+				TowerMiner.menu.chat.draw((Graphics2D)g2d.create(), TowerMiner.menu);
 			}
 
 			for(RenderRunnable rd : event.getReplaceRenders())

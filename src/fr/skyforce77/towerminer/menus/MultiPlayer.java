@@ -20,6 +20,7 @@ import fr.skyforce77.towerminer.maps.MapWritter;
 import fr.skyforce77.towerminer.maps.Maps;
 import fr.skyforce77.towerminer.multiplayer.MPInfos;
 import fr.skyforce77.towerminer.multiplayer.ProtocolManager;
+import fr.skyforce77.towerminer.overlay.OverlayManager;
 import fr.skyforce77.towerminer.particles.ParticleEffect;
 import fr.skyforce77.towerminer.protocol.BigSending;
 import fr.skyforce77.towerminer.protocol.Connect;
@@ -133,6 +134,8 @@ public class MultiPlayer extends SinglePlayer {
 			Connect.client.stop();
 		}
 		MPInfos.matchplaying = false;
+		
+		OverlayManager.clearComponents();
 	}
 
 	@Override

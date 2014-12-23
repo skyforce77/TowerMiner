@@ -133,6 +133,6 @@ music.error: Téléchargement impossible
 music.downloading: Téléchargement de %
 music.finished: Téléchargement terminé
 
-plugin.auto.want: Voulez vous installer le plugin % ?\nCeci peux être dangereux
+plugin.auto.want: Voulez vous installer le plugin % ? Ceci peut être dangereux
 
 chat.click.command: Commande ajoutée au chat
