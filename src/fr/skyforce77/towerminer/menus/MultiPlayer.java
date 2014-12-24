@@ -279,6 +279,8 @@ public class MultiPlayer extends SinglePlayer {
 
 	@Override
 	public void onMouseClicked(MouseEvent e) {
+		if(chat.onClick(TowerMiner.game.getGraphics(),this))
+			return;
 		if (server) {
 			super.onMouseClicked(e);
 		} else {

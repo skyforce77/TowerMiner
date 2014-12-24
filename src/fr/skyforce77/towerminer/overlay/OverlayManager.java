@@ -6,6 +6,7 @@ import java.util.LinkedHashMap;
 import java.util.Set;
 
 import fr.skyforce77.towerminer.TowerMiner;
+import fr.skyforce77.towerminer.blocks.Blocks;
 import fr.skyforce77.towerminer.protocol.save.TMStorage;
 import fr.skyforce77.towerminer.ressources.RessourcesManager;
 
@@ -69,6 +70,13 @@ public class OverlayManager {
 			} else if(type == OverlayType.IMAGE) {
 				g2d.drawImage(RessourcesManager.getDistantImage(storage.getString("url"), "unknown")
 						, x, y, storage.getInteger("width"), storage.getInteger("height"), null);
+			} else if(type == OverlayType.OVAL) {
+				g2d.fillOval(x, y, storage.getInteger("width"), storage.getInteger("height"));
+			} else if(type == OverlayType.LINE) {
+				g2d.drawLine(x, y, storage.getInteger("xb"), storage.getInteger("yb"));
+			} else if(type == OverlayType.BLOCK) {
+				Blocks b = Blocks.byId(storage.getInteger("id"));
+				b.getRender().onBlockRender(b, g2d, storage.getInteger("data"), x, y, storage.getInteger("size"));
 			}
 		} catch(Exception e) {
 			e.printStackTrace();
