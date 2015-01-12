@@ -24,6 +24,7 @@ import fr.skyforce77.towerminer.api.PluginManager;
 import fr.skyforce77.towerminer.api.commands.CommandManager;
 import fr.skyforce77.towerminer.api.commands.CommandSender;
 import fr.skyforce77.towerminer.api.commands.SenderType;
+import fr.skyforce77.towerminer.api.events.chat.ChatMouseHoverRenderEvent;
 import fr.skyforce77.towerminer.api.events.chat.ChatPluginActionEvent;
 import fr.skyforce77.towerminer.api.events.chat.PlayerChatEvent;
 import fr.skyforce77.towerminer.menus.Menu;
@@ -33,6 +34,7 @@ import fr.skyforce77.towerminer.protocol.chat.ChatModel;
 import fr.skyforce77.towerminer.protocol.chat.IconModel;
 import fr.skyforce77.towerminer.protocol.packets.Packet11ChatMessage;
 import fr.skyforce77.towerminer.render.RenderHelper;
+import fr.skyforce77.towerminer.render.RenderRunnable;
 import fr.skyforce77.towerminer.ressources.RessourcesManager;
 import fr.skyforce77.towerminer.ressources.language.LanguageManager;
 
@@ -231,17 +233,28 @@ public class Chat {
 							if(model.getMouseModel() != null && model.getMouseModel().getText() != null) {
 								render = new Thread("MouseModelRender") {
 									public void run() {
-										g2d.setFont(TowerMiner.getFont(12));
-										FontMetrics metric = g2d.getFontMetrics(g2d.getFont());
-										int hgt = metric.getHeight();
-										int adv = metric.stringWidth(model.getMouseModel().getText());
-										Dimension size = new Dimension(adv + 2, hgt + 2);
-										g2d.setColor(new Color(0, 0, 0, 220));
-										g2d.fillRoundRect(mp.Xcursor, mp.Ycursor - (int)size.getHeight() + 2, (int) (4 + size.getWidth()), (int)size.getHeight(), 5, 5);
-										g2d.setColor(new Color(250, 250, 250, 250));
-										g2d.drawRoundRect(mp.Xcursor, mp.Ycursor - (int)size.getHeight() + 2, (int) (4 + size.getWidth()), (int)size.getHeight(), 5, 5);
-										drawColoredText(g2d, model.getMouseModel().getText(), mp.Xcursor + 5, mp.Ycursor - 5, 10000, model.getMouseModel().getBackgroundColor());
-										drawColoredText(g2d, model.getMouseModel().getText(), mp.Xcursor + 3, mp.Ycursor - 3, 10000, model.getMouseModel().getForegroundColor());
+										ChatMouseHoverRenderEvent mh = new ChatMouseHoverRenderEvent(model.getMouseModel());
+										PluginManager.callSyncEvent(mh);
+										if(mh.getReplaceRenders().size() == 0) {
+											g2d.setFont(TowerMiner.getFont(12));
+											FontMetrics metric = g2d.getFontMetrics(g2d.getFont());
+											int hgt = metric.getHeight();
+											int adv = metric.stringWidth(model.getMouseModel().getText());
+											Dimension size = new Dimension(adv + 2, hgt + 2);
+											g2d.setColor(new Color(0, 0, 0, 220));
+											g2d.fillRoundRect(mp.Xcursor, mp.Ycursor - (int)size.getHeight() + 2, (int) (4 + size.getWidth()), (int)size.getHeight(), 5, 5);
+											g2d.setColor(new Color(250, 250, 250, 250));
+											g2d.drawRoundRect(mp.Xcursor, mp.Ycursor - (int)size.getHeight() + 2, (int) (4 + size.getWidth()), (int)size.getHeight(), 5, 5);
+											drawColoredText(g2d, model.getMouseModel().getText(), mp.Xcursor + 5, mp.Ycursor - 5, 10000, model.getMouseModel().getBackgroundColor());
+											drawColoredText(g2d, model.getMouseModel().getText(), mp.Xcursor + 3, mp.Ycursor - 3, 10000, model.getMouseModel().getForegroundColor());
+										} else {
+											for(RenderRunnable rr : mh.getReplaceRenders()) {
+												rr.run(g2d);
+											}
+										}
+										for(RenderRunnable rr : mh.getRenders()) {
+											rr.run(g2d);
+										}
 									};
 								};
 							}
@@ -312,32 +325,34 @@ public class Chat {
 					if(model.isLink() || (model.getMouseModel() != null && model.getMouseModel().getText() != null)) {
 						if(mp.Xcursor > x && mp.Xcursor < x+getWidth(text) && mp.Ycursor > TowerMiner.game.getHeight() - i * 26 - 55 && mp.Ycursor < TowerMiner.game.getHeight() - i * 26 - 55 +26) {
 							if(model.isLink()) {
-							if(model.getLink().startsWith("tmplugin://")) {
-								String channel = model.getLink().replaceFirst("tmplugin://", "").split(".")[0];
-								String action = model.getLink().replaceFirst("tmplugin://", "").split(".")[1];
-								PluginManager.callAsyncEvent(new ChatPluginActionEvent(channel, action));
-							} else if(model.getLink().startsWith("tmcmd://")) {
-								if(TowerMiner.menu.chatfield != null) {
-									String fieldtext = model.getLink().replaceFirst("tmcmd://", "");
-									TowerMiner.menu.chatfield.setText(fieldtext);
-									TowerMiner.game.displayPopup(new Popup(LanguageManager.getText("chat.click.command"), 4000l));
-								}
-							} else if(model.getLink().startsWith("tmtypecmd://")) {
-								String cmd = model.getLink().replaceFirst("tmtypecmd://", "");
-								String label = cmd.split(" ")[0].replaceFirst("/", "");
-								String[] args = cmd.replaceFirst(cmd.split(" ")[0], "").replaceFirst(" ", "").split(" ");
-								CommandManager.onCommandTyped(new CommandSender(SenderType.CHAT), label, args);
-							} else if (Desktop.isDesktopSupported()) {
-								Desktop desktop = Desktop.getDesktop();
-								if (desktop.isSupported(Action.BROWSE)) {
-									try {
-										desktop.browse(URI.create(model.getLink()));
-									} catch (IOException e) {
-										e.printStackTrace();
+								if(model.getLink().startsWith("tmplugin://")) {
+									String data = model.getLink().replaceFirst("tmplugin://", "");
+									String channel = data.substring(0, data.indexOf("/"));
+									data = data.substring(data.indexOf("/")+1);
+									String[] actions = data.split("/");
+									PluginManager.callAsyncEvent(new ChatPluginActionEvent(channel, actions));
+								} else if(model.getLink().startsWith("tmcmd://")) {
+									if(TowerMiner.menu.chatfield != null) {
+										String fieldtext = model.getLink().replaceFirst("tmcmd://", "");
+										TowerMiner.menu.chatfield.setText(fieldtext);
+										TowerMiner.game.displayPopup(new Popup(LanguageManager.getText("chat.click.command"), 4000l));
+									}
+								} else if(model.getLink().startsWith("tmtypecmd://")) {
+									String cmd = model.getLink().replaceFirst("tmtypecmd://", "");
+									String label = cmd.split(" ")[0].replaceFirst("/", "");
+									String[] args = cmd.replaceFirst(cmd.split(" ")[0], "").replaceFirst(" ", "").split(" ");
+									CommandManager.onCommandTyped(new CommandSender(SenderType.CHAT), label, args);
+								} else if (Desktop.isDesktopSupported()) {
+									Desktop desktop = Desktop.getDesktop();
+									if (desktop.isSupported(Action.BROWSE)) {
+										try {
+											desktop.browse(URI.create(model.getLink()));
+										} catch (IOException e) {
+											e.printStackTrace();
+										}
 									}
 								}
-							}
-							return true;
+								return true;
 							}
 						}
 					}

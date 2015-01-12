@@ -96,7 +96,7 @@ public class CommandManager {
                     }
                 }
             } else {
-            	sender.sendMessage("Unknown command, type /help for help");
+            	sender.sendMessage("Unknown command ("+cte.getLabel()+"), type /help for help");
             }
         }
     }

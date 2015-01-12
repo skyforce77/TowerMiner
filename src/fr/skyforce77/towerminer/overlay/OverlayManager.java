@@ -51,6 +51,7 @@ public class OverlayManager {
 			Integer x = storage.getInteger("x");
 			Integer y = storage.getInteger("y");
 			
+			//Compatible with all types
 			Color c = new Color(storage.getInteger("color"));
 			if(storage.getInteger("alpha") != 0) {
 				c = new Color(c.getRed(), c.getGreen(), c.getBlue(), storage.getInteger("alpha"));
@@ -63,6 +64,27 @@ public class OverlayManager {
 				g2d.setFont(TowerMiner.getFont(12));
 			}
 			
+			if(storage.getDouble("rotate") != 0D) {
+				g2d.rotate(storage.getDouble("rotate"));
+			}
+			
+			if(storage.getDouble("scale") != 0D) {
+				g2d.scale(storage.getDouble("scale"), storage.getDouble("scale"));
+			} else if(storage.getDouble("scale_x") != 0D) {
+				g2d.scale(storage.getDouble("scale_x"), 0D);
+			} else if(storage.getDouble("scale_y") != 0D) {
+				g2d.scale(0D, storage.getDouble("scale_y"));
+			}
+			
+			if(storage.getInteger("translate_x") != 0) {
+				g2d.translate(storage.getInteger("translate_x"), 0);
+			}
+			
+			if(storage.getInteger("translate_y") != 0) {
+				g2d.translate(storage.getInteger("translate_y"), 0);
+			}
+			
+			//Individual rendering
 			if(type == OverlayType.RECTANGLE) {
 				g2d.fillRect(x, y, storage.getInteger("width"), storage.getInteger("height"));
 			} else if(type == OverlayType.TEXT) {

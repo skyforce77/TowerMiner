@@ -5,19 +5,19 @@ import fr.skyforce77.towerminer.api.events.TMEvent;
 public class ChatPluginActionEvent extends TMEvent{
 	
 	private String channel;
-	private String action;
+	private String[] actions;
 
-	public ChatPluginActionEvent(String channel, String action) {
+	public ChatPluginActionEvent(String channel, String[] actions) {
 		this.channel = channel;
-		this.action = action;
+		this.actions = actions;
 	}
 	
 	public String getChannel() {
 		return channel;
 	}
 	
-	public String getAction() {
-		return action;
+	public String[] getActions() {
+		return actions;
 	}
 	
 }

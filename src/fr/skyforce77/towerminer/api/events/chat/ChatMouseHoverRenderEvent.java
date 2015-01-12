@@ -1,18 +1,24 @@
-package fr.skyforce77.towerminer.api.events.menu;
+package fr.skyforce77.towerminer.api.events.chat;
 
 import java.util.ArrayList;
 
-import fr.skyforce77.towerminer.menus.Menu;
+import fr.skyforce77.towerminer.api.events.TMEvent;
+import fr.skyforce77.towerminer.protocol.chat.MessageModel;
 import fr.skyforce77.towerminer.render.RenderRunnable;
 
-public class MenuRenderEvent extends MenuEvent {
-
+public class ChatMouseHoverRenderEvent extends TMEvent{
+	
+	private MessageModel model;
     private ArrayList<RenderRunnable> renders = new ArrayList<>();
     private ArrayList<RenderRunnable> replacerenders = new ArrayList<>();
 
-    public MenuRenderEvent(Menu menu) {
-        super(menu);
-    }
+	public ChatMouseHoverRenderEvent(MessageModel model) {
+		this.model = model;
+	}
+	
+	public MessageModel getModel() {
+		return model;
+	}
 
     public ArrayList<RenderRunnable> getRenders() {
         return renders;
@@ -29,5 +35,5 @@ public class MenuRenderEvent extends MenuEvent {
     		renders.add(render);
     	}
     }
-
+	
 }
