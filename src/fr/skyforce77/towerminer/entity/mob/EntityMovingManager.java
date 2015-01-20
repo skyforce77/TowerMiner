@@ -78,6 +78,7 @@ public class EntityMovingManager {
                 move.remove(m);
             }
         });
-        move.get(m).start();
+        if(move != null)
+        	move.get(m).start();
     }
 }

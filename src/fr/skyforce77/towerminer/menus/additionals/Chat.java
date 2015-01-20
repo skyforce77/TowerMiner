@@ -9,6 +9,7 @@ import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.Point;
 import java.awt.font.TextAttribute;
 import java.io.IOException;
 import java.net.URI;
@@ -54,10 +55,14 @@ public class Chat {
 		if(message.toString().startsWith("/")) {
 			return;
 		}
+		
+		ArrayList<Point> cut = RenderHelper.cutParts((Graphics2D)TowerMiner.game.getGraphics(),TowerMiner.getFont(12), message.toString(), TowerMiner.game.getSize());
 
-		messages.add(message);
-		messagedate.add(new Date().getTime());
-		TowerMiner.print(message.toString(), "chat");
+		for(Point p : cut) {
+			messages.add(message.cutMessage(p.x, p.y));
+			messagedate.add(new Date().getTime());
+			TowerMiner.print(message.cutMessage(p.x, p.y).toString(), "chat");
+		}
 
 		int h = 0;
 		while(messagedate.size() > max) {

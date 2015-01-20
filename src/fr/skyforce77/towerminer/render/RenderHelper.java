@@ -2,13 +2,17 @@ package fr.skyforce77.towerminer.render;
 
 import java.awt.AlphaComposite;
 import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.GraphicsConfiguration;
 import java.awt.GraphicsEnvironment;
 import java.awt.Image;
+import java.awt.Point;
 import java.awt.RenderingHints;
 import java.awt.Transparency;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 
 import fr.skyforce77.towerminer.entity.mob.Mob;
 
@@ -112,5 +116,27 @@ public class RenderHelper {
         bGr.dispose();
         return bimage;
     }
+    
+    public static ArrayList<Point> cutParts(Graphics2D g2d, Font f, String desc, Dimension size) {
+		ArrayList<Point> cut = new ArrayList<>();
+		int start = 0;
+		while(!desc.equals("")) {
+			String rest = "";
+			while(g2d.getFontMetrics(f).stringWidth(desc) > size.getWidth()) {
+				int i = desc.lastIndexOf(" ");
+				rest = desc.substring(i)+rest;
+				desc = desc.substring(0, i);
+			}
+
+			if(start == 0) {
+				cut.add(new Point(start, start+desc.length()));
+			} else {
+				cut.add(new Point(start+1, start+desc.length()));
+			}
+			start += desc.length();
+			desc = rest;
+		}
+		return cut;
+	}
 
 }
