@@ -189,24 +189,21 @@ public class TowerMiner {
         }
     }
 
-    public static void main(String[] args) {
-        if (dev) {
-            startGame(-1, "ok", "windows", "dev", UUID.randomUUID(), 0);
-            return;
-        }
-        LanguageManager.initLanguages();
-        JOptionPane.showMessageDialog(game, "- " + LanguageManager.getText("launcher.without") + "\n- " + LanguageManager.getText("launcher.outdated"), LanguageManager.getText("launcher.information"), JOptionPane.ERROR_MESSAGE);
-    }
-
     @SuppressWarnings("deprecation")
     public static void print(String message, String level) {
         Date d = new Date();
-        System.out.println("[" + d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds() + "] " + "[" + level.toUpperCase() + "] " + message);
+        String printed = "[" + d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds() + "] " + "[" + level.toUpperCase() + "] " + message;
+        
+        if(TMApplet.instance != null) {
+        	TMApplet.instance.print(printed);
+        } else {
+        	System.out.println(printed);
+        }
     }
 
     public static void printError(String error) {
         print(error, "ERROR");
-        if (menu instanceof ChatContainer) {
+        if(menu instanceof ChatContainer) {
             ChatModel head = new ChatModel("[Error] ");
             head.setForegroundColor(Color.RED);
             ChatMessage message = new ChatMessage(head, new ChatModel(error));
@@ -216,7 +213,7 @@ public class TowerMiner {
 
     public static void printWarning(String warning) {
         print(warning, "WARNING");
-        if (menu instanceof ChatContainer) {
+        if(menu instanceof ChatContainer) {
             ChatModel head = new ChatModel("[Warning] ");
             head.setForegroundColor(Color.ORANGE);
             ChatMessage message = new ChatMessage(head, new ChatModel(warning));
@@ -243,5 +240,14 @@ public class TowerMiner {
         }
 
         return font.deriveFont(font.getStyle(), size);
+    }
+    
+    public static void main(String[] args) {
+        if(dev) {
+            startGame(-1, "ok", "windows", "dev", UUID.randomUUID(), 0);
+            return;
+        }
+        LanguageManager.initLanguages();
+        JOptionPane.showMessageDialog(game, "- " + LanguageManager.getText("launcher.without") + "\n- " + LanguageManager.getText("launcher.outdated"), LanguageManager.getText("launcher.information"), JOptionPane.ERROR_MESSAGE);
     }
 }
