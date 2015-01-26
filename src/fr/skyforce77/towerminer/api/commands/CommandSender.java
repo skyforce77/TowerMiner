@@ -3,7 +3,7 @@ package fr.skyforce77.towerminer.api.commands;
 import com.esotericsoftware.kryonet.Connection;
 
 import fr.skyforce77.towerminer.TowerMiner;
-import fr.skyforce77.towerminer.api.Utils;
+import fr.skyforce77.towerminer.api.PluginUtils;
 import fr.skyforce77.towerminer.protocol.chat.ChatMessage;
 import fr.skyforce77.towerminer.protocol.packets.Packet11ChatMessage;
 
@@ -27,7 +27,7 @@ public class CommandSender {
 	
 	public void sendMessage(ChatMessage message) {
 		if(type.equals(SenderType.CHAT)) {
-			Utils.write(message);
+			PluginUtils.write(message);
 		} else if(type.equals(SenderType.OTHER_PLAYER) && c != null) {
 			Packet11ChatMessage pm = new Packet11ChatMessage(message);
 			pm.response = true;

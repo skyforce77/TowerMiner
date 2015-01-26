@@ -23,7 +23,7 @@ import fr.skyforce77.towerminer.achievements.Achievements;
 import fr.skyforce77.towerminer.achievements.Popup;
 import fr.skyforce77.towerminer.achievements.ServerPopup;
 import fr.skyforce77.towerminer.api.PluginManager;
-import fr.skyforce77.towerminer.api.Utils;
+import fr.skyforce77.towerminer.api.PluginUtils;
 import fr.skyforce77.towerminer.api.events.PluginMessageEvent;
 import fr.skyforce77.towerminer.entity.Entity;
 import fr.skyforce77.towerminer.entity.EntityTypes;
@@ -402,7 +402,7 @@ public class ProtocolManager implements PacketListener {
 						}
 						if(!sent) {
 							TowerMiner.returnMenu(Menu.mainmenu);
-							Utils.write("Client refused plugin sending");
+							PluginUtils.write("Client refused plugin sending");
 						}
 						new Packet3Action("sendingmap").sendConnectionTCP(MPInfos.connection);
 						new BigSending(Maps.getActualMap(), MPInfos.connection, new ReceivingThread() {

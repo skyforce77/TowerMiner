@@ -9,8 +9,7 @@ import fr.skyforce77.towerminer.protocol.chat.ChatMessage;
 import fr.skyforce77.towerminer.protocol.packets.Packet;
 import fr.skyforce77.towerminer.protocol.packets.Packet11ChatMessage;
 
-@Deprecated
-public class Utils {
+public class PluginUtils {
 
 	public static SinglePlayer getSinglePlayer() {
 		return (SinglePlayer)TowerMiner.menu;
