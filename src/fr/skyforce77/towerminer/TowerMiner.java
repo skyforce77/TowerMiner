@@ -12,6 +12,7 @@ import javax.swing.SwingUtilities;
 
 import fr.skyforce77.towerminer.achievements.Achievements;
 import fr.skyforce77.towerminer.achievements.Popup;
+import fr.skyforce77.towerminer.api.PluginAPI;
 import fr.skyforce77.towerminer.api.PluginManager;
 import fr.skyforce77.towerminer.api.commands.CommandManager;
 import fr.skyforce77.towerminer.api.events.menu.MenuPreChangeEvent;
@@ -41,7 +42,7 @@ public class TowerMiner {
     public static int actuallauncherversion = -1;
 
     public static boolean dev = true;
-    public static String version = "1.3.2";
+    public static String version = "1.4";
 
     public static boolean launcherupdateneeded = true;
     public static String[] os = new String[]{"linux", "windows"};
@@ -76,6 +77,10 @@ public class TowerMiner {
                 if (!RessourcesManager.getSaveDirectory().exists()) {
                     RessourcesManager.getSaveDirectory().mkdirs();
                 }
+                printInfo("---------------------------------------");
+                printInfo(" Version: "+version);
+                printInfo(" API: "+PluginAPI.getVersionName());
+                printInfo("---------------------------------------\n");
                 printInfo("Initializing game system...");
                 DataBase.load();
                 Blocks.loadCustomBlocks();

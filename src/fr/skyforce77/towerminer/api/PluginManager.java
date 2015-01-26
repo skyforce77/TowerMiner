@@ -138,6 +138,19 @@ public class PluginManager {
     public static ArrayList<String> getPlugins() {
         return pluginlist;
     }
+    
+    public static boolean hasPlugin(String name) {
+        return pluginlist.contains(name);
+    }
+    
+    public static Plugin getPlugin(String name) {
+    	if(pluginlist.contains(name)) {
+    		int index = pluginlist.indexOf(name);
+    		return plugins.get(index);
+    	} else {
+    		return null;
+    	}
+    }
 
     public static boolean canConnect(ArrayList<String> pl) {
         boolean can = true;
