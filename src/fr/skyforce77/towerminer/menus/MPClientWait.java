@@ -35,7 +35,7 @@ public class MPClientWait extends Menu {
         new Thread("ClientConnection") {
             public void run() {
             	if(Connect.client == null)
-            			Connect.initClient();
+            		Connect.initClient();
                 if (!Connect.connect(ip)) {
                     text = LanguageManager.getText("menu.mp.client.fail");
                     try {

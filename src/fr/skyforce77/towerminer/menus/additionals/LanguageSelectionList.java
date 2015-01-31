@@ -55,7 +55,7 @@ public class LanguageSelectionList extends JFrame {
                 LanguageManager.setLanguage((String) ((JList<?>) e.getSource()).getSelectedValue());
                 lsl.dispose();
                 TowerMiner.game.dispose();
-                TowerMiner.startGame(TowerMiner.actuallauncherversion, "ok", TowerMiner.usedos, TowerMiner.player, TowerMiner.id, 0);
+                TowerMiner.startGame(TowerMiner.launcherActual, "ok", TowerMiner.usedos, TowerMiner.player, TowerMiner.id, 0);
             }
         });
 

@@ -1,11 +1,11 @@
 package fr.skyforce77.towerminer.api.commands;
 
+import java.awt.Color;
+import java.util.ArrayList;
+
 import fr.skyforce77.towerminer.protocol.chat.ChatMessage;
 import fr.skyforce77.towerminer.protocol.chat.ChatModel;
 import fr.skyforce77.towerminer.protocol.chat.MessageModel;
-
-import java.awt.*;
-import java.util.ArrayList;
 
 public class Command {
 
@@ -15,16 +15,9 @@ public class Command {
     private Argument[] arguments;
     private ArrayList<String> alias = new ArrayList<String>();
 
-    public void onTyped(CommandSender sender, String[] args) {
-        onTyped(args);
-    }
+    public void onTyped(CommandSender sender, String[] args) {}
 
-    @Deprecated
-    public void onTyped(String[] args) {
-    }
-
-    public void onInitialized(String label) {
-    }
+    public void onInitialized(String label) {}
 
     public void setArguments(Argument... args) {
         arguments = args;
@@ -50,7 +43,7 @@ public class Command {
         if (arguments != null) {
             for (Argument argu : arguments) {
                 msg.addModel(new ChatModel(" "));
-                msg.addModel(argu.getRender());
+                msg.addModel(argu.toChatModel());
             }
         }
         return msg;

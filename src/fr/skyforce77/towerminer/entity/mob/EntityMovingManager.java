@@ -1,11 +1,11 @@
 package fr.skyforce77.towerminer.entity.mob;
 
+import java.awt.Point;
+import java.util.HashMap;
+
 import fr.skyforce77.towerminer.TowerMiner;
 import fr.skyforce77.towerminer.entity.effects.EntityEffectType;
 import fr.skyforce77.towerminer.menus.SinglePlayer;
-
-import java.awt.*;
-import java.util.HashMap;
 
 public class EntityMovingManager {
 
@@ -78,7 +78,7 @@ public class EntityMovingManager {
                 move.remove(m);
             }
         });
-        if(move != null)
+        if(move != null && move.get(m) != null)
         	move.get(m).start();
     }
 }

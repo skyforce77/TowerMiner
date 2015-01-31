@@ -26,6 +26,7 @@ import com.esotericsoftware.kryonet.Connection;
 
 import fr.skyforce77.towerminer.TowerMiner;
 import fr.skyforce77.towerminer.api.events.TMEvent;
+import fr.skyforce77.towerminer.api.events.plugin.PluginEnabledEvent;
 import fr.skyforce77.towerminer.menus.Menu;
 import fr.skyforce77.towerminer.multiplayer.MPInfos;
 import fr.skyforce77.towerminer.protocol.BigSending;
@@ -44,8 +45,8 @@ public class PluginManager {
     private static ArrayList<File> pluginfiles = new ArrayList<File>();
     private static ArrayList<String> pluginlist = new ArrayList<String>();
     private static List<TMListener> handlers = new ArrayList<TMListener>();
-    public static boolean responsereceived = false;
-    public static boolean pluginsreceived = false;
+    public static boolean responseReceived = false;
+    public static boolean pluginsReceived = false;
 
     public static void initPlugins() {
         RessourcesManager.getPluginsDirectory().mkdirs();
@@ -66,10 +67,11 @@ public class PluginManager {
             pluginfiles.add(f);
             TowerMiner.printInfo("Enabling " + p.getName() + " plugin");
             PluginStatus status = p.onEnable();
+            callSyncEvent(new PluginEnabledEvent(p.getName(), p.getVersion(), status));
             ChatModel chatstate = new ChatModel(" enabled");
             if(status.getCode() >= 2) {
             	chatstate = new ChatModel(" not enabled");
-            	chatstate.setMouseModel(new MessageModel("#"+status.getCode()));
+            	chatstate.setMouseModel(new MessageModel("Error code: "+status.getCode()));
             	chatstate.setForegroundColor(Color.ORANGE);
             } else if(status.equals(PluginStatus.WARNING)) {
             	TowerMiner.printWarning("Enabled " + p.getName() + " plugin with warnings.");
@@ -189,12 +191,12 @@ public class PluginManager {
                                 pe.sendAllTCP();
                             }
                         });
-                        while(!responsereceived) {
+                        while(!responseReceived) {
                         	Thread.sleep(100l);
                         }
-                        responsereceived = false;
-                        if(pluginsreceived) {
-                        	pluginsreceived = false;
+                        responseReceived = false;
+                        if(pluginsReceived) {
+                        	pluginsReceived = false;
                         	return true;
                         } else {
                             TowerMiner.returnMenu(Menu.mainmenu);

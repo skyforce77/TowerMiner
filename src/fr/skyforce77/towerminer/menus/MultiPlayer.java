@@ -93,35 +93,6 @@ public class MultiPlayer extends SinglePlayer {
 	@Override
 	public void drawMenu(Graphics2D g2d) {
 		super.drawMenu(g2d);
-
-		new Thread("GameOver") {
-			@Override
-			public void run() {
-				if(gameover) {
-					boolean team = Maps.getActualMap().getDeathPoints()[0].equals(Maps.getActualMap().getDeathPoints()[1]);
-					try {
-						Connection co = MPInfos.connection;
-						if (team) {
-							new Packet1Disconnecting(LanguageManager.getText("menu.mp.gameover.survive", round - 1)).sendAllTCP();
-							if (server) {
-								new ProtocolManager().onServerReceived(co, new Packet1Disconnecting(LanguageManager.getText("menu.mp.gameover.survive", round - 1)));
-							} else {
-								new ProtocolManager().onClientReceived(co, new Packet1Disconnecting(LanguageManager.getText("menu.mp.gameover.survive", round - 1)));
-							}
-						} else {
-							new Packet1Disconnecting(LanguageManager.getText("menu.mp.gameover.lose", round)).sendAllTCP();
-							if (server) {
-								new ProtocolManager().onClientReceived(co, new Packet1Disconnecting(LanguageManager.getText("menu.mp.gameover.win")));
-							} else {
-								new ProtocolManager().onServerReceived(co, new Packet1Disconnecting(LanguageManager.getText("menu.mp.gameover.win")));
-							}
-						}
-					} catch(Exception e) {
-						e.printStackTrace();
-					}
-				}
-			}
-		}.start();
 	}
 
 	@Override
@@ -133,7 +104,7 @@ public class MultiPlayer extends SinglePlayer {
 		} else {
 			Connect.client.stop();
 		}
-		MPInfos.matchplaying = false;
+		MPInfos.remove();
 		
 		OverlayManager.clearComponents();
 	}
@@ -175,6 +146,43 @@ public class MultiPlayer extends SinglePlayer {
 			}
 
 			;
+		}.start();
+		
+		final Menu m = this;
+		new Thread("GameOver") {
+			@Override
+			public void run() {
+				while(TowerMiner.menu.equals(m) && !gameover) {
+					try {
+						Thread.sleep(200);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+				}
+				if(gameover) {
+					boolean team = Maps.getActualMap().getDeathPoints()[0].equals(Maps.getActualMap().getDeathPoints()[1]);
+					try {
+						Connection co = MPInfos.connection;
+						if (team) {
+							new Packet1Disconnecting(LanguageManager.getText("menu.mp.gameover.survive", round - 1)).sendAllTCP();
+							if (server) {
+								new ProtocolManager().onServerReceived(co, new Packet1Disconnecting(LanguageManager.getText("menu.mp.gameover.survive", round - 1)));
+							} else {
+								new ProtocolManager().onClientReceived(co, new Packet1Disconnecting(LanguageManager.getText("menu.mp.gameover.survive", round - 1)));
+							}
+						} else {
+							new Packet1Disconnecting(LanguageManager.getText("menu.mp.gameover.lose", round)).sendAllTCP();
+							if (server) {
+								new ProtocolManager().onClientReceived(co, new Packet1Disconnecting(LanguageManager.getText("menu.mp.gameover.win")));
+							} else {
+								new ProtocolManager().onServerReceived(co, new Packet1Disconnecting(LanguageManager.getText("menu.mp.gameover.win")));
+							}
+						}
+					} catch(Exception e) {
+						e.printStackTrace();
+					}
+				}
+			}
 		}.start();
 	}
 

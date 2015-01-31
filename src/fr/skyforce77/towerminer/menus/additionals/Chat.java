@@ -238,7 +238,7 @@ public class Chat {
 							if(model.getMouseModel() != null && model.getMouseModel().getText() != null) {
 								render = new Thread("MouseModelRender") {
 									public void run() {
-										ChatMouseHoverRenderEvent mh = new ChatMouseHoverRenderEvent(model.getMouseModel());
+										ChatMouseHoverRenderEvent mh = new ChatMouseHoverRenderEvent(model);
 										PluginManager.callSyncEvent(mh);
 										if(mh.getReplaceRenders().size() == 0) {
 											g2d.setFont(TowerMiner.getFont(12));

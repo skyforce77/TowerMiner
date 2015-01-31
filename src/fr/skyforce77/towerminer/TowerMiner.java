@@ -38,33 +38,31 @@ public class TowerMiner {
 
     public static Game game;
     public static Menu menu;
-    public static int neededlauncherversion = 13;
-    public static int actuallauncherversion = -1;
+    public static int launcherNeeded = 13;
+    public static int launcherActual = -1;
 
     public static boolean dev = true;
     public static String version = "1.4";
 
-    public static boolean launcherupdateneeded = true;
+    public static boolean launcherUpdate = true;
     public static String[] os = new String[]{"linux", "windows"};
     public static String usedos = "linux";
     public static String player = "Player" + new Random().nextInt(1000);
     public static UUID id;
-    public static int ldata;
 
     private static Font font;
 
-    public static void startGame(final int launchedversion, final String state, final String os, String player, UUID id, int data) {
+    public static void startGame(final int launchedVersion, final String state, final String os, String player, UUID id, int data) {
         usedos = os;
         TowerMiner.player = player;
         TowerMiner.id = id;
-        actuallauncherversion = launchedversion;
-        ldata = data;
+        launcherActual = launchedVersion;
 
         LanguageManager.initLanguages();
 
-        if (launchedversion != -1 && launchedversion < neededlauncherversion) {
-            if (launcherupdateneeded) {
-                JOptionPane.showMessageDialog(game, LanguageManager.getText("launcher.outdated") + "\n" + launchedversion + " < " + neededlauncherversion, LanguageManager.getText("launcher.information"), JOptionPane.ERROR_MESSAGE);
+        if (launchedVersion != -1 && launchedVersion < launcherNeeded) {
+            if (launcherUpdate) {
+                JOptionPane.showMessageDialog(game, LanguageManager.getText("launcher.outdated") + "\n" + launchedVersion + " < " + launcherNeeded, LanguageManager.getText("launcher.information"), JOptionPane.ERROR_MESSAGE);
                 return;
             }
         }
@@ -104,7 +102,7 @@ public class TowerMiner {
                 game = new Game();
                 Menu.initMenus(game);
                 setMenu(Menu.mainmenu);
-                MainAchievements(launchedversion, state, os);
+                MainAchievements(launchedVersion, state, os);
                 game.setVisible(true);
                 Music.playMusic("incursion");
 
@@ -128,7 +126,7 @@ public class TowerMiner {
                     e.printStackTrace();
                 }
 
-                if (launchedversion != -1 && launchedversion < neededlauncherversion) {
+                if (launchedversion != -1 && launchedversion < launcherNeeded) {
                     TowerMiner.game.displayPopup(new Popup(LanguageManager.getText("launcher.update.needed"), 6000, "warning"));
                 }
 

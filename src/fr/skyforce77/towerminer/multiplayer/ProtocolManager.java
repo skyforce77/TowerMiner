@@ -24,7 +24,10 @@ import fr.skyforce77.towerminer.achievements.Popup;
 import fr.skyforce77.towerminer.achievements.ServerPopup;
 import fr.skyforce77.towerminer.api.PluginManager;
 import fr.skyforce77.towerminer.api.PluginUtils;
-import fr.skyforce77.towerminer.api.events.PluginMessageEvent;
+import fr.skyforce77.towerminer.api.cookie.CookieAddedEvent;
+import fr.skyforce77.towerminer.api.cookie.CookieRemovedEvent;
+import fr.skyforce77.towerminer.api.cookie.CookieRequestedEvent;
+import fr.skyforce77.towerminer.api.events.plugin.PluginMessageEvent;
 import fr.skyforce77.towerminer.entity.Entity;
 import fr.skyforce77.towerminer.entity.EntityTypes;
 import fr.skyforce77.towerminer.entity.mob.Mob;
@@ -70,6 +73,8 @@ import fr.skyforce77.towerminer.protocol.packets.Packet24ServerPopup;
 import fr.skyforce77.towerminer.protocol.packets.Packet25RemoveOverlayComponent;
 import fr.skyforce77.towerminer.protocol.packets.Packet26AddOverlayComponent;
 import fr.skyforce77.towerminer.protocol.packets.Packet27UpdateOverlayComponent;
+import fr.skyforce77.towerminer.protocol.packets.Packet28Cookie;
+import fr.skyforce77.towerminer.protocol.packets.Packet29RequestCookie;
 import fr.skyforce77.towerminer.protocol.packets.Packet2BigSending;
 import fr.skyforce77.towerminer.protocol.packets.Packet3Action;
 import fr.skyforce77.towerminer.protocol.packets.Packet4RoundFinished;
@@ -378,6 +383,42 @@ public class ProtocolManager implements PacketListener {
 			if(storage != null) {
 				storage.add(pack27.getStorage());
 			}
+		} else if (p.getId() == 28) {
+			Packet28Cookie pack28 = (Packet28Cookie)p;
+			
+			if(DataBase.getValue("cookies") == null) {
+				DataBase.setValue("cookies", new TMStorage());
+			}
+			
+			if(pack28.action == 0) {
+				TMStorage cookie = pack28.getStorage();
+				if(cookie != null) {
+					CookieAddedEvent cae = new CookieAddedEvent(pack28.getName(), cookie);
+		            PluginManager.callSyncEvent(cae);
+		            if(cae.isCancelled())
+		            	((TMStorage)DataBase.getValue("cookies")).addTMStorage(pack28.getName(), cookie);
+				}
+			} else if(pack28.action == 1) {
+				TMStorage cookie = pack28.getStorage();
+				if(cookie != null) {
+					CookieRemovedEvent cre = new CookieRemovedEvent(pack28.getName(), cookie);
+		            PluginManager.callSyncEvent(cre);
+		            if(cre.isCancelled())
+		            	((TMStorage)DataBase.getValue("cookies")).removeEntry(pack28.getName());
+				}
+			}
+		} else if (p.getId() == 29) {
+			Packet29RequestCookie pack29 = (Packet29RequestCookie)p;
+			
+			if(DataBase.getValue("cookies") == null) {
+				DataBase.setValue("cookies", new TMStorage());
+			}
+			
+			CookieRequestedEvent cre = new CookieRequestedEvent(pack29.getName(), ((TMStorage)DataBase.getValue("cookies")).getTMStorage(pack29.getName()));
+		    PluginManager.callSyncEvent(cre);
+		    if(cre.isCancelled()) {
+		    	c.sendTCP(new Packet28Cookie(cre.getName(), cre.getCookie()));
+		    }
 		}
 	}
 
@@ -499,8 +540,8 @@ public class ProtocolManager implements PacketListener {
 			new Packet15ServerInfos(((Packet14ServerPing) p).name, "A client server").sendConnectionTCP(c);
 		} else if (p.getId() == 21) {
 			Packet21LoadPlugin pack21 = (Packet21LoadPlugin) p;
-			PluginManager.pluginsreceived =  pack21.installed;
-			PluginManager.responsereceived = true;
+			PluginManager.pluginsReceived = pack21.installed;
+			PluginManager.responseReceived = true;
 		}
 	}
 

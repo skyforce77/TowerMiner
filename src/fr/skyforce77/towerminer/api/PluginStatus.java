@@ -7,7 +7,8 @@ public class PluginStatus {
 	public static PluginStatus ERROR = new PluginStatus(2);
 
 	private int code;
-	PluginStatus(int code) {
+	
+	public PluginStatus(int code) {
 		this.code = code;
 	}
 	

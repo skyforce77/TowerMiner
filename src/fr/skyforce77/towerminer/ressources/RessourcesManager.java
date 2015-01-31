@@ -19,6 +19,7 @@ public class RessourcesManager {
     private static HashMap<String, Image> imgurls = new HashMap<String, Image>();
     private static ArrayList<String> dl = new ArrayList<String>();
     private static int background = new Random().nextInt(2);
+    private static File directory = null;
 
     public RessourcesManager() {
         super();
@@ -33,7 +34,7 @@ public class RessourcesManager {
             return imgurls.get(url);
         } else {
             if (!dl.contains(url)) {
-                new Thread("ImageDownload") {
+                new Thread("ImageDownload-"+url) {
                     @Override
                     public void run() {
                         dl.add(url);
@@ -102,15 +103,28 @@ public class RessourcesManager {
     }
 
     public static File getDirectory() {
+    	if(directory != null) {
+    		return directory;
+    	}
+    	
+    	File f = null;
         String OS = System.getProperty("os.name").toUpperCase();
+        
         if (OS.contains("WIN"))
-            return new File(System.getenv("APPDATA"), "/.towerminer");
+            f = new File(System.getenv("APPDATA"), "/.towerminer");
         else if (OS.contains("MAC"))
-            return new File(System.getProperty("user.home") + "/Library/Application "
-                    + "Support", "/.towerminer");
+            f = new File(System.getProperty("user.home") + "/Library/Application Support", "/.towerminer");
         else if (OS.contains("NUX"))
-            return new File(System.getProperty("user.home"), "/.towerminer");
-        return new File(System.getProperty("user.dir"), "/.towerminer");
+            f = new File(System.getProperty("user.home"), "/.towerminer");
+        else
+        	f = new File(System.getProperty("user.dir"), "/.towerminer");
+        
+        if(TowerMiner.dev) {
+        	f = new File(f.getAbsolutePath()+"-dev");
+        }
+        
+        directory = f;
+        return f;
     }
 
     public static File getMapsDirectory() {
