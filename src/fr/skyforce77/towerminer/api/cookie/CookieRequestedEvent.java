@@ -1,19 +1,18 @@
 package fr.skyforce77.towerminer.api.cookie;
 
 import fr.skyforce77.towerminer.api.events.TMCancellableEvent;
-import fr.skyforce77.towerminer.protocol.save.TMStorage;
 
 public class CookieRequestedEvent extends CookieEvent implements TMCancellableEvent{
 
-	private TMStorage cookie;
+	private String cookie;
 	private boolean cancelled = false;
 	
-	public CookieRequestedEvent(String name, TMStorage cookie) {
-		super(name);
+	public CookieRequestedEvent(String server, String name, String cookie) {
+		super(name, server);
 		this.cookie = cookie;
 	}
 	
-	public TMStorage getCookie() {
+	public String getCookie() {
 		return cookie;
 	}
 

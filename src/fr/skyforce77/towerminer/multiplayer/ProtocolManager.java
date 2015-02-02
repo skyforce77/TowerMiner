@@ -328,7 +328,7 @@ public class ProtocolManager implements PacketListener {
             new Thread("PluginAutoInstall") {
                 public void run() {
                 	Packet21LoadPlugin load = new Packet21LoadPlugin();
-                	File f = new File(RessourcesManager.getServerPluginsDirectory(c.getRemoteAddressTCP().getHostString()), fc.getFileName());
+                	File f = new File(RessourcesManager.getServerPluginsDirectory(c), fc.getFileName());
                 	
                 	if(f.exists()) {
                 		PluginManager.loadPlugin(f);
@@ -339,7 +339,7 @@ public class ProtocolManager implements PacketListener {
                 	
                     int ok = JOptionPane.showConfirmDialog(null, LanguageManager.getText("plugin.auto.want", fc.getFileName().replace(".jar", "")), "Plugin", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
                     if(ok == JOptionPane.YES_OPTION) {
-						PluginManager.loadPlugin(c.getRemoteAddressTCP().getHostString(), fc);
+						PluginManager.loadPlugin(c, fc);
 						load.installed = true;
 						load.sendAllTCP();
 					} else {
@@ -386,38 +386,30 @@ public class ProtocolManager implements PacketListener {
 		} else if (p.getId() == 28) {
 			Packet28Cookie pack28 = (Packet28Cookie)p;
 			
-			if(DataBase.getValue("cookies") == null) {
-				DataBase.setValue("cookies", new TMStorage());
-			}
-			
 			if(pack28.action == 0) {
-				TMStorage cookie = pack28.getStorage();
+				String cookie = pack28.getCookie();
 				if(cookie != null) {
-					CookieAddedEvent cae = new CookieAddedEvent(pack28.getName(), cookie);
+					CookieAddedEvent cae = new CookieAddedEvent(c.getRemoteAddressTCP().getHostString(), pack28.getName(), cookie);
 		            PluginManager.callSyncEvent(cae);
-		            if(cae.isCancelled())
-		            	((TMStorage)DataBase.getValue("cookies")).addTMStorage(pack28.getName(), cookie);
+		            if(!cae.isCancelled())
+		            	RessourcesManager.addServerCookie(c, pack28.getName(), cookie);
 				}
 			} else if(pack28.action == 1) {
-				TMStorage cookie = pack28.getStorage();
+				String cookie = RessourcesManager.getServerCookie(c, pack28.getName());
 				if(cookie != null) {
-					CookieRemovedEvent cre = new CookieRemovedEvent(pack28.getName(), cookie);
+					CookieRemovedEvent cre = new CookieRemovedEvent(c.getRemoteAddressTCP().getHostString(), pack28.getName(), cookie);
 		            PluginManager.callSyncEvent(cre);
-		            if(cre.isCancelled())
-		            	((TMStorage)DataBase.getValue("cookies")).removeEntry(pack28.getName());
+		            if(!cre.isCancelled())
+		            	RessourcesManager.removeServerCookie(c, pack28.getName());
 				}
 			}
 		} else if (p.getId() == 29) {
 			Packet29RequestCookie pack29 = (Packet29RequestCookie)p;
 			
-			if(DataBase.getValue("cookies") == null) {
-				DataBase.setValue("cookies", new TMStorage());
-			}
-			
-			CookieRequestedEvent cre = new CookieRequestedEvent(pack29.getName(), ((TMStorage)DataBase.getValue("cookies")).getTMStorage(pack29.getName()));
+			CookieRequestedEvent cre = new CookieRequestedEvent(c.getRemoteAddressTCP().getHostString(), pack29.getName(), RessourcesManager.getServerCookie(c, pack29.getName()));
 		    PluginManager.callSyncEvent(cre);
-		    if(cre.isCancelled()) {
-		    	c.sendTCP(new Packet28Cookie(cre.getName(), cre.getCookie()));
+		    if(!cre.isCancelled()) {
+		    	c.sendTCP(new Packet28Cookie(Packet28Cookie.RESPOND, cre.getName(), cre.getCookie()));
 		    }
 		}
 	}

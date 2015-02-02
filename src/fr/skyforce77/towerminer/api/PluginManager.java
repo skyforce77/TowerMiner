@@ -111,10 +111,10 @@ public class PluginManager {
         }
     }
 
-    public static void loadPlugin(String server, FileContainer fc) {
+    public static void loadPlugin(Connection c, FileContainer fc) {
         try {
             File fl = fc.recreate(RessourcesManager.getTempDirectory());
-            File f = new File(RessourcesManager.getServerPluginsDirectory(server), fl.getName());
+            File f = new File(RessourcesManager.getServerPluginsDirectory(c), fl.getName());
             f.createNewFile();
             move(fl, f);
             loadPlugin(f);
