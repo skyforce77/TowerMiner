@@ -3,7 +3,7 @@ package fr.skyforce77.towerminer.api;
 public class PluginAPI {
 
 	private static int version = 1;
-	private static int revision = 0;
+	private static int revision = 1;
 	
 	public static int getVersion() {
 		return version;

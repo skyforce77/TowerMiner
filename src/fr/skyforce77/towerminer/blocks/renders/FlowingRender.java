@@ -31,17 +31,9 @@ public class FlowingRender extends BlockRender {
         } else {
             image = b.getTexture(0);
         }
-        g2d = (Graphics2D) g2d.create(x, y, pix, pix);
-
-        if (data <= 3) {
-            g2d.rotate(Math.toRadians(90 * data), pix / 2, pix / 2);
-            g2d.drawImage(image, 0, -(pix * states.get(b)), pix * 2, pix * images, null);
-        } else {
-            g2d.rotate(Math.toRadians(90 * data + 45), pix / 2, pix / 2);
-            g2d.drawImage(image, -pix / 2, -(pix * states.get(b)), pix * 2, pix * images, null);
-            g2d.drawImage(image, -pix / 2, -(pix * states.get(b)) - (images * pix), pix * 2, pix * images, null);
-            g2d.drawImage(image, -pix / 2, -(pix * states.get(b)) + (images * pix), pix * 2, pix * images, null);
-        }
+        g2d = (Graphics2D) g2d.create(x, y, pix, pix); 
+        g2d.rotate(Math.toRadians(90 * data), pix / 2, pix / 2);
+        g2d.drawImage(image, 0, -(pix * states.get(b)), pix * 2, pix * images, null);
     }
 
     @Override

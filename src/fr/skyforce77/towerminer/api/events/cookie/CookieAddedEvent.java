@@ -1,13 +1,13 @@
-package fr.skyforce77.towerminer.api.cookie;
+package fr.skyforce77.towerminer.api.events.cookie;
 
 import fr.skyforce77.towerminer.api.events.TMCancellableEvent;
 
-public class CookieRequestedEvent extends CookieEvent implements TMCancellableEvent{
+public class CookieAddedEvent extends CookieEvent implements TMCancellableEvent{
 
 	private String cookie;
 	private boolean cancelled = false;
 	
-	public CookieRequestedEvent(String server, String name, String cookie) {
+	public CookieAddedEvent(String server, String name, String cookie) {
 		super(name, server);
 		this.cookie = cookie;
 	}

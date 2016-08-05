@@ -1,5 +1,8 @@
 package fr.skyforce77.towerminer.menus;
 
+import java.awt.Color;
+import java.awt.Graphics2D;
+
 import fr.skyforce77.towerminer.TowerMiner;
 import fr.skyforce77.towerminer.api.PluginManager;
 import fr.skyforce77.towerminer.multiplayer.MPInfos;
@@ -8,8 +11,6 @@ import fr.skyforce77.towerminer.protocol.Protocol;
 import fr.skyforce77.towerminer.protocol.packets.Packet0Connecting;
 import fr.skyforce77.towerminer.ressources.RessourcesManager;
 import fr.skyforce77.towerminer.ressources.language.LanguageManager;
-
-import java.awt.*;
 
 public class MPClientWait extends Menu {
 
@@ -35,7 +36,7 @@ public class MPClientWait extends Menu {
         new Thread("ClientConnection") {
             public void run() {
             	if(Connect.client == null)
-            		Connect.initClient();
+            		Connect.initClient(TowerMiner.name);
                 if (!Connect.connect(ip)) {
                     text = LanguageManager.getText("menu.mp.client.fail");
                     try {

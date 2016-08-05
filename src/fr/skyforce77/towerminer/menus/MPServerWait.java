@@ -30,7 +30,7 @@ public class MPServerWait extends Menu {
     @SuppressWarnings("deprecation")
     @Override
     public void onUsed() {
-        if(!Connect.initServer()) {
+        if(!Connect.initServer(TowerMiner.name)) {
         	MPDisconnected m = new MPDisconnected();
         	m.reason = "Can't launch internal server";
         	TowerMiner.returnMenu(m);

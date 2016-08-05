@@ -7,6 +7,7 @@ import java.awt.Graphics2D;
 import java.util.Date;
 
 import fr.skyforce77.towerminer.TowerMiner;
+import fr.skyforce77.towerminer.protocol.packets.Packet;
 import fr.skyforce77.towerminer.protocol.packets.Packet3Action;
 import fr.skyforce77.towerminer.ressources.language.LanguageManager;
 import fr.skyforce77.towerminer.save.DataBase;
@@ -36,7 +37,7 @@ public class Achievement extends Popup {
         DataBase.addPermission("achievement.has." + id);
         TowerMiner.game.displayPopup(this);
         Packet3Action p = new Packet3Action("achievement");
-        p.data = p.serialize(id);
+        p.data = Packet.serialize(id);
         p.sendAllTCP();
     }
 

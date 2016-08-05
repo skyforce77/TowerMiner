@@ -24,9 +24,9 @@ import fr.skyforce77.towerminer.achievements.Popup;
 import fr.skyforce77.towerminer.achievements.ServerPopup;
 import fr.skyforce77.towerminer.api.PluginManager;
 import fr.skyforce77.towerminer.api.PluginUtils;
-import fr.skyforce77.towerminer.api.cookie.CookieAddedEvent;
-import fr.skyforce77.towerminer.api.cookie.CookieRemovedEvent;
-import fr.skyforce77.towerminer.api.cookie.CookieRequestedEvent;
+import fr.skyforce77.towerminer.api.events.cookie.CookieAddedEvent;
+import fr.skyforce77.towerminer.api.events.cookie.CookieRemovedEvent;
+import fr.skyforce77.towerminer.api.events.cookie.CookieRequestedEvent;
 import fr.skyforce77.towerminer.api.events.plugin.PluginMessageEvent;
 import fr.skyforce77.towerminer.entity.Entity;
 import fr.skyforce77.towerminer.entity.EntityTypes;
@@ -76,6 +76,7 @@ import fr.skyforce77.towerminer.protocol.packets.Packet27UpdateOverlayComponent;
 import fr.skyforce77.towerminer.protocol.packets.Packet28Cookie;
 import fr.skyforce77.towerminer.protocol.packets.Packet29RequestCookie;
 import fr.skyforce77.towerminer.protocol.packets.Packet2BigSending;
+import fr.skyforce77.towerminer.protocol.packets.Packet31ServerProperties;
 import fr.skyforce77.towerminer.protocol.packets.Packet3Action;
 import fr.skyforce77.towerminer.protocol.packets.Packet4RoundFinished;
 import fr.skyforce77.towerminer.protocol.packets.Packet5UpdateInfos;
@@ -104,7 +105,7 @@ public class ProtocolManager implements PacketListener {
 				} else {
 					id = LanguageManager.getText("menu.mp.blue");
 				}
-				Achievement a = Achievements.achievements.get(pack3.deserialize(pack3.data));
+				Achievement a = Achievements.achievements.get(Packet.deserialize(pack3.data));
 				mp.chat.onMessageReceived(new ChatMessage(new ChatModel(LanguageManager.getText("achievement.text.mp", id) + ": "), new ChatModel(a.text).setMouseModel(new MessageModel(a.getDesc()))));
 			}
 		} else if (p.getId() == 11) {
@@ -125,13 +126,13 @@ public class ProtocolManager implements PacketListener {
 			if (pack12.image != null) {
 				TowerMiner.game.displayPopup(new Popup(message, 3000, pack12.image));
 			} else if (pack12.imagedata != null) {
-				TowerMiner.game.displayPopup(new Popup(message, 3000, (Image) pack12.deserialize(pack12.imagedata)));
+				TowerMiner.game.displayPopup(new Popup(message, 3000, (Image) Packet.deserialize(pack12.imagedata)));
 			} else {
 				TowerMiner.game.displayPopup(new Popup(message, 3000));
 			}
 		} else if (p.getId() == 22) {
 			Packet22PluginMessage pack22 = (Packet22PluginMessage) p;
-			PluginMessageEvent pme = new PluginMessageEvent(pack22.plugin, pack22.version, pack22.type, pack22.deserialize(pack22.data));
+			PluginMessageEvent pme = new PluginMessageEvent(pack22.plugin, pack22.version, pack22.type, Packet.deserialize(pack22.data));
             PluginManager.callAsyncEvent(pme);
         }
     }
@@ -149,7 +150,7 @@ public class ProtocolManager implements PacketListener {
 			if (pack2.type == 0) {
 				ObjectReceiver rec = new ObjectReceiver();
 				rec.id = pack2.pid;
-				rec.sent = (Integer) pack2.deserialize(pack2.data);
+				rec.sent = (Integer) Packet.deserialize(pack2.data);
 				rec.data = new byte[pack2.lenght];
 				rec.received = new boolean[rec.sent];
 				BigSending.receiving.put(pack2.pid, rec);
@@ -188,7 +189,7 @@ public class ProtocolManager implements PacketListener {
 			if (pack3.action.equals("sendingmap")) {
 				((MPClientWait) TowerMiner.menu).text = LanguageManager.getText("menu.mp.client.map");
 			} else if (pack3.action.equals("finishedsendingmap")) {
-				Maps.maps[1023] = (Maps) pack3.deserialize(BigSending.receiving.get((int) pack3.data[0]).data);
+				Maps.maps[1023] = (Maps) Packet.deserialize(BigSending.receiving.get((int) pack3.data[0]).data);
 				Maps.setActualMap(1023);
 				c.sendTCP(new Packet3Action("canstartgame"));
 				TowerMiner.setMenu(Menu.multiplayerclient);
@@ -279,7 +280,7 @@ public class ProtocolManager implements PacketListener {
 			mp = ((MultiPlayer) TowerMiner.menu);
 			for (Entity ens : mp.draw) {
 				if (ens.getUUID() == pack10.entity) {
-					ens.getData().addObject(pack10.value, (Serializable)pack10.deserialize(pack10.data));
+					ens.getData().addObject(pack10.value, (Serializable)Packet.deserialize(pack10.data));
 				}
 			}
 		} else if (p.getId() == 13) {
@@ -310,12 +311,12 @@ public class ProtocolManager implements PacketListener {
 		} else if (p.getId() == 19) {
 			Packet19Particle pack19 = (Packet19Particle) p;
 			mp = ((MultiPlayer) TowerMiner.menu);
-			TowerMiner.game.particles.add((Particle) pack19.deserialize(pack19.particle));
+			TowerMiner.game.particles.add((Particle) Packet.deserialize(pack19.particle));
 		} else if (p.getId() == 20) {
 			Packet20EntityStorage pack20 = (Packet20EntityStorage) p;
 			mp = ((MultiPlayer) TowerMiner.menu);
 			byte[] data = BigSending.receiving.get(pack20.bigsendingid).data;
-			TMStorage tms = (TMStorage) pack20.deserialize(data);
+			TMStorage tms = (TMStorage) Packet.deserialize(data);
 			for (Entity es : mp.draw) {
 				if (tms != null && es.getUUID() == pack20.entityid) {
 					es.getData().add(tms);
@@ -324,7 +325,7 @@ public class ProtocolManager implements PacketListener {
 		} else if (p.getId() == 21) {
 			Packet21LoadPlugin pack21 = (Packet21LoadPlugin) p;
 			byte[] data = BigSending.receiving.get(pack21.eid).data;
-			final FileContainer fc = (FileContainer) pack21.deserialize(data);
+			final FileContainer fc = (FileContainer) Packet.deserialize(data);
             new Thread("PluginAutoInstall") {
                 public void run() {
                 	Packet21LoadPlugin load = new Packet21LoadPlugin();
@@ -364,7 +365,7 @@ public class ProtocolManager implements PacketListener {
 			Packet24ServerPopup pack24 = (Packet24ServerPopup)p;
 			BufferedImage bu = null;
 			try {
-				bu = ImageIO.read(new ByteArrayInputStream((byte[])pack24.deserialize(BigSending.receiving.get(pack24.imageid).data)));
+				bu = ImageIO.read(new ByteArrayInputStream((byte[])Packet.deserialize(BigSending.receiving.get(pack24.imageid).data)));
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -411,6 +412,9 @@ public class ProtocolManager implements PacketListener {
 		    if(!cre.isCancelled()) {
 		    	c.sendTCP(new Packet28Cookie(Packet28Cookie.RESPOND, cre.getName(), cre.getCookie()));
 		    }
+		} else if (p.getId() == 31) {
+			Packet31ServerProperties packet31 = (Packet31ServerProperties)p;
+			MPInfos.setProperties(packet31.getStorage());
 		}
 	}
 

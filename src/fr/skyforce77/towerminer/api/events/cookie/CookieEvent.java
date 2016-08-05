@@ -1,4 +1,4 @@
-package fr.skyforce77.towerminer.api.cookie;
+package fr.skyforce77.towerminer.api.events.cookie;
 
 import fr.skyforce77.towerminer.api.events.TMEvent;
 

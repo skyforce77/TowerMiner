@@ -74,7 +74,7 @@ public class Blocks implements Serializable {
         blocks = new Blocks[getMax()+1];
         new Blocks(0, "unknown").setInvisible();
         new Blocks(1, "stone", "stone_granite", "stone_granite_smooth", "stone_diorite", "stone_diorite_smooth", "stone_andesite", "stone_andesite_smooth");
-        new Blocks(2, "grass", "podzol").setAdaptColor(0);
+        new Blocks(2, "grass", "podzol", "grass_path_top").setAdaptColor(0);
         new Blocks(3, "dirt");
         new Blocks(4, "cobblestone");
         new Blocks(5, "planks", "planks1", "planks2", "planks3", "planks_acacia", "planks_big_oak");
@@ -232,6 +232,8 @@ public class Blocks implements Serializable {
         new Blocks(165, "slime").setOverlay();
         new Blocks(168, "prismarine_rough0", "prismarine_bricks", "prismarine_dark", "prismarine_rough1", "prismarine_rough2", "prismarine_rough3");
         new Blocks(169, "sea_lantern").setRender(1);
+        new Blocks(170, "purpur_block", "purpur_pillar", "purpur_pillar_top");
+        new Blocks(171, "end_bricks");
 
         new Blocks(996, "mskeleton", "skull_skeleton").setOverlay().setRender(7);
         new Blocks(997, "wither_skeleton_mob", "skull_wither").setOverlay().setRender(7);
