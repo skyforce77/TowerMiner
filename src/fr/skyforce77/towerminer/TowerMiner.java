@@ -41,7 +41,7 @@ public class TowerMiner {
     public static int launcherNeeded = 13;
     public static int launcherActual = -1;
 
-    public static boolean dev = false;
+    public static boolean dev = true;
     public static String version = "1.4";
     public static String name = "TowerMiner";
 

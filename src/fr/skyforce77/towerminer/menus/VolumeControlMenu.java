@@ -11,6 +11,8 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import fr.skyforce77.towerminer.TowerMiner;
+import fr.skyforce77.towerminer.api.PluginManager;
+import fr.skyforce77.towerminer.api.events.menu.MenuVolumeChangedEvent;
 import fr.skyforce77.towerminer.ressources.RessourcesManager;
 import fr.skyforce77.towerminer.ressources.language.LanguageManager;
 import fr.skyforce77.towerminer.save.DataBase;
@@ -31,10 +33,12 @@ public class VolumeControlMenu extends Menu {
         check.setFont(TowerMiner.getFont(16));
         check.setValue((int)(float)DataBase.getValue("volume", 65536F));
 
+        final Menu menu = this;
         check.addChangeListener(new ChangeListener() {
             @Override
             public void stateChanged(ChangeEvent arg0) {
                 DataBase.setValue("volume", (float)check.getValue());
+                PluginManager.callAsyncEvent(new MenuVolumeChangedEvent(menu, (float)check.getValue()));
             }
         });
 
