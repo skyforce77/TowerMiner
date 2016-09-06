@@ -9,60 +9,66 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.nio.channels.FileChannel;
 
-import javax.sound.sampled.AudioFileFormat;
-import javax.sound.sampled.AudioFormat;
-import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.DataLine;
-import javax.sound.sampled.FloatControl;
-import javax.sound.sampled.LineUnavailableException;
-import javax.sound.sampled.SourceDataLine;
-
 import fr.skyforce77.towerminer.TowerMiner;
 import fr.skyforce77.towerminer.achievements.Popup;
 import fr.skyforce77.towerminer.ressources.RessourcesManager;
 import fr.skyforce77.towerminer.ressources.language.LanguageManager;
-import fr.skyforce77.towerminer.save.DataBase;
 
 public class Music {
 
-    private static Music[] playing = new Music[10];
-    AudioInputStream audioInputStream = null;
-    SourceDataLine line;
-    File fichier;
-    boolean stopped = false;
+	// ameliration : on peut gerer les channels de maniere masqué
+	// rendre private la méthode playURL
+	// comment s'abonner au evenement?? 
+	
+	private final static int MUSIC_CHANNEL = 0;
+	private final static int SOUND_CHANNEL = 1;
+	private final static int CHANNEL_COUNT = 10;
 
-    public Music(File f) {
-        fichier = f;
+    private static Track[] tracks = new Track[CHANNEL_COUNT];
+    
+    public static void stopAll() {
+    	
+    	for(int channel = 0;channel<CHANNEL_COUNT;channel++)
+    	{
+	        if (tracks[channel] != null) {
+	        	tracks[channel].stop();
+	        }
+    	}
     }
 
-    public static void play(final int channel, String file) {
-        stop(channel);
-        playing[channel] = new Music(new File(file));
-        new Thread("MusicPlaying") {
-            public void run() {
-                try {
-                    playing[channel].run();
-                } catch (Exception e) {
-                }
-            }
-        }.start();
+    public static void volumeChange(float volume){
+    	for(int channel = 0;channel<CHANNEL_COUNT;channel++)
+    	{
+	        if (tracks[channel] != null) {
+	        	tracks[channel].applyVolume(volume);
+	        }
+    	}
     }
-
-    public static void stop(int channel) {
-        if (playing[channel] != null) {
-            playing[channel].stop();
-        }
-    }
-
+   
     public static void playSound(String name) {
-        playURL(1, RessourcesManager.getSoundURL(name), false);
+    	try {
+    		playURL(SOUND_CHANNEL, RessourcesManager.getSoundURL(name), false);
+    	} 
+        catch (Exception e) {
+        	TowerMiner.printError("playSound : " + e.getMessage());
+        }
     }
 
     public static void playMusic(String name) {
         try {
-            playURL(0, new URL("https://dl.dropboxusercontent.com/u/38885163/TowerMiner/music/" + name + ".wav"), false);
-        } catch (Exception e) {
+            playURL(MUSIC_CHANNEL, new URL("https://dl.dropboxusercontent.com/u/38885163/TowerMiner/music/" + name + ".wav"), false);
+        } 
+        catch (Exception e) {
+        	TowerMiner.printError("playMusic : " + e.getMessage());
+        }
+    }
+    
+    public static void playSound(URL cible) {
+        try {
+            playURL(SOUND_CHANNEL, cible, false);
+        } 
+        catch (Exception e) {
+        	TowerMiner.printError("playSound : " + e.getMessage());
         }
     }
 
@@ -75,50 +81,49 @@ public class Music {
                 FileOutputStream writeFile = null;
                 chemin.substring(0, chemin.lastIndexOf("/"));
                 try {
-                    URLConnection connection = url.openConnection();
-                    int fileLength = connection.getContentLength();
+                	String fileName = url.getFile().substring(url.getFile().lastIndexOf('/') + 1);
 
-                    if (!new File(chemin).exists()) {
-                        new File(chemin).mkdirs();
+                	TowerMiner.printInfo("Playing sound : " + fileName);
+                	
+                    if (!new File(chemin + "/" + fileName).exists()) {
+                    	
+                    	URLConnection connection = url.openConnection();
+                    	int fileLength = connection.getContentLength();
+                    	
+                    	if (!new File(chemin).exists()) {
+                    		new File(chemin).mkdirs();
+                    	}
+
+                    	if (fileLength == -1) {
+                    		if (display)
+                    			TowerMiner.game.displayPopup(new Popup(LanguageManager.getText("music.error"), 2000, "music_disc_gold"));
+                    		TowerMiner.print("Invalid URL or File", "music");
+                    		return;
+                    	}
+                    
+                    	input = connection.getInputStream();
+                    
+
+	                    File temp = new File(RessourcesManager.getDirectory().getPath() + "/temp");
+	                    temp.mkdirs();
+	                    File temploc = new File(temp.getPath() + "/" + fileName);
+	                    temploc.deleteOnExit();
+	                    writeFile = new FileOutputStream(temploc);
+	                    byte[] buffer = new byte[1024];
+	                    int read;
+
+	                    while ((read = input.read(buffer)) > 0) {
+	                        writeFile.write(buffer, 0, read);
+	                    }
+	                    writeFile.flush();
+	
+	                    copyFile(temploc, new File(chemin + "/" + fileName));
                     }
-
-                    if (fileLength == -1) {
-                        if (display)
-                            TowerMiner.game.displayPopup(new Popup(LanguageManager.getText("music.error"), 2000, "music_disc_gold"));
-                        TowerMiner.print("Invalid URL or File", "music");
-                        return;
-                    }
-
-                    input = connection.getInputStream();
-                    String fileName = url.getFile().substring(url.getFile().lastIndexOf('/') + 1);
-
-                    if (new File(chemin + "/" + fileName).exists()) {
-                        play(channel, chemin + "/" + fileName);
-                        return;
-                    } else {
-                        if (display)
-                            TowerMiner.game.displayPopup(new Popup(LanguageManager.getText("music.downloading", fileName), 2000, "music_disc_gold"));
-                    }
-
-                    File temp = new File(RessourcesManager.getDirectory().getPath() + "/temp");
-                    temp.mkdirs();
-                    File temploc = new File(temp.getPath() + "/" + fileName);
-                    temploc.deleteOnExit();
-                    writeFile = new FileOutputStream(temploc);
-                    byte[] buffer = new byte[1024];
-                    int read;
-
-                    while ((read = input.read(buffer)) > 0) {
-                        writeFile.write(buffer, 0, read);
-                    }
-                    writeFile.flush();
-
-                    copyFile(temploc, new File(chemin + "/" + fileName));
 
                     if (display)
                         TowerMiner.game.displayPopup(new Popup(LanguageManager.getText("music.finished"), 2000, "music_disc_gold"));
+                    
                     play(channel, chemin + "/" + fileName);
-
 
                 } catch (IOException e) {
                     TowerMiner.print("Error while trying to download the file.", "music");
@@ -131,6 +136,8 @@ public class Music {
                             input.close();
                         }
                     } catch (IOException e) {
+                        e.printStackTrace();
+                        return;
                     }
                 }
             }
@@ -162,56 +169,21 @@ public class Music {
         }
     }
 
-    public void run() {
-        try {
-            @SuppressWarnings("unused")
-            AudioFileFormat format = AudioSystem.getAudioFileFormat(fichier);
-        } catch (Exception e1) {
-        }
-
-        try {
-            audioInputStream = AudioSystem.getAudioInputStream(fichier);
-        } catch (Exception e) {
-        }
-
-        AudioFormat audioFormat = audioInputStream.getFormat();
-        DataLine.Info info = new DataLine.Info(SourceDataLine.class, audioFormat);
-
-        try {
-            line = (SourceDataLine) AudioSystem.getLine(info);
-        } catch (LineUnavailableException e) {
-            e.printStackTrace();
-            return;
-        }
-
-        try {
-            if (line.isOpen()) {
-                line.close();
-            }
-            line.open(audioFormat);
-        } catch (LineUnavailableException e) {
-            e.printStackTrace();
-            return;
-        }
-        line.start();
-        try {
-            byte bytes[] = new byte[1024];
-            int bytesRead = 0;
-            while (!stopped && (bytesRead = audioInputStream.read(bytes, 0, bytes.length)) != -1) {
-                line.write(bytes, 0, bytesRead);
-
-                if (line.isControlSupported(FloatControl.Type.VOLUME)) {
-                    FloatControl control = (FloatControl) line.getControl(FloatControl.Type.VOLUME);
-                    control.setValue((Float) DataBase.getValue("volume", 65536F));
+    private static void play(final int channel, String file) {
+    	if(tracks[channel] != null)
+    		tracks[channel].stop();
+    	
+    	tracks[channel] = new Track(new File(file));
+        
+        new Thread("MusicPlaying") {
+            public void run() {
+                try {
+                	tracks[channel].run();
+                } catch (Exception e) {
                 }
             }
-        } catch (IOException io) {
-            io.printStackTrace();
-            return;
-        }
+        }.start();
     }
 
-    public void stop() {
-        stopped = true;
-    }
+ 
 }

@@ -306,11 +306,9 @@ public class Game extends JFrame implements MouseListener, MouseWheelListener, M
 	public void windowClosed(WindowEvent arg0) {
 		PluginManager.callAsyncEvent(new MenuWindowClosedEvent(TowerMiner.menu, arg0));
 		TowerMiner.menu.onWindowClosed(arg0);
-		int i = 0;
-		while (i < 10) {
-			Music.stop(i);
-			i++;
-		}
+		
+		Music.stopAll();
+
 		System.exit(1);
 	}
 

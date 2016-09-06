@@ -20,7 +20,7 @@ import fr.skyforce77.towerminer.save.DataBase;
 public class VolumeControlMenu extends Menu {
 
     public JPanel bpanel;
-    public JSlider check;
+    public JSlider volumeSlider;
 
     public VolumeControlMenu() {
 
@@ -28,23 +28,23 @@ public class VolumeControlMenu extends Menu {
         bpanel.setOpaque(false);
         bpanel.setVisible(false);
 
-        check = new JSlider(0, 65536);
-        check.setVisible(false);
-        check.setFont(TowerMiner.getFont(16));
-        check.setValue((int)(float)DataBase.getValue("volume", 65536F));
+        volumeSlider = new JSlider(0, 100);
+        volumeSlider.setVisible(false);
+        volumeSlider.setFont(TowerMiner.getFont(16));
+        volumeSlider.setValue((int)(float)DataBase.getValue("volume", 65536F));
 
         final Menu menu = this;
-        check.addChangeListener(new ChangeListener() {
+        volumeSlider.addChangeListener(new ChangeListener() {
             @Override
             public void stateChanged(ChangeEvent arg0) {
-                DataBase.setValue("volume", (float)check.getValue());
-                PluginManager.callAsyncEvent(new MenuVolumeChangedEvent(menu, (float)check.getValue()));
+                DataBase.setValue("volume", (float)volumeSlider.getValue());
+                PluginManager.callAsyncEvent(new MenuVolumeChangedEvent(menu, (float)volumeSlider.getValue()));
             }
         });
 
-        check.setPreferredSize(new Dimension(TowerMiner.game.getWidth(), TowerMiner.game.getHeight() / 14));
+        volumeSlider.setPreferredSize(new Dimension(TowerMiner.game.getWidth(), TowerMiner.game.getHeight() / 14));
 
-        bpanel.add(check);
+        bpanel.add(volumeSlider);
 
         TowerMiner.game.add(bpanel, BorderLayout.CENTER);
     }
@@ -60,20 +60,20 @@ public class VolumeControlMenu extends Menu {
         	DataBase.setValue("volume", 65536F);
         }
         float value = (Float) DataBase.getValue("volume");
-        int volume = (int) (value/65536F*100F);
-        g2d.drawString(LanguageManager.getText("menu.about.music") + ": " + volume + "%", 10, 240 + (xmove / 5));
+        //int volume = (int) (value/65536F*100F);
+        g2d.drawString(LanguageManager.getText("menu.about.music") + ": " + value + "%", 10, 240 + (xmove / 5));
         super.drawMenu(g2d);
     }
 
     @Override
     public void onUnused() {
-        check.setVisible(false);
+    	volumeSlider.setVisible(false);
         bpanel.setVisible(false);
     }
 
     @Override
     public void onUsed() {
-        check.setVisible(true);
+    	volumeSlider.setVisible(true);
         bpanel.setVisible(true);
     }
 }
