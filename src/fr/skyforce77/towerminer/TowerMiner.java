@@ -228,6 +228,12 @@ public class TowerMiner {
     public static void printInfo(String info) {
         print(info, "INFO");
     }
+    
+    public static void printVerbose(String verbose) {
+    	if(dev) {
+    		print(verbose, "VERBOSE");
+    	}
+    }
 
     public static Font getFont(int size) {
         if (font == null) {
