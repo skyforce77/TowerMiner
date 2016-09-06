@@ -16,8 +16,8 @@ import fr.skyforce77.towerminer.ressources.language.LanguageManager;
 
 public class Music {
 
-	// ameliration : on peut gerer les channels de maniere masqué
-	// rendre private la méthode playURL
+	// ameliration : on peut gerer les channels de maniere masquÃ©
+	// rendre private la mÃ©thode playURL
 	// comment s'abonner au evenement?? 
 	
 	private final static int MUSIC_CHANNEL = 0;
