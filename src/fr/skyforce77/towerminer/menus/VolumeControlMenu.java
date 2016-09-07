@@ -10,12 +10,15 @@ import javax.swing.JSlider;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import com.sun.corba.se.pept.transport.EventHandler;
+
 import fr.skyforce77.towerminer.TowerMiner;
 import fr.skyforce77.towerminer.api.PluginManager;
 import fr.skyforce77.towerminer.api.events.menu.MenuVolumeChangedEvent;
 import fr.skyforce77.towerminer.ressources.RessourcesManager;
 import fr.skyforce77.towerminer.ressources.language.LanguageManager;
 import fr.skyforce77.towerminer.save.DataBase;
+import fr.skyforce77.towerminer.sounds.Music;
 
 public class VolumeControlMenu extends Menu {
 
@@ -39,6 +42,7 @@ public class VolumeControlMenu extends Menu {
             public void stateChanged(ChangeEvent arg0) {
                 DataBase.setValue("volume", (float)volumeSlider.getValue());
                 PluginManager.callAsyncEvent(new MenuVolumeChangedEvent(menu, (float)volumeSlider.getValue()));
+                Music.volumeChange((float)volumeSlider.getValue());
             }
         });
 

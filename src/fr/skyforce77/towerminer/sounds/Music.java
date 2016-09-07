@@ -162,33 +162,33 @@ public class Music {
 
     private static void play( String file,final boolean isMusic) {
     	
-    	int channel;
+    	int testChannel;
     	
     	if(isMusic){
-    		channel = MUSIC_CHANNEL;
+    		testChannel = MUSIC_CHANNEL;
     	} else{
-    		channel = SOUND_FIRST_CHANNEL;
-    		while(channel<CHANNEL_COUNT && 
-    				tracks[channel]!= null && 
-    				!tracks[channel].IsRun()) {
-    			channel++;
+    		testChannel = SOUND_FIRST_CHANNEL;
+    		while(testChannel<(CHANNEL_COUNT-1) && 
+    				tracks[testChannel]!= null && 
+    				tracks[testChannel].IsRun()) {
+    			testChannel++;
     		}
     	}
     	
-    	if(tracks[channel] != null)
-    		tracks[channel].stop();
+    	if(tracks[testChannel] != null )
+    		tracks[testChannel].stop();
     	
-    	TowerMiner.printInfo("Playing sound : " + file + " on track : " +channel);
+    	TowerMiner.printInfo("Playing sound : " + file + " on track : " +testChannel);
     	
     	
-    	tracks[channel] = new Track(new File(file));
+    	tracks[testChannel] = new Track(new File(file));
         
-    	final int cha = channel;
+    	final int channel = testChannel;
     	
         new Thread("MusicPlaying") {
             public void run() {
                 try {
-                	tracks[cha].run();
+                	tracks[channel].run();
                 } catch (Exception e) {
                 }
             }
