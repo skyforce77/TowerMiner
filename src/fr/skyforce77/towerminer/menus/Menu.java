@@ -226,7 +226,7 @@ public class Menu {
             Dimension rect = new Dimension((int) size.getWidth() + 3, (int) size.getHeight());
             if (Xcursor < TowerMiner.game.getWidth() && Xcursor > TowerMiner.game.getWidth() - rect.getWidth()
                     && Ycursor < TowerMiner.game.getHeight() && Ycursor > TowerMiner.game.getHeight() - rect.getHeight() - 29) {
-                Music.playSound("b1");
+                Music.playSound("b1",false,false);
                 TowerMiner.returnMenu(last);
             }
         }

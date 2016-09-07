@@ -674,7 +674,7 @@ public class SinglePlayer extends Menu implements ChatContainer{
 		pause.setVisible(true);
 		options.setVisible(true);
 		Maps.resize();
-		Music.playMusic("escape_from_the_temple");
+		Music.playSound("escape_from_the_temple",true,false);
 		TowerMiner.game.setTitle(LanguageManager.getText("towerminer") + " | " + Game.version + " | " + LanguageManager.getText("menu.match") + " | " + LanguageManager.getText("menu.editor.map") + ": " + Maps.getActualMap().getName());
 	}
 

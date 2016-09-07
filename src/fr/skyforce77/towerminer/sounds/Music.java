@@ -16,12 +16,10 @@ import fr.skyforce77.towerminer.ressources.language.LanguageManager;
 
 public class Music {
 
-	// ameliration : on peut gerer les channels de maniere masqué
-	// rendre private la méthode playURL
-	// comment s'abonner au evenement?? 
+	// comment s'abonner au evenement?? => https://github.com/skyforce77/TMCommands/tree/master/src/fr/skyforce77/TMCommands
 	
 	private final static int MUSIC_CHANNEL = 0;
-	private final static int SOUND_CHANNEL = 1;
+	private final static int SOUND_FIRST_CHANNEL = 1;
 	private final static int CHANNEL_COUNT = 10;
 
     private static Track[] tracks = new Track[CHANNEL_COUNT];
@@ -45,34 +43,29 @@ public class Music {
     	}
     }
    
-    public static void playSound(String name) {
+    public static void playSound(String name,final boolean isMusic, final boolean display) {
     	try {
-    		playURL(SOUND_CHANNEL, RessourcesManager.getSoundURL(name), false);
+    		if(isMusic){
+    			playURL( new URL("https://dl.dropboxusercontent.com/u/38885163/TowerMiner/music/" + name + ".wav"), true,false);
+    		}
+    		else
+    			playURL(RessourcesManager.getSoundURL(name),isMusic, display);
     	} 
         catch (Exception e) {
         	TowerMiner.printError("playSound : " + e.getMessage());
         }
     }
-
-    public static void playMusic(String name) {
-        try {
-            playURL(MUSIC_CHANNEL, new URL("https://dl.dropboxusercontent.com/u/38885163/TowerMiner/music/" + name + ".wav"), false);
-        } 
-        catch (Exception e) {
-        	TowerMiner.printError("playMusic : " + e.getMessage());
-        }
-    }
     
-    public static void playSound(URL cible) {
+    public static void playSound(URL cible, final boolean isMusic,final boolean display) {
         try {
-            playURL(SOUND_CHANNEL, cible, false);
+            playURL(cible,isMusic , display);
         } 
         catch (Exception e) {
         	TowerMiner.printError("playSound : " + e.getMessage());
         }
     }
 
-    public static void playURL(final int channel, final URL url, final boolean display) {
+    private static void playURL(final URL url,final boolean isMusic, final boolean display) {
         new Thread("MusicURLDownload") {
             @Override
             public void run() {
@@ -83,8 +76,6 @@ public class Music {
                 try {
                 	String fileName = url.getFile().substring(url.getFile().lastIndexOf('/') + 1);
 
-                	TowerMiner.printInfo("Playing sound : " + fileName);
-                	
                     if (!new File(chemin + "/" + fileName).exists()) {
                     	
                     	URLConnection connection = url.openConnection();
@@ -123,7 +114,7 @@ public class Music {
                     if (display)
                         TowerMiner.game.displayPopup(new Popup(LanguageManager.getText("music.finished"), 2000, "music_disc_gold"));
                     
-                    play(channel, chemin + "/" + fileName);
+                    play( chemin + "/" + fileName,isMusic);
 
                 } catch (IOException e) {
                     TowerMiner.print("Error while trying to download the file.", "music");
@@ -169,16 +160,35 @@ public class Music {
         }
     }
 
-    private static void play(final int channel, String file) {
+    private static void play( String file,final boolean isMusic) {
+    	
+    	int channel;
+    	
+    	if(isMusic){
+    		channel = MUSIC_CHANNEL;
+    	} else{
+    		channel = SOUND_FIRST_CHANNEL;
+    		while(channel<CHANNEL_COUNT && 
+    				tracks[channel]!= null && 
+    				!tracks[channel].IsRun()) {
+    			channel++;
+    		}
+    	}
+    	
     	if(tracks[channel] != null)
     		tracks[channel].stop();
     	
+    	TowerMiner.printInfo("Playing sound : " + file + " on track : " +channel);
+    	
+    	
     	tracks[channel] = new Track(new File(file));
         
+    	final int cha = channel;
+    	
         new Thread("MusicPlaying") {
             public void run() {
                 try {
-                	tracks[channel].run();
+                	tracks[cha].run();
                 } catch (Exception e) {
                 }
             }

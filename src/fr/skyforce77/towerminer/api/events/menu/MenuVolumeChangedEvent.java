@@ -7,7 +7,7 @@ import fr.skyforce77.towerminer.sounds.Music;
 public class MenuVolumeChangedEvent extends MenuEvent {
 
 	private float volume;
-	
+
 	public MenuVolumeChangedEvent(Menu menu, float volume) {
 		
 		super(menu);
@@ -24,5 +24,6 @@ public class MenuVolumeChangedEvent extends MenuEvent {
 	public void setVolume(float volume) {
 		this.volume = volume;
 	}
+	
 	
 }

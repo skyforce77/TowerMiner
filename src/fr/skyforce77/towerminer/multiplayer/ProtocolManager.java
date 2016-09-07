@@ -298,7 +298,7 @@ public class ProtocolManager implements PacketListener {
 		} else if (p.getId() == 16) {
 			Packet16Sound pack16 = (Packet16Sound) p;
 			try {
-				Music.playURL(new URL(pack16.music), pack16.isMusic, pack16.custom);
+				Music.playSound(new URL(pack16.music), pack16.isMusic, pack16.custom);
 			} catch (MalformedURLException e) {
 				e.printStackTrace();
 			}

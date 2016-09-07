@@ -105,7 +105,7 @@ public class TowerMiner {
                 setMenu(Menu.mainmenu);
                 MainAchievements(launchedVersion, state, os);
                 game.setVisible(true);
-                Music.playMusic("incursion");
+                Music.playSound("incursion",true,false);
 
                 PluginManager.initPlugins();
                 printInfo("Successfully launched!");

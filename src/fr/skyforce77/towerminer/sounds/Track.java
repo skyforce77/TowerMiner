@@ -22,13 +22,18 @@ public class Track {
     private SourceDataLine line;
     private File fichier;
     private boolean stopped = false;
-	
+	private boolean running = false;
 
     protected Track(File f) {
         fichier = f;
        
     }
-
+    
+    public boolean IsRun()
+    {
+    	return running;
+    }
+    
     protected void run() {
         try {
             @SuppressWarnings("unused")
@@ -66,6 +71,7 @@ public class Track {
         line.start();
         
        try {
+    	   running = true;
             byte bytes[] = new byte[1024];
             int bytesRead = 0;
             while (!stopped && (bytesRead = audioInputStream.read(bytes, 0, bytes.length)) != -1) {
@@ -74,7 +80,10 @@ public class Track {
         } catch (IOException io) {
             io.printStackTrace();
             return;
+        } finally{
+        	running = false;
         }
+       
     }
 
     protected void stop() {
@@ -94,7 +103,7 @@ public class Track {
              
              control.setValue(gain);
              
-             TowerMiner.printInfo("Application du volume "  +control.getValue());
+             // TowerMiner.printInfo("Application du volume "  +control.getValue());
              
         } catch (Exception e) {
         	TowerMiner.printError(e.getMessage()); 

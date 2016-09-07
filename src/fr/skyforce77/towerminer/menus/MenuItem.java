@@ -61,12 +61,12 @@ public class MenuItem {
 
     public void start() {
         t.start();
-        Music.playSound("b1");
+        Music.playSound("b1",false,false);
     }
 
     public void run() {
         t.run();
-        Music.playSound("b1");
+        Music.playSound("b1",false,false);
     }
 
     public void disable() {
